@@ -495,6 +495,7 @@ useEffect(() => {
   }
 }, [authenticated, userRole, router])
 
+
 const updateStatus = async (orderId: string, newStatus: string) => {
     setUpdatingId(orderId)
     try {
@@ -660,7 +661,11 @@ const stats = useMemo(() => {
   }
 }, [orders])
 
-
+// Add this check before rendering anything
+if (authenticated && userRole && userRole !== 'founder' && userRole !== 'moderator') {
+  router.push('/my-orders')
+  return null
+}
 const getServiceRange = (service: string) => {
   const ranges: Record<string, { min: number; max: number }> = {
     'graduation-projects': { min: 150, max: 400 },
@@ -699,7 +704,6 @@ const getServiceRange = (service: string) => {
       </main>
     )
   }
-
    return (
     <>
           {/* Reassign Modal */}
