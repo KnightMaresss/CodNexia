@@ -9,6 +9,7 @@ import { OrderMessages } from '@/components/OrderMessages'
 import { SoundNotification } from '@/components/SoundNotification'
 import Link from 'next/link'
 import Image from 'next/image'
+import { useRouter } from 'next/navigation'
 import {
   LogOut,
   Trash2,
@@ -119,12 +120,9 @@ interface ModeratorStat {
 export default function AdminPage() {
   const [chatOrder, setChatOrder] = useState<string | null>(null)
   const [deleteModal, setDeleteModal] = useState<{ open: boolean; orderId: string }>({ open: false, orderId: '' })
-  const [password, setPassword] = useState('')
   const [authenticated, setAuthenticated] = useState(false)
   const [loading, setLoading] = useState(true)
   const [orders, setOrders] = useState<Order[]>([])
-  const [error, setError] = useState('')
-  const [loginLoading, setLoginLoading] = useState(false)
   const [updatingId, setUpdatingId] = useState<string | null>(null)
   const [expandedOrder, setExpandedOrder] = useState<string | null>(null)
   const [orderFiles, setOrderFiles] = useState<Record<string, OrderFile[]>>({})
@@ -145,8 +143,10 @@ export default function AdminPage() {
   const [reassigningId, setReassigningId] = useState<string | null>(null)
   const [reassignModal, setReassignModal] = useState<{ open: boolean; orderId: string; currentName: string }>({ open: false, orderId: '', currentName: '' })
   const [moderatorStats, setModeratorStats] = useState<ModeratorStat[]>([])
+  const router = useRouter()
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const [ratings, setRatings] = useState<Record<string, any>>({})
+  
     const reassignOrder = async (orderId: string, newModId: string, newModName: string) => {
     setReassigningId(orderId)
     try {
@@ -168,6 +168,8 @@ export default function AdminPage() {
     }
     setReassigningId(null)
   }
+
+  
   const acceptOrder = async (orderId: string) => {
     setAcceptingId(orderId)
     try {
@@ -263,11 +265,11 @@ const fetchOrders = async () => {
       
       } else {
        
-        setError(data.error || 'Failed to fetch orders')
+        console.error(data.error || 'Failed to fetch orders')
       }
     } catch {
      
-      setError('Failed to fetch orders')
+      console.error('Failed to fetch orders')
     }
   }
 const fetchRatings = async () => {
@@ -424,32 +426,7 @@ const fetchFiles = async (orderId: string) => {
     }
   }, [authenticated])
 
-  const [loginEmail, setLoginEmail] = useState('')
-
-  const handleLogin = async (e: React.FormEvent) => {
-    e.preventDefault()
-    setLoginLoading(true)
-    setError('')
-
-    const res = await fetch('/api/auth/student-login', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ email: loginEmail, password }),
-    })
-
-    const data = await res.json()
-
-    if (data.success) {
-      setAuthenticated(true)
-      setPassword('')
-    } else {
-      setError('Wrong password')
-    }
-
-    setLoginLoading(false)
-  }
   // Auto-open chat from email link
-  
   useEffect(() => {
     const params = new URLSearchParams(window.location.search)
     const chatId = params.get('chat')
@@ -511,7 +488,12 @@ useEffect(() => {
         })
     }
   }, [authenticated])
-
+// Redirect students away from admin page
+useEffect(() => {
+  if (authenticated && userRole && userRole !== 'founder' && userRole !== 'moderator') {
+    router.push('/my-orders')
+  }
+}, [authenticated, userRole, router])
 
 const updateStatus = async (orderId: string, newStatus: string) => {
     setUpdatingId(orderId)
@@ -718,51 +700,10 @@ const getServiceRange = (service: string) => {
     )
   }
 
-  if (!authenticated) {
-    return (
-      <main className="min-h-screen pt-24 py-20 px-4 bg-gradient-to-br from-background to-muted">
-        <div className="max-w-md mx-auto">
-          <div className="text-center mb-8">
-            <div className="inline-flex items-center justify-center w-16 h-16 rounded-2xl bg-blue-100 mb-4">
-              <Package className="h-8 w-8 text-blue-600" />
-            </div>
-            <h1 className="text-3xl font-bold">Staff Login</h1>
-          </div>
-          <Card>
-            <CardContent className="pt-6">
-                          <form onSubmit={handleLogin} className="space-y-4">
-                <div>
-                  <label className="block text-sm font-medium mb-1">Email</label>
-                  <input
-                    type="email"
-                    placeholder="Enter your email"
-                    className="w-full px-3 py-2 border border-input bg-background text-foreground rounded-md"
-                    value={loginEmail}
-                    onChange={(e) => setLoginEmail(e.target.value)}
-                  />
-                </div>
-                <div>
-                  <label className="block text-sm font-medium mb-1">Password</label>
-                  <input
-                    type="password"
-                    placeholder="Enter your password"
-                    className="w-full px-3 py-2 border border-input bg-background text-foreground rounded-md"
-                    value={password}
-                    onChange={(e) => setPassword(e.target.value)}
-                  />
-                </div>
-                {error && <p className="text-red-500 text-sm">{error}</p>}
-                <Button type="submit" disabled={loginLoading} className="w-full">
-                  {loginLoading ? <Loader2 className="h-4 w-4 animate-spin" /> : 'Login'}
-                </Button>
-              </form>
-            </CardContent>
-          </Card>
-        </div>
-
-      </main>
-    )
-  }
+ if (!authenticated) {
+  router.push('/login')
+  return null
+}
 
    return (
     <>
