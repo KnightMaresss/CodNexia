@@ -700,11 +700,6 @@ const getServiceRange = (service: string) => {
     )
   }
 
- if (!authenticated) {
-  router.push('/login')
-  return null
-}
-
    return (
     <>
           {/* Reassign Modal */}
