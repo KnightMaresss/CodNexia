@@ -1,0 +1,304 @@
+import clientPromise from '@/lib/mongodb'
+import { NextResponse } from 'next/server'
+import { jwtVerify } from 'jose'
+import { cookies } from 'next/headers'
+import { ObjectId } from 'mongodb'
+const JWT_SECRET = new TextEncoder().encode(process.env.JWT_SECRET || 'fallback-secret')
+
+// GET messages for an order
+export async function GET(request: Request) {
+  try {
+    const { searchParams } = new URL(request.url)
+    const orderId = searchParams.get('orderId')
+
+    if (!orderId) {
+      return NextResponse.json({ success: false, error: 'Order ID required' }, { status: 400 })
+    }
+
+    // Auth check
+    const cookieStore = await cookies()
+    const adminToken = cookieStore.get('admin_token')?.value
+    const studentToken = cookieStore.get('student_token')?.value
+    let authenticated = false
+    const adminRoles = ['founder', 'moderator']
+    
+    if (adminToken) {
+      try {
+        const { payload } = await jwtVerify(adminToken, JWT_SECRET)
+        if (adminRoles.includes(payload.role as string)) authenticated = true
+      } catch {}
+    }
+    if (!authenticated && studentToken) {
+      try {
+        const { payload } = await jwtVerify(studentToken, JWT_SECRET)
+        if (adminRoles.includes(payload.role as string) || payload.role === 'student') authenticated = true
+      } catch {}
+    }
+       if (!authenticated) {
+      return NextResponse.json({ success: false, error: 'Unauthorized' }, { status: 401 })
+    }
+
+    const client = await clientPromise
+    const db = client.db(process.env.DB_NAME || 'student_services')
+
+    // Get user role and ID for moderator check
+    const token = adminToken || studentToken
+    let userRole = ''
+    let userId = ''
+    if (token) {
+      try {
+        const { payload } = await jwtVerify(token, JWT_SECRET)
+        userRole = (payload.role as string) || ''
+        userId = (payload.userId as string) || ''
+      } catch {}
+    }
+
+    // Moderators can only view messages for orders assigned to them
+    if (userRole === 'moderator') {
+      const order = await db.collection('orders').findOne({ _id: new ObjectId(orderId) })
+      if (!order || order.assignedTo !== userId) {
+        return NextResponse.json({ success: false, error: 'Access denied' }, { status: 403 })
+      }
+    }
+
+    const messages = await db.collection('messages')
+      .find({ orderId })
+      .sort({ createdAt: 1 })
+      .toArray()
+
+    return NextResponse.json({
+      success: true,
+       messages: messages.map((m) => ({
+        id: m._id.toString(),
+        orderId: m.orderId,
+        sender: m.sender,
+        senderRole: m.senderRole,
+        message: m.message || '',
+        fileUrl: m.fileUrl || '',
+        fileName: m.fileName || '',
+        fileType: m.fileType || '',
+        createdAt: m.createdAt,
+      })),
+    })
+  } catch (error) {
+    console.error('Fetch messages error:', error)
+    return NextResponse.json({ success: false, error: 'Failed to fetch messages' }, { status: 500 })
+  }
+}
+// PUT - Mark chat as seen
+export async function PUT(request: Request) {
+  try {
+    const { orderId } = await request.json()
+
+    const cookieStore = await cookies()
+    const adminToken = cookieStore.get('admin_token')?.value
+    const studentToken = cookieStore.get('student_token')?.value
+
+       let viewer = ''
+
+    const adminRoles = ['founder', 'moderator']
+    
+    if (studentToken) {
+      try {
+        const { payload } = await jwtVerify(studentToken, JWT_SECRET)
+        if (payload.role === 'student') viewer = 'student'
+        else if (adminRoles.includes(payload.role as string)) viewer = 'admin'
+      } catch {}
+    }
+    if (!viewer && adminToken) {
+      try {
+        const { payload } = await jwtVerify(adminToken, JWT_SECRET)
+        if (adminRoles.includes(payload.role as string)) viewer = 'admin'
+      } catch {}
+    }
+
+    if (!viewer) {
+      return NextResponse.json({ success: false, error: 'Unauthorized' }, { status: 401 })
+    }
+
+    const client = await clientPromise
+    const db = client.db(process.env.DB_NAME || 'student_services')
+
+    await db.collection('chat_views').updateOne(
+      { orderId, viewer },
+      { $set: { orderId, viewer, lastSeenAt: new Date() } },
+      { upsert: true }
+    )
+
+    return NextResponse.json({ success: true })
+  } catch {
+    return NextResponse.json({ success: false, error: 'Failed' }, { status: 500 })
+  }
+}
+
+
+
+// POST a new message
+// POST a new message (with optional file)
+export async function POST(request: Request) {
+  try {
+    const contentType = request.headers.get('content-type') || ''
+
+    let orderId = ''
+    let message = ''
+    let fileUrl = ''
+    let fileName = ''
+    let fileType = ''
+
+    if (contentType.includes('multipart/form-data')) {
+      const formData = await request.formData()
+      orderId = formData.get('orderId') as string
+      message = formData.get('message') as string
+      const file = formData.get('file') as File | null
+
+      if (file) {
+        // Upload to Cloudinary
+        const cloudinary = (await import('@/lib/cloudinary')).default
+        const bytes = await file.arrayBuffer()
+        const buffer = Buffer.from(bytes)
+        const base64 = `data:${file.type};base64,${buffer.toString('base64')}`
+
+        const result = await cloudinary.uploader.upload(base64, {
+          folder: `chat/${orderId}`,
+          resource_type: 'auto',
+        })
+
+        fileUrl = result.secure_url
+        fileName = file.name
+        fileType = file.type
+      }
+    } else {
+      const body = await request.json()
+      orderId = body.orderId
+      message = body.message
+    }
+
+    if (!orderId || (!message.trim() && !fileUrl)) {
+      return NextResponse.json(
+        { success: false, error: 'Order ID and message or file required' },
+        { status: 400 }
+      )
+    }
+
+    // Auth check + get sender info
+    const cookieStore = await cookies()
+    const adminToken = cookieStore.get('admin_token')?.value
+    const studentToken = cookieStore.get('student_token')?.value
+
+    let sender = 'Unknown'
+    let senderRole = 'unknown'
+
+    const adminRoles = ['founder', 'moderator']
+    
+    if (adminToken) {
+      try {
+        const { payload } = await jwtVerify(adminToken, JWT_SECRET)
+        if (adminRoles.includes(payload.role as string)) {
+          sender = payload.name as string || 'Admin'
+          senderRole = 'admin'
+        }
+      } catch {}
+    }
+
+    if (senderRole === 'unknown' && studentToken) {
+      try {
+        const { payload } = await jwtVerify(studentToken, JWT_SECRET)
+        if (payload.role === 'student') {
+          sender = payload.email as string
+          senderRole = 'student'
+        } else if (adminRoles.includes(payload.role as string)) {
+          sender = payload.name as string || 'Admin'
+          senderRole = 'admin'
+        }
+      } catch {}
+    }
+
+    if (senderRole === 'unknown') {
+      return NextResponse.json(
+        { success: false, error: 'Unauthorized' },
+        { status: 401 }
+      )
+    }
+
+    const client = await clientPromise
+    const db = client.db(process.env.DB_NAME || 'student_services')
+
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    const newMessage: any = {
+      orderId,
+      sender,
+      senderRole,
+      message: message?.trim() || '',
+      fileUrl,
+      fileName,
+      fileType,
+      createdAt: new Date(),
+    }
+
+    const result = await db.collection('messages').insertOne(newMessage)
+
+    // Mark sender's chat as seen
+    await db.collection('chat_views').updateOne(
+      { orderId, viewer: senderRole },
+      { $set: { orderId, viewer: senderRole, lastSeenAt: new Date() } },
+      { upsert: true }
+    )
+
+    // Email notification logic (keep existing)
+    const order = await db.collection('orders').findOne({ _id: new ObjectId(orderId) })
+    if (order) {
+      const SERVICE_NAMES: Record<string, string> = {
+        'graduation-projects': 'Graduation Projects',
+        'academic-reports': 'Academic Reports',
+        'custom-websites': 'Custom Websites',
+        'mobile-apps': 'Mobile Apps',
+        'powerpoint-presentations': 'PowerPoint Presentations',
+        'cv-resume-writing': 'CV/Resume Writing',
+        'translation': 'Translation (En↔Ar)',
+        'code-debugging': 'Code Debugging',
+      }
+      const recipientRole = senderRole === 'student' ? 'admin' : 'student'
+      const chatView = await db.collection('chat_views').findOne({
+        orderId,
+        viewer: recipientRole,
+      })
+      const thirtySecondsAgo = new Date(Date.now() - 30000)
+
+      if (!chatView || new Date(chatView.lastSeenAt) < thirtySecondsAgo) {
+        const { sendNewMessageEmail } = await import('@/lib/email-messages')
+        const notifyMsg = fileUrl ? `📎 Sent a file: ${fileName}` : message.trim()
+        if (senderRole === 'student') {
+          sendNewMessageEmail(
+            process.env.ADMIN_EMAIL || '',
+            sender,
+            notifyMsg,
+            orderId,
+            SERVICE_NAMES[order.service] || order.service
+          ).catch(() => {})
+        } else {
+          sendNewMessageEmail(
+            order.studentEmail,
+            sender,
+            notifyMsg,
+            orderId,
+            SERVICE_NAMES[order.service] || order.service
+          ).catch(() => {})
+        }
+      }
+    }
+
+    return NextResponse.json({
+      success: true,
+      message: {
+        id: result.insertedId.toString(),
+        ...newMessage,
+      },
+    })
+  } catch (error) {
+    console.error('Send message error:', error)
+    return NextResponse.json(
+      { success: false, error: 'Failed to send message' },
+      { status: 500 }
+    )
+  }
+}
