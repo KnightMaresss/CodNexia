@@ -10,6 +10,7 @@ import { SoundNotification } from '@/components/SoundNotification'
 import Link from 'next/link'
 import Image from 'next/image'
 import { useRouter } from 'next/navigation'
+import { canAccessAdmin, isFounderRole, isModeratorRole } from '@/lib/roles'
 import {
   LogOut,
   Trash2,
@@ -468,33 +469,25 @@ useEffect(() => {
       setUserRole(role)
       setCurrentUserId(userData.user?.id || '')
 
-      if (role !== 'founder' && role !== 'moderator') {
-        router.push('/my-orders')
-        return
-      }
-
+   if (!canAccessAdmin(role)) {
+  router.push('/unauthorized')
+  return
+}
       setAuthenticated(true)
       setLoading(false)
 
-      if (role === 'founder') {
+      if (canAccessAdmin(role)) {
         fetchUsers()
       }
     })
 }, [router])
+
  // Update lastSeen for moderator/founder when they visit admin
 useEffect(() => {
-    if (authenticated && (userRole === 'moderator' || userRole === 'founder')) {
+    if (authenticated && (canAccessAdmin(userRole))) {
       fetch('/api/admin/update-lastseen', { method: 'POST' }).catch(() => {})
     }
   }, [authenticated, userRole])
-
-
-// Redirect students away from admin page
-useEffect(() => {
-  if (authenticated && userRole && userRole !== 'founder' && userRole !== 'moderator') {
-    router.push('/my-orders')
-  }
-}, [authenticated, userRole, router])
 
 const updateStatus = async (orderId: string, newStatus: string) => {
     setUpdatingId(orderId)
@@ -716,7 +709,7 @@ const getServiceRange = (service: string) => {
               Currently assigned to: <strong>{reassignModal.currentName}</strong>
             </p>
             <div className="space-y-2 max-h-48 overflow-y-auto">
-              {users.filter(u => u.role === 'moderator' && !u.blocked).map((mod) => (
+              {users.filter(u => isModeratorRole(u.role) && !u.blocked).map((mod) => (
                 <button
                   key={mod._id}
                   onClick={() => reassignOrder(reassignModal.orderId, mod._id, mod.name)}
@@ -756,12 +749,12 @@ const getServiceRange = (service: string) => {
         <div className="flex items-center justify-between mb-8">
           <div>
               <h1 className="text-3xl font-bold text-foreground">
-              {userRole === 'founder' ? 'Founder Dashboard' : 'Staff Dashboard'}
+              {isFounderRole(userRole) ? 'Founder Dashboard' : 'Staff Dashboard'}
             </h1>
             <p className="text-muted-foreground mt-1">Manage orders and track progress</p>
           </div>
                 <div className="flex items-center gap-3">
-               {(userRole === 'moderator' || userRole === 'founder') && (
+               {(canAccessAdmin(userRole)) && (
               <Link href="/profile">
                 <Button variant="outline" size="default">
                   <User className="h-4 w-4 mr-1" />
@@ -785,7 +778,7 @@ const getServiceRange = (service: string) => {
   onClick={() => {
     setActiveTab('orders')
     fetchOrders()
-    if (userRole === 'founder') fetchUsers()
+    if (isFounderRole(userRole)) fetchUsers()
   }}
   className={`px-4 py-2 rounded-lg text-sm font-medium transition-all ${
     activeTab === 'orders' ? 'bg-blue-600 text-white' : 'bg-card text-foreground border border-border'
@@ -799,7 +792,7 @@ const getServiceRange = (service: string) => {
   )}
 </button>
           {/* Completed tab - only for moderators */}
-          {userRole === 'moderator' && (
+          {isModeratorRole(userRole) && (
             <button
              onClick={() => {
   setActiveTab('completed' as TabType)
@@ -813,7 +806,7 @@ const getServiceRange = (service: string) => {
             </button>
           )}
                     {/* Ratings tab - only for founder */}
-          {userRole === 'founder' && (
+          {isFounderRole(userRole) && (
             <button
               onClick={() => {
                 setActiveTab('ratings' as TabType)
@@ -826,7 +819,7 @@ const getServiceRange = (service: string) => {
               ⭐ Ratings
             </button>
           )}
-          {userRole === 'founder' && (
+          {isFounderRole(userRole) && (
             
           <button
 
@@ -882,7 +875,7 @@ const getServiceRange = (service: string) => {
               />
             </div>
             {/* Moderator Performance - Only visible to Founder */}
-            {userRole === 'founder' && moderatorStats.length > 0 && (
+            {isFounderRole(userRole) && moderatorStats.length > 0 && (
               <div className="space-y-4">
                 <h2 className="text-lg font-semibold text-foreground flex items-center gap-2">
                   🏆 Moderator Performance
@@ -947,7 +940,7 @@ const getServiceRange = (service: string) => {
             {/* Users List */}
             <div className="space-y-2">
               {users
-              .filter(u => u.role !== 'founder')
+              .filter(u => !isFounderRole(u.role))
               .filter(u => 
                 !userSearch || 
                 u.name.toLowerCase().includes(userSearch.toLowerCase()) || 
@@ -1033,7 +1026,7 @@ const getServiceRange = (service: string) => {
 
 
 {/* Ratings Tab - Founder only */}
-{activeTab === 'ratings' && userRole === 'founder' && (
+{activeTab === 'ratings' && isFounderRole(userRole) && (
   <div className="space-y-4">
     <h2 className="text-lg font-semibold text-foreground flex items-center gap-2">
       ⭐ Completed Orders & Ratings
@@ -1236,7 +1229,7 @@ const getServiceRange = (service: string) => {
 
 
        {/* Completed Orders Tab - Moderator only */}
-       {activeTab === 'completed' && userRole === 'moderator' && (
+       {activeTab === 'completed' && isModeratorRole(userRole) && (
          <div className="space-y-4">
            <h2 className="text-lg font-semibold text-foreground">✅ My Completed Orders</h2>
            {orders.filter(o => o.status === 'completed' && o.assignedTo === currentUserId).length === 0 ? (
@@ -1305,7 +1298,7 @@ const getServiceRange = (service: string) => {
             { label: 'In Progress', value: stats.inProgress, icon: FileText, color: 'bg-blue-100 dark:bg-blue-900/30 text-blue-700 dark:text-blue-400', valueColor: 'text-blue-700 dark:text-blue-400' },
             { label: 'Completed', value: stats.completed, icon: CheckCircle2, color: 'bg-green-100 dark:bg-green-900/30 text-green-700 dark:text-green-400', valueColor: 'text-green-700 dark:text-green-400' },
             { label: 'Cancelled', value: stats.cancelled, icon: XCircle, color: 'bg-red-100 dark:bg-red-900/30 text-red-700 dark:text-red-400', valueColor: 'text-red-700 dark:text-red-400' },
-            ...(userRole === 'founder' ? [
+            ...(isFounderRole(userRole) ? [
               { label: 'Revenue', value: `$${stats.totalRevenue}`, icon: DollarSign, color: 'bg-emerald-100 dark:bg-emerald-900/30 text-emerald-700 dark:text-emerald-400', valueColor: 'text-emerald-700 dark:text-emerald-400' }
             ] : []),
           ].map((stat) => (
@@ -1470,7 +1463,7 @@ const getServiceRange = (service: string) => {
   </span>
 )}
 {/* Commission Display - Founder only */}
-{userRole === 'founder' && order.commission && order.paymentStatus === 'fully_paid' && (
+{isFounderRole(userRole) && order.commission && order.paymentStatus === 'fully_paid' && (
   <span className="text-xs text-purple-600 bg-purple-50 px-2 py-0.5 rounded-full">
     Commission: ${order.commission}
   </span>
@@ -1495,7 +1488,7 @@ const getServiceRange = (service: string) => {
                             <span className="text-xs text-muted-foreground bg-slate-100 dark:bg-slate-800 px-2 py-0.5 rounded-full">
                               👤 {order.assignedToName}
                             </span>
-                            {userRole === 'founder' && order.status !== 'completed' && order.status !== 'cancelled' && (
+                            {isFounderRole(userRole) && order.status !== 'completed' && order.status !== 'cancelled' && (
                               <button
                                 onClick={() => setReassignModal({ open: true, orderId: order._id, currentName: order.assignedToName || '' })}
                                 className="text-xs text-purple-600 hover:text-purple-800 underline"
@@ -1565,7 +1558,7 @@ const getServiceRange = (service: string) => {
                       )}
 {/* Mark Complete - Only show if deposit paid */}
 {order.status === 'in-progress' && order.paymentStatus === 'deposit_paid' && 
- (userRole === 'founder' || order.assignedTo === currentUserId) && (
+ (isFounderRole(userRole) || order.assignedTo === currentUserId) && (
   <Button
     size="sm"
     variant="outline"
@@ -1578,7 +1571,7 @@ const getServiceRange = (service: string) => {
 )}
 
                       {/* Cancel - founder any, mod only THEIR assigned */}
-                      {(userRole === 'founder' || (userRole === 'moderator' && order.assignedTo === currentUserId)) && order.status !== 'completed' && order.status !== 'cancelled' && (
+                      {(isFounderRole(userRole) || (isModeratorRole(userRole) && order.assignedTo === currentUserId)) && order.status !== 'completed' && order.status !== 'cancelled' && (
                         <Button
                           size="sm"
                           variant="outline"
@@ -1591,7 +1584,7 @@ const getServiceRange = (service: string) => {
                       )}
 
                       {/* Delete - only founder */}
-                      {userRole === 'founder' && (
+                      {isFounderRole(userRole) && (
                         <Button
                           size="sm"
                           variant="outline"
@@ -1616,7 +1609,7 @@ const getServiceRange = (service: string) => {
                   )}
 
                   {/* Internal Notes - founder always, mod only for assigned orders */}
-                  {(userRole === 'founder' || (userRole === 'moderator' && order.assignedTo === currentUserId)) && (
+                  {(isFounderRole(userRole) || (isModeratorRole(userRole) && order.assignedTo === currentUserId)) && (
                     <div className="mt-4 pt-4 border-t">
                       {editingNote === order._id ? (
                         <div className="space-y-2">
@@ -1687,7 +1680,7 @@ const getServiceRange = (service: string) => {
                   )}
 
                   {/* Files and Chat - founder always, mod only for assigned orders */}
-                  {(userRole === 'founder' || (userRole === 'moderator' && order.assignedTo === currentUserId)) && (
+                  {(isFounderRole(userRole) || (isModeratorRole(userRole) && order.assignedTo === currentUserId)) && (
                     <>
                       <div className="mt-3">
                         <button

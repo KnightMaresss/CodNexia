@@ -1,6 +1,7 @@
 'use client'
 import Link from 'next/link'
 import { useAuth } from '@/components/auth-context'
+import { canAccessAdmin } from '@/lib/roles'
 import { 
   User,
   Package,
@@ -98,7 +99,7 @@ export function Navbar() {
                       <User className="h-4 w-4" />
                       My Profile
                     </Link>
-                   {(user?.role === 'founder' || user?.role === 'moderator') && (
+                   {canAccessAdmin(user?.role) && (
   <Link href="/admin" className="flex items-center gap-2 px-4 py-2 text-sm text-gray-300 hover:text-white hover:bg-white/10 transition-colors">
     <LayoutDashboard className="h-4 w-4" />
     Dashboard

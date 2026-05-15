@@ -4,6 +4,8 @@ import { cookies } from 'next/headers'
 import clientPromise from '@/lib/mongodb'
 import { ObjectId } from 'mongodb'
 import { getJwtSecret } from '@/lib/jwt-secret'
+import { canAccessAdmin, isModeratorRole } from '@/lib/roles'
+
 const JWT_SECRET = new TextEncoder().encode(getJwtSecret())
 
 export async function GET(request: Request) {
@@ -18,30 +20,34 @@ export async function GET(request: Request) {
       )
     }
 
-    // Auth check
+    if (!ObjectId.isValid(orderId)) {
+      return NextResponse.json(
+        { success: false, error: 'Invalid order ID' },
+        { status: 400 }
+      )
+    }
+
     const cookieStore = await cookies()
     const adminToken = cookieStore.get('admin_token')?.value
     const studentToken = cookieStore.get('student_token')?.value
+    const token = adminToken || studentToken
 
-    let authenticated = false
-
-     const adminRoles = ['admin', 'founder', 'moderator']
-    
-    if (adminToken) {
-      try {
-        const { payload } = await jwtVerify(adminToken, JWT_SECRET)
-        if (adminRoles.includes(payload.role as string)) authenticated = true
-      } catch {}
+    if (!token) {
+      return NextResponse.json(
+        { success: false, error: 'Unauthorized' },
+        { status: 401 }
+      )
     }
 
-    if (!authenticated && studentToken) {
-      try {
-        const { payload } = await jwtVerify(studentToken, JWT_SECRET)
-        if (adminRoles.includes(payload.role as string) || payload.role === 'student') authenticated = true
-      } catch {}
-    }
+    const { payload } = await jwtVerify(token, JWT_SECRET)
 
-       if (!authenticated) {
+    const userRole = typeof payload.role === 'string' ? payload.role : null
+    const userId = typeof payload.userId === 'string' ? payload.userId : null
+
+    const isStudent = userRole === 'student'
+    const isAdmin = canAccessAdmin(userRole)
+
+    if (!isStudent && !isAdmin) {
       return NextResponse.json(
         { success: false, error: 'Unauthorized' },
         { status: 401 }
@@ -51,21 +57,11 @@ export async function GET(request: Request) {
     const client = await clientPromise
     const db = client.db(process.env.DB_NAME || 'student_services')
 
-    // Get user role and ID for moderator check
-    const token = adminToken || studentToken
-    let userRole = ''
-    let userId = ''
-    if (token) {
-      try {
-        const { payload } = await jwtVerify(token, JWT_SECRET)
-        userRole = (payload.role as string) || ''
-        userId = (payload.userId as string) || ''
-      } catch {}
-    }
+    if (isModeratorRole(userRole)) {
+      const order = await db.collection('orders').findOne({
+        _id: new ObjectId(orderId),
+      })
 
-    // Moderators can only view files for orders assigned to them
-    if (userRole === 'moderator') {
-      const order = await db.collection('orders').findOne({ _id: new ObjectId(orderId) })
       if (!order || order.assignedTo !== userId) {
         return NextResponse.json(
           { success: false, error: 'Access denied' },
@@ -74,7 +70,8 @@ export async function GET(request: Request) {
       }
     }
 
-    const files = await db.collection('order_files')
+    const files = await db
+      .collection('order_files')
       .find({ orderId })
       .sort({ uploadedAt: -1 })
       .toArray()
@@ -92,6 +89,7 @@ export async function GET(request: Request) {
     })
   } catch (error) {
     console.error('Fetch files error:', error)
+
     return NextResponse.json(
       { success: false, error: 'Failed to fetch files' },
       { status: 500 }

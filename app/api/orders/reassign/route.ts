@@ -4,45 +4,84 @@ import { jwtVerify } from 'jose'
 import { cookies } from 'next/headers'
 import { ObjectId } from 'mongodb'
 import { getJwtSecret } from '@/lib/jwt-secret'
+import { isFounderRole } from '@/lib/roles'
+
 const JWT_SECRET = new TextEncoder().encode(getJwtSecret())
 
 export async function PUT(request: Request) {
   try {
     const cookieStore = await cookies()
-    const token = cookieStore.get('admin_token')?.value || cookieStore.get('student_token')?.value
-    
+
+    const token =
+      cookieStore.get('admin_token')?.value ||
+      cookieStore.get('student_token')?.value
+
     if (!token) {
-      return NextResponse.json({ success: false, error: 'Unauthorized' }, { status: 401 })
+      return NextResponse.json(
+        { success: false, error: 'Unauthorized' },
+        { status: 401 }
+      )
     }
 
     const { payload } = await jwtVerify(token, JWT_SECRET)
-    if (payload.role !== 'founder') {
-      return NextResponse.json({ success: false, error: 'Only founder can reassign' }, { status: 403 })
+
+    const currentUserRole =
+      typeof payload.role === 'string' ? payload.role : null
+
+    if (!isFounderRole(currentUserRole)) {
+      return NextResponse.json(
+        { success: false, error: 'Only founder can reassign' },
+        { status: 403 }
+      )
     }
 
     const { orderId, newModId, newModName } = await request.json()
-    
+
     if (!orderId || !newModId) {
-      return NextResponse.json({ success: false, error: 'Order ID and moderator ID required' }, { status: 400 })
+      return NextResponse.json(
+        {
+          success: false,
+          error: 'Order ID and moderator ID required',
+        },
+        { status: 400 }
+      )
+    }
+
+    if (!ObjectId.isValid(orderId)) {
+      return NextResponse.json(
+        { success: false, error: 'Invalid order ID' },
+        { status: 400 }
+      )
     }
 
     const client = await clientPromise
     const db = client.db(process.env.DB_NAME || 'student_services')
 
-    await db.collection('orders').updateOne(
+    const result = await db.collection('orders').updateOne(
       { _id: new ObjectId(orderId) },
-      { 
-        $set: { 
+      {
+        $set: {
           assignedTo: newModId,
           assignedToName: newModName,
-          updatedAt: new Date() 
-        } 
+          updatedAt: new Date(),
+        },
       }
     )
+
+    if (result.matchedCount === 0) {
+      return NextResponse.json(
+        { success: false, error: 'Order not found' },
+        { status: 404 }
+      )
+    }
 
     return NextResponse.json({ success: true })
   } catch (error) {
     console.error('Reassign error:', error)
-    return NextResponse.json({ success: false, error: 'Failed to reassign' }, { status: 500 })
+
+    return NextResponse.json(
+      { success: false, error: 'Failed to reassign' },
+      { status: 500 }
+    )
   }
 }

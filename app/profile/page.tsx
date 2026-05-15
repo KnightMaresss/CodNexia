@@ -3,6 +3,7 @@ import { useState, useEffect, useRef } from 'react'
 import { Button } from '@/components/ui/button'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { showToast } from '@/components/ui/toast'
+import { canAccessAdmin, isFounderRole, isModeratorRole } from '@/lib/roles'
 import {
   ArrowRight,
   User,
@@ -64,7 +65,7 @@ export default function ProfilePage() {
   useEffect(() => {
     const params = new URLSearchParams(window.location.search)
     const viewId = params.get('id')
-    if (viewId && user?.role === 'founder') { 
+   if (viewId && isFounderRole(user?.role)) {
       fetch(`/api/admin/user?id=${viewId}`)
         .then(r => r.json())
         .then(data => {
@@ -84,7 +85,7 @@ useEffect(() => {
       .then(data => {
         if (data.success) {
           let orderCount = 0
-          if (viewedUser.role === 'moderator' || viewedUser.role === 'founder') {
+         if (canAccessAdmin(viewedUser.role)) {
             // Count all orders assigned to them (pending, in-progress, completed, cancelled)
             // eslint-disable-next-line @typescript-eslint/no-explicit-any
             orderCount = data.orders.filter((o: any) => o.assignedTo === viewedUser.id).length
@@ -105,7 +106,7 @@ useEffect(() => {
        // eslint-disable-next-line react-hooks/set-state-in-effect
       setFormData((prev) => ({ ...prev, name: user.name, email: user.email }))
 
-      if (user.role === 'founder') {
+     if (isFounderRole(user.role)) {
         // Fetch all stats for founder
         Promise.all([
           fetch('/api/orders').then(r => r.json()),
@@ -149,7 +150,7 @@ useEffect(() => {
           })
           setOrdersCount(founderOrders.length)
         }).catch(() => {})
-      } else if (user.role === 'moderator') {
+     } else if (isModeratorRole(user.role)) {
         fetch('/api/orders')
           .then(res => res.json())
           .then(data => {
@@ -308,8 +309,8 @@ useEffect(() => {
   if (!user) return null
   const displayUser = viewedUser || user
   const isViewingOther = !!viewedUser
-  const isFounder = displayUser.role === 'founder'
-  const isModerator = displayUser.role === 'moderator'
+ const isFounder = isFounderRole(displayUser.role)
+const isModerator = isModeratorRole(displayUser.role)
 
   return (
     <main className="min-h-screen pt-24 py-12 px-4 bg-gradient-to-br from-background to-muted">

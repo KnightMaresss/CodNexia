@@ -3,6 +3,8 @@ import { jwtVerify } from 'jose'
 import { cookies } from 'next/headers'
 import clientPromise from '@/lib/mongodb'
 import { getJwtSecret } from '@/lib/jwt-secret'
+import { canAccessAdmin } from '@/lib/roles'
+
 const JWT_SECRET = new TextEncoder().encode(getJwtSecret())
 
 export async function GET() {
@@ -15,33 +17,51 @@ export async function GET() {
     }
 
     const { payload } = await jwtVerify(token, JWT_SECRET)
-    
-    if (payload.role !== 'student' && payload.role !== 'founder' && payload.role !== 'moderator') {
+
+    const role = typeof payload.role === 'string' ? payload.role : null
+
+    const isStudent = role === 'student'
+    const isAdmin = canAccessAdmin(role)
+
+    if (!isStudent && !isAdmin) {
       return NextResponse.json({ authenticated: false })
     }
 
-    // Check if user is blocked
     const client = await clientPromise
     const db = client.db(process.env.DB_NAME || 'student_services')
+
     const { ObjectId } = await import('mongodb')
-    
-    const user = await db.collection('users').findOne(
-      { _id: new ObjectId(payload.userId as string) }
-    )
-    
+
+    const userId =
+      typeof payload.userId === 'string' ? payload.userId : null
+
+    if (!userId || !ObjectId.isValid(userId)) {
+      return NextResponse.json({ authenticated: false })
+    }
+
+    const user = await db.collection('users').findOne({
+      _id: new ObjectId(userId),
+    })
+
     if (user?.blocked) {
-      return NextResponse.json({ authenticated: false, blocked: true })
+      return NextResponse.json({
+        authenticated: false,
+        blocked: true,
+      })
     }
 
     return NextResponse.json({
       authenticated: true,
       user: {
-        id: payload.userId,
-        email: payload.email,
-        role: payload.role || 'student',
+        id: userId,
+        email:
+          typeof payload.email === 'string' ? payload.email : '',
+        role: role || 'student',
       },
     })
-  } catch {
+  } catch (error) {
+    console.error('Student auth check error:', error)
+
     return NextResponse.json({ authenticated: false })
   }
 }

@@ -4,7 +4,23 @@ import { jwtVerify } from 'jose'
 import { cookies } from 'next/headers'
 import { ObjectId } from 'mongodb'
 import { getJwtSecret } from '@/lib/jwt-secret'
+import { canAccessAdmin, isModeratorRole } from '@/lib/roles'
+
 const JWT_SECRET = new TextEncoder().encode(getJwtSecret())
+
+function getRole(payload: Record<string, unknown>) {
+  return typeof payload.role === 'string' ? payload.role : null
+}
+
+function getUserId(payload: Record<string, unknown>) {
+  return typeof payload.userId === 'string' ? payload.userId : null
+}
+
+function getName(payload: Record<string, unknown>) {
+  if (typeof payload.name === 'string') return payload.name
+  if (typeof payload.email === 'string') return payload.email
+  return 'Unknown'
+}
 
 // GET messages for an order
 export async function GET(request: Request) {
@@ -13,63 +29,71 @@ export async function GET(request: Request) {
     const orderId = searchParams.get('orderId')
 
     if (!orderId) {
-      return NextResponse.json({ success: false, error: 'Order ID required' }, { status: 400 })
+      return NextResponse.json(
+        { success: false, error: 'Order ID required' },
+        { status: 400 }
+      )
     }
 
-    // Auth check
+    if (!ObjectId.isValid(orderId)) {
+      return NextResponse.json(
+        { success: false, error: 'Invalid order ID' },
+        { status: 400 }
+      )
+    }
+
     const cookieStore = await cookies()
     const adminToken = cookieStore.get('admin_token')?.value
     const studentToken = cookieStore.get('student_token')?.value
-    let authenticated = false
-    const adminRoles = ['founder', 'moderator']
-    
-    if (adminToken) {
-      try {
-        const { payload } = await jwtVerify(adminToken, JWT_SECRET)
-        if (adminRoles.includes(payload.role as string)) authenticated = true
-      } catch {}
+    const token = adminToken || studentToken
+
+    if (!token) {
+      return NextResponse.json(
+        { success: false, error: 'Unauthorized' },
+        { status: 401 }
+      )
     }
-    if (!authenticated && studentToken) {
-      try {
-        const { payload } = await jwtVerify(studentToken, JWT_SECRET)
-        if (adminRoles.includes(payload.role as string) || payload.role === 'student') authenticated = true
-      } catch {}
-    }
-       if (!authenticated) {
-      return NextResponse.json({ success: false, error: 'Unauthorized' }, { status: 401 })
+
+    const { payload } = await jwtVerify(token, JWT_SECRET)
+
+    const userRole = getRole(payload)
+    const userId = getUserId(payload)
+
+    const isStudent = userRole === 'student'
+    const isAdmin = canAccessAdmin(userRole)
+
+    if (!isStudent && !isAdmin) {
+      return NextResponse.json(
+        { success: false, error: 'Unauthorized' },
+        { status: 401 }
+      )
     }
 
     const client = await clientPromise
     const db = client.db(process.env.DB_NAME || 'student_services')
 
-    // Get user role and ID for moderator check
-    const token = adminToken || studentToken
-    let userRole = ''
-    let userId = ''
-    if (token) {
-      try {
-        const { payload } = await jwtVerify(token, JWT_SECRET)
-        userRole = (payload.role as string) || ''
-        userId = (payload.userId as string) || ''
-      } catch {}
-    }
+    if (isModeratorRole(userRole)) {
+      const order = await db.collection('orders').findOne({
+        _id: new ObjectId(orderId),
+      })
 
-    // Moderators can only view messages for orders assigned to them
-    if (userRole === 'moderator') {
-      const order = await db.collection('orders').findOne({ _id: new ObjectId(orderId) })
       if (!order || order.assignedTo !== userId) {
-        return NextResponse.json({ success: false, error: 'Access denied' }, { status: 403 })
+        return NextResponse.json(
+          { success: false, error: 'Access denied' },
+          { status: 403 }
+        )
       }
     }
 
-    const messages = await db.collection('messages')
+    const messages = await db
+      .collection('messages')
       .find({ orderId })
       .sort({ createdAt: 1 })
       .toArray()
 
     return NextResponse.json({
       success: true,
-       messages: messages.map((m) => ({
+      messages: messages.map((m) => ({
         id: m._id.toString(),
         orderId: m.orderId,
         sender: m.sender,
@@ -83,38 +107,56 @@ export async function GET(request: Request) {
     })
   } catch (error) {
     console.error('Fetch messages error:', error)
-    return NextResponse.json({ success: false, error: 'Failed to fetch messages' }, { status: 500 })
+
+    return NextResponse.json(
+      { success: false, error: 'Failed to fetch messages' },
+      { status: 500 }
+    )
   }
 }
+
 // PUT - Mark chat as seen
 export async function PUT(request: Request) {
   try {
     const { orderId } = await request.json()
 
+    if (!orderId) {
+      return NextResponse.json(
+        { success: false, error: 'Order ID required' },
+        { status: 400 }
+      )
+    }
+
     const cookieStore = await cookies()
     const adminToken = cookieStore.get('admin_token')?.value
     const studentToken = cookieStore.get('student_token')?.value
 
-       let viewer = ''
+    let viewer = ''
 
-    const adminRoles = ['founder', 'moderator']
-    
     if (studentToken) {
       try {
         const { payload } = await jwtVerify(studentToken, JWT_SECRET)
-        if (payload.role === 'student') viewer = 'student'
-        else if (adminRoles.includes(payload.role as string)) viewer = 'admin'
+        const role = getRole(payload)
+
+        if (role === 'student') viewer = 'student'
+        else if (canAccessAdmin(role)) viewer = 'admin'
       } catch {}
     }
+
     if (!viewer && adminToken) {
       try {
         const { payload } = await jwtVerify(adminToken, JWT_SECRET)
-        if (adminRoles.includes(payload.role as string)) viewer = 'admin'
+        const role = getRole(payload)
+
+        if (canAccessAdmin(role)) viewer = 'admin'
       } catch {}
     }
 
     if (!viewer) {
-      return NextResponse.json({ success: false, error: 'Unauthorized' }, { status: 401 })
+      return NextResponse.json(
+        { success: false, error: 'Unauthorized' },
+        { status: 401 }
+      )
     }
 
     const client = await clientPromise
@@ -127,15 +169,17 @@ export async function PUT(request: Request) {
     )
 
     return NextResponse.json({ success: true })
-  } catch {
-    return NextResponse.json({ success: false, error: 'Failed' }, { status: 500 })
+  } catch (error) {
+    console.error('Mark chat seen error:', error)
+
+    return NextResponse.json(
+      { success: false, error: 'Failed' },
+      { status: 500 }
+    )
   }
 }
 
-
-
-// POST a new message
-// POST a new message (with optional file)
+// POST a new message with optional file
 export async function POST(request: Request) {
   try {
     const contentType = request.headers.get('content-type') || ''
@@ -148,12 +192,13 @@ export async function POST(request: Request) {
 
     if (contentType.includes('multipart/form-data')) {
       const formData = await request.formData()
-      orderId = formData.get('orderId') as string
-      message = formData.get('message') as string
+
+      orderId = String(formData.get('orderId') || '')
+      message = String(formData.get('message') || '')
+
       const file = formData.get('file') as File | null
 
       if (file) {
-        // Upload to Cloudinary
         const cloudinary = (await import('@/lib/cloudinary')).default
         const bytes = await file.arrayBuffer()
         const buffer = Buffer.from(bytes)
@@ -170,8 +215,9 @@ export async function POST(request: Request) {
       }
     } else {
       const body = await request.json()
+
       orderId = body.orderId
-      message = body.message
+      message = body.message || ''
     }
 
     if (!orderId || (!message.trim() && !fileUrl)) {
@@ -181,7 +227,13 @@ export async function POST(request: Request) {
       )
     }
 
-    // Auth check + get sender info
+    if (!ObjectId.isValid(orderId)) {
+      return NextResponse.json(
+        { success: false, error: 'Invalid order ID' },
+        { status: 400 }
+      )
+    }
+
     const cookieStore = await cookies()
     const adminToken = cookieStore.get('admin_token')?.value
     const studentToken = cookieStore.get('student_token')?.value
@@ -189,13 +241,13 @@ export async function POST(request: Request) {
     let sender = 'Unknown'
     let senderRole = 'unknown'
 
-    const adminRoles = ['founder', 'moderator']
-    
     if (adminToken) {
       try {
         const { payload } = await jwtVerify(adminToken, JWT_SECRET)
-        if (adminRoles.includes(payload.role as string)) {
-          sender = payload.name as string || 'Admin'
+        const role = getRole(payload)
+
+        if (canAccessAdmin(role)) {
+          sender = getName(payload)
           senderRole = 'admin'
         }
       } catch {}
@@ -204,11 +256,14 @@ export async function POST(request: Request) {
     if (senderRole === 'unknown' && studentToken) {
       try {
         const { payload } = await jwtVerify(studentToken, JWT_SECRET)
-        if (payload.role === 'student') {
-          sender = payload.email as string
+        const role = getRole(payload)
+
+        if (role === 'student') {
+          sender =
+            typeof payload.email === 'string' ? payload.email : 'Student'
           senderRole = 'student'
-        } else if (adminRoles.includes(payload.role as string)) {
-          sender = payload.name as string || 'Admin'
+        } else if (canAccessAdmin(role)) {
+          sender = getName(payload)
           senderRole = 'admin'
         }
       } catch {}
@@ -224,8 +279,7 @@ export async function POST(request: Request) {
     const client = await clientPromise
     const db = client.db(process.env.DB_NAME || 'student_services')
 
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    const newMessage: any = {
+    const newMessage = {
       orderId,
       sender,
       senderRole,
@@ -238,15 +292,16 @@ export async function POST(request: Request) {
 
     const result = await db.collection('messages').insertOne(newMessage)
 
-    // Mark sender's chat as seen
     await db.collection('chat_views').updateOne(
       { orderId, viewer: senderRole },
       { $set: { orderId, viewer: senderRole, lastSeenAt: new Date() } },
       { upsert: true }
     )
 
-    // Email notification logic (keep existing)
-    const order = await db.collection('orders').findOne({ _id: new ObjectId(orderId) })
+    const order = await db.collection('orders').findOne({
+      _id: new ObjectId(orderId),
+    })
+
     if (order) {
       const SERVICE_NAMES: Record<string, string> = {
         'graduation-projects': 'Graduation Projects',
@@ -255,19 +310,25 @@ export async function POST(request: Request) {
         'mobile-apps': 'Mobile Apps',
         'powerpoint-presentations': 'PowerPoint Presentations',
         'cv-resume-writing': 'CV/Resume Writing',
-        'translation': 'Translation (En↔Ar)',
+        translation: 'Translation (En↔Ar)',
         'code-debugging': 'Code Debugging',
       }
+
       const recipientRole = senderRole === 'student' ? 'admin' : 'student'
+
       const chatView = await db.collection('chat_views').findOne({
         orderId,
         viewer: recipientRole,
       })
+
       const thirtySecondsAgo = new Date(Date.now() - 30000)
 
       if (!chatView || new Date(chatView.lastSeenAt) < thirtySecondsAgo) {
         const { sendNewMessageEmail } = await import('@/lib/email-messages')
-        const notifyMsg = fileUrl ? `📎 Sent a file: ${fileName}` : message.trim()
+        const notifyMsg = fileUrl
+          ? `📎 Sent a file: ${fileName}`
+          : message.trim()
+
         if (senderRole === 'student') {
           sendNewMessageEmail(
             process.env.ADMIN_EMAIL || '',
@@ -297,6 +358,7 @@ export async function POST(request: Request) {
     })
   } catch (error) {
     console.error('Send message error:', error)
+
     return NextResponse.json(
       { success: false, error: 'Failed to send message' },
       { status: 500 }

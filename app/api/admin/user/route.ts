@@ -4,26 +4,49 @@ import { jwtVerify } from 'jose'
 import { cookies } from 'next/headers'
 import { ObjectId } from 'mongodb'
 import { getJwtSecret } from '@/lib/jwt-secret'
+import { isFounderRole } from '@/lib/roles'
+
 const JWT_SECRET = new TextEncoder().encode(getJwtSecret())
 
 export async function GET(request: Request) {
   try {
     const cookieStore = await cookies()
-    const token = cookieStore.get('admin_token')?.value || cookieStore.get('student_token')?.value
-    
+    const token =
+      cookieStore.get('admin_token')?.value ||
+      cookieStore.get('student_token')?.value
+
     if (!token) {
-      return NextResponse.json({ success: false, error: 'Unauthorized' }, { status: 401 })
+      return NextResponse.json(
+        { success: false, error: 'Unauthorized' },
+        { status: 401 }
+      )
     }
 
     const { payload } = await jwtVerify(token, JWT_SECRET)
-    if (payload.role !== 'founder') {
-      return NextResponse.json({ success: false, error: 'Only founder can view' }, { status: 403 })
+    const currentUserRole = typeof payload.role === 'string' ? payload.role : null
+
+    if (!isFounderRole(currentUserRole)) {
+      return NextResponse.json(
+        { success: false, error: 'Only founder can view' },
+        { status: 403 }
+      )
     }
 
     const { searchParams } = new URL(request.url)
     const userId = searchParams.get('id')
+
     if (!userId) {
-      return NextResponse.json({ success: false, error: 'User ID required' }, { status: 400 })
+      return NextResponse.json(
+        { success: false, error: 'User ID required' },
+        { status: 400 }
+      )
+    }
+
+    if (!ObjectId.isValid(userId)) {
+      return NextResponse.json(
+        { success: false, error: 'Invalid user ID' },
+        { status: 400 }
+      )
     }
 
     const client = await clientPromise
@@ -35,7 +58,10 @@ export async function GET(request: Request) {
     )
 
     if (!user) {
-      return NextResponse.json({ success: false, error: 'User not found' }, { status: 404 })
+      return NextResponse.json(
+        { success: false, error: 'User not found' },
+        { status: 404 }
+      )
     }
 
     return NextResponse.json({
@@ -49,9 +75,14 @@ export async function GET(request: Request) {
         blocked: user.blocked || false,
         createdAt: user.createdAt,
         lastSeen: user.lastSeen,
-      }
+      },
     })
-  } catch {
-    return NextResponse.json({ success: false, error: 'Failed' }, { status: 500 })
+  } catch (error) {
+    console.error('Admin user fetch error:', error)
+
+    return NextResponse.json(
+      { success: false, error: 'Failed' },
+      { status: 500 }
+    )
   }
 }
