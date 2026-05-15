@@ -487,9 +487,10 @@ if (message.type === 'message-sent') {
     } catch {}
   }
 
-  eventSource.onerror = () => {
-    setStreamConnected(false)
-  }
+eventSource.onerror = () => {
+  setStreamConnected(false)
+  fetchOrders()
+}
 
   return () => {
     setStreamConnected(false)

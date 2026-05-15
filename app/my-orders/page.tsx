@@ -358,9 +358,9 @@ useEffect(() => {
     } catch {}
   }
 
-  eventSource.onerror = () => {
-    eventSource.close()
-  }
+eventSource.onerror = () => {
+  fetchOrders()
+}
 
   return () => {
     eventSource.close()
