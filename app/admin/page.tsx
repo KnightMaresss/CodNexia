@@ -381,22 +381,7 @@ const fetchFiles = async (orderId: string) => {
   const [serviceFilter, setServiceFilter] = useState<ServiceFilter>('all')
   const [sortOrder, setSortOrder] = useState<SortOrder>('newest')
 
-  useEffect(() => {
-    fetch('/api/auth/check')
-      .then((res) => res.json())
-      .then((data) => {
-        setAuthenticated(data.authenticated)
-        setLoading(false)
-        // Pre-fetch users for reassign modal
-        fetch('/api/auth/student-check')
-          .then(res => res.json())
-          .then(userData => {
-            if (userData.authenticated && userData.user?.role === 'founder') {
-              fetchUsers()
-            }
-          })
-      })
-  }, [])
+
 
      // SSE - Real-time order updates
   useEffect(() => {
@@ -468,6 +453,34 @@ useEffect(() => {
  const [userRole, setUserRole] = useState<string>('')
  const [currentUserId, setCurrentUserId] = useState<string>('')
 
+ useEffect(() => {
+  fetch('/api/auth/student-check')
+    .then((res) => res.json())
+    .then((userData) => {
+      if (!userData.authenticated) {
+        setAuthenticated(false)
+        setLoading(false)
+        return
+      }
+
+      const role = userData.user?.role || ''
+
+      setUserRole(role)
+      setCurrentUserId(userData.user?.id || '')
+
+      if (role !== 'founder' && role !== 'moderator') {
+        router.push('/my-orders')
+        return
+      }
+
+      setAuthenticated(true)
+      setLoading(false)
+
+      if (role === 'founder') {
+        fetchUsers()
+      }
+    })
+}, [router])
  // Update lastSeen for moderator/founder when they visit admin
 useEffect(() => {
     if (authenticated && (userRole === 'moderator' || userRole === 'founder')) {
@@ -475,26 +488,13 @@ useEffect(() => {
     }
   }, [authenticated, userRole])
 
-  // Get current user's role
-useEffect(() => {
-    if (authenticated) {
-      fetch('/api/auth/student-check')
-        .then(res => res.json())
-        .then(data => {
-          if (data.authenticated) {
-            setUserRole(data.user?.role || '')
-            setCurrentUserId(data.user?.id || '')
-          }
-        })
-    }
-  }, [authenticated])
+
 // Redirect students away from admin page
 useEffect(() => {
   if (authenticated && userRole && userRole !== 'founder' && userRole !== 'moderator') {
     router.push('/my-orders')
   }
 }, [authenticated, userRole, router])
-
 
 const updateStatus = async (orderId: string, newStatus: string) => {
     setUpdatingId(orderId)
@@ -661,11 +661,7 @@ const stats = useMemo(() => {
   }
 }, [orders])
 
-// Add this check before rendering anything
-if (authenticated && userRole && userRole !== 'founder' && userRole !== 'moderator') {
-  router.push('/my-orders')
-  return null
-}
+
 const getServiceRange = (service: string) => {
   const ranges: Record<string, { min: number; max: number }> = {
     'graduation-projects': { min: 150, max: 400 },
@@ -704,6 +700,11 @@ const getServiceRange = (service: string) => {
       </main>
     )
   }
+
+ if (!authenticated) {
+  router.push('/login')
+  return null
+}
    return (
     <>
           {/* Reassign Modal */}
