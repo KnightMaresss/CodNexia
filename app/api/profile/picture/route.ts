@@ -3,8 +3,8 @@ import { jwtVerify } from 'jose'
 import { cookies } from 'next/headers'
 import { writeFile, mkdir } from 'fs/promises'
 import path from 'path'
-
-const JWT_SECRET = new TextEncoder().encode(process.env.JWT_SECRET || 'fallback-secret')
+import { getJwtSecret } from '@/lib/jwt-secret'
+const JWT_SECRET = new TextEncoder().encode(getJwtSecret())
 
 export async function POST(request: Request) {
   try {

@@ -3,8 +3,8 @@ import { NextResponse } from 'next/server'
 import { jwtVerify } from 'jose'
 import { cookies } from 'next/headers'
 import bcrypt from 'bcryptjs'
-
-const JWT_SECRET = new TextEncoder().encode(process.env.JWT_SECRET || 'fallback-secret')
+import { getJwtSecret } from '@/lib/jwt-secret'
+const JWT_SECRET = new TextEncoder().encode(getJwtSecret())
 
 async function getStudentFromToken() {
   const cookieStore = await cookies()

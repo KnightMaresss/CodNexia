@@ -51,7 +51,7 @@ export async function sendOrderConfirmation(
         
         <p style="color: #64748b; font-size: 14px; margin: 0 0 25px;">We will review your requirements and get back to you within 24 hours.</p>
         
-        <a href="http://localhost:3000/track?id=${orderId}" 
+        <a href="${process.env.NEXTAUTH_URL}/track?id=${orderId}" 
            style="display: inline-block; background: #2563eb; color: white; padding: 14px 28px; border-radius: 8px; text-decoration: none; font-weight: 600; font-size: 14px;">
           Track Your Order →
         </a>
@@ -73,7 +73,7 @@ export async function sendOrderConfirmation(
           <p style="margin: 0; font-size: 14px;"><strong style="color: #1e293b;">Amount:</strong> <span style="color: #16a34a; font-weight: bold;">$${price}</span></p>
         </div>
         
-        <a href="http://localhost:3000/admin" 
+        <a href="${process.env.NEXTAUTH_URL}/admin" 
            style="display: inline-block; background: #2563eb; color: white; padding: 14px 28px; border-radius: 8px; text-decoration: none; font-weight: 600; font-size: 14px;">
           View in Dashboard →
         </a>

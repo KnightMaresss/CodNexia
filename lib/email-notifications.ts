@@ -74,7 +74,7 @@ export async function sendStatusUpdateEmail(
           </p>
         </div>
 
-        <a href="http://localhost:3000/track?id=${orderId}&direct=true" 
+        <a href="${process.env.NEXTAUTH_URL}/track?id=${orderId}&direct=true" 
            style="display: inline-block; background: #2563eb; color: white; padding: 14px 28px; border-radius: 8px; text-decoration: none; font-weight: 600; font-size: 14px;">
           Track Your Order →
         </a>

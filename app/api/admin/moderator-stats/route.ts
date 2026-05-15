@@ -2,8 +2,8 @@ import clientPromise from '@/lib/mongodb'
 import { NextResponse } from 'next/server'
 import { jwtVerify } from 'jose'
 import { cookies } from 'next/headers'
-
-const JWT_SECRET = new TextEncoder().encode(process.env.JWT_SECRET || 'fallback-secret')
+import { getJwtSecret } from '@/lib/jwt-secret'
+const JWT_SECRET = new TextEncoder().encode(getJwtSecret())
 
 export async function GET() {
   try {

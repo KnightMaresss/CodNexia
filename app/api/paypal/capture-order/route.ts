@@ -3,8 +3,8 @@ import { jwtVerify } from 'jose'
 import { cookies } from 'next/headers'
 import { ObjectId } from 'mongodb'
 import clientPromise from '@/lib/mongodb'
-
-const JWT_SECRET = new TextEncoder().encode(process.env.JWT_SECRET || 'fallback-secret')
+import { getJwtSecret } from '@/lib/jwt-secret'
+const JWT_SECRET = new TextEncoder().encode(getJwtSecret())
 
 async function getPayPalAccessToken() {
   // ✅ USE SANDBOX URL

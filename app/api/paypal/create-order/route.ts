@@ -3,8 +3,8 @@ import { jwtVerify } from 'jose'
 import { cookies } from 'next/headers'
 import { ObjectId } from 'mongodb'
 import clientPromise from '@/lib/mongodb'
-
-const JWT_SECRET = new TextEncoder().encode(process.env.JWT_SECRET || 'fallback-secret')
+import { getJwtSecret } from '@/lib/jwt-secret'
+const JWT_SECRET = new TextEncoder().encode(getJwtSecret())
 
 async function getPayPalAccessToken() {
   const PAYPAL_API_URL = 'https://api-m.sandbox.paypal.com'
@@ -83,8 +83,8 @@ export async function POST(request: Request) {
           },
         }],
         application_context: {
-          return_url: `${process.env.NEXTAUTH_URL || 'http://localhost:3000'}/my-orders`,
-          cancel_url: `${process.env.NEXTAUTH_URL || 'http://localhost:3000'}/my-orders`,
+         return_url: `${process.env.NEXTAUTH_URL}/my-orders`,
+         cancel_url: `${process.env.NEXTAUTH_URL}/my-orders`,
         }
       }),
     })

@@ -6,8 +6,8 @@ import { rateLimit } from '@/lib/rate-limit'
 import { headers } from 'next/headers'
 import { sendOrderConfirmation } from '@/lib/email'
 import { notifyNewOrder } from '@/lib/orders-stream'
-
-const JWT_SECRET = new TextEncoder().encode(process.env.JWT_SECRET || 'fallback-secret')
+import { getJwtSecret } from '@/lib/jwt-secret'
+const JWT_SECRET = new TextEncoder().encode(getJwtSecret())
 
 const SERVICE_NAMES: Record<string, string> = {
   'graduation-projects': 'Graduation Projects',

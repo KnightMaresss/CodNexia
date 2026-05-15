@@ -1,19 +1,10 @@
 import type { Metadata } from "next"
-import { Geist, Geist_Mono } from "next/font/google"
 import "./globals.css"
 import { ToastContainer } from "@/components/ui/toast"
 import { ThemeProvider } from "@/components/theme-provider"
 import { AuthProvider } from '@/components/auth-context'
 import { Navbar } from '@/components/Navbar'
-const geistSans = Geist({
-  variable: "--font-geist-sans",
-  subsets: ["latin"],
-})
 
-const geistMono = Geist_Mono({
-  variable: "--font-geist-mono",
-  subsets: ["latin"],
-})
 
 export const metadata: Metadata = {
   metadataBase: new URL('https://codnexia.com'),
@@ -55,11 +46,11 @@ export default function RootLayout({
   children: React.ReactNode
 }>) {
   return (
-    <html
-      lang="en"
-      className={`${geistSans.variable} ${geistMono.variable} h-full antialiased`}
-      suppressHydrationWarning
-    >
+<html
+  lang="en"
+  className="h-full antialiased"
+  suppressHydrationWarning
+>
             <head>
         <link rel="icon" href="/favicon-cx.png" sizes="any" />
         <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
