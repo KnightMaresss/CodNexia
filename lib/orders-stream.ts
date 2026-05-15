@@ -1,19 +1,34 @@
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-const clients = new Set<any>()
+type StreamEvent =
+  | 'connected'
+  | 'heartbeat'
+  | 'new-order'
+  | 'order-updated'
+  | 'order-deleted'
+  | 'order-reassigned'
+  | 'audit-log'
+  | 'message-sent'
+type Client = {
+  id: number
+  send: (data: string) => void
+}
 
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-export function addClient(client: any) {
+const clients = new Set<Client>()
+
+export function addClient(client: Client) {
   clients.add(client)
 }
 
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-export function removeClient(client: any) {
+export function removeClient(client: Client) {
   clients.delete(client)
 }
 
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-export function notifyNewOrder(orderData: any) {
-  const message = JSON.stringify({ type: 'new-order', data: orderData })
+export function broadcast(type: StreamEvent, data?: unknown) {
+  const message = JSON.stringify({
+    type,
+    data,
+    timestamp: Date.now(),
+  })
+
   clients.forEach((client) => {
     try {
       client.send(message)
@@ -22,3 +37,32 @@ export function notifyNewOrder(orderData: any) {
     }
   })
 }
+
+export function notifyNewOrder(orderData: unknown) {
+  broadcast('new-order', orderData)
+}
+
+export function notifyOrderUpdated(orderData: unknown) {
+  broadcast('order-updated', orderData)
+}
+
+export function notifyOrderDeleted(orderData: unknown) {
+  broadcast('order-deleted', orderData)
+}
+
+export function notifyOrderReassigned(orderData: unknown) {
+  broadcast('order-reassigned', orderData)
+}
+
+export function notifyAuditLog(logData: unknown) {
+  broadcast('audit-log', logData)
+}
+export function notifyMessageSent(messageData: unknown) {
+  broadcast('message-sent', messageData)
+}
+/**
+ * Keep SSE alive
+ */
+setInterval(() => {
+  broadcast('heartbeat')
+}, 25000)

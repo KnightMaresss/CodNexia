@@ -5,6 +5,8 @@ import { cookies } from 'next/headers'
 import { ObjectId } from 'mongodb'
 import { getJwtSecret } from '@/lib/jwt-secret'
 import { canAccessAdmin, isModeratorRole } from '@/lib/roles'
+import { createAuditLog } from '@/lib/audit-log'
+import { notifyOrderUpdated } from '@/lib/orders-stream'
 
 const JWT_SECRET = new TextEncoder().encode(getJwtSecret())
 
@@ -97,6 +99,28 @@ export async function PUT(request: Request) {
         }
       )
 
+      await createAuditLog({
+        action: 'ORDER_PRICE_UPDATED',
+        actor: {
+          id: userId,
+          email: typeof payload.email === 'string' ? payload.email : null,
+          name: typeof payload.name === 'string' ? payload.name : null,
+          role: userRole,
+        },
+        targetType: 'order',
+        targetId: orderId,
+        message: `Order ${orderId} price was updated`,
+        metadata: {
+          orderId,
+          finalPrice,
+          depositAmount,
+          remainingAmount,
+          commission,
+        },
+      })
+
+      notifyOrderUpdated({ orderId, type: 'price' })
+
       return NextResponse.json({ success: true })
     }
 
@@ -110,6 +134,25 @@ export async function PUT(request: Request) {
           },
         }
       )
+
+      await createAuditLog({
+        action: 'ORDER_PAYMENT_STATUS_UPDATED',
+        actor: {
+          id: userId,
+          email: typeof payload.email === 'string' ? payload.email : null,
+          name: typeof payload.name === 'string' ? payload.name : null,
+          role: userRole,
+        },
+        targetType: 'order',
+        targetId: orderId,
+        message: `Order ${orderId} payment status changed to ${paymentStatus}`,
+        metadata: {
+          orderId,
+          paymentStatus,
+        },
+      })
+
+      notifyOrderUpdated({ orderId, type: 'payment-status', paymentStatus })
 
       return NextResponse.json({ success: true })
     }
@@ -141,6 +184,26 @@ export async function PUT(request: Request) {
         },
       }
     )
+
+    await createAuditLog({
+      action: 'ORDER_STATUS_UPDATED',
+      actor: {
+        id: userId,
+        email: typeof payload.email === 'string' ? payload.email : null,
+        name: typeof payload.name === 'string' ? payload.name : null,
+        role: userRole,
+      },
+      targetType: 'order',
+      targetId: orderId,
+      message: `Order ${orderId} status changed from ${oldStatus} to ${status}`,
+      metadata: {
+        orderId,
+        oldStatus,
+        newStatus: status,
+      },
+    })
+
+    notifyOrderUpdated({ orderId, type: 'status', oldStatus, newStatus: status })
 
     const SERVICE_NAMES: Record<string, string> = {
       'graduation-projects': 'Graduation Projects',

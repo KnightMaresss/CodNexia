@@ -34,7 +34,12 @@ async function createIndexes() {
     { key: { role: 1 }, name: 'users_role_idx' },
     { key: { lastSeen: -1 }, name: 'users_lastSeen_idx' },
   ])
-
+await db.collection('audit_logs').createIndexes([
+  { key: { createdAt: -1 }, name: 'audit_logs_createdAt_idx' },
+  { key: { action: 1 }, name: 'audit_logs_action_idx' },
+  { key: { targetType: 1, targetId: 1 }, name: 'audit_logs_target_idx' },
+  { key: { 'actor.id': 1 }, name: 'audit_logs_actor_id_idx' },
+])
 await db.collection('chat_views').createIndexes([
   { key: { orderId: 1, viewer: 1 }, name: 'chat_views_orderId_viewer_idx' },
 ])

@@ -5,6 +5,7 @@ import { cookies } from 'next/headers'
 import { ObjectId } from 'mongodb'
 import { getJwtSecret } from '@/lib/jwt-secret'
 import { canAccessAdmin, isModeratorRole } from '@/lib/roles'
+import { notifyMessageSent } from '@/lib/orders-stream'
 
 const JWT_SECRET = new TextEncoder().encode(getJwtSecret())
 
@@ -291,7 +292,17 @@ export async function POST(request: Request) {
     }
 
     const result = await db.collection('messages').insertOne(newMessage)
+    const insertedMessage = {
+       id: result.insertedId.toString(),
+       ...newMessage,
+      }
 
+     notifyMessageSent({
+     orderId,
+     message: insertedMessage,
+     senderRole,
+     sender,
+     })
     await db.collection('chat_views').updateOne(
       { orderId, viewer: senderRole },
       { $set: { orderId, viewer: senderRole, lastSeenAt: new Date() } },
@@ -349,13 +360,10 @@ export async function POST(request: Request) {
       }
     }
 
-    return NextResponse.json({
-      success: true,
-      message: {
-        id: result.insertedId.toString(),
-        ...newMessage,
-      },
-    })
+   return NextResponse.json({
+  success: true,
+  message: insertedMessage,
+})
   } catch (error) {
     console.error('Send message error:', error)
 

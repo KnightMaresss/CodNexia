@@ -51,11 +51,43 @@ export function OrderMessages({ orderId, userName }: { orderId: string; userName
   useEffect(() => {
     // eslint-disable-next-line react-hooks/set-state-in-effect
     fetchMessages()
-    const interval = setInterval(fetchMessages, 10000)
-    return () => clearInterval(interval)
   }, [fetchMessages])
 
+useEffect(() => {
+  const eventSource = new EventSource('/api/my-orders/stream')
 
+  eventSource.onmessage = (event) => {
+    try {
+      const liveEvent = JSON.parse(event.data)
+
+      if (liveEvent.type !== 'message-sent') return
+
+      const incoming = liveEvent.data?.message
+
+      if (!incoming || incoming.orderId !== orderId) return
+
+      setMessages((prev) => {
+        const alreadyExists = prev.some((msg) => msg.id === incoming.id)
+        if (alreadyExists) return prev
+
+        setPlayMsgSound(true)
+        setTimeout(() => setPlayMsgSound(false), 100)
+
+        return [...prev, incoming]
+      })
+
+      fetch('/api/messages', {
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ orderId }),
+      }).catch(() => {})
+    } catch {}
+  }
+
+  return () => {
+    eventSource.close()
+  }
+}, [orderId])
 useEffect(() => {
   // Scroll to bottom of chat messages only
   const messagesContainer = document.querySelector('.overflow-y-auto')

@@ -210,12 +210,33 @@ export async function GET() {
       .sort({ createdAt: -1 })
       .toArray()
 
-    const serializedOrders = orders.map((order) => ({
+   const serializedOrders = await Promise.all(
+  orders.map(async (order) => {
+    const orderId = order._id.toString()
+
+    const chatView = await db.collection('chat_views').findOne({
+      orderId,
+      viewer: 'admin',
+    })
+
+    const lastSeenAt = chatView?.lastSeenAt || new Date(0)
+
+    const unreadMessages = await db.collection('messages').countDocuments({
+      orderId,
+      senderRole: 'student',
+      createdAt: { $gt: lastSeenAt },
+    })
+
+    return {
       ...order,
-      _id: order._id.toString(),
+      _id: orderId,
       createdAt: order.createdAt?.toISOString?.() || order.createdAt,
       updatedAt: order.updatedAt?.toISOString?.() || order.updatedAt,
-    }))
+      unreadMessages,
+      hasUnreadMessages: unreadMessages > 0,
+    }
+  })
+)
 
     return NextResponse.json({ success: true, orders: serializedOrders })
   } catch (error) {

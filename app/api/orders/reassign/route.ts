@@ -5,6 +5,8 @@ import { cookies } from 'next/headers'
 import { ObjectId } from 'mongodb'
 import { getJwtSecret } from '@/lib/jwt-secret'
 import { isFounderRole } from '@/lib/roles'
+import { createAuditLog } from '@/lib/audit-log'
+import { notifyOrderReassigned } from '@/lib/orders-stream'
 
 const JWT_SECRET = new TextEncoder().encode(getJwtSecret())
 
@@ -74,6 +76,30 @@ export async function PUT(request: Request) {
         { status: 404 }
       )
     }
+
+    await createAuditLog({
+      action: 'ORDER_REASSIGNED',
+      actor: {
+        id: typeof payload.userId === 'string' ? payload.userId : null,
+        email: typeof payload.email === 'string' ? payload.email : null,
+        name: typeof payload.name === 'string' ? payload.name : null,
+        role: currentUserRole,
+      },
+      targetType: 'order',
+      targetId: orderId,
+      message: `Order ${orderId} was reassigned`,
+      metadata: {
+        orderId,
+        newModId,
+        newModName,
+      },
+    })
+
+    notifyOrderReassigned({
+      orderId,
+      newModId,
+      newModName,
+    })
 
     return NextResponse.json({ success: true })
   } catch (error) {

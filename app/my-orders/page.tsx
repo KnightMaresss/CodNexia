@@ -37,6 +37,8 @@ interface Order {
   remainingAmount?: number
   createdAt: string
   assignedToName?: string
+  unreadMessages?: number
+  hasUnreadMessages?: boolean
 }
 interface OrderFile {
   id: string
@@ -296,15 +298,74 @@ const handlePayPalPayment = async (orderId: string, paymentType: 'deposit' | 'fi
       showToast('Failed to delete file', 'error')
     }
   }
-  useEffect(() => {
-    if (!authLoading && !user) {
-      router.push('/login')
-    }
-    if (user) {
-      // eslint-disable-next-line react-hooks/set-state-in-effect
-      fetchOrders()
-    }
-  }, [user, authLoading, router])
+
+
+useEffect(() => {
+  if (!authLoading && !user) {
+    router.push('/login')
+    return
+  }
+
+  if (!user) return
+ // eslint-disable-next-line react-hooks/set-state-in-effect
+  fetchOrders()
+
+  const eventSource = new EventSource('/api/my-orders/stream')
+
+  eventSource.onmessage = (event) => {
+    try {
+      const message = JSON.parse(event.data)
+
+      if (message.type === 'connected' || message.type === 'heartbeat') {
+        return
+      }
+
+      if (message.type === 'message-sent') {
+        const senderRole = message.data?.senderRole
+        const orderId = message.data?.orderId
+
+        if (senderRole === 'admin' && chatOrder !== orderId) {
+          const audio = new Audio('/chat.mp3')
+          audio.play().catch(() => {})
+
+          showToast('New chat message received', 'success')
+
+          setOrders((prev) =>
+            prev.map((order) =>
+              order._id === orderId
+                ? {
+                    ...order,
+                    unreadMessages: (order.unreadMessages || 0) + 1,
+                    hasUnreadMessages: true,
+                  }
+                : order
+            )
+          )
+        }
+
+        fetchOrders()
+        return
+      }
+
+      if (
+        message.type === 'new-order' ||
+        message.type === 'order-updated' ||
+        message.type === 'order-deleted' ||
+        message.type === 'order-reassigned'
+      ) {
+        fetchOrders()
+      }
+    } catch {}
+  }
+
+  eventSource.onerror = () => {
+    eventSource.close()
+  }
+
+  return () => {
+    eventSource.close()
+  }
+}, [user, authLoading, router, chatOrder])
 
 
   // Auto-open chat from email link
@@ -701,15 +762,42 @@ useEffect(() => {
   variant="outline"
   onClick={() => {
     setChatOrder(chatOrder === order._id ? null : order._id)
-    // Scroll to chat after it opens
+
     if (chatOrder !== order._id) {
+      setOrders((prev) =>
+        prev.map((o) =>
+          o._id === order._id
+            ? { ...o, unreadMessages: 0, hasUnreadMessages: false }
+            : o
+        )
+      )
+
+      fetch('/api/messages', {
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ orderId: order._id }),
+      }).catch(() => {})
+
       setTimeout(() => {
-        document.getElementById(`chat-${order._id}`)?.scrollIntoView({ behavior: 'smooth', block: 'center' })
+        document
+          .getElementById(`chat-${order._id}`)
+          ?.scrollIntoView({
+            behavior: 'smooth',
+            block: 'center',
+          })
       }, 100)
     }
   }}
+  className="flex items-center gap-2"
 >
-  <MessageCircle className="h-3 w-3 mr-1" />
+  <MessageCircle className="h-3 w-3" />
+
+  {order.hasUnreadMessages && (
+    <span className="flex h-5 min-w-[20px] items-center justify-center rounded-full bg-red-500 px-1 text-[10px] font-bold text-white">
+      {order.unreadMessages}
+    </span>
+  )}
+
   {chatOrder === order._id ? 'Hide Chat' : 'Chat'}
 </Button>
 

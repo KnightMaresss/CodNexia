@@ -11,6 +11,7 @@ import Link from 'next/link'
 import Image from 'next/image'
 import { useRouter } from 'next/navigation'
 import { canAccessAdmin, isFounderRole, isModeratorRole } from '@/lib/roles'
+import { Shield } from 'lucide-react'
 import {
   LogOut,
   Trash2,
@@ -31,6 +32,8 @@ import {
   XCircle,
   Star,
   User,
+  Wifi,
+  WifiOff,
 } from 'lucide-react'
 
 interface Order {
@@ -53,6 +56,8 @@ interface Order {
   internalNote?: string
   noteUpdatedBy?: string
   noteUpdatedAt?: string  
+  unreadMessages?: number
+  hasUnreadMessages?: boolean
 }
 
 interface OrderFile {
@@ -145,6 +150,9 @@ export default function AdminPage() {
   const [reassignModal, setReassignModal] = useState<{ open: boolean; orderId: string; currentName: string }>({ open: false, orderId: '', currentName: '' })
   const [moderatorStats, setModeratorStats] = useState<ModeratorStat[]>([])
   const router = useRouter()
+  const [userRole, setUserRole] = useState<string>('')
+  const [currentUserId, setCurrentUserId] = useState<string>('')
+  const [streamConnected, setStreamConnected] = useState(false)
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const [ratings, setRatings] = useState<Record<string, any>>({})
   
@@ -384,33 +392,112 @@ const fetchFiles = async (orderId: string) => {
 
 
 
-     // SSE - Real-time order updates
-  useEffect(() => {
-    if (!authenticated) return
+// SSE - Real-time dashboard updates
+useEffect(() => {
+  if (!authenticated) return
 
-    fetchOrders() // Initial fetch
+  fetchOrders()
 
-    const eventSource = new EventSource('/api/admin/orders-stream')
-    
-    eventSource.onmessage = (event) => {
-      try {
-        const message = JSON.parse(event.data)
-           if (message.type === 'new-order') {
-          setPlaySound(true)
-          setTimeout(() => setPlaySound(false), 100)
-          fetchOrders()
+  const eventSource = new EventSource('/api/admin/orders-stream')
+
+  eventSource.onmessage = (event) => {
+    try {
+      const message = JSON.parse(event.data)
+
+      if (message.type === 'connected') {
+        setStreamConnected(true)
+        return
+      }
+
+      if (message.type === 'heartbeat') {
+        setStreamConnected(true)
+        return
+      }
+
+if (message.type === 'message-sent') {
+  const senderRole = message.data?.senderRole
+  const orderId = message.data?.orderId
+
+  // Don't notify yourself
+  if (senderRole !== 'admin') {
+    const audio = new Audio('/chat.mp3')
+    audio.play().catch(() => {})
+
+    showToast('New chat message received', 'success')
+  }
+
+  // Live unread update
+  setOrders((prev) =>
+    prev.map((order) =>
+      order._id === orderId
+        ? {
+            ...order,
+            unreadMessages:
+              senderRole !== 'admin'
+                ? (order.unreadMessages || 0) + 1
+                : order.unreadMessages,
+            hasUnreadMessages:
+              senderRole !== 'admin'
+                ? true
+                : order.hasUnreadMessages,
+          }
+        : order
+    )
+  )
+
+  // Refresh live data
+  fetchOrders()
+
+  return
+}
+
+      if (
+        message.type === 'new-order' ||
+        message.type === 'order-updated' ||
+        message.type === 'order-deleted' ||
+        message.type === 'order-reassigned'
+      ) {
+        setPlaySound(true)
+        setTimeout(() => setPlaySound(false), 100)
+
+        fetchOrders()
+        fetchRatings()
+
+        if (isFounderRole(userRole)) {
+          fetchUsers()
+          fetchModeratorStats()
         }
-      } catch {}
-    }
 
-    eventSource.onerror = () => {
-      eventSource.close()
-    }
+        if (message.type === 'new-order') {
+          showToast('New order received!', 'success')
+        }
 
-    return () => {
-      eventSource.close()
-    }
-  }, [authenticated])
+        if (message.type === 'order-updated') {
+          showToast('Order updated live', 'success')
+        }
+
+        if (message.type === 'order-deleted') {
+          showToast('Order deleted live', 'success')
+        }
+
+        if (message.type === 'order-reassigned') {
+          showToast('Order reassigned live', 'success')
+        }
+      }
+    } catch {}
+  }
+
+  eventSource.onerror = () => {
+    setStreamConnected(false)
+  }
+
+  return () => {
+    setStreamConnected(false)
+    eventSource.close()
+  }
+}, [authenticated, userRole])
+
+
 
   // Auto-open chat from email link
   useEffect(() => {
@@ -451,8 +538,7 @@ useEffect(() => {
       mountedRef.current = false
     }
 }, [])
- const [userRole, setUserRole] = useState<string>('')
- const [currentUserId, setCurrentUserId] = useState<string>('')
+ 
 
  useEffect(() => {
   fetch('/api/auth/student-check')
@@ -751,9 +837,31 @@ const getServiceRange = (service: string) => {
               <h1 className="text-3xl font-bold text-foreground">
               {isFounderRole(userRole) ? 'Founder Dashboard' : 'Staff Dashboard'}
             </h1>
+            
             <p className="text-muted-foreground mt-1">Manage orders and track progress</p>
           </div>
                 <div className="flex items-center gap-3">
+                <div
+  className={`flex items-center gap-2 rounded-lg border px-3 py-2 text-sm ${
+    streamConnected
+      ? 'border-emerald-500/30 bg-emerald-500/10 text-emerald-600'
+      : 'border-red-500/30 bg-red-500/10 text-red-600'
+  }`}
+>
+  {streamConnected ? (
+    <Wifi className="h-4 w-4" />
+  ) : (
+    <WifiOff className="h-4 w-4" />
+  )}
+  {streamConnected ? 'Live' : 'Offline'}
+</div>
+
+<Link href="/admin/audit-logs">
+  <Button variant="outline" size="default">
+    <Shield className="h-4 w-4 mr-1" />
+    Audit Logs
+  </Button>
+</Link>
                {(canAccessAdmin(userRole)) && (
               <Link href="/profile">
                 <Button variant="outline" size="default">
@@ -761,7 +869,9 @@ const getServiceRange = (service: string) => {
                   My Profile
                 </Button>
               </Link>
+              
             )}
+            
             <Button variant="outline" size="default" onClick={fetchOrders}>
               <RefreshCw className="h-4 w-4 mr-1" />
               Refresh
@@ -1142,32 +1252,44 @@ const getServiceRange = (service: string) => {
             {/* Files and Chat Buttons */}
             <div className="mt-4 pt-4 border-t">
               <div className="flex gap-3">
-                <button
-                  onClick={() => fetchFiles(order._id)}
-                  disabled={loadingFiles === order._id}
-                  className="text-xs text-blue-600 hover:text-blue-800 flex items-center gap-1 disabled:opacity-50"
-                >
-                  {loadingFiles === order._id ? (
-                    <Loader2 className="h-3 w-3 animate-spin" />
-                  ) : (
-                    <FileText className="h-3 w-3" />
-                  )}
-                  {expandedOrder === order._id ? 'Hide Files' : 'View Files'}
-                </button>
-                <button
-                  onClick={() => {
-                    setChatOrder(chatOrder === order._id ? null : order._id)
-                    if (chatOrder !== order._id) {
-                      setTimeout(() => {
-                        document.getElementById(`chat-${order._id}`)?.scrollIntoView({ behavior: 'smooth', block: 'center' })
-                      }, 100)
-                    }
-                  }}
-                  className="text-xs text-blue-600 hover:text-blue-800 flex items-center gap-1"
-                >
-                  <MessageCircle className="h-3 w-3" />
-                  {chatOrder === order._id ? 'Hide Chat' : 'Chat'}
-                </button>
+              <button
+  onClick={() => {
+    setChatOrder(chatOrder === order._id ? null : order._id)
+
+    if (chatOrder !== order._id) {
+      setOrders((prev) =>
+        prev.map((o) =>
+          o._id === order._id
+            ? { ...o, unreadMessages: 0, hasUnreadMessages: false }
+            : o
+        )
+      )
+
+      fetch('/api/messages', {
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ orderId: order._id }),
+      }).catch(() => {})
+
+      setTimeout(() => {
+        document
+          .getElementById(`chat-${order._id}`)
+          ?.scrollIntoView({ behavior: 'smooth', block: 'center' })
+      }, 100)
+    }
+  }}
+  className="text-xs text-blue-600 hover:text-blue-800 flex items-center gap-1"
+>
+  <MessageCircle className="h-3 w-3" />
+
+  {order.hasUnreadMessages && (
+    <span className="flex h-5 min-w-[20px] items-center justify-center rounded-full bg-red-500 px-1 text-[10px] font-bold text-white">
+      {order.unreadMessages}
+    </span>
+  )}
+
+  {chatOrder === order._id ? 'Hide Chat' : 'Chat'}
+</button>
               </div>
               
               {/* Files List */}
@@ -1695,15 +1817,44 @@ const getServiceRange = (service: string) => {
                           )}
                           {expandedOrder === order._id ? 'Hide Files' : 'View Files'}
                         </button>
-                          <button
-                          onClick={() => {
-                            setChatOrder(chatOrder === order._id ? null : order._id)
-                          }}
-                          className="text-xs text-blue-600 hover:text-blue-800 flex items-center gap-1"
-                        >
-                          <MessageCircle className="h-3 w-3" />
-                          {chatOrder === order._id ? 'Hide Chat' : 'Chat'}
-                        </button>
+<button
+  onClick={() => {
+    setChatOrder(chatOrder === order._id ? null : order._id)
+
+    if (chatOrder !== order._id) {
+      setOrders((prev) =>
+        prev.map((o) =>
+          o._id === order._id
+            ? { ...o, unreadMessages: 0, hasUnreadMessages: false }
+            : o
+        )
+      )
+
+      fetch('/api/messages', {
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ orderId: order._id }),
+      }).catch(() => {})
+
+      setTimeout(() => {
+        document
+          .getElementById(`chat-${order._id}`)
+          ?.scrollIntoView({ behavior: 'smooth', block: 'center' })
+      }, 100)
+    }
+  }}
+  className="text-xs text-blue-600 hover:text-blue-800 flex items-center gap-1"
+>
+  <MessageCircle className="h-3 w-3" />
+
+  {order.hasUnreadMessages && (
+    <span className="flex h-5 min-w-[20px] items-center justify-center rounded-full bg-red-500 px-1 text-[10px] font-bold text-white">
+      {order.unreadMessages}
+    </span>
+  )}
+
+  {chatOrder === order._id ? 'Hide Chat' : 'Chat'}
+</button>
                         {expandedOrder === order._id && orderFiles[order._id] && (
                           <div className="mt-2 space-y-1">
                             {orderFiles[order._id].length === 0 ? (

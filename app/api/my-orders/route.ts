@@ -18,6 +18,7 @@ export async function GET() {
     }
 
     const { payload } = await jwtVerify(token, JWT_SECRET)
+
     if (payload.role !== 'student') {
       return NextResponse.json(
         { success: false, error: 'Unauthorized' },
@@ -34,17 +35,44 @@ export async function GET() {
       .sort({ createdAt: -1 })
       .toArray()
 
-    // Serialize ObjectId to string
-    const serializedOrders = orders.map((order) => ({
-      ...order,
-      _id: order._id.toString(),
-      createdAt: order.createdAt?.toISOString?.() || order.createdAt,
-      updatedAt: order.updatedAt?.toISOString?.() || order.updatedAt,
-    }))
+    const serializedOrders = await Promise.all(
+      orders.map(async (order) => {
+        const orderId = order._id.toString()
 
-    return NextResponse.json({ success: true, orders: serializedOrders })
+        const chatView = await db.collection('chat_views').findOne({
+          orderId,
+          viewer: 'student',
+        })
+
+        const lastSeenAt = chatView?.lastSeenAt || new Date(0)
+
+        const unreadMessages = await db.collection('messages').countDocuments({
+          orderId,
+          senderRole: 'admin',
+          createdAt: { $gt: lastSeenAt },
+        })
+
+        return {
+          ...order,
+          _id: orderId,
+          createdAt:
+            order.createdAt?.toISOString?.() || order.createdAt,
+          updatedAt:
+            order.updatedAt?.toISOString?.() || order.updatedAt,
+
+          unreadMessages,
+          hasUnreadMessages: unreadMessages > 0,
+        }
+      })
+    )
+
+    return NextResponse.json({
+      success: true,
+      orders: serializedOrders,
+    })
   } catch (error) {
     console.error('My orders error:', error)
+
     return NextResponse.json(
       { success: false, error: 'Failed to fetch orders' },
       { status: 500 }

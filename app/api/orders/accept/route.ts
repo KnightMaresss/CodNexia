@@ -5,6 +5,8 @@ import { cookies } from 'next/headers'
 import { ObjectId } from 'mongodb'
 import { getJwtSecret } from '@/lib/jwt-secret'
 import { canAccessAdmin, isFounderRole, isModeratorRole } from '@/lib/roles'
+import { createAuditLog } from '@/lib/audit-log'
+import { notifyOrderUpdated } from '@/lib/orders-stream'
 
 const JWT_SECRET = new TextEncoder().encode(getJwtSecret())
 
@@ -110,6 +112,31 @@ export async function POST(request: Request) {
         },
       }
     )
+
+    await createAuditLog({
+      action: 'ORDER_ACCEPTED',
+      actor: {
+        id: userId,
+        email: typeof payload.email === 'string' ? payload.email : null,
+        name: userName,
+        role: userRole,
+      },
+      targetType: 'order',
+      targetId: orderId,
+      message: `Order ${orderId} was accepted by ${userName}`,
+      metadata: {
+        orderId,
+        assignedTo: userId,
+        assignedToName: userName,
+      },
+    })
+
+    notifyOrderUpdated({
+      orderId,
+      assignedTo: userId,
+      assignedToName: userName,
+      type: 'accepted',
+    })
 
     return NextResponse.json({ success: true })
   } catch (error) {

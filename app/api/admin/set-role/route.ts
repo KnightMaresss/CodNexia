@@ -4,7 +4,7 @@ import { jwtVerify } from 'jose'
 import { cookies } from 'next/headers'
 import { getJwtSecret } from '@/lib/jwt-secret'
 import { isFounderRole } from '@/lib/roles'
-
+import { createAuditLog } from '@/lib/audit-log'
 const JWT_SECRET = new TextEncoder().encode(getJwtSecret())
 
 export async function POST(request: Request) {
@@ -63,7 +63,22 @@ export async function POST(request: Request) {
         { status: 404 }
       )
     }
-
+await createAuditLog({
+  action: 'USER_ROLE_CHANGED',
+  actor: {
+    id: typeof payload.userId === 'string' ? payload.userId : null,
+    email: typeof payload.email === 'string' ? payload.email : null,
+    name: typeof payload.name === 'string' ? payload.name : null,
+    role: currentUserRole,
+  },
+  targetType: 'user',
+  targetId: email.toLowerCase().trim(),
+  message: `${email} role changed to ${role}`,
+  metadata: {
+    email: email.toLowerCase().trim(),
+    newRole: role,
+  },
+})
     return NextResponse.json({
       success: true,
       message: `${email} is now a ${role}`,
