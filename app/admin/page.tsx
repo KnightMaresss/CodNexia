@@ -392,111 +392,45 @@ const fetchFiles = async (orderId: string) => {
 
 
 
-// SSE - Real-time dashboard updates
 useEffect(() => {
   if (!authenticated) return
 
+const startTimeout = setTimeout(() => {
+  setStreamConnected(true)
   fetchOrders()
+  fetchRatings()
 
-  const eventSource = new EventSource('/api/admin/orders-stream')
-
-  eventSource.onmessage = (event) => {
-    try {
-      const message = JSON.parse(event.data)
-
-      if (message.type === 'connected') {
-        setStreamConnected(true)
-        return
-      }
-
-      if (message.type === 'heartbeat') {
-        setStreamConnected(true)
-        return
-      }
-
-if (message.type === 'message-sent') {
-  const senderRole = message.data?.senderRole
-  const orderId = message.data?.orderId
-
-  // Don't notify yourself
-  if (senderRole !== 'admin') {
-    const audio = new Audio('/chat.mp3')
-    audio.play().catch(() => {})
-
-    showToast('New chat message received', 'success')
+  if (isFounderRole(userRole)) {
+    fetchUsers()
+    fetchModeratorStats()
   }
+}, 0)
 
-  // Live unread update
-  setOrders((prev) =>
-    prev.map((order) =>
-      order._id === orderId
-        ? {
-            ...order,
-            unreadMessages:
-              senderRole !== 'admin'
-                ? (order.unreadMessages || 0) + 1
-                : order.unreadMessages,
-            hasUnreadMessages:
-              senderRole !== 'admin'
-                ? true
-                : order.hasUnreadMessages,
-          }
-        : order
-    )
-  )
 
-  // Refresh live data
-  fetchOrders()
+  const interval = setInterval(() => {
+    fetchOrders()
+    fetchRatings()
 
-  return
-}
-
-      if (
-        message.type === 'new-order' ||
-        message.type === 'order-updated' ||
-        message.type === 'order-deleted' ||
-        message.type === 'order-reassigned'
-      ) {
-        setPlaySound(true)
-        setTimeout(() => setPlaySound(false), 100)
-
-        fetchOrders()
-        fetchRatings()
-
-        if (isFounderRole(userRole)) {
-          fetchUsers()
-          fetchModeratorStats()
-        }
-
-        if (message.type === 'new-order') {
-          showToast('New order received!', 'success')
-        }
-
-        if (message.type === 'order-updated') {
-          showToast('Order updated live', 'success')
-        }
-
-        if (message.type === 'order-deleted') {
-          showToast('Order deleted live', 'success')
-        }
-
-        if (message.type === 'order-reassigned') {
-          showToast('Order reassigned live', 'success')
-        }
-      }
-    } catch {}
-  }
-
-eventSource.onerror = () => {
-  setStreamConnected(false)
-  fetchOrders()
-}
+    if (isFounderRole(userRole)) {
+      fetchUsers()
+      fetchModeratorStats()
+    }
+  }, 3000)
 
   return () => {
     setStreamConnected(false)
-    eventSource.close()
+   clearTimeout(startTimeout)
+   clearInterval(interval)
   }
+
 }, [authenticated, userRole])
+
+
+
+
+
+
+
 
 
 

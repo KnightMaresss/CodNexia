@@ -307,66 +307,26 @@ useEffect(() => {
   }
 
   if (!user) return
- // eslint-disable-next-line react-hooks/set-state-in-effect
+  const startTimeout = setTimeout(() => {
   fetchOrders()
+  }, 0)
 
-  const eventSource = new EventSource('/api/my-orders/stream')
+  const interval = setInterval(() => {
+    fetchOrders()
+  }, 3000)
 
-  eventSource.onmessage = (event) => {
-    try {
-      const message = JSON.parse(event.data)
-
-      if (message.type === 'connected' || message.type === 'heartbeat') {
-        return
-      }
-
-      if (message.type === 'message-sent') {
-        const senderRole = message.data?.senderRole
-        const orderId = message.data?.orderId
-
-       if (senderRole === 'admin') {
-          const audio = new Audio('/chat.mp3')
-          audio.play().catch(() => {})
-
-          showToast('New chat message received', 'success')
-
-          setOrders((prev) =>
-            prev.map((order) =>
-              order._id === orderId
-                ? {
-                    ...order,
-                    unreadMessages: (order.unreadMessages || 0) + 1,
-                    hasUnreadMessages: true,
-                  }
-                : order
-            )
-          )
-        }
-
-        fetchOrders()
-        return
-      }
-
-      if (
-        message.type === 'new-order' ||
-        message.type === 'order-updated' ||
-        message.type === 'order-deleted' ||
-        message.type === 'order-reassigned'
-      ) {
-        fetchOrders()
-      }
-    } catch {}
-  }
-
-eventSource.onerror = () => {
-  fetchOrders()
+ return () => {
+  clearTimeout(startTimeout)
+  clearInterval(interval)
 }
 
-  return () => {
-    eventSource.close()
-  }
 // eslint-disable-next-line react-hooks/exhaustive-deps
 }, [user])
+
+
+
+
+
 
 
   // Auto-open chat from email link
