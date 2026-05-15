@@ -2,7 +2,7 @@
 import { useState, useEffect, useRef, useCallback } from 'react'
 import { Button } from './ui/button'
 import { showToast } from './ui/toast'
-import { SoundNotification } from '@/components/SoundNotification'
+
 import { 
   Send,
   Loader2,
@@ -28,30 +28,62 @@ export function OrderMessages({ orderId, userName }: { orderId: string; userName
   const [newMessage, setNewMessage] = useState('')
   const [loading, setLoading] = useState(true)
   const [sending, setSending] = useState(false)
-  const [playMsgSound, setPlayMsgSound] = useState(false)
   const messagesEndRef = useRef<HTMLDivElement>(null)
   const inputRef = useRef<HTMLInputElement>(null)
   const [selectedFile, setSelectedFile] = useState<File | null>(null)
   const fileInputRef = useRef<HTMLInputElement>(null)
-  const fetchMessages = useCallback(async () => {
-    try {
-      const res = await fetch(`/api/messages?orderId=${orderId}`)
-      const data = await res.json()
-      if (data.success) {
-        if (data.messages.length > messages.length && messages.length > 0) {
-          setPlayMsgSound(true)
-          setTimeout(() => setPlayMsgSound(false), 100)
-        }
-        setMessages(data.messages)
-      }
-    } catch {}
-    setLoading(false)
-  }, [orderId, messages.length])
+  const previousMessageIdsRef = useRef<Set<string>>(new Set())
+  const initializedMessagesRef = useRef(false)
 
-  useEffect(() => {
-    // eslint-disable-next-line react-hooks/set-state-in-effect
-    fetchMessages()
-  }, [fetchMessages])
+
+const fetchMessages = useCallback(async () => {
+  try {
+    const res = await fetch(`/api/messages?orderId=${orderId}`)
+    const data = await res.json()
+
+    if (data.success) {
+      const nextMessages: Message[] = data.messages
+      const previousIds = previousMessageIdsRef.current
+
+
+
+     const newIncomingMessages = nextMessages.filter(
+  (msg) =>
+    !previousIds.has(msg.id) &&
+    msg.senderRole !== userName
+)
+
+if (initializedMessagesRef.current && newIncomingMessages.length > 0) {
+  const incomingFromOtherSide = newIncomingMessages.find(
+    (msg) => msg.senderRole !== userName
+  )
+
+  if (incomingFromOtherSide) {
+    const soundKey = `chat-sound-${incomingFromOtherSide.id}`
+
+    if (!sessionStorage.getItem(soundKey)) {
+      sessionStorage.setItem(soundKey, 'played')
+
+      const audio = new Audio('/chat.mp3')
+      audio.play().catch(() => {})
+    }
+  }
+}
+
+
+
+      previousMessageIdsRef.current = new Set(
+        nextMessages.map((msg) => msg.id)
+      )
+
+      initializedMessagesRef.current = true
+      setMessages(nextMessages)
+    }
+  } catch {}
+
+  setLoading(false)
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+}, [orderId])
 
 
 
@@ -332,7 +364,6 @@ useEffect(() => {
             <Send className="h-4 w-4" />
           )}
         </Button>
-       <SoundNotification play={playMsgSound} type="chat" />
       </form>
     </div>
   )

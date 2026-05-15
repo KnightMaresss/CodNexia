@@ -77,22 +77,28 @@ export default function MyOrdersPage() {
     try {
       const res = await fetch('/api/my-orders')
       const data = await res.json()
-      if (data.success) {
-       const unreadTotal = data.orders.reduce(
-  (sum: number, order: Order) => sum + (order.unreadMessages || 0),
-  0
-)
 
-if (unreadTotal > previousUnreadTotalRef.current) {
-  const audio = new Audio('/chat.mp3')
-  audio.play().catch(() => {})
-  showToast('New chat message received', 'success')
+
+if (data.success) {
+  const unreadTotal = data.orders.reduce(
+    (sum: number, order: Order) => sum + (order.unreadMessages || 0),
+    0
+  )
+
+  if (!chatOrder && unreadTotal > previousUnreadTotalRef.current) {
+    const audio = new Audio('/chat.mp3')
+    audio.play().catch(() => {})
+    showToast('New chat message received', 'success')
+  }
+
+  previousUnreadTotalRef.current = unreadTotal
+  setOrders(data.orders)
 }
 
-previousUnreadTotalRef.current = unreadTotal
-setOrders(data.orders)
-      }
-    } catch {
+
+    } 
+    
+    catch {
       // silently fail
     }
     setLoading(false)
@@ -405,6 +411,7 @@ useEffect(() => {
       })
     }
   }
+// eslint-disable-next-line react-hooks/exhaustive-deps
 }, [])
 
 
@@ -861,7 +868,7 @@ useEffect(() => {
 {chatOrder === order._id && (
   <div id={`chat-${order._id}`} className="mt-4 pt-4 border-t">
     <p className="text-xs text-muted-foreground mb-3">Messages</p>
-    <OrderMessages orderId={order._id} userName={user?.name} />
+   <OrderMessages orderId={order._id} userName="student" />
   </div>
 )}
                 </CardContent>

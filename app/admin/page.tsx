@@ -12,6 +12,7 @@ import Image from 'next/image'
 import { useRouter } from 'next/navigation'
 import { canAccessAdmin, isFounderRole, isModeratorRole } from '@/lib/roles'
 import { Shield } from 'lucide-react'
+
 import {
   LogOut,
   Trash2,
@@ -150,9 +151,9 @@ export default function AdminPage() {
   const [reassignModal, setReassignModal] = useState<{ open: boolean; orderId: string; currentName: string }>({ open: false, orderId: '', currentName: '' })
   const [moderatorStats, setModeratorStats] = useState<ModeratorStat[]>([])
   const router = useRouter()
+  const previousUnreadTotalRef = useRef(0)
   const [userRole, setUserRole] = useState<string>('')
   const [currentUserId, setCurrentUserId] = useState<string>('')
-  const previousUnreadTotalRef = useRef(0)
   const [streamConnected, setStreamConnected] = useState(false)
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const [ratings, setRatings] = useState<Record<string, any>>({})
@@ -270,22 +271,22 @@ const fetchOrders = async () => {
       const res = await fetch('/api/orders')
       const data = await res.json()
       
-      if (data.success) {
-    const unreadTotal = data.orders.reduce(
-  (sum: number, order: Order) => sum + (order.unreadMessages || 0),
-  0
-)
+     if (data.success) {
+  const unreadTotal = data.orders.reduce(
+    (sum: number, order: Order) => sum + (order.unreadMessages || 0),
+    0
+  )
 
-if (unreadTotal > previousUnreadTotalRef.current) {
-  const audio = new Audio('/chat.mp3')
-  audio.play().catch(() => {})
-  showToast('New chat message received', 'success')
+  if (!chatOrder && unreadTotal > previousUnreadTotalRef.current) {
+    const audio = new Audio('/chat.mp3')
+    audio.play().catch(() => {})
+    showToast('New chat message received', 'success')
+  }
+
+  previousUnreadTotalRef.current = unreadTotal
+  setOrders(data.orders)
 }
-
-previousUnreadTotalRef.current = unreadTotal
-setOrders(data.orders)
-      
-      } else {
+      else {
        
         console.error(data.error || 'Failed to fetch orders')
       }
@@ -435,7 +436,7 @@ const startTimeout = setTimeout(() => {
    clearTimeout(startTimeout)
    clearInterval(interval)
   }
-
+// eslint-disable-next-line react-hooks/exhaustive-deps
 }, [authenticated, userRole])
 
 
@@ -1266,7 +1267,7 @@ const getServiceRange = (service: string) => {
               {chatOrder === order._id && (
                 <div id={`chat-${order._id}`} className="mt-4 pt-4 border-t">
                   <p className="text-xs text-muted-foreground mb-3">Messages</p>
-                  <OrderMessages orderId={order._id} />
+                 <OrderMessages orderId={order._id} userName="admin" />
                 </div>
               )}
             </div>
@@ -1828,7 +1829,7 @@ const getServiceRange = (service: string) => {
                        {chatOrder === order._id && (
                         <div id={`chat-${order._id}`} className="mt-4 pt-4 border-t">
                           <p className="text-xs text-muted-foreground mb-3">Messages</p>
-                          <OrderMessages orderId={order._id} />
+                          <OrderMessages orderId={order._id} userName="admin" />
                         </div>
                       )}
                     </>
