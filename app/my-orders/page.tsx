@@ -324,7 +324,7 @@ useEffect(() => {
         const senderRole = message.data?.senderRole
         const orderId = message.data?.orderId
 
-        if (senderRole === 'admin' && chatOrder !== orderId) {
+       if (senderRole === 'admin') {
           const audio = new Audio('/chat.mp3')
           audio.play().catch(() => {})
 
@@ -365,7 +365,8 @@ eventSource.onerror = () => {
   return () => {
     eventSource.close()
   }
-}, [user, authLoading, router, chatOrder])
+// eslint-disable-next-line react-hooks/exhaustive-deps
+}, [user])
 
 
   // Auto-open chat from email link
