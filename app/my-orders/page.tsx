@@ -72,12 +72,25 @@ export default function MyOrdersPage() {
   const [loadingFiles, setLoadingFiles] = useState<string | null>(null)
   const [cancelModal, setCancelModal] = useState<{ open: boolean; orderId: string }>({ open: false, orderId: '' })
   const [payingOrder, setPayingOrder] = useState<string | null>(null)
+  const previousUnreadTotalRef = useRef(0)
   const fetchOrders = async () => {
     try {
       const res = await fetch('/api/my-orders')
       const data = await res.json()
       if (data.success) {
-        setOrders(data.orders)
+       const unreadTotal = data.orders.reduce(
+  (sum: number, order: Order) => sum + (order.unreadMessages || 0),
+  0
+)
+
+if (unreadTotal > previousUnreadTotalRef.current) {
+  const audio = new Audio('/chat.mp3')
+  audio.play().catch(() => {})
+  showToast('New chat message received', 'success')
+}
+
+previousUnreadTotalRef.current = unreadTotal
+setOrders(data.orders)
       }
     } catch {
       // silently fail

@@ -53,41 +53,23 @@ export function OrderMessages({ orderId, userName }: { orderId: string; userName
     fetchMessages()
   }, [fetchMessages])
 
+
+
 useEffect(() => {
-  const eventSource = new EventSource('/api/my-orders/stream')
+  const interval = setInterval(() => {
+    fetchMessages()
+    fetch('/api/messages', {
+      method: 'PUT',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ orderId }),
+    }).catch(() => {})
+  }, 2000)
 
-  eventSource.onmessage = (event) => {
-    try {
-      const liveEvent = JSON.parse(event.data)
+  return () => clearInterval(interval)
+}, [fetchMessages, orderId])
 
-      if (liveEvent.type !== 'message-sent') return
 
-      const incoming = liveEvent.data?.message
 
-      if (!incoming || incoming.orderId !== orderId) return
-
-      setMessages((prev) => {
-        const alreadyExists = prev.some((msg) => msg.id === incoming.id)
-        if (alreadyExists) return prev
-
-        setPlayMsgSound(true)
-        setTimeout(() => setPlayMsgSound(false), 100)
-
-        return [...prev, incoming]
-      })
-
-      fetch('/api/messages', {
-        method: 'PUT',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ orderId }),
-      }).catch(() => {})
-    } catch {}
-  }
-
-  return () => {
-    eventSource.close()
-  }
-}, [orderId])
 useEffect(() => {
   // Scroll to bottom of chat messages only
   const messagesContainer = document.querySelector('.overflow-y-auto')

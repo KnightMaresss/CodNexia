@@ -152,6 +152,7 @@ export default function AdminPage() {
   const router = useRouter()
   const [userRole, setUserRole] = useState<string>('')
   const [currentUserId, setCurrentUserId] = useState<string>('')
+  const previousUnreadTotalRef = useRef(0)
   const [streamConnected, setStreamConnected] = useState(false)
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const [ratings, setRatings] = useState<Record<string, any>>({})
@@ -270,7 +271,19 @@ const fetchOrders = async () => {
       const data = await res.json()
       
       if (data.success) {
-        setOrders(data.orders)
+    const unreadTotal = data.orders.reduce(
+  (sum: number, order: Order) => sum + (order.unreadMessages || 0),
+  0
+)
+
+if (unreadTotal > previousUnreadTotalRef.current) {
+  const audio = new Audio('/chat.mp3')
+  audio.play().catch(() => {})
+  showToast('New chat message received', 'success')
+}
+
+previousUnreadTotalRef.current = unreadTotal
+setOrders(data.orders)
       
       } else {
        
