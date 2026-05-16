@@ -26,7 +26,7 @@ export async function sendStatusUpdateEmail(
   orderId: string,
   newStatus: string,
   oldStatus: string
-) {
+ ) {
   const statusLabels: Record<string, string> = {
     'pending': 'Order Received',
     'in-progress': 'In Progress',
@@ -85,6 +85,48 @@ export async function sendStatusUpdateEmail(
     return true
   } catch (error) {
     console.error('Status email failed:', JSON.stringify(error, null, 2))
+    return false
+  }
+  
+}
+export async function sendPriceReadyEmail(
+  studentEmail: string,
+  serviceName: string,
+  finalPrice: number,
+  depositAmount: number,
+  remainingAmount: number,
+  orderId: string
+) {
+  try {
+    await resend.emails.send({
+      from: FROM_EMAIL,
+      to: studentEmail,
+      subject: `Your Order Is Ready to Start - ${serviceName}`,
+      html: emailTemplate(`
+        <h2 style="color: #1e293b; margin: 0 0 10px;">Order Accepted ✅</h2>
+
+        <p style="color: #64748b; font-size: 15px; margin: 0 0 25px;">
+          Your order has been reviewed and accepted. The final price is now ready.
+        </p>
+
+        <div style="background: #f1f5f9; border-radius: 8px; padding: 20px; margin-bottom: 20px; border-left: 4px solid #2563eb;">
+          <p style="margin: 0 0 8px; font-size: 14px;"><strong>Order ID:</strong> ${orderId}</p>
+          <p style="margin: 0 0 8px; font-size: 14px;"><strong>Service:</strong> ${serviceName}</p>
+          <p style="margin: 0 0 8px; font-size: 14px;"><strong>Total Price:</strong> $${finalPrice}</p>
+          <p style="margin: 0 0 8px; font-size: 14px;"><strong>Deposit:</strong> $${depositAmount}</p>
+          <p style="margin: 0; font-size: 14px;"><strong>Remaining:</strong> $${remainingAmount}</p>
+        </div>
+
+        <a href="${SITE_URL}/my-orders?chat=${orderId}"
+           style="display: inline-block; background: #2563eb; color: white; padding: 14px 28px; border-radius: 8px; text-decoration: none; font-weight: 600; font-size: 14px;">
+          View Order →
+        </a>
+      `),
+    })
+
+    return true
+  } catch (error) {
+    console.error('Price ready email failed:', JSON.stringify(error, null, 2))
     return false
   }
 }

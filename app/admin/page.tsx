@@ -151,6 +151,8 @@ export default function AdminPage() {
   const [reassignModal, setReassignModal] = useState<{ open: boolean; orderId: string; currentName: string }>({ open: false, orderId: '', currentName: '' })
   const [moderatorStats, setModeratorStats] = useState<ModeratorStat[]>([])
   const router = useRouter()
+  const knownOrderIdsRef = useRef<Set<string>>(new Set())
+  const initializedOrdersRef = useRef(false)
   const previousUnreadTotalRef = useRef(0)
   const [userRole, setUserRole] = useState<string>('')
   const [currentUserId, setCurrentUserId] = useState<string>('')
@@ -276,7 +278,22 @@ const fetchOrders = async () => {
     (sum: number, order: Order) => sum + (order.unreadMessages || 0),
     0
   )
+const nextOrderIds = new Set<string>(
+  data.orders.map((order: Order) => order._id)
+)
 
+const hasNewOrder =
+  initializedOrdersRef.current &&
+  data.orders.some((order: Order) => !knownOrderIdsRef.current.has(order._id))
+
+if (hasNewOrder) {
+  setPlaySound(true)
+  setTimeout(() => setPlaySound(false), 100)
+  showToast('New order received!', 'success')
+}
+
+knownOrderIdsRef.current = nextOrderIds
+initializedOrdersRef.current = true
   if (!chatOrder && unreadTotal > previousUnreadTotalRef.current) {
     const audio = new Audio('/chat.mp3')
     audio.play().catch(() => {})

@@ -313,71 +313,91 @@ export async function POST(request: Request) {
       _id: new ObjectId(orderId),
     })
 
-    if (order) {
-      const SERVICE_NAMES: Record<string, string> = {
-        'graduation-projects': 'Graduation Projects',
-        'academic-reports': 'Academic Reports',
-        'custom-websites': 'Custom Websites',
-        'mobile-apps': 'Mobile Apps',
-        'powerpoint-presentations': 'PowerPoint Presentations',
-        'cv-resume-writing': 'CV/Resume Writing',
-        translation: 'Translation (En↔Ar)',
-        'code-debugging': 'Code Debugging',
-      }
 
-      const recipientRole = senderRole === 'student' ? 'admin' : 'student'
 
-      const chatView = await db.collection('chat_views').findOne({
-        orderId,
-        viewer: recipientRole,
+if (order) {
+  const SERVICE_NAMES: Record<string, string> = {
+    'graduation-projects': 'Graduation Projects',
+    'academic-reports': 'Academic Reports',
+    'custom-websites': 'Custom Websites',
+    'mobile-apps': 'Mobile Apps',
+    'powerpoint-presentations': 'PowerPoint Presentations',
+    'cv-resume-writing': 'CV/Resume Writing',
+    translation: 'Translation (En↔Ar)',
+    'code-debugging': 'Code Debugging',
+  }
+
+  const notifyMsg = fileUrl
+    ? `📎 Sent a file: ${fileName}`
+    : message.trim()
+
+  let recipientEmail = ''
+  const recipientRole = senderRole === 'student' ? 'admin' : 'student'
+
+  if (senderRole === 'student') {
+    recipientEmail = process.env.ADMIN_EMAIL || ''
+
+    if (order.assignedTo && ObjectId.isValid(order.assignedTo)) {
+      const assignedStaff = await db.collection('users').findOne({
+        _id: new ObjectId(order.assignedTo),
       })
 
-      const twoMinutesAgo = new Date(Date.now() - 2 * 60 * 1000)
-    if (!chatView || new Date(chatView.lastSeenAt) < twoMinutesAgo) {
-
-        const { sendNewMessageEmail } = await import('@/lib/email-messages')
-        const notifyMsg = fileUrl
-          ? `📎 Sent a file: ${fileName}`
-          : message.trim()
-
-
-if (senderRole === 'student') {
-  let staffEmail = process.env.ADMIN_EMAIL || ''
-
-  if (order.assignedTo && ObjectId.isValid(order.assignedTo)) {
-    const assignedStaff = await db.collection('users').findOne({
-      _id: new ObjectId(order.assignedTo),
-    })
-
-    if (assignedStaff?.email) {
-      staffEmail = assignedStaff.email
-    }
-  }
-
-  if (staffEmail) {
-    sendNewMessageEmail(
-      staffEmail,
-      sender,
-      senderRole,
-      notifyMsg,
-      orderId,
-      SERVICE_NAMES[order.service] || order.service
-    ).catch(() => {})
-  }
-} else {
-  sendNewMessageEmail(
-    order.studentEmail,
-    sender,
-    senderRole,
-    notifyMsg,
-    orderId,
-    SERVICE_NAMES[order.service] || order.service
-  ).catch(() => {})
-}
+      if (assignedStaff?.email) {
+        recipientEmail = assignedStaff.email
       }
     }
+  } else {
+    recipientEmail = order.studentEmail
+  }
 
-   return NextResponse.json({
+  if (recipientEmail) {
+    const chatView = await db.collection('chat_views').findOne({
+      orderId,
+      viewer: recipientRole,
+    })
+
+    const lastSeenAt = chatView?.lastSeenAt || new Date(0)
+
+    const unreadBeforeThisMessage = await db
+      .collection('messages')
+      .countDocuments({
+        orderId,
+        senderRole,
+        _id: { $ne: result.insertedId },
+        createdAt: { $gt: lastSeenAt },
+      })
+
+    if (unreadBeforeThisMessage === 0) {
+      await db.collection('chat_email_notifications').updateOne(
+        {
+          orderId,
+          recipientRole,
+          status: 'pending',
+        },
+        {
+          $set: {
+            orderId,
+            recipientRole,
+            recipientEmail,
+            senderName: sender,
+            senderRole,
+            message: notifyMsg,
+            serviceName: SERVICE_NAMES[order.service] || order.service,
+            sendAfter: new Date(Date.now() + 60 * 1000),
+            updatedAt: new Date(),
+          },
+          $setOnInsert: {
+            createdAt: new Date(),
+            status: 'pending',
+          },
+        },
+        { upsert: true }
+      )
+    }
+  }
+}
+
+  return NextResponse.json({
   success: true,
   message: insertedMessage,
 })
