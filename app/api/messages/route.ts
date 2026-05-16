@@ -373,8 +373,14 @@ console.log('CHAT EMAIL DEBUG:', {
   recipientEmail,
   unreadBeforeThisMessage,
 })
-
-    if (unreadBeforeThisMessage === 0) {
+const existingNotification = await db
+  .collection('chat_email_notifications')
+  .findOne({
+    orderId,
+    recipientRole,
+    createdAt: { $gt: lastSeenAt },
+  })
+  if (!existingNotification) {
       await db.collection('chat_email_notifications').updateOne(
         {
           orderId,
