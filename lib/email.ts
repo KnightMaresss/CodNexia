@@ -2,7 +2,8 @@ import { Resend } from 'resend'
 
 const resend = new Resend(process.env.RESEND_API_KEY)
 const ADMIN_EMAIL = process.env.ADMIN_EMAIL || ''
-
+const FROM_EMAIL = process.env.EMAIL_FROM || 'Codnexia <support@codnexia.com>'
+const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL || 'https://codnexia.com'
 const emailTemplate = (content: string) => `
 <div style="font-family: 'Segoe UI', Arial, sans-serif; max-width: 600px; margin: 0 auto; background: #ffffff; border-radius: 12px; overflow: hidden; box-shadow: 0 2px 12px rgba(0,0,0,0.08);">
   <!-- Header -->
@@ -36,7 +37,7 @@ export async function sendOrderConfirmation(
 ) {
   try {
     await resend.emails.send({
-      from: 'Codnexia <onboarding@resend.dev>',
+      from: FROM_EMAIL,
       to: studentEmail,
       subject: 'Order Confirmed - Codnexia',
       html: emailTemplate(`
@@ -51,7 +52,7 @@ export async function sendOrderConfirmation(
         
         <p style="color: #64748b; font-size: 14px; margin: 0 0 25px;">We will review your requirements and get back to you within 24 hours.</p>
         
-        <a href="${process.env.NEXTAUTH_URL}/track?id=${orderId}" 
+        <a href="${SITE_URL}/track?id=${orderId}" 
            style="display: inline-block; background: #2563eb; color: white; padding: 14px 28px; border-radius: 8px; text-decoration: none; font-weight: 600; font-size: 14px;">
           Track Your Order →
         </a>
@@ -60,7 +61,7 @@ export async function sendOrderConfirmation(
 
     // Send notification to admin
     await resend.emails.send({
-      from: 'Codnexia <onboarding@resend.dev>',
+      from: FROM_EMAIL,
       to: ADMIN_EMAIL,
       subject: `New Order: ${serviceName} - $${price}`,
       html: emailTemplate(`
@@ -73,7 +74,7 @@ export async function sendOrderConfirmation(
           <p style="margin: 0; font-size: 14px;"><strong style="color: #1e293b;">Amount:</strong> <span style="color: #16a34a; font-weight: bold;">$${price}</span></p>
         </div>
         
-        <a href="${process.env.NEXTAUTH_URL}/admin" 
+        <a href="${SITE_URL}/admin" 
            style="display: inline-block; background: #2563eb; color: white; padding: 14px 28px; border-radius: 8px; text-decoration: none; font-weight: 600; font-size: 14px;">
           View in Dashboard →
         </a>

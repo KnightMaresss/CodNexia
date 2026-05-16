@@ -1,7 +1,8 @@
 import { Resend } from 'resend'
 
 const resend = new Resend(process.env.RESEND_API_KEY)
-
+const FROM_EMAIL = process.env.EMAIL_FROM || 'Codnexia <support@codnexia.com>'
+const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL || 'https://codnexia.com'
 const emailTemplate = (content: string) => `
 <div style="font-family: 'Segoe UI', Arial, sans-serif; max-width: 600px; margin: 0 auto; background: #ffffff; border-radius: 12px; overflow: hidden; box-shadow: 0 2px 12px rgba(0,0,0,0.08);">
   <div style="background: #1a1a2e; padding: 12px 20px; text-align: center; border-bottom: 3px solid #2563eb;">
@@ -26,8 +27,8 @@ export async function sendNewMessageEmail(
 ) {
   try {
     await resend.emails.send({
-      from: 'Codnexia <onboarding@resend.dev>',
-      to: process.env.ADMIN_EMAIL || recipientEmail,
+      from: FROM_EMAIL,
+      to: recipientEmail,
       subject: `New Message on Order - ${serviceName}`,
       html: emailTemplate(`
         <h2 style="color: #1e293b; margin: 0 0 10px;">New Message 💬</h2>
@@ -41,7 +42,7 @@ export async function sendNewMessageEmail(
           <p style="margin: 0; font-size: 14px; color: #475569; font-style: italic;">"${message}"</p>
         </div>
 
-          <a href="${process.env.NEXTAUTH_URL}/${senderName === 'Admin' ? 'my-orders' : 'admin'}?chat=${orderId}"
+          <a href="${SITE_URL}/${senderName === 'Admin' ? 'my-orders' : 'admin'}?chat=${orderId}"
            style="display: inline-block; background: #2563eb; color: white; padding: 14px 28px; border-radius: 8px; text-decoration: none; font-weight: 600; font-size: 14px;">
           View & Reply →
         </a>
