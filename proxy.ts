@@ -4,6 +4,11 @@ import type { NextRequest } from 'next/server'
 export function proxy(request: NextRequest) {
   const lockEnabled = process.env.SITE_LOCK_ENABLED === 'true'
   const lockKey = process.env.SITE_LOCK_KEY
+  const pathname = request.nextUrl.pathname
+
+  if (pathname.startsWith('/api/cron/')) {
+    return NextResponse.next()
+  }
 
   if (!lockEnabled) {
     return NextResponse.next()
@@ -37,5 +42,6 @@ export function proxy(request: NextRequest) {
 }
 
 export const config = {
-  matcher: '/((?!api/auth|_next/static|_next/image|favicon.ico|favicon-cx.png|apple-touch-icon.png|manifest.json).*)',
+  matcher:
+    '/((?!api/auth|api/cron|_next/static|_next/image|favicon.ico|favicon-cx.png|apple-touch-icon.png|manifest.json).*)',
 }
