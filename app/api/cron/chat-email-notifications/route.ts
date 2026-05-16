@@ -4,15 +4,20 @@ import { sendNewMessageEmail } from '@/lib/email-messages'
 
 export async function GET(request: Request) {
 const authHeader = request.headers.get('authorization')
-const cronHeader = request.headers.get('x-vercel-cron')
+const { searchParams } = new URL(request.url)
+const secret = searchParams.get('secret')
 
 const isAuthorized =
   authHeader === `Bearer ${process.env.CRON_SECRET}` ||
-  cronHeader === '1'
+  secret === process.env.CRON_SECRET
 
 if (!isAuthorized) {
-  return NextResponse.json({ success: false, error: 'Unauthorized' }, { status: 401 })
+  return NextResponse.json(
+    { success: false, error: 'Unauthorized' },
+    { status: 401 }
+  )
 }
+
   const client = await clientPromise
   const db = client.db(process.env.DB_NAME || 'student_services')
   const results: Array<Record<string, unknown>> = []
