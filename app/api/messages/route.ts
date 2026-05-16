@@ -332,38 +332,48 @@ export async function POST(request: Request) {
         viewer: recipientRole,
       })
 
-      const thirtySecondsAgo = new Date(Date.now() - 30000)
+      const twoMinutesAgo = new Date(Date.now() - 2 * 60 * 1000)
+    if (!chatView || new Date(chatView.lastSeenAt) < twoMinutesAgo) {
 
-      if (!chatView || new Date(chatView.lastSeenAt) < thirtySecondsAgo) {
         const { sendNewMessageEmail } = await import('@/lib/email-messages')
         const notifyMsg = fileUrl
           ? `📎 Sent a file: ${fileName}`
           : message.trim()
 
-        if (senderRole === 'student') {
 
-          sendNewMessageEmail(
-          order.studentEmail,
-          sender,
-          senderRole,
-          notifyMsg,
-          orderId,
-          SERVICE_NAMES[order.service] || order.service
-           )  
-          .catch(() => {})
-        } else {
+if (senderRole === 'student') {
+  let staffEmail = process.env.ADMIN_EMAIL || ''
 
-          sendNewMessageEmail(
-          process.env.ADMIN_EMAIL || '',
-          sender,
-          senderRole,
-          notifyMsg,
-          orderId,
-          SERVICE_NAMES[order.service] || order.service
-          )
-          .catch(() => {})
-        }
+  if (order.assignedTo && ObjectId.isValid(order.assignedTo)) {
+    const assignedStaff = await db.collection('users').findOne({
+      _id: new ObjectId(order.assignedTo),
+    })
 
+    if (assignedStaff?.email) {
+      staffEmail = assignedStaff.email
+    }
+  }
+
+  if (staffEmail) {
+    sendNewMessageEmail(
+      staffEmail,
+      sender,
+      senderRole,
+      notifyMsg,
+      orderId,
+      SERVICE_NAMES[order.service] || order.service
+    ).catch(() => {})
+  }
+} else {
+  sendNewMessageEmail(
+    order.studentEmail,
+    sender,
+    senderRole,
+    notifyMsg,
+    orderId,
+    SERVICE_NAMES[order.service] || order.service
+  ).catch(() => {})
+}
       }
     }
 
