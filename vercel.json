@@ -1,8 +1,8 @@
 {
   "crons": [
     {
-      "path": "/api/cron/chat-email-notifications",
-      "schedule": "* * * * *"
+      "path": "/api/cron/whatever-your-path-is",
+      "schedule": "0 0 * * *"
     }
   ]
 }
