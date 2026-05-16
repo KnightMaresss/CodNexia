@@ -193,44 +193,33 @@ useEffect(() => {
 
 
 const handlePayPalPayment = async (orderId: string, paymentType: 'deposit' | 'final') => {
-  console.log('💰 Starting payment:', { orderId, paymentType })
   setPayingOrder(orderId)
-  
+
   try {
-    const res = await fetch('/api/paypal/create-order', {
-      method: 'POST',
+    const res = await fetch('/api/orders/update-payment-test', {
+      method: 'PUT',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ orderId, paymentType }),
     })
-    
+
     const data = await res.json()
-    console.log('📦 Create order response:', data)
-    
-    if (!data.success) {
-      showToast(data.error || 'Failed to create payment', 'error')
-      setPayingOrder(null)
-      return
-    }
-    
-    // Store order info for when we return from PayPal
-    sessionStorage.setItem('pendingOrderId', orderId)
-    sessionStorage.setItem('pendingPaymentType', paymentType)
-    
-    console.log('💾 Stored in sessionStorage:', { orderId, paymentType })
-    console.log('🔗 Redirecting to:', data.approvalUrl)
-    
-    // Redirect to PayPal
-    if (data.approvalUrl) {
-      window.location.href = data.approvalUrl
+
+    if (data.success) {
+      showToast(
+        paymentType === 'deposit'
+          ? 'Deposit marked as paid ✅'
+          : 'Final payment marked as paid ✅',
+        'success'
+      )
+      fetchOrders()
     } else {
-      window.location.href = `https://www.sandbox.paypal.com/checkoutnow?token=${data.orderId}`
+      showToast(data.error || 'Payment update failed', 'error')
     }
-    
-  } catch (error) {
-    console.error('Payment error:', error)
-    showToast('Payment failed', 'error')
-    setPayingOrder(null)
+  } catch {
+    showToast('Payment update failed', 'error')
   }
+
+  setPayingOrder(null)
 }
 
 
