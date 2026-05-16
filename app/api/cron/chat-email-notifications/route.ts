@@ -3,18 +3,23 @@ import { NextResponse } from 'next/server'
 import { sendNewMessageEmail } from '@/lib/email-messages'
 
 export async function GET(request: Request) {
-  const authHeader = request.headers.get('authorization')
+const authHeader = request.headers.get('authorization')
+const cronHeader = request.headers.get('x-vercel-cron')
 
-  if (authHeader !== `Bearer ${process.env.CRON_SECRET}`) {
-    return NextResponse.json({ success: false, error: 'Unauthorized' }, { status: 401 })
-  }
+const isAuthorized =
+  authHeader === `Bearer ${process.env.CRON_SECRET}` ||
+  cronHeader === '1'
 
+if (!isAuthorized) {
+  return NextResponse.json({ success: false, error: 'Unauthorized' }, { status: 401 })
+}
   const client = await clientPromise
   const db = client.db(process.env.DB_NAME || 'student_services')
-
+  const results: Array<Record<string, unknown>> = []
   const now = new Date()
 
   const pending = await db
+  
     .collection('chat_email_notifications')
     .find({
       status: 'pending',
@@ -22,7 +27,9 @@ export async function GET(request: Request) {
     })
     .limit(50)
     .toArray()
-
+console.log('CRON CHAT EMAIL DEBUG:', {
+  pendingCount: pending.length,
+})
   for (const item of pending) {
     const chatView = await db.collection('chat_views').findOne({
       orderId: item.orderId,
@@ -36,12 +43,31 @@ export async function GET(request: Request) {
       senderRole: item.senderRole,
       createdAt: { $gt: lastSeenAt },
     })
-
+console.log('CRON ITEM DEBUG:', {
+  orderId: item.orderId,
+  recipientRole: item.recipientRole,
+  recipientEmail: item.recipientEmail,
+  senderRole: item.senderRole,
+  unreadCount,
+})
     if (unreadCount <= 0) {
       await db.collection('chat_email_notifications').updateOne(
         { _id: item._id },
         { $set: { status: 'cancelled', updatedAt: new Date() } }
       )
+      console.log('CHAT EMAIL CANCELLED:', {
+  orderId: item.orderId,
+  recipientRole: item.recipientRole,
+  recipientEmail: item.recipientEmail,
+  unreadCount,
+})
+results.push({
+  orderId: item.orderId,
+  action: 'cancelled',
+  reason: 'already_read',
+  recipientEmail: item.recipientEmail,
+  unreadCount,
+})
       continue
     }
 
@@ -65,7 +91,17 @@ export async function GET(request: Request) {
         },
       }
     )
+    results.push({
+  orderId: item.orderId,
+  action: 'sent',
+  recipientEmail: item.recipientEmail,
+  unreadCount,
+})
   }
 
-  return NextResponse.json({ success: true, processed: pending.length })
+return NextResponse.json({
+  success: true,
+  processed: pending.length,
+  results,
+})
 }

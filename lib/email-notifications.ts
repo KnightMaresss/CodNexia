@@ -20,12 +20,14 @@ const emailTemplate = (content: string) => `
 `
 
 export async function sendStatusUpdateEmail(
-  studentEmail: string,
-  serviceName: string,
-  price: number,
-  orderId: string,
-  newStatus: string,
-  oldStatus: string
+studentEmail: string,
+serviceName: string,
+price: number,
+orderId: string,
+newStatus: string,
+oldStatus: string,
+depositAmount = 0,
+remainingAmount = 0
  ) {
   const statusLabels: Record<string, string> = {
     'pending': 'Order Received',
@@ -62,7 +64,15 @@ export async function sendStatusUpdateEmail(
           </p>
           <p style="margin: 5px 0; font-size: 14px;"><strong>Order ID:</strong> ${orderId}</p>
           <p style="margin: 5px 0; font-size: 14px;"><strong>Service:</strong> ${serviceName}</p>
-          <p style="margin: 5px 0; font-size: 14px;"><strong>Amount:</strong> $${price}</p>
+          ${
+  newStatus === 'completed'
+    ? `
+      <p style="margin: 5px 0; font-size: 14px;"><strong>Total Price:</strong> $${price}</p>
+      <p style="margin: 5px 0; font-size: 14px;"><strong>Deposit Paid:</strong> $${depositAmount}</p>
+      <p style="margin: 5px 0; font-size: 14px;"><strong>Remaining Due:</strong> $${remainingAmount}</p>
+    `
+    : `<p style="margin: 5px 0; font-size: 14px;"><strong>Amount:</strong> $${price}</p>`
+}
         </div>
 
         <div style="background: #eff6ff; border-radius: 8px; padding: 15px; margin-bottom: 25px;">

@@ -366,6 +366,13 @@ if (order) {
         _id: { $ne: result.insertedId },
         createdAt: { $gt: lastSeenAt },
       })
+console.log('CHAT EMAIL DEBUG:', {
+  orderId,
+  senderRole,
+  recipientRole,
+  recipientEmail,
+  unreadBeforeThisMessage,
+})
 
     if (unreadBeforeThisMessage === 0) {
       await db.collection('chat_email_notifications').updateOne(
@@ -393,6 +400,11 @@ if (order) {
         },
         { upsert: true }
       )
+  console.log('PENDING CHAT EMAIL CREATED:', {
+  orderId,
+  recipientRole,
+  recipientEmail,
+})
     }
   }
 }
@@ -408,5 +420,7 @@ if (order) {
       { success: false, error: 'Failed to send message' },
       { status: 500 }
     )
+    
   }
+  
 }

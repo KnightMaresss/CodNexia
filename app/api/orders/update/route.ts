@@ -242,7 +242,9 @@ sendStatusUpdateEmail(
   order.finalPrice || order.price || 0,
   orderId,
   status,
-  oldStatus
+  oldStatus,
+  order.depositAmount || 0,
+  order.remainingAmount || 0
 )
     .catch((err) => console.error('Email error:', err))
 
