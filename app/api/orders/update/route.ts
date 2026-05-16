@@ -214,14 +214,15 @@ export async function PUT(request: Request) {
 
     const { sendStatusUpdateEmail } = await import('@/lib/email-notifications')
 
-    sendStatusUpdateEmail(
-      order.studentEmail,
-      SERVICE_NAMES[order.service] || order.service,
-      order.price,
-      orderId,
-      status,
-      oldStatus
-    ).catch((err) => console.error('Email error:', err))
+sendStatusUpdateEmail(
+  order.studentEmail,
+  SERVICE_NAMES[order.service] || order.service,
+  order.finalPrice || order.price || 0,
+  orderId,
+  status,
+  oldStatus
+)
+    .catch((err) => console.error('Email error:', err))
 
     return NextResponse.json({ success: true })
   } catch (error) {

@@ -83,8 +83,8 @@ export async function POST(request: Request) {
           },
         }],
         application_context: {
-         return_url: `${process.env.NEXTAUTH_URL}/my-orders`,
-         cancel_url: `${process.env.NEXTAUTH_URL}/my-orders`,
+         return_url: `${process.env.NEXT_PUBLIC_SITE_URL || 'https://codnexia.com'}/my-orders`,
+         cancel_url: `${process.env.NEXT_PUBLIC_SITE_URL || 'https://codnexia.com'}/my-orders`,
         }
       }),
     })

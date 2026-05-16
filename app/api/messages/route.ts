@@ -341,22 +341,29 @@ export async function POST(request: Request) {
           : message.trim()
 
         if (senderRole === 'student') {
+
           sendNewMessageEmail(
-            process.env.ADMIN_EMAIL || '',
-            sender,
-            notifyMsg,
-            orderId,
-            SERVICE_NAMES[order.service] || order.service
-          ).catch(() => {})
+          order.studentEmail,
+          sender,
+          senderRole,
+          notifyMsg,
+          orderId,
+          SERVICE_NAMES[order.service] || order.service
+           )  
+          .catch(() => {})
         } else {
+
           sendNewMessageEmail(
-            order.studentEmail,
-            sender,
-            notifyMsg,
-            orderId,
-            SERVICE_NAMES[order.service] || order.service
-          ).catch(() => {})
+          process.env.ADMIN_EMAIL || '',
+          sender,
+          senderRole,
+          notifyMsg,
+          orderId,
+          SERVICE_NAMES[order.service] || order.service
+          )
+          .catch(() => {})
         }
+
       }
     }
 

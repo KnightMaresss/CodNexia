@@ -21,10 +21,12 @@ const emailTemplate = (content: string) => `
 export async function sendNewMessageEmail(
   recipientEmail: string,
   senderName: string,
+  senderRole: string,
   message: string,
   orderId: string,
   serviceName: string
-) {
+)
+{
   try {
     await resend.emails.send({
       from: FROM_EMAIL,
@@ -42,7 +44,7 @@ export async function sendNewMessageEmail(
           <p style="margin: 0; font-size: 14px; color: #475569; font-style: italic;">"${message}"</p>
         </div>
 
-          <a href="${SITE_URL}/${senderName === 'Admin' ? 'my-orders' : 'admin'}?chat=${orderId}"
+          <a href="${SITE_URL}/${senderRole === 'admin' ? 'my-orders' : 'admin'}?chat=${orderId}""
            style="display: inline-block; background: #2563eb; color: white; padding: 14px 28px; border-radius: 8px; text-decoration: none; font-weight: 600; font-size: 14px;">
           View & Reply →
         </a>
