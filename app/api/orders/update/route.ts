@@ -119,9 +119,31 @@ export async function PUT(request: Request) {
         },
       })
 
-      notifyOrderUpdated({ orderId, type: 'price' })
+    notifyOrderUpdated({ orderId, type: 'price' })
 
-      return NextResponse.json({ success: true })
+const SERVICE_NAMES: Record<string, string> = {
+  'graduation-projects': 'Graduation Projects',
+  'academic-reports': 'Academic Reports',
+  'custom-websites': 'Custom Websites',
+  'mobile-apps': 'Mobile Apps',
+  'powerpoint-presentations': 'PowerPoint Presentations',
+  'cv-resume-writing': 'CV/Resume Writing',
+  translation: 'Translation (En↔Ar)',
+  'code-debugging': 'Code Debugging',
+}
+
+const { sendPriceReadyEmail } = await import('@/lib/email-notifications')
+
+sendPriceReadyEmail(
+  order.studentEmail,
+  SERVICE_NAMES[order.service] || order.service,
+  finalPrice,
+  depositAmount || 0,
+  remainingAmount || 0,
+  orderId
+).catch((err) => console.error('Price ready email error:', err))
+
+return NextResponse.json({ success: true })
     }
 
     if (paymentStatus && !status) {

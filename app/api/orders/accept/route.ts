@@ -137,28 +137,7 @@ export async function POST(request: Request) {
       assignedToName: userName,
       type: 'accepted',
     })
-const SERVICE_NAMES: Record<string, string> = {
-  'graduation-projects': 'Graduation Projects',
-  'academic-reports': 'Academic Reports',
-  'custom-websites': 'Custom Websites',
-  'mobile-apps': 'Mobile Apps',
-  'powerpoint-presentations': 'PowerPoint Presentations',
-  'cv-resume-writing': 'CV/Resume Writing',
-  translation: 'Translation (En↔Ar)',
-  'code-debugging': 'Code Debugging',
-}
-
-const { sendStatusUpdateEmail } = await import('@/lib/email-notifications')
-
-sendStatusUpdateEmail(
-  order.studentEmail,
-  SERVICE_NAMES[order.service] || order.service,
-  order.finalPrice || order.price || 0,
-  orderId,
-  'in-progress',
-  order.status
-).catch((err) => console.error('Accept email error:', err))
-
+    
     return NextResponse.json({ success: true })
   } catch (error) {
     console.error('Accept order error:', error)
