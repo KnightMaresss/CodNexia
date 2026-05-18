@@ -20,7 +20,7 @@ export function Navbar() {
   const { user, logout } = useAuth()
     
   return (
-    <nav className="fixed top-0 left-0 right-0 z-50 bg-[#0a0a1a]/90 backdrop-blur-md border-b border-white/10">
+  <nav className="fixed top-0 left-0 right-0 z-50 bg-[#0a0a1a]/95 backdrop-blur-xl border-b border-white/10 shadow-[0_1px_20px_rgba(0,0,0,0.25)]">
      <div className="w-full px-4 py-0 flex items-center justify-between">
         {/* Logo */}
         {/* Left Side - Logo + Nav Links */}

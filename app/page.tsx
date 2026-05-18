@@ -1,8 +1,8 @@
 'use client'
-import { Button } from "@/components/ui/button"
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import Link from "next/link"
-import { 
+import { useRouter } from "next/navigation"
+import { useState, useEffect, useRef } from "react"
+import {
   ArrowRight,
   GraduationCap,
   FileText,
@@ -12,230 +12,416 @@ import {
   FileUser,
   Languages,
   Bug,
-}
-from "lucide-react"
+  Star,
+  Shield,
+  Zap,
+  Clock,
+  ArrowUpRight,
+} from "lucide-react"
 import StatsSection from '@/components/StatsSection'
 import FAQSection from '@/components/FAQSection'
 
 export default function Home() {
+  const router = useRouter()
+  const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 })
+  const [isMounted, setIsMounted] = useState(false)
+  const isVisible = useRef(false)
+
+useEffect(() => {
+  let rafId: number
+
+  const handleMouseMove = (e: MouseEvent) => {
+    rafId = requestAnimationFrame(() => {
+      setMousePosition({ x: e.clientX, y: e.clientY })
+    })
+  }
+
+  requestAnimationFrame(() => {
+    setIsMounted(true)
+    isVisible.current = true
+  })
+
+  window.addEventListener('mousemove', handleMouseMove, { passive: true })
+
+  return () => {
+    window.removeEventListener('mousemove', handleMouseMove)
+    if (rafId) cancelAnimationFrame(rafId)
+  }
+}, [])
+
   const services = [
     {
       title: "Graduation Projects",
       description: "Complete thesis, documentation, and presentation",
-      priceRange: "$150 - $400",
+      priceRange: "$150 – $400",
       icon: GraduationCap,
       slug: "graduation-projects",
+      tag: "Most Popular",
+      color: "from-blue-500 to-cyan-500",
+      darkColor: "from-blue-400 to-cyan-400",
     },
     {
       title: "Academic Reports",
       description: "Research papers, essays, and literature reviews",
-      priceRange: "$50 - $200",
+      priceRange: "$50 – $200",
       icon: FileText,
       slug: "academic-reports",
+      tag: null,
+      color: "from-purple-500 to-pink-500",
+      darkColor: "from-purple-400 to-pink-400",
     },
     {
       title: "Custom Websites",
       description: "Professional websites for portfolio or business",
-      priceRange: "$400 - $1,000",
+      priceRange: "$400 – $1,000",
       icon: Globe,
       slug: "custom-websites",
+      tag: null,
+      color: "from-emerald-500 to-teal-500",
+      darkColor: "from-emerald-400 to-teal-400",
     },
     {
       title: "Mobile Apps",
       description: "iOS/Android apps for student projects",
-      priceRange: "$500 - $1,500",
+      priceRange: "$500 – $1,500",
       icon: Smartphone,
       slug: "mobile-apps",
+      tag: "Premium",
+      color: "from-orange-500 to-red-500",
+      darkColor: "from-orange-400 to-red-400",
     },
     {
       title: "PowerPoint Presentations",
       description: "Professional slides for thesis defense & class projects",
-      priceRange: "$30 - $100",
+      priceRange: "$30 – $100",
       icon: Presentation,
       slug: "powerpoint-presentations",
+      tag: null,
+      color: "from-rose-500 to-pink-600",
+      darkColor: "from-rose-400 to-pink-500",
     },
     {
-      title: "CV/Resume Writing",
-      description: "Professional CV for fresh graduates with ATS optimization",
-      priceRange: "$50 - $150",
+      title: "CV / Resume Writing",
+      description: "ATS-optimized CVs for fresh graduates",
+      priceRange: "$50 – $150",
       icon: FileUser,
       slug: "cv-resume-writing",
+      tag: null,
+      color: "from-amber-500 to-yellow-600",
+      darkColor: "from-amber-400 to-yellow-500",
     },
     {
-      title: "Translation (En↔Ar)",
-      description: "Academic document translation — human, no AI used",
-      priceRange: "$20 - $80",
+      title: "Translation (En ↔ Ar)",
+      description: "Human academic translation — no AI used",
+      priceRange: "$20 – $80",
       icon: Languages,
       slug: "translation",
+      tag: null,
+      color: "from-indigo-500 to-violet-600",
+      darkColor: "from-indigo-400 to-violet-500",
     },
     {
       title: "Code Debugging",
-      description: "Fix bugs, review & optimize your code projects",
-      priceRange: "$50 - $300",
+      description: "Fix bugs, review, and optimize your code",
+      priceRange: "$50 – $300",
       icon: Bug,
       slug: "code-debugging",
+      tag: null,
+      color: "from-cyan-500 to-blue-600",
+      darkColor: "from-cyan-400 to-blue-500",
     },
   ]
 
-  return (   
-    <main className="min-h-screen pt-15">
-{/* Hero Section */}
-<section className="relative overflow-hidden px-4 py-16 text-white bg-gradient-to-br from-background via-[#001a5c] to-background">
-  <div className="absolute inset-0 bg-[url('/grid.svg')] opacity-10" />
-  <div className="absolute left-1/2 top-32 h-[520px] w-[520px] -translate-x-1/2 rounded-full bg-blue-600/20 blur-[140px]" />
+  const trust = [
+    { icon: Star, label: "5-Star Rated", sub: "By 200+ students" },
+    { icon: Shield, label: "Plagiarism-Free", sub: "100% original work" },
+    { icon: Zap, label: "Fast Delivery", sub: "On-time, every time" },
+    { icon: Clock, label: "24/7 Support", sub: "Always available" },
+  ]
 
-<div className="relative mx-auto max-w-5xl pt-6 text-center">
-  <h1 className="text-5xl font-black leading-tight tracking-tight md:text-7xl">
-      Academic Help &{" "}
-      <span className="bg-gradient-to-r from-blue-400 to-cyan-400 bg-clip-text text-transparent">
-        Web Development
-      </span>{" "}
-      for Students
-    </h1>
+  return (
+    <main className="min-h-screen bg-background text-foreground overflow-x-hidden">
+      
+      {/* ─── ENHANCED HERO ─── */}
+    <section className="relative min-h-[82vh] flex flex-col items-center justify-center px-6 pt-16 pb-10 text-center overflow-hidden">
+        
+        {/* Premium multi-layered background */}
+        <div className="absolute inset-0">
+          {/* Primary gradient */}
+<div className="absolute inset-0 bg-[radial-gradient(ellipse_110%_80%_at_50%_0%,rgba(59,130,246,0.32),transparent_56%),radial-gradient(ellipse_75%_65%_at_72%_55%,rgba(168,85,247,0.20),transparent_60%),linear-gradient(to_bottom,var(--background),var(--background))]" />
+          {/* Animated gradient orbs */}
+          <div 
+            className="absolute top-0 left-1/4 w-[600px] h-[600px] bg-blue-500/10 dark:bg-blue-400/10 rounded-full blur-[120px] animate-pulse"
+            style={{
+              transform: `translate(${mousePosition.x * 0.02}px, ${mousePosition.y * 0.02}px)`,
+              transition: 'transform 0.8s cubic-bezier(0.17, 0.67, 0.83, 0.67)',
+            }}
+          />
+          <div 
+            className="absolute bottom-0 right-1/4 w-[500px] h-[500px] bg-purple-500/10 dark:bg-purple-400/10 rounded-full blur-[120px] animate-pulse delay-1000"
+            style={{
+              transform: `translate(${mousePosition.x * -0.01}px, ${mousePosition.y * -0.01}px)`,
+              transition: 'transform 1s cubic-bezier(0.17, 0.67, 0.83, 0.67)',
+            }}
+          />
+          <div 
+            className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[800px] bg-cyan-500/5 dark:bg-cyan-400/10 rounded-full blur-[140px]"
+            style={{
+              transform: `translate(calc(-50% + ${mousePosition.x * 0.015}px), calc(-50% + ${mousePosition.y * 0.015}px))`,
+              transition: 'transform 1.2s cubic-bezier(0.17, 0.67, 0.83, 0.67)',
+            }}
+          />
+        </div>
 
-    <p className="mx-auto mt-6 max-w-2xl text-lg leading-relaxed text-gray-300 md:text-xl">
-      Expert assistance for graduation projects, reports, websites, and apps.
-      Get high-quality work delivered on time.
-    </p>
+        {/* Grid overlay with animation */}
+        <div className="absolute inset-0">
+          <div className="absolute inset-0 bg-[url('/grid.svg')] opacity-[0.02] dark:opacity-[0.04] animate-fade-in" />
+        </div>
+        {/* Premium headline with gradient animation */}
+        <h1 className={`relative max-w-4xl text-5xl font-black leading-[1.05] tracking-[-0.04em] md:text-7xl lg:text-8xl transition-all duration-1000 delay-200 ${isMounted ? 'translate-y-0 opacity-100' : 'translate-y-8 opacity-0'}`}>
+          <span className="block text-foreground/90">Academic Help &</span>
+          <span className="block bg-gradient-to-r from-blue-600 via-blue-500 to-cyan-500 dark:from-blue-400 dark:via-blue-300 dark:to-cyan-400 bg-clip-text text-transparent animate-gradient bg-[length:200%_auto]">
+            Web Development
+          </span>
+          <span className="block text-foreground/90">for Students</span>
+        </h1>
 
-    <div className="mt-10 flex flex-col justify-center gap-4 sm:flex-row">
-      <Link href="/orders">
-        <Button
-          size="lg"
-          className="h-14 rounded-2xl bg-blue-600 px-8 text-base font-semibold text-white shadow-[0_0_40px_rgba(37,99,235,0.35)] transition-all hover:scale-[1.02] hover:bg-blue-700"
-        >
-          Place Your Order
-          <ArrowRight className="ml-2 h-5 w-5" />
-        </Button>
-      </Link>
+        {/* Enhanced description */}
+        <p className={`relative mt-8 max-w-2xl text-lg leading-relaxed text-muted-foreground/80 md:text-xl transition-all duration-1000 delay-300 ${isMounted ? 'translate-y-0 opacity-100' : 'translate-y-4 opacity-0'}`}>
+          Expert assistance for graduation projects, reports, websites, and apps — 
+          <span className="font-semibold text-foreground/90"> delivered on time, every time.</span>
+        </p>
 
-      <Link href="/portfolio">
-        <Button
-          size="lg"
-          variant="outline"
-          className="h-14 rounded-2xl border-white/15 bg-white/5 px-8 text-base text-white backdrop-blur-xl transition-all hover:border-blue-500/40 hover:bg-white/10"
-        >
-          View Portfolio
-        </Button>
-      </Link>
-    </div>
-  </div>
-</section>
+        {/* Premium CTAs with enhanced hover effects */}
+        <div className={`relative mt-12 flex flex-col items-center gap-4 sm:flex-row transition-all duration-1000 delay-400 ${isMounted ? 'translate-y-0 opacity-100' : 'translate-y-4 opacity-0'}`}>
+          <Link href="/orders">
+            <button className="group relative h-14 overflow-hidden rounded-2xl bg-gradient-to-r from-blue-600 to-blue-700 dark:from-blue-500 dark:to-blue-600 px-8 text-base font-semibold text-white shadow-[0_8px_32px_rgba(37,99,235,0.3)] dark:shadow-[0_8px_32px_rgba(37,99,235,0.4)] transition-all duration-300 hover:shadow-[0_12px_40px_rgba(37,99,235,0.5)] hover:scale-[1.03] flex items-center gap-2">
+              <span className="relative z-10">Place Your Order</span>
+              <ArrowRight className="relative z-10 h-4 w-4 transition-all duration-300 group-hover:translate-x-1.5 group-hover:scale-110" />
+              <div className="absolute inset-0 bg-gradient-to-r from-blue-500 to-blue-600 dark:from-blue-400 dark:to-blue-500 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+              <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/10 to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-700" />
+            </button>
+          </Link>
+          <Link href="/portfolio">
+            <button className="group relative h-14 overflow-hidden rounded-2xl border-2 border-border/80 bg-background/50 backdrop-blur-sm px-8 text-base font-semibold text-foreground transition-all duration-300 hover:border-blue-500/50 hover:bg-blue-50/50 dark:hover:bg-blue-950/30 hover:shadow-lg flex items-center gap-2">
+              View Portfolio
+              <ArrowUpRight className="h-4 w-4 text-muted-foreground transition-all duration-300 group-hover:text-foreground group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
+            </button>
+          </Link>
+        </div>
 
+        {/* Premium trust strip with enhanced styling */}
+<div className={`relative mt-14 flex flex-wrap items-center justify-center gap-8 md:gap-16 transition-all duration-1000 delay-500 ${isMounted ? 'translate-y-0 opacity-100' : 'translate-y-4 opacity-0'}`}>
+     {trust.map(({ icon: Icon, label, sub }) => (
+            <div 
+              key={label} 
+              className="group flex flex-col items-center gap-2 p-4 rounded-xl hover:bg-blue-50/50 dark:hover:bg-blue-950/30 transition-all duration-300 hover:scale-105 cursor-default"
+            >
+              <div className="flex items-center gap-2.5">
+                <div className="p-1.5 rounded-lg bg-gradient-to-br from-blue-500/10 to-cyan-500/10 dark:from-blue-400/10 dark:to-cyan-400/10 group-hover:from-blue-500/20 group-hover:to-cyan-500/20 transition-all duration-300">
+                  <Icon className="h-4 w-4 text-blue-600 dark:text-blue-400" />
+                </div>
+                <span className="text-sm font-bold text-foreground/80">{label}</span>
+              </div>
+              <span className="text-xs font-medium text-muted-foreground/60">{sub}</span>
+            </div>
+          ))}
+        </div>
+      </section>
 
+      {/* ─── ENHANCED STATS ─── */}
+      <div className="relative border-y-2 border-border/30 bg-gradient-to-r from-blue-50/50 via-background to-purple-50/50 dark:from-blue-950/20 dark:via-background dark:to-purple-950/20 backdrop-blur-xl">
+        <StatsSection />
+      </div>
 
+      {/* ─── PREMIUM SERVICES ─── */}
+    <section className="relative px-6 py-24 bg-[radial-gradient(ellipse_70%_45%_at_50%_0%,rgba(59,130,246,0.10),transparent_65%),linear-gradient(to_bottom,var(--background),color-mix(in_oklch,var(--muted)_45%,var(--background)),var(--background))] dark:bg-gradient-to-b dark:from-background dark:via-muted/20 dark:to-background">
+        <div className="absolute inset-0">
+          <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-blue-500/20 to-transparent" />
+        </div>
 
-      {/* Stats Section */}
-      <StatsSection />
+        <div className="relative mx-auto max-w-6xl">
+          {/* Enhanced section header */}
+          <div className="mb-8 text-center">
+            <h2 className="text-5xl font-black tracking-[-0.04em] text-foreground md:text-6xl bg-gradient-to-r from-foreground via-foreground/90 to-foreground bg-clip-text">
+              Our Premium Services
+            </h2>
+            <p className="mx-auto mt-4 max-w-lg text-muted-foreground/70">
+              Everything a student needs — from first draft to final delivery, crafted with excellence.
+            </p>
+          </div>
 
-{/* Services Section */}
-<section className="relative overflow-hidden px-4 py-18 bg-gradient-to-b from-background via-muted to-background dark:from-black dark:via-[#071a4a] dark:to-background">
-  <div className="absolute inset-0 opacity-40">
-  <div className="absolute left-1/2 top-0 h-[500px] w-[500px] -translate-x-1/2 rounded-full bg-blue-600/20 blur-[140px]" />
-</div>
-       <div className="relative max-w-6xl mx-auto">
-     <div className="mb-10 text-center">
-  <h2 className="text-4xl font-black tracking-tight text-foreground md:text-5xl">
-    Our Services
-  </h2>
- <p className="mx-auto mt-4 max-w-2xl text-lg text-muted-foreground">
-    Choose the service that fits your academic or development needs.
-  </p>
-</div>
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+          {/* Enhanced services grid */}
+          <div className="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-4">
             {services.map((service, index) => (
-              <Card key={index} className="group hover:shadow-xl transition-all duration-300 hover:-translate-y-1 flex flex-col border border-border/60 bg-card/80 backdrop-blur-sm shadow-sm transition-all hover:-translate-y-1 hover:border-blue-500/30 hover:shadow-2xl">
-                <CardHeader>
-                  <div className="w-12 h-12 rounded-xl bg-blue-100 dark:bg-blue-900/50 flex items-center justify-center mb-4 group-hover:bg-blue-600 transition-all duration-300">
-                    <service.icon className="h-6 w-6 text-blue-600 group-hover:text-white transition-colors" />
-                  </div>
-                  <CardTitle className="text-lg text-card-foreground">{service.title}</CardTitle>
-                  <CardDescription className="text-sm">{service.description}</CardDescription>
-                </CardHeader>
-                <CardContent className="mt-auto">
-                  <p className="text-2xl font-bold text-card-foreground mb-4">{service.priceRange}</p>
+              <div
+                key={service.slug}
+                className={`group relative flex flex-col rounded-3xl border-2 border-border/40 bg-card/75 dark:bg-card/60 backdrop-blur-xl p-6 transition-all duration-500 hover:-translate-y-2 hover:border-blue-500/30 hover:shadow-[0_20px_60px_rgba(37,99,235,0.15)] dark:hover:shadow-[0_20px_60px_rgba(37,99,235,0.25)] hover:bg-card/80`}
+                style={{
+                  transitionDelay: `${index * 50}ms`,
+                }}
+              >
+                {/* Gradient border on hover */}
+                <div className="absolute inset-0 rounded-3xl bg-gradient-to-r from-blue-500/0 via-purple-500/0 to-cyan-500/0 opacity-0 group-hover:opacity-100 transition-opacity duration-500 -z-10 blur-xl" />
+
+                {/* Tag badge */}
+                {service.tag && (
+                  <span className={`absolute -top-3 right-4 rounded-full bg-gradient-to-r ${service.color} ${service.darkColor} px-4 py-1.5 text-[11px] font-bold uppercase tracking-widest text-white shadow-lg`}>
+                    {service.tag}
+                  </span>
+                )}
+
+                {/* Icon with gradient background */}
+                <div className={`mb-5 flex h-14 w-14 items-center justify-center rounded-2xl bg-gradient-to-br ${service.color} ${service.darkColor} bg-opacity-10 shadow-lg group-hover:scale-110 group-hover:rotate-6 transition-all duration-300`}>
+                  <service.icon className="h-6 w-6 text-white" />
+                </div>
+
+                <h3 className="mb-2 text-lg font-bold text-card-foreground leading-tight group-hover:text-blue-700 dark:group-hover:text-blue-300 transition-colors duration-300">
+                  {service.title}
+                </h3>
+                <p className="mb-5 text-sm leading-relaxed text-muted-foreground/70 flex-1">
+                  {service.description}
+                </p>
+
+                <div className="space-y-3">
+                  <span className="text-2xl font-black text-foreground bg-gradient-to-r from-foreground to-foreground/70 bg-clip-text">
+                    {service.priceRange}
+                  </span>
+
                   <Link href={`/orders?service=${service.slug}`}>
-                    <Button className="w-full group bg-blue-50 dark:bg-blue-950 text-blue-600 dark:text-blue-400 hover:bg-blue-600 hover:text-white hover:shadow-[0_0_20px_rgba(37,99,235,0.4)] transition-all duration-300 border border-blue-100 dark:border-blue-900">
+                    <button className="group/btn w-full rounded-xl bg-gradient-to-r from-blue-600/5 to-cyan-600/5 dark:from-blue-400/5 dark:to-cyan-400/5 border-2 border-border/50 py-3 text-sm font-semibold text-muted-foreground transition-all duration-300 hover:border-blue-500/40 hover:bg-gradient-to-r hover:from-blue-600/10 hover:to-cyan-600/10 dark:hover:from-blue-400/10 dark:hover:to-cyan-400/10 hover:text-blue-700 dark:hover:text-blue-300 hover:shadow-lg flex items-center justify-center gap-2">
                       Order Now
-                      <ArrowRight className="ml-2 h-4 w-4 group-hover:translate-x-1 transition-transform" />
-                    </Button>
+                      <ArrowRight className="h-3.5 w-3.5 transition-all duration-300 group-hover/btn:translate-x-1.5 group-hover/btn:scale-110" />
+                    </button>
                   </Link>
-                </CardContent>
-              </Card>
+                </div>
+
+                {/* Subtle bottom gradient line */}
+                <div className="absolute bottom-0 left-4 right-4 h-px bg-gradient-to-r from-transparent via-border/30 to-transparent group-hover:via-blue-500/30 transition-all duration-500" />
+              </div>
             ))}
           </div>
         </div>
       </section>
 
-      {/* CTA / Track Section */}
-      <section className="py-20 px-4 bg-slate-900 text-white">
-        <div className="max-w-6xl mx-auto">
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-12 items-center">
-            <div className="text-center md:text-left">
-              <h2 className="text-3xl md:text-4xl font-bold mb-4">Ready to Get Started?</h2>
-              <p className="text-gray-300 text-lg mb-8">
-                Tell us what you need and we will get back to you within 24 hours
+      {/* ─── ENHANCED CTA / TRACK ─── */}
+      <section className="relative px-6 py-24 overflow-hidden border-y-2 border-border/30 bg-gradient-to-b from-muted/50 via-background to-muted/50">
+        {/* Animated background elements */}
+        <div className="absolute inset-0">
+          <div className="absolute top-0 left-1/4 w-[400px] h-[400px] bg-blue-500/5 dark:bg-blue-400/5 rounded-full blur-[100px] animate-pulse" />
+          <div className="absolute bottom-0 right-1/4 w-[400px] h-[400px] bg-purple-500/5 dark:bg-purple-400/5 rounded-full blur-[100px] animate-pulse delay-1000" />
+        </div>
+
+        <div className="relative mx-auto max-w-5xl">
+          <div className="grid grid-cols-1 gap-16 md:grid-cols-2 md:gap-20 items-center">
+
+            {/* Enhanced Left CTA */}
+            <div className={`transition-all duration-1000 ${isMounted ? 'translate-x-0 opacity-100' : '-translate-x-8 opacity-0'}`}>
+              <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full border border-blue-200/50 dark:border-blue-500/20 bg-blue-50/50 dark:bg-blue-950/30 backdrop-blur-sm mb-6">
+                <Zap className="h-3.5 w-3.5 text-blue-600 dark:text-blue-400" />
+                <p className="text-xs font-bold uppercase tracking-[0.25em] text-blue-700 dark:text-blue-300">
+                  Get Started
+                </p>
+              </div>
+              <h2 className="text-5xl font-black leading-tight tracking-[-0.04em] text-foreground md:text-6xl">
+                Ready to
+                <span className="block bg-gradient-to-r from-blue-600 to-cyan-500 dark:from-blue-400 dark:to-cyan-400 bg-clip-text text-transparent">
+                  begin?
+                </span>
+              </h2>
+              <p className="mt-6 text-lg text-muted-foreground/70 leading-relaxed">
+                Tell us what you need and we&apos;ll get back to you within 
+                <span className="font-semibold text-foreground/80"> 24 hours</span> with a personalized quote.
               </p>
+              <Link href="/orders">
+                <button className="group mt-8 inline-flex h-14 items-center gap-2.5 rounded-2xl bg-gradient-to-r from-blue-600 to-blue-700 dark:from-blue-500 dark:to-blue-600 px-8 text-base font-semibold text-white shadow-[0_8px_32px_rgba(37,99,235,0.3)] dark:shadow-[0_8px_32px_rgba(37,99,235,0.4)] transition-all duration-300 hover:shadow-[0_12px_40px_rgba(37,99,235,0.5)] hover:scale-[1.03]">
+                  Start Your Order
+                  <ArrowRight className="h-5 w-5 transition-all duration-300 group-hover:translate-x-1.5 group-hover:scale-110" />
+                </button>
+              </Link>
             </div>
 
-            <div className="text-center md:text-left">
-              <div className="md:pl-8 md:border-l border-white/20">
-                <h3 className="text-2xl font-bold mb-2">Already Have an Order?</h3>
-                <p className="text-gray-400 text-sm mb-6">
-                  Enter your Order ID to check your status instantly
+            {/* Enhanced Track Section */}
+            <div className={`relative transition-all duration-1000 delay-200 ${isMounted ? 'translate-x-0 opacity-100' : 'translate-x-8 opacity-0'}`}>
+              <div className="absolute -inset-0.5 bg-gradient-to-r from-blue-500/30 via-purple-500/30 to-cyan-500/30 dark:from-blue-400/20 dark:via-purple-400/20 dark:to-cyan-400/20 rounded-2xl blur opacity-50 group-hover:opacity-75 transition duration-500" />
+              <div className="group relative rounded-3xl border-2 border-border/40 bg-card/80 backdrop-blur-xl p-8 shadow-2xl transition-all duration-500 hover:-translate-y-2 hover:border-blue-500/30 hover:shadow-[0_25px_80px_rgba(37,99,235,0.22)] dark:hover:shadow-[0_25px_80px_rgba(37,99,235,0.32)]">
+               <div className="pointer-events-none absolute inset-0 -z-10 rounded-3xl bg-gradient-to-r from-blue-500/10 via-cyan-500/10 to-purple-500/10 opacity-0 blur-2xl transition-opacity duration-500 group-hover:opacity-100" />
+                <div className="absolute -top-4 left-6 rounded-full border-2 border-blue-200/50 dark:border-blue-500/20 bg-gradient-to-r from-blue-50 to-blue-100/50 dark:from-blue-950/50 dark:to-blue-900/30 backdrop-blur-xl px-4 py-1.5 text-xs font-bold text-blue-700 dark:text-blue-300 uppercase tracking-widest shadow-lg">
+                  Track Order
+                </div>
+                <p className="mb-6 text-muted-foreground/70 text-sm leading-relaxed mt-4">
+                  Already placed an order? Enter your Order ID to check your status instantly.
                 </p>
-                <form 
-                  onSubmit={async (e) => {
-                    e.preventDefault()
-                    const input = document.getElementById('home-track-input') as HTMLInputElement
-                    const orderId = input.value.trim()
-                    if (!orderId) return
+                <form
 
-                    const button = e.currentTarget.querySelector('button') as HTMLButtonElement
-                    const errorSpan = document.getElementById('home-track-error')
-                    
-                    button.disabled = true
-                    if (errorSpan) errorSpan.textContent = ''
 
-                    try {
-                      const res = await fetch('/api/track', {
-                        method: 'POST',
-                        headers: { 'Content-Type': 'application/json' },
-                        body: JSON.stringify({ orderId }),
-                      })
-                      const data = await res.json()
+                 onSubmit={async (e) => {
+  e.preventDefault()
 
-                      if (data.success) {
-                        sessionStorage.setItem('trackResult', JSON.stringify(data))
-                        window.location.href = `/track?id=${orderId}&direct=true`
-                      } else {
-                        if (errorSpan) errorSpan.textContent = data.error || 'Order not found'
-                      }
-                    } catch {
-                      if (errorSpan) errorSpan.textContent = 'Something went wrong. Please try again.'
-                    }
+  const input = document.getElementById('home-track-input') as HTMLInputElement
+  const errorSpan = document.getElementById('home-track-error')
+  const button = e.currentTarget.querySelector('button[type="submit"]') as HTMLButtonElement
+  const orderId = input.value.trim()
 
-                    button.disabled = false
-                  }}
-                  className="flex flex-col gap-2"
+  if (errorSpan) errorSpan.textContent = ''
+
+  if (!orderId) {
+    if (errorSpan) errorSpan.textContent = 'Please enter your Order ID.'
+    return
+  }
+
+  const isValidObjectId = /^[a-fA-F0-9]{24}$/.test(orderId)
+
+  if (!isValidObjectId) {
+    if (errorSpan) errorSpan.textContent = 'Wrong Order ID format.'
+    return
+  }
+
+  button.disabled = true
+
+  try {
+    const res = await fetch('/api/track', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ orderId }),
+    })
+
+    const data = await res.json()
+
+    if (data.success) {
+      sessionStorage.setItem('trackResult', JSON.stringify(data))
+       router.push(`/track?id=${orderId}&direct=true`)
+    } else {
+      if (errorSpan) errorSpan.textContent = 'Can’t find an order with this ID.'
+    }
+  } catch {
+    if (errorSpan) errorSpan.textContent = 'Something went wrong. Please try again.'
+  } finally {
+    button.disabled = false
+  }
+}}
+
+
+                  
+                  className="space-y-4"
                 >
-                  <div className="flex flex-col sm:flex-row gap-2">
+                  <div className="relative">
                     <input
                       id="home-track-input"
                       type="text"
-                      placeholder="Paste your Order ID"
-                      className="flex-1 px-4 py-3 bg-white/10 border border-white/20 rounded-lg text-white placeholder:text-gray-400 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none transition-all"
+                      placeholder="Paste your Order ID here…"
+                      className="w-full rounded-xl border-2 border-border/50 bg-background/50 transition-all duration-300 hover:border-blue-500/30 hover:bg-background/80 backdrop-blur-sm px-5 py-4 text-sm text-foreground placeholder:text-muted-foreground/50 outline-none transition-all duration-300 focus:border-blue-500/50 focus:ring-4 focus:ring-blue-500/10 focus:bg-background"
                     />
-                    <Button 
-                      type="submit"
-                      size="lg"
-                      className="bg-white text-slate-900 hover:bg-gray-100 px-8 py-6 text-lg sm:w-auto w-full"
-                    >
-                      Track
-                      <ArrowRight className="ml-2 h-5 w-5" />
-                    </Button>
+                    <div className="absolute inset-0 rounded-xl bg-gradient-to-r from-blue-500/5 to-cyan-500/5 opacity-0 focus-within:opacity-100 transition-opacity duration-300 pointer-events-none" />
                   </div>
-                  <span id="home-track-error" className="text-red-400 text-sm text-left"></span>
+                  <button
+                    type="submit"
+                    className="group w-full rounded-xl bg-gradient-to-r from-blue-600 to-blue-700 dark:from-blue-500 dark:to-blue-600 py-4 text-sm font-semibold text-white shadow-lg shadow-blue-500/20 hover:shadow-xl hover:shadow-blue-500/30 transition-all duration-300 hover:scale-[1.03] hover:shadow-[0_12px_40px_rgba(37,99,235,0.45)] flex items-center justify-center gap-2"
+                  >
+                    Track My Order
+                    <ArrowRight className="h-4 w-4 transition-all duration-300 group-hover:translate-x-1.5 group-hover:scale-110" />
+                  </button>
+                  <span id="home-track-error" className="block text-xs font-medium text-red-500 dark:text-red-400"></span>
                 </form>
               </div>
             </div>
@@ -243,11 +429,43 @@ export default function Home() {
         </div>
       </section>
 
-      <FAQSection />  
-      {/* Footer */}
-      <footer className="py-8 px-4 bg-slate-950 text-gray-400 text-center text-sm">
-        <p>© 2026 Codnexia. All rights reserved.</p>
+      {/* ─── ENHANCED FAQ ─── */}
+      <div className="relative bg-gradient-to-b from-background via-muted/10 to-background">
+        <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-blue-500/10 to-transparent" />
+        <FAQSection />
+      </div>
+
+      {/* ─── PREMIUM FOOTER ─── */}
+      <footer className="relative border-t-2 border-border/30 bg-gradient-to-b from-muted/50 to-background py-12 px-6 text-center overflow-hidden">
+        <div className="absolute inset-0 bg-gradient-to-t from-blue-500/5 to-transparent dark:from-blue-400/5" />
+        <div className="relative">
+          <div className="flex items-center justify-center gap-2 mb-4">
+            <div className="h-px w-8 bg-gradient-to-r from-transparent to-blue-500/50" />
+            <div className="h-1.5 w-1.5 rounded-full bg-blue-500 dark:bg-blue-400 animate-pulse" />
+            <div className="h-px w-8 bg-gradient-to-l from-transparent to-blue-500/50" />
+          </div>
+          <p className="text-sm font-medium text-muted-foreground/50">© 2026 Codnexia. All rights reserved.</p>
+        </div>
       </footer>
+
+      <style jsx>{`
+        @keyframes gradient {
+          0% { background-position: 0% 50%; }
+          50% { background-position: 100% 50%; }
+          100% { background-position: 0% 50%; }
+        }
+        .animate-gradient {
+          animation: gradient 3s ease infinite;
+          background-size: 200% 200%;
+        }
+        @keyframes fade-in {
+          from { opacity: 0; }
+          to { opacity: 1; }
+        }
+        .animate-fade-in {
+          animation: fade-in 1s ease-out;
+        }
+      `}</style>
     </main>
   )
 }
