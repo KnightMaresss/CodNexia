@@ -24,7 +24,7 @@ import {
 } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
-
+import PremiumPageShell from '@/components/PremiumPageShell'
 type AuditLog = {
   id: string
   action: string
@@ -265,7 +265,7 @@ export default function AuditLogsPage() {
   }
 
   return (
-    <main className="min-h-screen bg-gradient-to-br from-background to-muted px-4 py-24 text-foreground">
+    <PremiumPageShell className="px-4 py-24">
       <div className="mx-auto max-w-7xl">
         <div className="mb-8 flex flex-col gap-5 lg:flex-row lg:items-end lg:justify-between">
           <div>
@@ -300,7 +300,7 @@ export default function AuditLogsPage() {
         </div>
 
         <div className="mb-6 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
-          <Card className="border-border bg-card shadow-sm">
+          <Card className="group relative overflow-hidden rounded-3xl border-2 border-border/40 bg-white/45 dark:bg-black/45 backdrop-blur-2xl shadow-2xl transition-all duration-500 hover:-translate-y-1 hover:border-blue-500/30 hover:shadow-[0_20px_60px_rgba(37,99,235,0.18)]">
             <CardContent className="flex items-center justify-between p-5">
               <div>
                 <p className="text-sm text-muted-foreground">Total Logs</p>
@@ -310,7 +310,7 @@ export default function AuditLogsPage() {
             </CardContent>
           </Card>
 
-          <Card className="border-border bg-card shadow-sm">
+          <Card className="group relative overflow-hidden rounded-3xl border-2 border-border/40 bg-white/45 dark:bg-black/45 backdrop-blur-2xl shadow-2xl transition-all duration-500 hover:-translate-y-1 hover:border-blue-500/30 hover:shadow-[0_20px_60px_rgba(37,99,235,0.18)]">
             <CardContent className="flex items-center justify-between p-5">
               <div>
                 <p className="text-sm text-muted-foreground">
@@ -322,7 +322,7 @@ export default function AuditLogsPage() {
             </CardContent>
           </Card>
 
-          <Card className="border-border bg-card shadow-sm">
+          <Card className="group relative overflow-hidden rounded-3xl border-2 border-border/40 bg-white/45 dark:bg-black/45 backdrop-blur-2xl shadow-2xl transition-all duration-500 hover:-translate-y-1 hover:border-blue-500/30 hover:shadow-[0_20px_60px_rgba(37,99,235,0.18)]">
             <CardContent className="flex items-center justify-between p-5">
               <div>
                 <p className="text-sm text-muted-foreground">
@@ -334,7 +334,7 @@ export default function AuditLogsPage() {
             </CardContent>
           </Card>
 
-          <Card className="border-border bg-card shadow-sm">
+          <Card className="group relative overflow-hidden rounded-3xl border-2 border-border/40 bg-white/45 dark:bg-black/45 backdrop-blur-2xl shadow-2xl transition-all duration-500 hover:-translate-y-1 hover:border-blue-500/30 hover:shadow-[0_20px_60px_rgba(37,99,235,0.18)]">
             <CardContent className="flex items-center justify-between p-5">
               <div>
                 <p className="text-sm text-muted-foreground">
@@ -347,7 +347,7 @@ export default function AuditLogsPage() {
           </Card>
         </div>
 
-        <Card className="mb-6 border-border bg-card shadow-sm">
+        <Card className="mb-6 group relative overflow-hidden rounded-3xl border-2 border-border/40 bg-white/45 dark:bg-black/45 backdrop-blur-2xl shadow-2xl transition-all duration-500 hover:border-blue-500/30">
           <CardContent className="grid gap-4 p-4 md:grid-cols-[1fr_260px]">
             <div className="relative">
               <Search className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
@@ -383,7 +383,7 @@ export default function AuditLogsPage() {
           </CardContent>
         </Card>
 
-        <Card className="border-border bg-card shadow-sm">
+        <Card className="group relative overflow-hidden rounded-3xl border-2 border-border/40 bg-white/45 dark:bg-black/45 backdrop-blur-2xl shadow-2xl transition-all duration-500 hover:-translate-y-1 hover:border-blue-500/30 hover:shadow-[0_20px_60px_rgba(37,99,235,0.18)]">
           <CardHeader>
             <CardTitle className="flex items-center gap-2">
               <Activity className="h-5 w-5 text-blue-600" />
@@ -415,7 +415,7 @@ export default function AuditLogsPage() {
                   return (
                     <div
                       key={log.id}
-                      className={`rounded-2xl border bg-background p-4 transition hover:bg-muted/40 ${styles.border}`}
+                      className={`rounded-2xl border bg-background/50 p-4 backdrop-blur-sm transition-all duration-300 hover:bg-background/80 hover:shadow-[0_12px_40px_rgba(37,99,235,0.10)] ${styles.border}`}
                     >
                       <div className="flex flex-col gap-4 lg:flex-row lg:items-start lg:justify-between">
                         <div className="flex min-w-0 gap-4">
@@ -504,7 +504,7 @@ export default function AuditLogsPage() {
                       </div>
 
                       {isExpanded && (
-                        <div className="mt-4 rounded-xl border border-border bg-muted/40 p-4">
+                        <div className="mt-4 rounded-2xl border border-border/50 bg-background/50 p-4 backdrop-blur-sm">
                           <h3 className="mb-3 flex items-center gap-2 text-sm font-semibold">
                             <User className="h-4 w-4 text-blue-500" />
                             Metadata
@@ -566,6 +566,6 @@ export default function AuditLogsPage() {
           </div>
         </div>
       </div>
-    </main>
+   </PremiumPageShell>
   )
 }

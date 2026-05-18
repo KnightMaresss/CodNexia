@@ -23,7 +23,7 @@ import Link from 'next/link'
 import { useAuth } from '@/components/auth-context'
 import { useRouter } from 'next/navigation'
 import { showToast } from '@/components/ui/toast'
-
+import PremiumPageShell from '@/components/PremiumPageShell'
 interface Order {
   _id: string
   service: string
@@ -430,42 +430,11 @@ useEffect(() => {
     }
   }
 
-  if (authLoading || loading) {
-    return (
-      <main className="min-h-screen pt-24 py-16 px-4 bg-gradient-to-br from-background to-muted">
-        <div className="max-w-3xl mx-auto">
-          {/* Header skeleton */}
-          <div className="text-center mb-12">
-            <div className="w-16 h-16 bg-slate-200 dark:bg-slate-700 rounded-2xl mx-auto mb-4 animate-pulse" />
-            <div className="w-48 h-8 bg-slate-200 dark:bg-slate-700 rounded-lg mx-auto mb-2 animate-pulse" />
-            <div className="w-64 h-4 bg-slate-200 dark:bg-slate-700 rounded-lg mx-auto animate-pulse" />
-          </div>
-          {/* Order cards skeleton */}
-          <div className="space-y-4">
-            {[1, 2, 3].map((i) => (
-              <div key={i} className="bg-card rounded-xl p-6 shadow-sm border border-border animate-pulse">
-                <div className="flex items-center justify-between mb-4">
-                  <div className="space-y-2">
-                    <div className="w-40 h-5 bg-slate-200 dark:bg-slate-700 rounded" />
-                    <div className="w-28 h-4 bg-slate-200 dark:bg-slate-700 rounded" />
-                  </div>
-                  <div className="flex items-center gap-3">
-                    <div className="w-20 h-6 bg-slate-200 dark:bg-slate-700 rounded-full" />
-                    <div className="w-12 h-5 bg-slate-200 dark:bg-slate-700 rounded" />
-                  </div>
-                </div>
-                <div className="flex gap-2">
-                  <div className="w-24 h-8 bg-slate-200 dark:bg-slate-700 rounded-lg" />
-                  <div className="w-16 h-8 bg-slate-200 dark:bg-slate-700 rounded-lg" />
-                  <div className="w-20 h-8 bg-slate-200 dark:bg-slate-700 rounded-lg" />
-                </div>
-              </div>
-            ))}
-          </div>
-        </div>
-      </main>
-    )
-  }
+if (authLoading || loading) {
+  return null
+}
+    
+  
 
   if (!user) return null
 
@@ -478,7 +447,7 @@ useEffect(() => {
         onConfirm={confirmCancel}
         onCancel={() => setCancelModal({ open: false, orderId: '' })}
       />
-      <main className="min-h-screen pt-24 py-16 px-4 bg-gradient-to-br from-background to-muted">
+   <PremiumPageShell className="pt-24 py-16 px-4">
       <div className="max-w-3xl mx-auto">
         <div className="text-center mb-12">
           <div className="inline-flex items-center justify-center w-16 h-16 rounded-2xl bg-blue-100 mb-4">
@@ -490,7 +459,8 @@ useEffect(() => {
 
         {orders.length === 0 ? (
 
-                    <Card>
+          <Card className="group relative overflow-hidden rounded-3xl border-2 border-border/40 bg-white/45 dark:bg-white/45 dark:bg-black/45 backdrop-blur-2xl shadow-2xl transition-all duration-500 hover:-translate-y-1 hover:border-blue-500/30 hover:shadow-[0_20px_60px_rgba(37,99,235,0.18)] before:absolute before:inset-0 before:rounded-3xl before:border before:border-white/5 before:pointer-events-none">
+          <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_top_left,rgba(59,130,246,0.08),transparent_35%),radial-gradient(circle_at_bottom_right,rgba(168,85,247,0.06),transparent_40%)]" />
             <CardContent className="py-16 text-center">
               <div className="w-24 h-24 rounded-full bg-blue-50 dark:bg-blue-950 flex items-center justify-center mx-auto mb-6">
                 <Package className="h-12 w-12 text-blue-400" />
@@ -512,9 +482,11 @@ useEffect(() => {
           <div className="space-y-4">
             {orders.map((order) => (
              <Card
+             
              key={order._id}
-             className="overflow-hidden border border-border/60 bg-card shadow-sm transition-all hover:border-blue-500/30 hover:shadow-xl"
+             className="group relative overflow-hidden rounded-3xl border-2 border-border/40 bg-white/45 dark:bg-white/45 dark:bg-black/45 backdrop-blur-2xl shadow-2xl transition-all duration-500 hover:-translate-y-1 hover:border-blue-500/30 hover:shadow-[0_20px_60px_rgba(37,99,235,0.18)] before:absolute before:inset-0 before:rounded-3xl before:border before:border-white/5 before:pointer-events-none"
                 >
+              <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_top_left,rgba(59,130,246,0.08),transparent_35%),radial-gradient(circle_at_bottom_right,rgba(168,85,247,0.06),transparent_40%)]" />
                 <CardContent className="p-6">
 
 
@@ -543,7 +515,7 @@ useEffect(() => {
                      <p className="font-bold text-green-600">{order.finalPrice ? `$${order.finalPrice}` : 'TBD'}</p>
                     </div>
                   </div>
-<div className="mt-5 rounded-xl border border-border/50 bg-muted/20 px-4 py-4">
+<div className="mt-5 rounded-3xl border-2 border-border/40 bg-background/40 px-4 py-4 backdrop-blur-xl transition-all duration-500 hover:border-blue-500/30 hover:shadow-[0_12px_40px_rgba(37,99,235,0.12)]">
   <div className="flex items-center justify-between">
     {[
       { key: 'pending', label: 'Received', icon: Clock },
@@ -590,7 +562,7 @@ useEffect(() => {
 </div>
   {/* Payment Info Box - Show for unpaid or deposit_paid orders */}
 {(order.paymentStatus === 'unpaid' || order.paymentStatus === 'deposit_paid') && (
-  <div className="mt-3 bg-blue-50 dark:bg-blue-950/30 rounded-lg p-3">
+  <div className="mt-3 bg-blue-500/10 dark:bg-blue-950/30 rounded-lg p-3">
     <h4 className="text-xs font-semibold text-blue-800 dark:text-blue-300 mb-1">
       💡 How payments work
     </h4>
@@ -682,7 +654,7 @@ useEffect(() => {
                     {/* Payment Buttons */}
   {order.finalPrice && (order.status === 'pending' || order.status === 'in-progress') && order.paymentStatus === 'unpaid' && (
   <div className="mt-3 pt-3 border-t border-border">
-    <div className="bg-amber-50 dark:bg-amber-950/30 rounded-lg p-3 mb-3">
+    <div className="bg-amber-500/10 dark:bg-amber-950/30 rounded-lg p-3 mb-3">
       <p className="text-sm font-medium text-amber-800 dark:text-amber-300">
         💰 Ready to start?
       </p>
@@ -704,7 +676,7 @@ useEffect(() => {
 )}
 {/* After Deposit - Waiting for completion */}
 {order.paymentStatus === 'deposit_paid' && order.status !== 'completed' && (
-  <div className="mt-3 bg-green-50 dark:bg-green-950/30 rounded-lg p-3">
+  <div className="mt-3 bg-green-500/10 dark:bg-green-950/30 rounded-lg p-3">
     <div className="flex items-center gap-2">
       <CheckCircle2 className="h-4 w-4 text-green-600" />
       <p className="text-sm font-medium text-green-800 dark:text-green-300">
@@ -718,7 +690,7 @@ useEffect(() => {
 )}
 {order.status === 'completed' && order.paymentStatus === 'deposit_paid' && (
   <div className="mt-3 pt-3 border-t border-border">
-    <div className="bg-purple-50 dark:bg-purple-950/30 rounded-lg p-3 mb-3">
+    <div className="bg-purple-500/10 dark:bg-purple-950/30 rounded-lg p-3 mb-3">
       <p className="text-sm font-medium text-purple-800 dark:text-purple-300">
         🎉 Your project is ready!
       </p>
@@ -738,7 +710,7 @@ useEffect(() => {
   </div>
 )}
       {order.paymentStatus === 'fully_paid' && (
-  <div className="mt-3 bg-emerald-50 dark:bg-emerald-950/30 rounded-lg p-3">
+  <div className="mt-3 bg-emerald-500/10 dark:bg-emerald-950/30 rounded-lg p-3">
     <div className="flex items-center gap-2">
       <CheckCircle2 className="h-4 w-4 text-emerald-600" />
       <p className="text-sm font-medium text-emerald-800 dark:text-emerald-300">
@@ -843,7 +815,7 @@ useEffect(() => {
       }
     }}
     disabled={uploadingToOrder === order._id}
-    className="mb-3 w-full rounded-2xl border-2 border-dashed border-border bg-muted/20 p-4 text-center transition-all hover:border-blue-400 hover:bg-blue-500/5"
+    className="mb-3 w-full rounded-2xl border-2 border-dashed border-border/40 bg-background/50 p-4 text-center backdrop-blur-sm transition-all duration-300 hover:border-blue-400 hover:bg-blue-500/10 hover:shadow-[0_8px_24px_rgba(37,99,235,0.10)]"
   >
     {uploadingToOrder === order._id ? (
       <Loader2 className="h-4 w-4 animate-spin mx-auto" />
@@ -863,7 +835,7 @@ useEffect(() => {
                           {orderFiles[order._id].map((file) => (
                             <div
                               key={file.id}
-                              className="flex items-center justify-between bg-muted rounded-lg px-3 py-2"
+                              className="flex items-center justify-between bg-background/60 backdrop-blur-sm border border-border/40 rounded-xl px-3 py-2"
                             >
                               <div className="flex items-center gap-2">
                                 <FileText className="h-4 w-4 text-blue-600" />
@@ -896,7 +868,7 @@ useEffect(() => {
                   )}
                      {/* Chat */}
 {chatOrder === order._id && (
-  <div id={`chat-${order._id}`} className="scroll-mt-24 mt-4 pt-4 border-t">
+  <div id={`chat-${order._id}`} className="scroll-mt-24 mt-5 pt-5 border-t border-border/50">
     <p className="text-xs text-muted-foreground mb-3">Messages</p>
    <OrderMessages orderId={order._id} userName="student" />
   </div>
@@ -920,9 +892,8 @@ useEffect(() => {
           }
           e.target.value = ''
         }}
-      />
-      
-    </main>
+      />  
+  </PremiumPageShell>
      </>
   )
 }

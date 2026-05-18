@@ -7,6 +7,7 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { ArrowRight, CheckCircle, Mail, FileText, DollarSign, Sparkles,Package,Upload, X, FileText as FileIcon } from 'lucide-react'
 import { Skeleton, CardSkeleton } from '@/components/ui/skeleton'
 import { useAuth } from '@/components/auth-context'
+import PremiumPageShell from '@/components/PremiumPageShell'
 import Link from 'next/link'
 
 const services: Record<string, { name: string; range: string; min: number; max: number; description: string }> = {
@@ -100,7 +101,7 @@ function OrderFormContent() {
 
   if (submitted) {
     return (
-     <main className="min-h-screen pt-16 flex items-center justify-center px-4 bg-gradient-to-br from-background to-muted">
+  <PremiumPageShell className="pt-16 flex items-center justify-center px-4">
         <Card className="max-w-lg w-full text-center py-12">
           <CardContent className="space-y-6">
                         <div className="w-20 h-20 rounded-full bg-green-100 flex items-center justify-center mx-auto">
@@ -138,12 +139,13 @@ function OrderFormContent() {
             </div>
           </CardContent>
         </Card>
-      </main>
+      </PremiumPageShell>
+    
     )
   }
 
   return (
-   <main className="min-h-screen pt-24 py-16 px-4 bg-gradient-to-br from-background to-muted">
+  <PremiumPageShell className="pt-24 py-16 px-4">
       <div className="max-w-4xl mx-auto">
         {/* Step Indicator */}
         <div className="flex items-center justify-center gap-2 mb-12">
@@ -179,7 +181,7 @@ function OrderFormContent() {
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
           {/* Form */}
           <div className="lg:col-span-2">
-           <Card className="overflow-hidden border border-border/60 bg-card shadow-xl transition-all hover:border-blue-500/30 hover:shadow-2xl">
+          <Card className="group relative overflow-hidden rounded-3xl border-2 border-border/40 bg-card/75 backdrop-blur-xl shadow-2xl transition-all duration-500 hover:-translate-y-1 hover:border-blue-500/30 hover:shadow-[0_20px_60px_rgba(37,99,235,0.15)] dark:bg-card/60 dark:hover:shadow-[0_20px_60px_rgba(37,99,235,0.25)]">
               <CardHeader>
                 <CardTitle className="flex items-center gap-2">
                   <FileText className="h-5 w-5 text-blue-600" />
@@ -200,7 +202,7 @@ function OrderFormContent() {
                       type="email"
                       required
                       placeholder="student@example.com"
-                      className="w-full px-4 py-3 border border-input bg-background text-foreground rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none transition-all"
+                      className="w-full rounded-xl border-2 border-border/50 bg-background/50 px-4 py-3 text-foreground outline-none backdrop-blur-sm transition-all duration-300 hover:border-blue-500/30 hover:bg-background/80 focus:border-blue-500/50 focus:ring-4 focus:ring-blue-500/10"
                       value={formData.studentEmail}
                       onChange={(e) => setFormData({ ...formData, studentEmail: e.target.value })}
                     />
@@ -221,10 +223,10 @@ function OrderFormContent() {
                           key={key}
                           type="button"
                           onClick={() => handleServiceChange(key)}
-                        className={`text-left p-4 rounded-2xl border-2 transition-all duration-300 hover:scale-[1.02] ${
+                         className={`group text-left p-4 rounded-2xl border-2 backdrop-blur-sm transition-all duration-300 hover:-translate-y-1 hover:scale-[1.02] ${
                             formData.service === key
-                             ? 'border-blue-600 bg-blue-50 dark:bg-blue-950 shadow-md'
-                           : 'border-border bg-background/40 hover:border-blue-500/40 hover:bg-blue-500/5'
+                            ? 'border-blue-600 bg-blue-500/10 shadow-[0_8px_30px_rgba(37,99,235,0.18)] dark:bg-blue-950/50'
+                            : 'border-border/50 bg-background/40 hover:border-blue-500/40 hover:bg-blue-500/5 hover:shadow-[0_8px_24px_rgba(37,99,235,0.10)]'
                           }`}
                         >
                           <p className="font-semibold text-foreground">{name}</p>
@@ -244,8 +246,7 @@ function OrderFormContent() {
                       required
                       rows={5}
                       placeholder="Describe your project, deadline, and any specific requirements..."
-                      className="w-full px-4 py-3 border border-input bg-background text-foreground rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none transition-all resize-none"
-                      value={formData.requirements}
+                     className="w-full rounded-xl border-2 border-border/50 bg-background/50 px-4 py-3 text-foreground outline-none backdrop-blur-sm transition-all duration-300 hover:border-blue-500/30 hover:bg-background/80 focus:border-blue-500/50 focus:ring-4 focus:ring-blue-500/10 resize-none"                      value={formData.requirements}
                       onChange={(e) => setFormData({ ...formData, requirements: e.target.value })}
                     />
                     <div className="flex justify-between items-center mt-1">
@@ -383,7 +384,7 @@ function OrderFormContent() {
           {/* Order Summary Sidebar */}
           <div className="lg:col-span-1">
             <div className="sticky top-24 space-y-6">
-            <Card className="overflow-hidden border border-border/60 bg-card text-foreground shadow-xl transition-all hover:border-blue-500/30 hover:shadow-2xl dark:border-blue-500/20 dark:bg-blue-950/40 dark:text-white dark:hover:border-blue-400/40 dark:hover:shadow-blue-500/10">             
+               <Card className="group relative overflow-hidden rounded-3xl border-2 border-blue-500/20 bg-white/35 text-foreground backdrop-blur-2xl shadow-[0_20px_60px_rgba(37,99,235,0.12)] transition-all duration-500 hover:-translate-y-1 hover:border-blue-500/40 hover:bg-white/45 hover:shadow-[0_24px_70px_rgba(37,99,235,0.20)] dark:bg-blue-950/40 dark:text-white dark:hover:shadow-blue-500/20">
               <CardHeader>
                   <CardTitle className="flex items-center gap-2 text-lg">
                     <DollarSign className="h-5 w-5 text-blue-400" />
@@ -425,7 +426,7 @@ function OrderFormContent() {
           </div>
         </div>
       </div>
-    </main>
+  </PremiumPageShell>
   )
 }
 
@@ -433,7 +434,7 @@ export default function OrdersPage() {
   return (
     <Suspense
       fallback={
-       <main className="min-h-screen py-18 px-4 bg-gradient-to-br from-background to-muted">
+     <PremiumPageShell className="py-18 px-4">
           <div className="max-w-4xl mx-auto">
             <div className="text-center mb-12">
               <Skeleton className="h-8 w-64 mx-auto mb-4" />
@@ -448,7 +449,7 @@ export default function OrdersPage() {
               </div>
             </div>
           </div>
-        </main>
+       </PremiumPageShell>
       }
     >
       <OrderFormContent />

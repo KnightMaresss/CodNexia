@@ -2,7 +2,6 @@
 import { useEffect, useState, useMemo,useRef } from 'react'
 import { Button } from '@/components/ui/button'
 import { Card, CardContent} from '@/components/ui/card'
-import { Skeleton, StatsSkeleton, OrderCardSkeleton } from '@/components/ui/skeleton'
 import { showToast } from '@/components/ui/toast'
 import { ConfirmModal } from '@/components/ui/confirm-modal'
 import { OrderMessages } from '@/components/OrderMessages'
@@ -36,7 +35,7 @@ import {
   Wifi,
   WifiOff,
 } from 'lucide-react'
-
+import PremiumPageShell from '@/components/PremiumPageShell'
 interface Order {
   _id: string
   studentEmail: string
@@ -721,30 +720,9 @@ const getServiceRange = (service: string) => {
   return ranges[service] || { min: 0, max: 0 }
 }
 
-  if (loading) {
-      return (
-      <main className="min-h-screen pt-16 py-8 px-4 bg-gradient-to-br from-background to-muted">
-        <div className="max-w-7xl mx-auto">
-          <div className="flex items-center justify-between mb-8">
-            <div>
-              <Skeleton className="h-8 w-48 mb-2" />
-              <Skeleton className="h-4 w-32" />
-            </div>
-            <div className="flex gap-3">
-              <Skeleton className="h-9 w-24" />
-              <Skeleton className="h-9 w-24" />
-            </div>
-          </div>
-          <StatsSkeleton />
-          <div className="space-y-4 mt-6">
-            {[...Array(3)].map((_, i) => (
-              <OrderCardSkeleton key={i} />
-            ))}
-          </div>
-        </div>
-      </main>
-    )
-  }
+if (loading) {
+  return null
+}
 
  if (!authenticated) {
   router.push('/login')
@@ -796,19 +774,19 @@ const getServiceRange = (service: string) => {
         onCancel={() => setDeleteModal({ open: false, orderId: '' })}
       />
       <SoundNotification play={playSound} />
-      <main className="min-h-screen pt-20 py-8 px-4 bg-gradient-to-br from-background to-muted">
+      <PremiumPageShell className="pt-20 py-8 px-4">
 
 
       <div className="max-w-7xl mx-auto">
        <div className="mb-10 flex flex-col gap-6 xl:flex-row xl:items-center xl:justify-between">
 
         <div>
-  <div className="mb-3 inline-flex items-center gap-2 rounded-full border border-blue-500/20 bg-blue-500/10 px-3 py-1 text-xs font-semibold text-blue-300">
+  <div className="mb-3 inline-flex items-center gap-2 rounded-full border border-blue-500/20 bg-blue-500/10 px-3 py-1 text-xs font-semibold text-blue-700 dark:text-blue-300">
     <Shield className="h-3.5 w-3.5" />
     {isFounderRole(userRole) ? 'Founder Access' : 'Staff Access'}
   </div>
 
-  <h1 className="text-4xl font-black tracking-tight text-white">
+  <h1 className="text-4xl font-black tracking-tight text-foreground">
     {isFounderRole(userRole)
       ? 'Founder Dashboard'
       : 'Staff Dashboard'}
@@ -835,12 +813,14 @@ const getServiceRange = (service: string) => {
  {streamConnected ? 'Live Sync' : 'Offline'}
 </div>
 
-<Link href="/admin/audit-logs">
-  <Button variant="outline" size="default">
-    <Shield className="h-4 w-4 mr-1" />
-    Audit Logs
-  </Button>
-</Link>
+{userRole === 'founder' && (
+  <Link href="/admin/audit-logs">
+    <Button variant="outline" size="default">
+      <Shield className="h-4 w-4 mr-1" />
+      Audit Logs
+    </Button>
+  </Link>
+)}
                {(canAccessAdmin(userRole)) && (
               <Link href="/profile">
                 <Button variant="outline" size="default">
@@ -870,7 +850,7 @@ const getServiceRange = (service: string) => {
     if (isFounderRole(userRole)) fetchUsers()
   }}
   className={`px-4 py-2 rounded-lg text-sm font-medium transition-all ${
-    activeTab === 'orders' ? 'bg-blue-600 text-white' : 'bg-card text-foreground border border-border'
+    activeTab === 'orders' ? 'bg-blue-600 text-white' : 'border border-border/60 bg-white/45 dark:bg-black/35 backdrop-blur-xl text-muted-foreground hover:border-blue-500/30 hover:text-foreground'
   }`}
 >
  📦 Orders
@@ -888,7 +868,7 @@ const getServiceRange = (service: string) => {
   fetchRatings()
 }}
               className={`px-4 py-2 rounded-lg text-sm font-medium transition-all ${
-                activeTab === 'completed' ? 'bg-green-600 text-white' : 'bg-card text-foreground border border-border'
+                activeTab === 'completed' ? 'bg-green-600 text-white' : 'border border-border/60 bg-white/45 dark:bg-black/35 backdrop-blur-xl text-muted-foreground hover:border-blue-500/30 hover:text-foreground'
               }`}
             >
               ✅ My Completed
@@ -902,7 +882,7 @@ const getServiceRange = (service: string) => {
                 fetchRatings()
               }}
               className={`px-4 py-2 rounded-lg text-sm font-medium transition-all ${
-                activeTab === 'ratings' ? 'bg-yellow-600 text-white' : 'bg-card text-foreground border border-border'
+                activeTab === 'ratings' ? 'bg-yellow-600 text-white' : 'border border-border/60 bg-white/45 dark:bg-black/35 backdrop-blur-xl text-muted-foreground hover:border-blue-500/30 hover:text-foreground'
               }`}
             >
               ⭐ Ratings
@@ -919,7 +899,7 @@ const getServiceRange = (service: string) => {
 }}
 
         className={`px-4 py-2 rounded-lg text-sm font-medium transition-all ${
-        activeTab === 'users' ? 'bg-blue-600 text-white' : 'bg-card text-foreground border border-border'
+        activeTab === 'users' ? 'bg-blue-600 text-white' : 'border border-border/60 bg-white/45 dark:bg-black/35 backdrop-blur-xl text-muted-foreground hover:border-blue-500/30 hover:text-foreground'
          }`}
          >  
          👥 Users
@@ -1000,7 +980,7 @@ const getServiceRange = (service: string) => {
                             <span className="text-xs text-muted-foreground">Completion Rate</span>
                             <span className="text-sm font-bold text-green-600">{mod.stats.completionRate}%</span>
                           </div>
-                          <div className="w-full bg-slate-200 dark:bg-slate-700 rounded-full h-1.5 mt-1">
+                          <div className="w-full bg-slate-200 dark:bg-slate-200 dark:bg-slate-700 rounded-full h-1.5 mt-1">
                             <div
                               className="bg-green-500 h-1.5 rounded-full transition-all"
                               style={{ width: `${mod.stats.completionRate}%` }}
@@ -1128,7 +1108,7 @@ const getServiceRange = (service: string) => {
             u.role === 'moderator' ? 'student' : 'moderator'
           )
         }
-        className="border-purple-500/20 bg-purple-500/10 text-purple-600 hover:bg-purple-500/20 dark:text-purple-300"
+        className="border-purple-500/20 bg-purple-500/10 text-purple-600 hover:bg-purple-500/20 dark:text-purple-700 dark:text-purple-300"
       >
         {u.role === 'moderator' ? 'Remove Mod' : 'Make Mod'}
       </Button>
@@ -1139,7 +1119,7 @@ const getServiceRange = (service: string) => {
         onClick={() => toggleBlockUser(u._id, !!u.blocked)}
         className={
           u.blocked
-            ? 'border-emerald-500/20 bg-emerald-500/10 text-emerald-600 hover:bg-emerald-500/20 dark:text-emerald-300'
+            ? 'border-emerald-500/20 bg-emerald-500/10 text-emerald-600 hover:bg-emerald-500/20 dark:text-emerald-700 dark:text-emerald-300'
             : 'border-red-500/20 bg-red-500/10 text-red-600 hover:bg-red-500/20 dark:text-red-300'
         }
       >
@@ -1310,7 +1290,7 @@ const getServiceRange = (service: string) => {
 }, 300)
     }
   }}
- className="inline-flex items-center gap-2 rounded-xl border border-blue-500/20 bg-blue-500/10 px-3 py-2 text-xs font-medium text-blue-600 transition hover:bg-blue-500/20 dark:text-blue-300"
+ className="inline-flex items-center gap-2 rounded-xl border border-blue-500/20 bg-blue-500/10 px-3 py-2 text-xs font-medium text-blue-600 transition hover:bg-blue-500/20 dark:text-blue-700 dark:text-blue-300"
 >
   <MessageCircle className="h-3 w-3" />
 
@@ -1376,17 +1356,6 @@ const getServiceRange = (service: string) => {
     )}
   </div>
 )}
-
-
-
-
-
-
-
-
-
-
-
 
        {/* Completed Orders Tab - Moderator only */}
        {activeTab === 'completed' && isModeratorRole(userRole) && (
@@ -1467,7 +1436,7 @@ const getServiceRange = (service: string) => {
               { label: 'Revenue', value: `$${stats.totalRevenue}`, icon: DollarSign, color: 'bg-emerald-100 dark:bg-emerald-900/30 text-emerald-700 dark:text-emerald-400', valueColor: 'text-emerald-700 dark:text-emerald-400' }
             ] : []),
           ].map((stat) => (
-            <Card key={stat.label} className="border-0 shadow-sm">
+            <Card key={stat.label} className="group relative overflow-hidden rounded-3xl border-2 border-border/40 bg-white/45 dark:bg-black/45 backdrop-blur-2xl shadow-2xl transition-all duration-500 hover:-translate-y-1 hover:border-blue-500/30 hover:shadow-[0_20px_60px_rgba(37,99,235,0.18)] before:absolute before:inset-0 before:rounded-3xl before:border before:border-white/5 before:pointer-events-none">
               <CardContent className="p-4 flex items-center gap-3">
                 <div className={`w-10 h-10 rounded-lg flex items-center justify-center ${stat.color}`}>
                   <stat.icon className="h-5 w-5" />
@@ -1480,7 +1449,7 @@ const getServiceRange = (service: string) => {
             </Card>
           ))}              
         </div>
-     <Card className="mb-8 overflow-hidden border border-border/50 bg-background/80 shadow-xl backdrop-blur">
+     <Card className="mb-8 group relative overflow-hidden rounded-3xl border-2 border-border/40 bg-white/45 dark:bg-black/45 backdrop-blur-2xl shadow-2xl transition-all duration-500 hover:border-blue-500/30">
           <CardContent className="p-5">
             <div className="flex flex-col gap-4 xl:flex-row xl:items-center">
               <div className="flex-1 relative">
@@ -1531,7 +1500,7 @@ const getServiceRange = (service: string) => {
                   setStatusFilter('all')
                   setServiceFilter('all')
                 }}
-                className="mt-4 inline-flex items-center gap-1 rounded-lg border border-blue-500/20 bg-blue-500/10 px-3 py-2 text-xs font-medium text-blue-600 dark:text-blue-300 transition hover:bg-blue-500/20"              >
+                className="mt-4 inline-flex items-center gap-1 rounded-lg border border-blue-500/20 bg-blue-500/10 px-3 py-2 text-xs font-medium text-blue-600 dark:text-blue-700 dark:text-blue-300 transition hover:bg-blue-500/20"              >
                 <X className="h-3 w-3" />
                 Clear all filters
               </button>
@@ -1559,7 +1528,8 @@ const getServiceRange = (service: string) => {
     {filteredOrders.map((order) => (
   <Card
     key={order._id}
-    className="group overflow-hidden border border-border/60 bg-card transition-all duration-300 hover:border-blue-500/30 hover:shadow-2xl hover:shadow-blue-500/5 dark:bg-black/60 dark:backdrop-blur-xl"  >
+    className="group relative overflow-hidden rounded-3xl border-2 border-border/40 bg-white/45 dark:bg-black/45 backdrop-blur-2xl shadow-2xl transition-all duration-500 hover:-translate-y-1 hover:border-blue-500/30 hover:shadow-[0_20px_60px_rgba(37,99,235,0.18)] before:absolute before:inset-0 before:rounded-3xl before:border before:border-white/5 before:pointer-events-none"  >
+   <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_top_left,rgba(59,130,246,0.08),transparent_35%),radial-gradient(circle_at_bottom_right,rgba(168,85,247,0.06),transparent_40%)]" />
     <CardContent className="p-0">
       {/* Top Header */}
       <div className="border-b border-border/50 bg-gradient-to-r from-blue-500/[0.03] via-background to-purple-500/[0.03] px-6 py-5 dark:border-white/10">
@@ -1670,19 +1640,19 @@ const getServiceRange = (service: string) => {
             </span>
 
             {order.paymentStatus === 'unpaid' && order.finalPrice && (
-              <span className="rounded-full border border-yellow-500/20 bg-yellow-500/10 px-3 py-1 text-xs font-semibold text-yellow-300">
+              <span className="rounded-full border border-yellow-500/20 bg-yellow-500/10 px-3 py-1 text-xs font-semibold text-yellow-700 dark:text-yellow-300">
                 Awaiting Deposit
               </span>
             )}
 
             {order.paymentStatus === 'deposit_paid' && (
-              <span className="rounded-full border border-blue-500/20 bg-blue-500/10 px-3 py-1 text-xs font-semibold text-blue-300">
+              <span className="rounded-full border border-blue-500/20 bg-blue-500/10 px-3 py-1 text-xs font-semibold text-blue-700 dark:text-blue-300">
                 Deposit Paid
               </span>
             )}
 
             {order.paymentStatus === 'fully_paid' && (
-              <span className="rounded-full border border-emerald-500/20 bg-emerald-500/10 px-3 py-1 text-xs font-semibold text-emerald-300">
+              <span className="rounded-full border border-emerald-500/20 bg-emerald-500/10 px-3 py-1 text-xs font-semibold text-emerald-700 dark:text-emerald-300">
                 Fully Paid
               </span>
             )}
@@ -1694,13 +1664,13 @@ const getServiceRange = (service: string) => {
             )}
 
             {order.priority === 'normal' && (
-              <span className="rounded-full bg-orange-500/10 px-2 py-1 text-xs font-semibold text-orange-300">
+              <span className="rounded-full bg-orange-500/10 px-2 py-1 text-xs font-semibold text-orange-700 dark:text-orange-300">
                 🔥 Normal
               </span>
             )}
 
             {order.priority === 'low' && (
-              <span className="rounded-full bg-slate-700 px-2 py-1 text-xs font-semibold text-foreground">
+              <span className="rounded-full bg-slate-200 dark:bg-slate-700 px-2 py-1 text-xs font-semibold text-foreground">
                 Low
               </span>
             )}
@@ -1793,7 +1763,7 @@ const getServiceRange = (service: string) => {
                   size="sm"
                   variant="outline"
                   onClick={() => setSettingPrice(order._id)}
-                  className="border-purple-500/20 bg-purple-500/10 text-purple-300 hover:bg-purple-500/20"
+                  className="border-purple-500/20 bg-purple-500/10 text-purple-700 dark:text-purple-300 hover:bg-purple-500/20"
                 >
                   💰 Set Price
                 </Button>
@@ -1831,7 +1801,7 @@ const getServiceRange = (service: string) => {
               variant="outline"
               onClick={() => updateStatus(order._id, 'cancelled')}
               disabled={updatingId === order._id}
-              className="border-orange-500/20 bg-orange-500/10 text-orange-300 hover:bg-orange-500/20"
+              className="border-orange-500/20 bg-orange-500/10 text-orange-700 dark:text-orange-300 hover:bg-orange-500/20"
             >
               Cancel
             </Button>
@@ -1851,7 +1821,7 @@ const getServiceRange = (service: string) => {
                   currentName: order.assignedToName || '',
                 })
               }
-              className="border-blue-500/20 bg-blue-500/10 text-blue-300 hover:bg-blue-500/20"
+              className="border-blue-500/20 bg-blue-500/10 text-blue-700 dark:text-blue-300 hover:bg-blue-500/20"
             >
               Reassign
             </Button>
@@ -1877,22 +1847,24 @@ const getServiceRange = (service: string) => {
         {(isFounderRole(userRole) ||
           (isModeratorRole(userRole) &&
             order.assignedTo === currentUserId)) && (
-          <button
-            onClick={() => {
-              setEditingNote(order._id)
-              setNoteText(order.internalNote || '')
-            }}
-            className="flex items-center gap-2 rounded-xl border border-amber-500/10 bg-amber-500/5 px-3 py-2 text-xs font-medium text-amber-300 transition hover:bg-amber-500/10"
-          >
-            📝 {order.internalNote ? 'Edit Note' : 'Add Note'}
-          </button> 
+        <Button
+  size="sm"
+  variant="outline"
+  onClick={() => {
+    setEditingNote(order._id)
+    setNoteText(order.internalNote || '')
+  }}
+  className="border-amber-500/20 bg-amber-500/10 text-amber-700 hover:bg-amber-500/20 dark:text-amber-300"
+>
+  📝 {order.internalNote ? 'Edit Note' : 'Add Note'}
+</Button>
         )}
 
         {/* Files */}
         <button
           onClick={() => fetchFiles(order._id)}
           disabled={loadingFiles === order._id}
-          className="flex items-center gap-2 rounded-xl border border-blue-500/10 bg-blue-500/5 px-3 py-2 text-xs font-medium text-blue-300 transition hover:bg-blue-500/10"
+          className="flex items-center gap-2 rounded-xl border border-blue-500/10 bg-blue-500/5 px-3 py-2 text-xs font-medium text-blue-700 dark:text-blue-300 transition hover:bg-blue-500/10"
         >
           {loadingFiles === order._id ? (
             <Loader2 className="h-3 w-3 animate-spin" />
@@ -1937,7 +1909,7 @@ const getServiceRange = (service: string) => {
 }, 300)
             }
           }}
-          className="relative flex items-center gap-2 rounded-xl border border-emerald-500/10 bg-emerald-500/5 px-3 py-2 text-xs font-medium text-emerald-300 transition hover:bg-emerald-500/10"
+          className="relative flex items-center gap-2 rounded-xl border border-emerald-500/10 bg-emerald-500/5 px-3 py-2 text-xs font-medium text-emerald-700 dark:text-emerald-300 transition hover:bg-emerald-500/10"
         >
           <MessageCircle className="h-3 w-3" />
 
@@ -2051,7 +2023,7 @@ const getServiceRange = (service: string) => {
   </>
    )}
 </div>
-</main>
+</PremiumPageShell>
   </>
   )
 }

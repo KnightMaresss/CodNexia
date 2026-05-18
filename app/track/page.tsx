@@ -5,6 +5,7 @@ import { Button } from '@/components/ui/button'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { showToast } from '@/components/ui/toast'
 import { CardSkeleton } from '@/components/ui/skeleton'
+
 import {
   ArrowRight,
   Search,
@@ -18,7 +19,7 @@ import {
   Loader2,
 } from 'lucide-react'
 import Link from 'next/link'
-
+import PremiumPageShell from '@/components/PremiumPageShell'
 const SERVICE_NAMES: Record<string, string> = {
   'graduation-projects': 'Graduation Projects',
   'academic-reports': 'Academic Reports',
@@ -145,17 +146,17 @@ function TrackOrderContent() {
   // Show loading while auto-tracking
     if ((loading && !order) || (!initialCheckDone && searchParams.get('direct') === 'true')) {
     return (
-     <main className="min-h-screen pt-18 flex items-center justify-center bg-gradient-to-br from-background to-muted">
+    <PremiumPageShell className="pt-18 flex items-center justify-center">
         <div className="text-center">
           <Loader2 className="h-10 w-10 animate-spin text-blue-600 mx-auto mb-4" />
          <p className="text-muted-foreground">Looking up your order...</p>
         </div>
-      </main>
+ </PremiumPageShell>
     )
   }
 
   return (
-   <main className="min-h-screen pt-24 py-16 px-4 bg-gradient-to-br from-background to-muted">
+ <PremiumPageShell className="pt-24 py-16 px-4">
       <div className="max-w-3xl mx-auto">
         {/* Header */}
         <div className="text-center mb-12">
@@ -172,7 +173,7 @@ function TrackOrderContent() {
 
         {/* Search Form */}
         {!order && (
-         <Card className="overflow-hidden border border-border/60 bg-card shadow-sm transition-all hover:border-blue-500/30 hover:shadow-xl">
+              <Card className="group relative overflow-hidden rounded-3xl border-2 border-border/40 bg-white/45 dark:bg-card/60 backdrop-blur-xl shadow-2xl transition-all duration-500 hover:-translate-y-1 hover:border-blue-500/30 hover:shadow-[0_20px_60px_rgba(37,99,235,0.15)] dark:bg-card/60 dark:hover:shadow-[0_20px_60px_rgba(37,99,235,0.25)] before:absolute before:inset-0 before:rounded-3xl before:border before:border-white/5 before:pointer-events-none">
               <CardHeader>
               <CardTitle className="flex items-center gap-2">
                 <Search className="h-5 w-5 text-blue-600" />
@@ -190,7 +191,7 @@ function TrackOrderContent() {
                     type="text"
                     required
                     placeholder="Enter your Order ID (e.g. 69f5f83cd2151c4bf2787d5f)"
-                    className="w-full rounded-xl border border-input bg-background px-4 py-3 font-mono text-sm text-foreground outline-none transition-all focus:border-blue-500 focus:ring-2 focus:ring-blue-500"                    value={orderId}
+                    className="w-full rounded-xl border-2 border-border/50 bg-background/50 px-4 py-3 font-mono text-sm text-foreground outline-none backdrop-blur-sm transition-all duration-300 hover:border-blue-500/30 hover:bg-background/80 focus:border-blue-500/50 focus:ring-4 focus:ring-blue-500/10"
                     onChange={(e) => setOrderId(e.target.value)}
                   />
                 </div>
@@ -222,7 +223,8 @@ function TrackOrderContent() {
         {order && (
           <div className="space-y-6 animate-in fade-in slide-in-from-bottom-4 duration-500">
             {/* Status Progress */}
-          <Card className="overflow-hidden border border-border/60 bg-card shadow-sm transition-all hover:border-blue-500/30 hover:shadow-xl">
+          <Card className="group relative overflow-hidden rounded-3xl border-2 border-border/40 bg-white/45 dark:bg-black/45 backdrop-blur-2xl shadow-2xl transition-all duration-500 hover:-translate-y-1 hover:border-blue-500/30 hover:shadow-[0_20px_60px_rgba(37,99,235,0.18)] before:absolute before:inset-0 before:rounded-3xl before:border before:border-white/5 before:pointer-events-none">
+          <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_top_left,rgba(59,130,246,0.08),transparent_35%),radial-gradient(circle_at_bottom_right,rgba(168,85,247,0.06),transparent_40%)]" />
               <CardContent className="p-8">
                 <div className="flex items-center justify-between mb-2">
                  <h2 className="text-xl font-bold text-foreground">Order Status</h2>
@@ -236,7 +238,7 @@ function TrackOrderContent() {
                 </div>
 
   {/* Progress Tracker */}
-<div className="mt-6 rounded-2xl border border-border/50 bg-card/70 px-4 py-5 backdrop-blur-sm transition-all hover:border-blue-500/30 hover:shadow-lg">
+  <div className="mt-6 rounded-3xl border-2 border-border/40 bg-background/40 px-4 py-5 backdrop-blur-xl transition-all duration-500 hover:border-blue-500/30 hover:shadow-[0_12px_40px_rgba(37,99,235,0.12)]">
   <div className="flex items-center justify-between">
     {STATUS_STEPS.map((step, index, arr) => {
       const Icon = step.icon
@@ -280,7 +282,8 @@ function TrackOrderContent() {
             </Card>
 
             {/* Order Details */}
-           <Card className="overflow-hidden border border-border/60 bg-card shadow-sm transition-all hover:border-blue-500/30 hover:shadow-xl">
+           <Card className="group relative overflow-hidden rounded-3xl border-2 border-border/40 bg-white/45 dark:bg-black/45 backdrop-blur-2xl shadow-2xl transition-all duration-500 hover:-translate-y-1 hover:border-blue-500/30 hover:shadow-[0_20px_60px_rgba(37,99,235,0.18)]">
+           <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_top_left,rgba(59,130,246,0.08),transparent_35%),radial-gradient(circle_at_bottom_right,rgba(168,85,247,0.06),transparent_40%)]" />
                 <CardHeader>
                  <CardTitle className="flex items-center gap-2 text-lg">
                   <Package className="h-5 w-5 text-blue-600" />
@@ -352,7 +355,7 @@ function TrackOrderContent() {
                 {order.requirements && (
                   <div className="pt-4 border-t">
                    <p className="text-xs text-muted-foreground mb-2">Your Requirements</p>
-                   <p className="rounded-2xl border border-border/50 bg-muted/30 p-4 text-sm text-foreground">
+                <p className="rounded-2xl border-2 border-border/40 bg-background/40 p-4 text-sm text-foreground backdrop-blur-sm">
                       {order.requirements}
                     </p>
                   </div>
@@ -389,9 +392,7 @@ function TrackOrderContent() {
           </p>
         )}
       </div>
-
-    
-    </main>
+   </PremiumPageShell>
     
   )
 }
@@ -399,9 +400,9 @@ function TrackOrderContent() {
 export default function TrackOrderPage() {
   return (
     <Suspense fallback={
-      <main className="min-h-screen pt-18 flex items-center justify-center bg-gradient-to-br from-background to-muted">
+     <PremiumPageShell className="pt-18 flex items-center justify-center">
         <CardSkeleton />
-      </main>
+    </PremiumPageShell>
     }>
       <TrackOrderContent />
     </Suspense>

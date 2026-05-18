@@ -4,7 +4,7 @@ import { Card, CardContent } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
 import {  Star, Quote, TrendingUp, Award, Users, CheckCircle2, ArrowRight } from 'lucide-react'
 import Link from 'next/link'
-
+import PremiumPageShell from '@/components/PremiumPageShell'
 const SERVICE_NAMES: Record<string, string> = {
   'graduation-projects': 'Graduation Projects',
   'academic-reports': 'Academic Reports',
@@ -64,56 +64,22 @@ export default function PortfolioPage() {
 
   const serviceOptions = [...new Set(ratings.map((r: Rating) => r.service))]
 
-  if (loading) {
-    return (
-      <main className="min-h-screen pt-16 pb-16 bg-gradient-to-br from-slate-50 via-white to-blue-50 dark:from-slate-950 dark:via-slate-900 dark:to-blue-950">
-        <div className="max-w-7xl mx-auto px-4 py-16 text-center">
-          {/* Hero skeleton */}
-          <div className="w-32 h-8 bg-slate-200 dark:bg-slate-700 rounded-full mx-auto mb-6 animate-pulse" />
-          <div className="w-96 h-12 bg-slate-200 dark:bg-slate-700 rounded-lg mx-auto mb-4 animate-pulse" />
-          <div className="w-64 h-6 bg-slate-200 dark:bg-slate-700 rounded-lg mx-auto mb-8 animate-pulse" />
-          
-          {/* Stats skeleton */}
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-4 max-w-3xl mx-auto mb-12">
-            {[1,2,3,4].map(i => (
-              <div key={i} className="bg-white dark:bg-slate-800 rounded-2xl p-4 shadow-sm border border-border animate-pulse">
-                <div className="w-8 h-8 bg-slate-200 dark:bg-slate-700 rounded-full mx-auto mb-2" />
-                <div className="w-12 h-6 bg-slate-200 dark:bg-slate-700 rounded mx-auto" />
-              </div>
-            ))}
-          </div>
 
-          {/* Cards skeleton */}
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 max-w-6xl mx-auto">
-            {[1,2,3].map(i => (
-              <div key={i} className="bg-white dark:bg-slate-800 rounded-xl p-6 shadow-sm border border-border animate-pulse">
-                <div className="flex gap-1 mb-4">
-                  {[1,2,3,4,5].map(s => <div key={s} className="w-5 h-5 bg-slate-200 dark:bg-slate-700 rounded" />)}
-                </div>
-                <div className="w-8 h-5 bg-slate-200 dark:bg-slate-700 rounded mb-3" />
-                <div className="space-y-2 mb-4">
-                  <div className="w-full h-3 bg-slate-200 dark:bg-slate-700 rounded" />
-                  <div className="w-3/4 h-3 bg-slate-200 dark:bg-slate-700 rounded" />
-                </div>
-                <div className="border-t pt-4 flex justify-between">
-                  <div className="w-16 h-3 bg-slate-200 dark:bg-slate-700 rounded" />
-                  <div className="w-12 h-3 bg-slate-200 dark:bg-slate-700 rounded" />
-                </div>
-              </div>
-            ))}
-          </div>
-        </div>
-      </main>
-    )
-  }
+
+if (loading) {
+  return null
+}
+
+
+
+
 
   return (
-    <main className="min-h-screen pt-16 pb-16 bg-gradient-to-br from-slate-50 via-white to-blue-50 dark:from-slate-950 dark:via-slate-900 dark:to-blue-950">
+    <PremiumPageShell className="pt-20 pb-16">
       {/* Hero Section */}
       <section className="relative overflow-hidden">
-        <div className="absolute inset-0 bg-gradient-to-r from-blue-600 to-purple-600 opacity-5 dark:opacity-10" />
         <div className="max-w-7xl mx-auto px-4 py-16 text-center relative">
-          <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-blue-100 dark:bg-blue-900/30 text-blue-700 dark:text-blue-300 text-sm font-medium mb-6">
+          <div className="mb-6 inline-flex items-center gap-2 rounded-full border border-blue-500/25 bg-blue-500/10 px-5 py-2 text-sm font-semibold text-blue-700 shadow-lg shadow-blue-500/10 backdrop-blur-xl dark:text-blue-300">
             <Award className="h-4 w-4" />
             Our Portfolio
           </div>
@@ -132,7 +98,7 @@ export default function PortfolioPage() {
               { icon: TrendingUp, value: stats.services, label: 'Services', color: 'text-blue-600' },
               { icon: Users, value: `${stats.happy}+`, label: 'Happy Clients', color: 'text-purple-600' },
             ].map((s, i) => (
-              <div key={i} className="bg-white dark:bg-slate-800 rounded-2xl p-4 shadow-sm border border-border">
+              <div key={i} className="group rounded-3xl border-2 border-border/40 bg-white/45 p-5 shadow-2xl backdrop-blur-2xl transition-all duration-500 hover:-translate-y-1 hover:border-blue-500/30 hover:shadow-[0_20px_60px_rgba(37,99,235,0.18)] dark:bg-black/45">
                 <s.icon className={`h-6 w-6 ${s.color} mx-auto mb-2`} />
                 <p className="text-2xl font-bold text-foreground">{s.value}</p>
                 <p className="text-xs text-muted-foreground">{s.label}</p>
@@ -149,8 +115,8 @@ export default function PortfolioPage() {
             onClick={() => setFilter('all')}
             className={`px-4 py-2 rounded-full text-sm font-medium transition-all ${
               filter === 'all' 
-                ? 'bg-blue-600 text-white shadow-md' 
-                : 'bg-white dark:bg-slate-800 text-foreground border border-border hover:bg-slate-100 dark:hover:bg-slate-700'
+                ? 'bg-blue-600 text-foreground dark:text-white shadow-md' 
+                : 'border border-border/60 bg-white/45 text-muted-foreground backdrop-blur-xl hover:border-blue-500/30 hover:text-foreground dark:bg-black/35'
             }`}
           >
             All Projects
@@ -161,8 +127,8 @@ export default function PortfolioPage() {
               onClick={() => setFilter(service)}
               className={`px-4 py-2 rounded-full text-sm font-medium transition-all ${
                 filter === service 
-                  ? 'bg-blue-600 text-white shadow-md' 
-                  : 'bg-white dark:bg-slate-800 text-foreground border border-border hover:bg-slate-100 dark:hover:bg-slate-700'
+                  ? 'bg-blue-600 text-foreground dark:text-white shadow-md' 
+                  : 'border border-border/60 bg-white/45 text-muted-foreground backdrop-blur-xl hover:border-blue-500/30 hover:text-foreground dark:bg-black/35'
               }`}
             >
               {SERVICE_NAMES[service] || service}
@@ -187,10 +153,10 @@ export default function PortfolioPage() {
 
                  <Card 
                   key={rating._id || index} 
-                  className="group border-0 shadow-sm hover:shadow-xl transition-all duration-300 hover:-translate-y-1 bg-white dark:bg-slate-800 overflow-hidden opacity-0"
+                  className="group relative overflow-hidden rounded-3xl border-2 border-border/40 bg-white/45 opacity-0 shadow-2xl backdrop-blur-2xl transition-all duration-500 hover:-translate-y-2 hover:border-blue-500/30 hover:shadow-[0_20px_60px_rgba(37,99,235,0.18)] dark:bg-black/45"
                   style={{ animation: `fadeInUp 0.4s ease forwards`, animationDelay: `${index * 0.1}s` }}
                 >
-
+<div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_top_left,rgba(59,130,246,0.08),transparent_35%),radial-gradient(circle_at_bottom_right,rgba(168,85,247,0.06),transparent_40%)]" />
 
                 <CardContent className="p-6">
                   {/* Stars */}
@@ -212,7 +178,7 @@ export default function PortfolioPage() {
                           &ldquo;{rating.comment}&rdquo;
                         </p>
                         {rating.comment.length > 100 && (
-                          <div className="absolute bottom-0 left-0 right-0 h-6 bg-gradient-to-t from-white dark:from-slate-800 to-transparent group-hover:opacity-0 transition-opacity pointer-events-none" />
+                          <div className="absolute bottom-0 left-0 right-0 h-6 bg-gradient-to-t from-white/80 to-transparent dark:from-black/80 group-hover:opacity-0 transition-opacity pointer-events-none" />
                         )}
                       </div>
                     </div>
@@ -247,21 +213,25 @@ export default function PortfolioPage() {
 
       {/* CTA Section */}
       <section className="max-w-7xl mx-auto px-4 mt-16 text-center">
-        <Card className="border-0 shadow-xl bg-gradient-to-r from-slate-800 to-slate-900 dark:from-slate-700 dark:to-slate-800 overflow-hidden">
+      <Card className="relative overflow-hidden rounded-3xl border-2 border-blue-500/20 bg-white/45 shadow-[0_24px_80px_rgba(37,99,235,0.16)] backdrop-blur-2xl dark:bg-black/55">
+      <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_30%_20%,rgba(59,130,246,0.20),transparent_35%),radial-gradient(circle_at_75%_60%,rgba(168,85,247,0.16),transparent_45%)] dark:bg-[radial-gradient(circle_at_30%_20%,rgba(59,130,246,0.18),transparent_35%),radial-gradient(circle_at_75%_60%,rgba(168,85,247,0.18),transparent_45%)]" />
           <CardContent className="py-12 px-6">
-            <h2 className="text-3xl font-bold text-white mb-4">Ready to Start Your Project?</h2>
-            <p className="text-slate-300 mb-8 max-w-md mx-auto">
+            <h2 className="text-3xl font-bold text-foreground dark:text-white mb-4">Ready to Start Your Project?</h2>
+            <p className="text-muted-foreground mb-8 max-w-md mx-auto">
               Join our happy clients and get your work done by professionals.
             </p>
             <Link href="/orders">
-              <Button size="lg" className="bg-blue-600 hover:bg-blue-700 text-white font-semibold px-8 py-6 text-lg">
-                Place Your Order Now
-                <ArrowRight className="ml-2 h-5 w-5" />
-              </Button>
+             <Button
+            size="lg"
+            className="group h-14 rounded-2xl border border-blue-500/30 bg-gradient-to-r from-blue-600 to-blue-500 px-8 text-lg font-semibold text-white shadow-[0_10px_40px_rgba(37,99,235,0.35)] transition-all duration-300 hover:scale-[1.03] hover:from-blue-500 hover:to-blue-400 hover:shadow-[0_18px_50px_rgba(37,99,235,0.45)]"
+              >
+  Place Your Order Now
+  <ArrowRight className="ml-2 h-5 w-5 transition-transform duration-300 group-hover:translate-x-1" />
+</Button>
             </Link>
           </CardContent>
         </Card>
       </section>
-    </main>
+</PremiumPageShell>
   )
 }

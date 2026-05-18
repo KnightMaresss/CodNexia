@@ -28,7 +28,7 @@ import Image from 'next/image'
 import Link from 'next/link'
 import { useAuth } from '@/components/auth-context'
 import { useRouter } from 'next/navigation'
-
+import PremiumPageShell from '@/components/PremiumPageShell'
 export default function ProfilePage() {
   const { user, loading, refreshUser } = useAuth()
   const router = useRouter()
@@ -254,58 +254,10 @@ useEffect(() => {
     setUploadingPic(false)
   }
 
-  if (loading) {
-    return (
-      <main className="min-h-screen pt-24 py-12 px-4 bg-gradient-to-br from-background to-muted">
-        <div className="max-w-5xl mx-auto">
-          {/* Profile header skeleton */}
-          <div className="text-center mb-8">
-            <div className="w-28 h-28 bg-slate-200 dark:bg-slate-700 rounded-full mx-auto mb-4 animate-pulse" />
-            <div className="w-40 h-7 bg-slate-200 dark:bg-slate-700 rounded-lg mx-auto mb-2 animate-pulse" />
-            <div className="w-56 h-4 bg-slate-200 dark:bg-slate-700 rounded-lg mx-auto animate-pulse" />
-          </div>
-          {/* Stats skeleton */}
-          <div className="grid grid-cols-3 gap-4 mb-8">
-            {[1, 2, 3].map((i) => (
-              <div key={i} className="bg-card rounded-xl p-4 shadow-sm border border-border animate-pulse">
-                <div className="w-8 h-8 bg-slate-200 dark:bg-slate-700 rounded-full mx-auto mb-2" />
-                <div className="w-16 h-4 bg-slate-200 dark:bg-slate-700 rounded mx-auto" />
-              </div>
-            ))}
-          </div>
-          {/* Form skeleton */}
-          <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-            <div className="lg:col-span-2">
-              <div className="bg-card rounded-xl p-6 shadow-sm border border-border animate-pulse">
-                <div className="w-32 h-5 bg-slate-200 dark:bg-slate-700 rounded mb-6" />
-                <div className="space-y-5">
-                  <div className="space-y-2">
-                    <div className="w-20 h-4 bg-slate-200 dark:bg-slate-700 rounded" />
-                    <div className="w-full h-12 bg-slate-200 dark:bg-slate-700 rounded-lg" />
-                  </div>
-                  <div className="space-y-2">
-                    <div className="w-16 h-4 bg-slate-200 dark:bg-slate-700 rounded" />
-                    <div className="w-full h-12 bg-slate-200 dark:bg-slate-700 rounded-lg" />
-                  </div>
-                  <div className="w-full h-12 bg-slate-200 dark:bg-slate-700 rounded-lg" />
-                </div>
-              </div>
-            </div>
-            {/* Sidebar skeleton */}
-            <div>
-              <div className="bg-card rounded-xl p-6 shadow-sm border border-border animate-pulse">
-                <div className="w-12 h-12 bg-slate-200 dark:bg-slate-700 rounded-full mx-auto mb-3" />
-                <div className="w-24 h-4 bg-slate-200 dark:bg-slate-700 rounded mx-auto mb-2" />
-                <div className="w-32 h-3 bg-slate-200 dark:bg-slate-700 rounded mx-auto mb-4" />
-                <div className="w-full h-10 bg-slate-200 dark:bg-slate-700 rounded-lg" />
-              </div>
-            </div>
-          </div>
-        </div>
-      </main>
-    )
-  }
-
+if (loading) {
+  return null
+}
+ 
   if (!user) return null
   const displayUser = viewedUser || user
   const isViewingOther = !!viewedUser
@@ -313,7 +265,7 @@ useEffect(() => {
 const isModerator = isModeratorRole(displayUser.role)
 
   return (
-    <main className="min-h-screen pt-24 py-12 px-4 bg-gradient-to-br from-background to-muted">
+    <PremiumPageShell className="pt-24 py-12 px-4">
       <div className="max-w-5xl mx-auto">
         {/* Profile Header */}
         <div className="text-center mb-8">
@@ -360,28 +312,28 @@ const isModerator = isModeratorRole(displayUser.role)
         {!isViewingOther && isFounder && (
           <>
             <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-4">
-             <Card className="border border-border/60 bg-card shadow-sm transition-all hover:-translate-y-1 hover:border-blue-500/30 hover:shadow-xl">
+             <Card className="group relative overflow-hidden rounded-3xl border-2 border-border/40 bg-white/45 dark:bg-white/45 dark:bg-white/45 dark:bg-black/45 backdrop-blur-2xl shadow-2xl transition-all duration-500 hover:-translate-y-1 hover:border-blue-500/30 hover:shadow-[0_20px_60px_rgba(37,99,235,0.18)] before:absolute before:inset-0 before:rounded-3xl before:border before:border-white/5 before:pointer-events-none">
                 <CardContent className="p-4 text-center">
                   <Package className="h-5 w-5 text-blue-600 mx-auto mb-2" />
                   <p className="text-2xl font-bold text-foreground">{stats.totalOrders}</p>
                   <p className="text-xs text-muted-foreground">All Orders</p>
                 </CardContent>
               </Card>
-          <Card className="border border-border/60 bg-card shadow-sm transition-all hover:-translate-y-1 hover:border-blue-500/30 hover:shadow-xl">
+          <Card className="group relative overflow-hidden rounded-3xl border-2 border-border/40 bg-white/45 dark:bg-white/45 dark:bg-black/45 backdrop-blur-2xl shadow-2xl transition-all duration-500 hover:-translate-y-1 hover:border-blue-500/30 hover:shadow-[0_20px_60px_rgba(37,99,235,0.18)] before:absolute before:inset-0 before:rounded-3xl before:border before:border-white/5 before:pointer-events-none">
                 <CardContent className="p-4 text-center">
                   <DollarSign className="h-5 w-5 text-emerald-600 mx-auto mb-2" />
                   <p className="text-2xl font-bold text-emerald-600">${stats.totalRevenue}</p>
                   <p className="text-xs text-muted-foreground">Revenue</p>
                 </CardContent>
               </Card>
-            <Card className="border border-border/60 bg-card shadow-sm transition-all hover:-translate-y-1 hover:border-blue-500/30 hover:shadow-xl">
+            <Card className="group relative overflow-hidden rounded-3xl border-2 border-border/40 bg-white/45 dark:bg-white/45 dark:bg-black/45 backdrop-blur-2xl shadow-2xl transition-all duration-500 hover:-translate-y-1 hover:border-blue-500/30 hover:shadow-[0_20px_60px_rgba(37,99,235,0.18)] before:absolute before:inset-0 before:rounded-3xl before:border before:border-white/5 before:pointer-events-none">
                 <CardContent className="p-4 text-center">
                   <Users className="h-5 w-5 text-purple-600 mx-auto mb-2" />
                   <p className="text-2xl font-bold text-foreground">{stats.totalUsers}</p>
                   <p className="text-xs text-muted-foreground">Users</p>
                 </CardContent>
               </Card>
-            <Card className="border border-border/60 bg-card shadow-sm transition-all hover:-translate-y-1 hover:border-blue-500/30 hover:shadow-xl">
+            <Card className="group relative overflow-hidden rounded-3xl border-2 border-border/40 bg-white/45 dark:bg-white/45 dark:bg-black/45 backdrop-blur-2xl shadow-2xl transition-all duration-500 hover:-translate-y-1 hover:border-blue-500/30 hover:shadow-[0_20px_60px_rgba(37,99,235,0.18)] before:absolute before:inset-0 before:rounded-3xl before:border before:border-white/5 before:pointer-events-none">
                 <CardContent className="p-4 text-center">
                   <Shield className="h-5 w-5 text-indigo-600 mx-auto mb-2" />
                   <p className="text-2xl font-bold text-foreground">{stats.modCount}</p>
@@ -391,28 +343,28 @@ const isModerator = isModeratorRole(displayUser.role)
             </div>
 
             <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-8">
-            <Card className="border border-border/60 bg-yellow-50 shadow-sm transition-all hover:-translate-y-1 hover:border-yellow-500/30 hover:shadow-xl dark:bg-yellow-900/20">
+            <Card className="group relative overflow-hidden rounded-3xl border-2 border-border/40 bg-white/45 dark:bg-white/45 dark:bg-black/45 backdrop-blur-2xl shadow-2xl transition-all duration-500 hover:-translate-y-1 hover:border-yellow-500/30 hover:shadow-[0_20px_60px_rgba(234,179,8,0.18)] before:absolute before:inset-0 before:rounded-3xl before:border before:border-white/5 before:pointer-events-none">
                 <CardContent className="p-4 text-center">
                   <Crown className="h-5 w-5 text-yellow-600 mx-auto mb-2" />
                   <p className="text-2xl font-bold text-yellow-600">{stats.myOrders}</p>
                   <p className="text-xs text-muted-foreground">My Orders</p>
                 </CardContent>
               </Card>
-             <Card className="border border-border/60 bg-yellow-50 shadow-sm transition-all hover:-translate-y-1 hover:border-yellow-500/30 hover:shadow-xl dark:bg-green-900/20">
+             <Card className="group relative overflow-hidden rounded-3xl border-2 border-border/40 bg-white/45 dark:bg-white/45 dark:bg-black/45 backdrop-blur-2xl shadow-2xl transition-all duration-500 hover:-translate-y-1 hover:border-yellow-500/30 hover:shadow-[0_20px_60px_rgba(234,179,8,0.18)] before:absolute before:inset-0 before:rounded-3xl before:border before:border-white/5 before:pointer-events-none">
                 <CardContent className="p-4 text-center">
                   <CheckCircle2 className="h-5 w-5 text-green-600 mx-auto mb-2" />
                   <p className="text-2xl font-bold text-green-600">{stats.myCompleted}</p>
                   <p className="text-xs text-muted-foreground">My Completed</p>
                 </CardContent>
               </Card>
-             <Card className="border border-border/60 bg-yellow-50 shadow-sm transition-all hover:-translate-y-1 hover:border-yellow-500/30 hover:shadow-xl dark:bg-orange-900/20">
+             <Card className="group relative overflow-hidden rounded-3xl border-2 border-border/40 bg-white/45 dark:bg-white/45 dark:bg-black/45 backdrop-blur-2xl shadow-2xl transition-all duration-500 hover:-translate-y-1 hover:border-yellow-500/30 hover:shadow-[0_20px_60px_rgba(234,179,8,0.18)] before:absolute before:inset-0 before:rounded-3xl before:border before:border-white/5 before:pointer-events-none">
                 <CardContent className="p-4 text-center">
                   <Star className="h-5 w-5 text-orange-500 mx-auto mb-2" />
                   <p className="text-2xl font-bold text-orange-500">{stats.myRating || '—'}</p>
                   <p className="text-xs text-muted-foreground">My Rating</p>
                 </CardContent>
               </Card>
-             <Card className="border border-border/60 bg-yellow-50 shadow-sm transition-all hover:-translate-y-1 hover:border-yellow-500/30 hover:shadow-xl dark:bg-blue-900/20">
+             <Card className="group relative overflow-hidden rounded-3xl border-2 border-border/40 bg-white/45 dark:bg-white/45 dark:bg-black/45 backdrop-blur-2xl shadow-2xl transition-all duration-500 hover:-translate-y-1 hover:border-yellow-500/30 hover:shadow-[0_20px_60px_rgba(234,179,8,0.18)] before:absolute before:inset-0 before:rounded-3xl before:border before:border-white/5 before:pointer-events-none">
                 <CardContent className="p-4 text-center">
                   <Clock className="h-5 w-5 text-blue-600 mx-auto mb-2" />
                   <p className="text-sm font-bold text-blue-600">Active</p>
@@ -426,7 +378,7 @@ const isModerator = isModeratorRole(displayUser.role)
         {/* Non-founder Stats Row */}
         {!isFounder && (
           <div className="grid grid-cols-3 gap-4 mb-8">
-           <Card className="border border-border/60 bg-card shadow-sm transition-all hover:-translate-y-1 hover:border-blue-500/30 hover:shadow-xl">
+           <Card className="group relative overflow-hidden rounded-3xl border-2 border-border/40 bg-white/45 dark:bg-white/45 dark:bg-black/45 backdrop-blur-2xl shadow-2xl transition-all duration-500 hover:-translate-y-1 hover:border-blue-500/30 hover:shadow-[0_20px_60px_rgba(37,99,235,0.18)] before:absolute before:inset-0 before:rounded-3xl before:border before:border-white/5 before:pointer-events-none">
               <CardContent className="p-4 text-center">
                 <Shield className="h-5 w-5 text-blue-600 mx-auto mb-2" />
                 <p className="text-xs text-muted-foreground">Member since</p>
@@ -435,14 +387,14 @@ const isModerator = isModeratorRole(displayUser.role)
                 </p>
               </CardContent>
             </Card>
-           <Card className="border border-border/60 bg-card shadow-sm transition-all hover:-translate-y-1 hover:border-blue-500/30 hover:shadow-xl">
+           <Card className="group relative overflow-hidden rounded-3xl border-2 border-border/40 bg-white/45 dark:bg-white/45 dark:bg-black/45 backdrop-blur-2xl shadow-2xl transition-all duration-500 hover:-translate-y-1 hover:border-blue-500/30 hover:shadow-[0_20px_60px_rgba(37,99,235,0.18)] before:absolute before:inset-0 before:rounded-3xl before:border before:border-white/5 before:pointer-events-none">
               <CardContent className="p-4 text-center">
                 <Clock className="h-5 w-5 text-blue-600 mx-auto mb-2" />
                 <p className="text-xs text-muted-foreground">Account</p>
                 <p className="font-semibold text-foreground text-sm">Active</p>
               </CardContent>
             </Card>
-           <Card className="border border-border/60 bg-card shadow-sm transition-all hover:-translate-y-1 hover:border-blue-500/30 hover:shadow-xl">
+           <Card className="group relative overflow-hidden rounded-3xl border-2 border-border/40 bg-white/45 dark:bg-white/45 dark:bg-black/45 backdrop-blur-2xl shadow-2xl transition-all duration-500 hover:-translate-y-1 hover:border-blue-500/30 hover:shadow-[0_20px_60px_rgba(37,99,235,0.18)] before:absolute before:inset-0 before:rounded-3xl before:border before:border-white/5 before:pointer-events-none">
               <CardContent className="p-4 text-center">
                 <ShoppingBag className="h-5 w-5 text-blue-600 mx-auto mb-2" />
                 <p className="text-xs text-muted-foreground">{isModerator ? 'Completed' : 'Orders'}</p>
@@ -461,7 +413,7 @@ const isModerator = isModeratorRole(displayUser.role)
     className={`flex items-center gap-2 rounded-xl px-5 py-2.5 text-sm font-medium transition-all ${
     activeTab === 'profile'
     ? 'bg-blue-600 text-white shadow-lg shadow-blue-500/20'
-    : 'border border-border/60 bg-card text-muted-foreground hover:border-blue-500/30 hover:text-foreground'
+    : 'border border-border/60 bg-white/45 dark:bg-black/35 backdrop-blur-xl text-muted-foreground hover:border-blue-500/30 hover:text-foreground'
       }`}
           >
             <User className="h-4 w-4" />Edit Profile
@@ -471,7 +423,7 @@ const isModerator = isModeratorRole(displayUser.role)
           className={`flex items-center gap-2 rounded-xl px-5 py-2.5 text-sm font-medium transition-all ${
           activeTab === 'password'
           ? 'bg-blue-600 text-white shadow-lg shadow-blue-500/20'
-          : 'border border-border/60 bg-card text-muted-foreground hover:border-blue-500/30 hover:text-foreground'
+          : 'border border-border/60 bg-white/45 dark:bg-black/35 backdrop-blur-xl text-muted-foreground hover:border-blue-500/30 hover:text-foreground'
           }`}
           >
             <Lock className="h-4 w-4" />Change Password
@@ -512,7 +464,8 @@ const isModerator = isModeratorRole(displayUser.role)
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
           <div className="lg:col-span-2">
             {activeTab === 'profile' ? (
-             <Card className="overflow-hidden border border-border/60 bg-card shadow-sm transition-all hover:border-blue-500/30 hover:shadow-xl">
+          <Card className="group relative overflow-hidden rounded-3xl border-2 border-border/40 bg-white/45 dark:bg-white/45 dark:bg-black/45 backdrop-blur-2xl shadow-2xl transition-all duration-500 hover:-translate-y-1 hover:border-blue-500/30 hover:shadow-[0_20px_60px_rgba(37,99,235,0.18)] before:absolute before:inset-0 before:rounded-3xl before:border before:border-white/5 before:pointer-events-none">
+           <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_top_left,rgba(59,130,246,0.08),transparent_35%),radial-gradient(circle_at_bottom_right,rgba(168,85,247,0.06),transparent_40%)]" />
                 <CardHeader>
                   <CardTitle className="flex items-center gap-2"><User className="h-5 w-5 text-blue-600" />Edit Profile</CardTitle>
                 </CardHeader>
@@ -520,11 +473,11 @@ const isModerator = isModeratorRole(displayUser.role)
                   <form onSubmit={handleUpdateProfile} className="space-y-5">
                     <div>
                       <label className="flex items-center gap-2 text-sm font-medium text-foreground mb-2"><User className="h-4 w-4 text-blue-600" />Full Name</label>
-                      <input type="text" required className="w-full rounded-xl border border-border/60 bg-background/80 px-4 py-3 text-foreground outline-none backdrop-blur-sm transition-all focus:border-blue-500/50 focus:ring-2 focus:ring-blue-500/20" value={formData.name} onChange={(e) => setFormData({ ...formData, name: e.target.value })} />
+                      <input type="text" required className="w-full rounded-xl border-2 border-border/50 bg-background/50 px-4 py-3 text-foreground outline-none backdrop-blur-sm transition-all duration-300 hover:border-blue-500/30 hover:bg-background/80 focus:border-blue-500/50 focus:ring-4 focus:ring-blue-500/10" value={formData.name} onChange={(e) => setFormData({ ...formData, name: e.target.value })} />
                     </div>
                     <div>
                       <label className="flex items-center gap-2 text-sm font-medium text-foreground mb-2"><Mail className="h-4 w-4 text-blue-600" />Email</label>
-                      <input type="email" required className="w-full rounded-xl border border-border/60 bg-background/80 px-4 py-3 text-foreground outline-none backdrop-blur-sm transition-all focus:border-blue-500/50 focus:ring-2 focus:ring-blue-500/20" value={formData.email} onChange={(e) => setFormData({ ...formData, email: e.target.value })} />
+                      <input type="email" required className="w-full rounded-xl border-2 border-border/50 bg-background/50 px-4 py-3 text-foreground outline-none backdrop-blur-sm transition-all duration-300 hover:border-blue-500/30 hover:bg-background/80 focus:border-blue-500/50 focus:ring-4 focus:ring-blue-500/10" value={formData.email} onChange={(e) => setFormData({ ...formData, email: e.target.value })} />
                     </div>
                     <Button type="submit" disabled={saving} size="lg" className="w-full">
                       {saving ? <Loader2 className="h-4 w-4 animate-spin mr-2" /> : <Save className="h-4 w-4 mr-2" />}
@@ -535,7 +488,8 @@ const isModerator = isModeratorRole(displayUser.role)
               </Card>
               
             ) : (
-             <Card className="overflow-hidden border border-border/60 bg-card shadow-sm transition-all hover:border-blue-500/30 hover:shadow-xl">
+           <Card className="group relative overflow-hidden rounded-3xl border-2 border-border/40 bg-white/45 dark:bg-white/45 dark:bg-black/45 backdrop-blur-2xl shadow-2xl transition-all duration-500 hover:-translate-y-1 hover:border-blue-500/30 hover:shadow-[0_20px_60px_rgba(37,99,235,0.18)] before:absolute before:inset-0 before:rounded-3xl before:border before:border-white/5 before:pointer-events-none">
+             <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_top_left,rgba(59,130,246,0.08),transparent_35%),radial-gradient(circle_at_bottom_right,rgba(168,85,247,0.06),transparent_40%)]" />
                 <CardHeader>
                   <CardTitle className="flex items-center gap-2"><Lock className="h-5 w-5 text-blue-600" />Change Password</CardTitle>
                 </CardHeader>
@@ -543,16 +497,16 @@ const isModerator = isModeratorRole(displayUser.role)
                   <form onSubmit={handleChangePassword} className="space-y-5">
                     <div>
                       <label className="text-sm font-medium text-foreground mb-2 block">Current Password</label>
-                      <input type="password" required className="w-full rounded-xl border border-border/60 bg-background/80 px-4 py-3 text-foreground outline-none backdrop-blur-sm transition-all focus:border-blue-500/50 focus:ring-2 focus:ring-blue-500/20" value={formData.currentPassword} onChange={(e) => setFormData({ ...formData, currentPassword: e.target.value })} />
+                      <input type="password" required className="w-full rounded-xl border-2 border-border/50 bg-background/50 px-4 py-3 text-foreground outline-none backdrop-blur-sm transition-all duration-300 hover:border-blue-500/30 hover:bg-background/80 focus:border-blue-500/50 focus:ring-4 focus:ring-blue-500/10" value={formData.currentPassword} onChange={(e) => setFormData({ ...formData, currentPassword: e.target.value })} />
                     </div>
                     <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                       <div>
                         <label className="text-sm font-medium text-foreground mb-2 block">New Password</label>
-                        <input type="password" required placeholder="Min. 6 characters" className="w-full rounded-xl border border-border/60 bg-background/80 px-4 py-3 text-foreground outline-none backdrop-blur-sm transition-all focus:border-blue-500/50 focus:ring-2 focus:ring-blue-500/20" value={formData.newPassword} onChange={(e) => setFormData({ ...formData, newPassword: e.target.value })} />
+                        <input type="password" required placeholder="Min. 6 characters" className="w-full rounded-xl border-2 border-border/50 bg-background/50 px-4 py-3 text-foreground outline-none backdrop-blur-sm transition-all duration-300 hover:border-blue-500/30 hover:bg-background/80 focus:border-blue-500/50 focus:ring-4 focus:ring-blue-500/10" value={formData.newPassword} onChange={(e) => setFormData({ ...formData, newPassword: e.target.value })} />
                       </div>
                       <div>
                         <label className="text-sm font-medium text-foreground mb-2 block">Confirm Password</label>
-                        <input type="password" required className="w-full rounded-xl border border-border/60 bg-background/80 px-4 py-3 text-foreground outline-none backdrop-blur-sm transition-all focus:border-blue-500/50 focus:ring-2 focus:ring-blue-500/20" value={formData.confirmPassword} onChange={(e) => setFormData({ ...formData, confirmPassword: e.target.value })} />
+                        <input type="password" required className="w-full rounded-xl border-2 border-border/50 bg-background/50 px-4 py-3 text-foreground outline-none backdrop-blur-sm transition-all duration-300 hover:border-blue-500/30 hover:bg-background/80 focus:border-blue-500/50 focus:ring-4 focus:ring-blue-500/10" value={formData.confirmPassword} onChange={(e) => setFormData({ ...formData, confirmPassword: e.target.value })} />
                       </div>
                     </div>
                     <Button type="submit" disabled={saving} size="lg" className="w-full">
@@ -568,7 +522,8 @@ const isModerator = isModeratorRole(displayUser.role)
           {/* Sidebar */}
           <div className="space-y-4">
               {!isViewingOther && isFounder && (
-              <Card className="border border-border/60 bg-gradient-to-br from-yellow-50 to-yellow-100 shadow-sm transition-all hover:-translate-y-1 hover:border-yellow-500/30 hover:shadow-xl dark:from-yellow-950 dark:to-yellow-900">
+              <Card className="group relative overflow-hidden rounded-3xl border-2 border-border/40 bg-white/45 dark:bg-white/45 dark:bg-black/45 backdrop-blur-2xl shadow-2xl transition-all duration-500 hover:-translate-y-1 hover:border-yellow-500/30 hover:shadow-[0_20px_60px_rgba(234,179,8,0.18)] before:absolute before:inset-0 before:rounded-3xl before:border before:border-white/5 before:pointer-events-none">
+                <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_top_left,rgba(234,179,8,0.10),transparent_35%),radial-gradient(circle_at_bottom_right,rgba(59,130,246,0.08),transparent_40%)]" />
                 <CardContent className="p-6">
                   <Crown className="h-8 w-8 text-yellow-600 mx-auto mb-3" />
                   <h3 className="font-semibold text-foreground text-center mb-4">Quick Links</h3>
@@ -593,7 +548,8 @@ const isModerator = isModeratorRole(displayUser.role)
               </Card>
             )}
              {!isViewingOther && isModerator && (
-             <Card className="border border-border/60 bg-gradient-to-br from-purple-50 to-purple-100 shadow-sm transition-all hover:-translate-y-1 hover:border-purple-500/30 hover:shadow-xl dark:from-purple-950 dark:to-purple-900">
+             <Card className="group relative overflow-hidden rounded-3xl border-2 border-border/40 bg-white/45 dark:bg-white/45 dark:bg-black/45 backdrop-blur-2xl shadow-2xl transition-all duration-500 hover:-translate-y-1 hover:border-purple-500/30 hover:shadow-[0_20px_60px_rgba(168,85,247,0.18)] before:absolute before:inset-0 before:rounded-3xl before:border before:border-white/5 before:pointer-events-none">
+              <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_top_left,rgba(168,85,247,0.06),transparent_35%),radial-gradient(circle_at_bottom_right,rgba(59,130,246,0.08),transparent_40%)]" />
                 <CardContent className="p-6 text-center">
                   <CheckCircle2 className="h-8 w-8 text-purple-600 mx-auto mb-3" />
                   <h3 className="font-semibold text-foreground mb-1">Completed Orders</h3>
@@ -612,7 +568,8 @@ const isModerator = isModeratorRole(displayUser.role)
               </Card>
             )}
                {!isViewingOther && !isFounder && !isModerator && (
-            <Card className="border border-border/60 bg-gradient-to-br from-blue-50 to-blue-100 shadow-sm transition-all hover:-translate-y-1 hover:border-blue-500/30 hover:shadow-xl dark:from-blue-950 dark:to-blue-900">
+            <Card className="group relative overflow-hidden rounded-3xl border-2 border-border/40 bg-white/45 dark:bg-white/45 dark:bg-black/45 backdrop-blur-2xl shadow-2xl transition-all duration-500 hover:-translate-y-1 hover:border-blue-500/30 hover:shadow-[0_20px_60px_rgba(37,99,235,0.18)] before:absolute before:inset-0 before:rounded-3xl before:border before:border-white/5 before:pointer-events-none">
+              <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_top_left,rgba(59,130,246,0.08),transparent_35%),radial-gradient(circle_at_bottom_right,rgba(168,85,247,0.08),transparent_40%)]" />
                 <CardContent className="p-6 text-center">
                   <Package className="h-8 w-8 text-blue-600 mx-auto mb-3" />
                   <h3 className="font-semibold text-foreground mb-1">Your Orders</h3>
@@ -634,6 +591,6 @@ const isModerator = isModeratorRole(displayUser.role)
         </div>
      )}
       </div>
-    </main>
+  </PremiumPageShell>
   )
 }
