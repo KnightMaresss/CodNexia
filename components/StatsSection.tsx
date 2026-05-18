@@ -63,7 +63,7 @@ function AnimatedStat({ end, suffix, label }: { end: number; suffix: string; lab
 
 export default function StatsSection() {
   return (
-   <section className="py-3 px-4 bg-background border-b border-border">
+   <section className="py-2 px-4 bg-background border-b border-border">
       <div className="max-w-6xl mx-auto grid grid-cols-3 gap-8 text-center">
         <AnimatedStat end={500} suffix="+" label="Happy Clients" />
         <AnimatedStat end={98} suffix="%" label="Satisfaction Rate" />

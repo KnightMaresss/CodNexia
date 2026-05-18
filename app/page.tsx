@@ -186,9 +186,9 @@ useEffect(() => {
           <span className="block text-foreground/90">for Students</span>
         </h1>
 
-        {/* Enhanced description */}
-        <p className={`relative mt-8 max-w-2xl text-lg leading-relaxed text-muted-foreground/80 md:text-xl transition-all duration-1000 delay-300 ${isMounted ? 'translate-y-0 opacity-100' : 'translate-y-4 opacity-0'}`}>
-          Expert assistance for graduation projects, reports, websites, and apps — 
+         {/* Enhanced description */}
+         <p className={`relative mt-8 max-w-2xl text-lg leading-relaxed text-slate-600 dark:text-slate-400 md:text-xl transition-all duration-1000 delay-300 ${isMounted ? 'translate-y-0 opacity-100' : 'translate-y-4 opacity-0'}`}>
+            Expert assistance for graduation projects, reports, websites, and apps - 
           <span className="font-semibold text-foreground/90"> delivered on time, every time.</span>
         </p>
 
@@ -221,17 +221,21 @@ useEffect(() => {
                 <div className="p-1.5 rounded-lg bg-gradient-to-br from-blue-500/10 to-cyan-500/10 dark:from-blue-400/10 dark:to-cyan-400/10 group-hover:from-blue-500/20 group-hover:to-cyan-500/20 transition-all duration-300">
                   <Icon className="h-4 w-4 text-blue-600 dark:text-blue-400" />
                 </div>
-                <span className="text-sm font-bold text-foreground/80">{label}</span>
+                <span className="text-sm font-bold text-slate-800 dark:text-white/90">
+                 {label}
+                </span>
               </div>
-              <span className="text-xs font-medium text-muted-foreground/60">{sub}</span>
+           <span className="text-xs font-semibold text-slate-700 dark:text-slate-400">
+             {sub}
+           </span>
             </div>
           ))}
         </div>
       </section>
 
       {/* ─── ENHANCED STATS ─── */}
-      <div className="relative border-y-2 border-border/30 bg-gradient-to-r from-blue-50/50 via-background to-purple-50/50 dark:from-blue-950/20 dark:via-background dark:to-purple-950/20 backdrop-blur-xl">
-        <StatsSection />
+<div className="relative border-t-2 border-border/30 bg-gradient-to-r from-blue-50/50 via-background to-purple-50/50 dark:from-blue-950/20 dark:via-background dark:to-purple-950/20 backdrop-blur-xl">
+     <StatsSection />
       </div>
 
       {/* ─── PREMIUM SERVICES ─── */}
@@ -279,14 +283,14 @@ useEffect(() => {
                 <h3 className="mb-2 text-lg font-bold text-card-foreground leading-tight group-hover:text-blue-700 dark:group-hover:text-blue-300 transition-colors duration-300">
                   {service.title}
                 </h3>
-                <p className="mb-5 text-sm leading-relaxed text-muted-foreground/70 flex-1">
+               <p className="mb-2 text-sm leading-relaxed text-muted-foreground/70 flex-1">
                   {service.description}
                 </p>
 
                 <div className="space-y-3">
-                  <span className="text-2xl font-black text-foreground bg-gradient-to-r from-foreground to-foreground/70 bg-clip-text">
-                    {service.priceRange}
-                  </span>
+                <span className="block text-2xl font-black text-foreground bg-gradient-to-r from-foreground to-foreground/70 bg-clip-text">
+                  {service.priceRange}
+                </span>
 
                   <Link href={`/orders?service=${service.slug}`}>
                     <button className="group/btn w-full rounded-xl bg-gradient-to-r from-blue-600/5 to-cyan-600/5 dark:from-blue-400/5 dark:to-cyan-400/5 border-2 border-border/50 py-3 text-sm font-semibold text-muted-foreground transition-all duration-300 hover:border-blue-500/40 hover:bg-gradient-to-r hover:from-blue-600/10 hover:to-cyan-600/10 dark:hover:from-blue-400/10 dark:hover:to-cyan-400/10 hover:text-blue-700 dark:hover:text-blue-300 hover:shadow-lg flex items-center justify-center gap-2">
