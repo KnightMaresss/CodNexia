@@ -752,7 +752,7 @@ const getServiceRange = (service: string) => {
 }
    return (
     <>
-          {/* Reassign Modal */}
+      {/* Reassign Modal */}
       {reassignModal.open && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50">
           <div className="bg-white dark:bg-slate-900 rounded-xl p-6 w-full max-w-sm shadow-xl">
@@ -797,16 +797,29 @@ const getServiceRange = (service: string) => {
       />
       <SoundNotification play={playSound} />
       <main className="min-h-screen pt-20 py-8 px-4 bg-gradient-to-br from-background to-muted">
+
+
       <div className="max-w-7xl mx-auto">
-        <div className="flex items-center justify-between mb-8">
-          <div>
-              <h1 className="text-3xl font-bold text-foreground">
-              {isFounderRole(userRole) ? 'Founder Dashboard' : 'Staff Dashboard'}
-            </h1>
-            
-            <p className="text-muted-foreground mt-1">Manage orders and track progress</p>
-          </div>
-                <div className="flex items-center gap-3">
+       <div className="mb-10 flex flex-col gap-6 xl:flex-row xl:items-center xl:justify-between">
+
+        <div>
+  <div className="mb-3 inline-flex items-center gap-2 rounded-full border border-blue-500/20 bg-blue-500/10 px-3 py-1 text-xs font-semibold text-blue-300">
+    <Shield className="h-3.5 w-3.5" />
+    {isFounderRole(userRole) ? 'Founder Access' : 'Staff Access'}
+  </div>
+
+  <h1 className="text-4xl font-black tracking-tight text-white">
+    {isFounderRole(userRole)
+      ? 'Founder Dashboard'
+      : 'Staff Dashboard'}
+  </h1>
+
+  <p className="mt-3 max-w-2xl text-sm leading-relaxed text-muted-foreground">
+    Manage orders, payments, clients, moderators, chats, files, and workflow operations from one unified control center.
+  </p>
+</div>
+
+              <div className="flex flex-wrap items-center gap-2">
                 <div
   className={`flex items-center gap-2 rounded-lg border px-3 py-2 text-sm ${
     streamConnected
@@ -819,7 +832,7 @@ const getServiceRange = (service: string) => {
   ) : (
     <WifiOff className="h-4 w-4" />
   )}
-  {streamConnected ? 'Live' : 'Offline'}
+ {streamConnected ? 'Live Sync' : 'Offline'}
 </div>
 
 <Link href="/admin/audit-logs">
@@ -849,7 +862,7 @@ const getServiceRange = (service: string) => {
           </div>
         </div>
 
-      <div className="flex gap-2">
+    <div className="mb-8 flex flex-wrap gap-3">
         <button
   onClick={() => {
     setActiveTab('orders')
@@ -913,9 +926,8 @@ const getServiceRange = (service: string) => {
         </button>
         
            )}
-
           </div>
-                {activeTab === 'users' && (
+          {activeTab === 'users' && (
           <div className="space-y-6">
             {/* Users Stats */}
             <div className="grid grid-cols-3 gap-4">
@@ -939,17 +951,7 @@ const getServiceRange = (service: string) => {
               </Card>
             </div>
 
-            {/* Search */}
-            <div className="relative">
-              <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-gray-400" />
-                 <input
-                type="text"
-                placeholder="Search users by name or email..."
-                className="w-full pl-10 pr-4 py-2 border border-input bg-background text-foreground rounded-lg text-sm focus:ring-2 focus:ring-blue-500 outline-none"
-                value={userSearch}
-                onChange={(e) => setUserSearch(e.target.value)}
-              />
-            </div>
+          
             {/* Moderator Performance - Only visible to Founder */}
             {isFounderRole(userRole) && moderatorStats.length > 0 && (
               <div className="space-y-4">
@@ -1009,10 +1011,22 @@ const getServiceRange = (service: string) => {
                     </Card>
                   ))}
                 </div>
-                
                 <h2 className="text-lg font-semibold text-foreground mt-6">All Users</h2>
+             {/* Search */}
+            <div className="relative">
+              <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-gray-400" />
+                 <input
+                type="text"
+                placeholder="Search users by name or email..."
+                className="w-full pl-10 pr-4 py-2 border border-input bg-background text-foreground rounded-lg text-sm focus:ring-2 focus:ring-blue-500 outline-none"
+                value={userSearch}
+                onChange={(e) => setUserSearch(e.target.value)}
+              />
+            </div>
               </div>
             )}
+
+
             {/* Users List */}
             <div className="space-y-2">
               {users
@@ -1023,76 +1037,123 @@ const getServiceRange = (service: string) => {
                 u.email.toLowerCase().includes(userSearch.toLowerCase())
               )
               .map((u) => (
-                <Card key={u._id} className={`border-0 shadow-sm hover:shadow-md transition-shadow ${u.blocked ? 'opacity-60' : ''}`}>
-                  <CardContent className="p-4 flex items-center justify-between">
-                    <div className="flex items-center gap-4">
 
-                      <div className={`w-12 h-12 rounded-full flex items-center justify-center text-lg font-bold overflow-hidden ${
-                       u.blocked 
-                       ? 'bg-red-100 text-red-600' 
-                        : 'bg-blue-100 text-blue-600'
-                           }`}>
-                     {/* eslint-disable-next-line @typescript-eslint/no-explicit-any */}
-                      {(u as any).profilePic ? (
-                /* eslint-disable-next-line @typescript-eslint/no-explicit-any */
-              <Image src={(u as any).profilePic} 
-                alt={u.name} 
-                width={48} 
-                height={48} 
-                className="w-full h-full object-cover" 
-                loading="eager" 
-                fetchPriority="high"
-                 />
-                ) : (
-                 u.name.charAt(0).toUpperCase()
-                  )}
-                    </div>
 
-                      
-                      <div>
-                        <div className="flex items-center gap-2">
-                         <Link href={`/profile?id=${u._id}`} className="font-semibold text-foreground hover:text-blue-600 hover:underline cursor-pointer">
-                          {u.name}
-                          </Link>
-                          {u.blocked && (
-                            <span className="px-2 py-0.5 rounded-full text-xs font-medium bg-red-100 text-red-700 dark:bg-red-900/30 dark:text-red-400">
-                              Blocked
-                            </span>
-                          )}
-                        </div>
-                        <p className="text-sm text-muted-foreground">{u.email}</p>
-                        <div className="flex items-center gap-3 mt-0.5">
-                          <p className="text-xs text-muted-foreground">
-                            Joined {new Date(u.createdAt).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })}
-                          </p>
-                          {u.role === 'moderator' && getLastSeenText(u.lastSeen)}
-                        </div>
-                      </div>
-                    </div>
-                      <div className="flex items-center gap-2">
-                      {/* Make Moderator / Remove Moderator button */}
-                      <Button
-                        size="sm"
-                        variant="outline"
-                        onClick={() => setRole(u._id, u.email, u.role === 'moderator' ? 'student' : 'moderator')}
-                        className="text-purple-600 hover:text-purple-700 hover:bg-purple-50 border-purple-200"
-                      >
-                        {u.role === 'moderator' ? 'Remove Mod' : 'Make Mod'}
-                      </Button>
-                      {/* Block / Unblock button */}
-                      <Button
-                        size="sm"
-                        variant="outline"
-                        onClick={() => toggleBlockUser(u._id, !!u.blocked)}
-                        className={u.blocked 
-                          ? 'text-green-600 hover:text-green-700 hover:bg-green-50 border-green-200' 
-                          : 'text-red-600 hover:text-red-700 hover:bg-red-50 border-red-200'
-                        }
-                      >
-                        {u.blocked ? 'Unblock' : 'Block'}
-                      </Button>
-                    </div>
-                  </CardContent>
+
+
+<Card
+  key={u._id}
+  className={`overflow-hidden border border-border/60 bg-card shadow-sm transition-all hover:border-blue-500/30 hover:shadow-lg ${
+    u.blocked ? 'opacity-60' : ''
+  }`}
+>
+             <CardContent className="p-0">
+  <div className="flex flex-col gap-4 px-5 py-5 sm:flex-row sm:items-center sm:justify-between">
+    <div className="flex min-w-0 items-center gap-4">
+      <div
+        className={`flex h-14 w-14 shrink-0 items-center justify-center overflow-hidden rounded-2xl text-lg font-bold ${
+          u.blocked
+            ? 'bg-red-500/10 text-red-500'
+            : u.role === 'moderator'
+              ? 'bg-purple-500/10 text-purple-500'
+              : 'bg-blue-500/10 text-blue-500'
+        }`}
+      >
+        {/* eslint-disable-next-line @typescript-eslint/no-explicit-any */}
+        {(u as any).profilePic ? (
+          
+          <Image
+          /* eslint-disable-next-line @typescript-eslint/no-explicit-any */
+            src={(u as any).profilePic}
+            alt={u.name}
+            width={56}
+            height={56}
+            className="h-full w-full object-cover"
+            loading="eager"
+            fetchPriority="high"
+          />
+        ) : (
+          u.name.charAt(0).toUpperCase()
+        )}
+      </div>
+
+      <div className="min-w-0">
+        <div className="flex flex-wrap items-center gap-2">
+          <Link
+            href={`/profile?id=${u._id}`}
+            className="truncate text-base font-bold text-foreground hover:text-blue-600 hover:underline"
+          >
+            {u.name}
+          </Link>
+
+          {u.role === 'moderator' && (
+            <span className="rounded-full border border-purple-500/20 bg-purple-500/10 px-2 py-0.5 text-xs font-semibold text-purple-500">
+              Moderator
+            </span>
+          )}
+
+          {u.blocked && (
+            <span className="rounded-full border border-red-500/20 bg-red-500/10 px-2 py-0.5 text-xs font-semibold text-red-500">
+              Blocked
+            </span>
+          )}
+        </div>
+
+        <p className="mt-1 truncate text-sm text-muted-foreground">
+          {u.email}
+        </p>
+
+        <div className="mt-1 flex flex-wrap items-center gap-3 text-xs text-muted-foreground">
+          <span>
+            Joined {new Date(u.createdAt).toLocaleDateString('en-US', {
+              month: 'short',
+              day: 'numeric',
+              year: 'numeric',
+            })}
+          </span>
+
+          {u.role === 'moderator' && getLastSeenText(u.lastSeen)}
+        </div>
+      </div>
+    </div>
+
+    <div className="flex shrink-0 flex-wrap items-center gap-2 sm:justify-end">
+      <Button
+        size="sm"
+        variant="outline"
+        onClick={() =>
+          setRole(
+            u._id,
+            u.email,
+            u.role === 'moderator' ? 'student' : 'moderator'
+          )
+        }
+        className="border-purple-500/20 bg-purple-500/10 text-purple-600 hover:bg-purple-500/20 dark:text-purple-300"
+      >
+        {u.role === 'moderator' ? 'Remove Mod' : 'Make Mod'}
+      </Button>
+
+      <Button
+        size="sm"
+        variant="outline"
+        onClick={() => toggleBlockUser(u._id, !!u.blocked)}
+        className={
+          u.blocked
+            ? 'border-emerald-500/20 bg-emerald-500/10 text-emerald-600 hover:bg-emerald-500/20 dark:text-emerald-300'
+            : 'border-red-500/20 bg-red-500/10 text-red-600 hover:bg-red-500/20 dark:text-red-300'
+        }
+      >
+        {u.blocked ? 'Unblock' : 'Block'}
+      </Button>
+    </div>
+  </div>
+</CardContent>
+
+
+
+
+
+
                 </Card>
               ))}
             </div>
@@ -1117,8 +1178,9 @@ const getServiceRange = (service: string) => {
     ) : (
       orders.filter(o => o.status === 'completed').map((order) => (
         <Card key={order._id} className="border-0 shadow-sm hover:shadow-md transition-shadow">
-          <CardContent className="p-6">
-            <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
+         <CardContent className="p-0">
+         <div className="border-b border-border/50 bg-gradient-to-r from-yellow-500/[0.03] via-transparent to-blue-500/[0.03] px-6 py-5">
+         <div className="flex flex-col gap-4 lg:flex-row lg:items-start lg:justify-between">
               <div className="flex-1">
                 <div className="flex items-center gap-3 flex-wrap">
                   <p className="font-semibold text-foreground text-lg">
@@ -1188,9 +1250,10 @@ const getServiceRange = (service: string) => {
                 )}
               </div>
             </div>
+           </div>
 
             {/* Rating Section */}
-            <div className="mt-4 pt-4 border-t">
+             <div className="px-6 py-5">
               {ratings[order._id] ? (
                 <div className="flex items-center gap-2 flex-wrap">
                   <div className="flex">
@@ -1216,7 +1279,7 @@ const getServiceRange = (service: string) => {
             </div>
             
             {/* Files and Chat Buttons */}
-            <div className="mt-4 pt-4 border-t">
+          <div className="border-t border-border/50 px-6 py-4">
               <div className="flex gap-3">
               <button
   onClick={() => {
@@ -1237,14 +1300,17 @@ const getServiceRange = (service: string) => {
         body: JSON.stringify({ orderId: order._id }),
       }).catch(() => {})
 
-      setTimeout(() => {
-        document
-          .getElementById(`chat-${order._id}`)
-          ?.scrollIntoView({ behavior: 'smooth', block: 'center' })
-      }, 100)
+     setTimeout(() => {
+  document
+    .getElementById(`chat-${order._id}`)
+    ?.scrollIntoView({
+      behavior: 'smooth',
+      block: 'start',
+    })
+}, 300)
     }
   }}
-  className="text-xs text-blue-600 hover:text-blue-800 flex items-center gap-1"
+ className="inline-flex items-center gap-2 rounded-xl border border-blue-500/20 bg-blue-500/10 px-3 py-2 text-xs font-medium text-blue-600 transition hover:bg-blue-500/20 dark:text-blue-300"
 >
   <MessageCircle className="h-3 w-3" />
 
@@ -1282,15 +1348,18 @@ const getServiceRange = (service: string) => {
               
               {/* Chat */}
               {chatOrder === order._id && (
-                <div id={`chat-${order._id}`} className="mt-4 pt-4 border-t">
-                  <p className="text-xs text-muted-foreground mb-3">Messages</p>
+               <div
+  id={`chat-${order._id}`}
+  className="scroll-mt-24 mt-4 pt-4 border-t"
+>
+                  <p className="scroll-mt-24 text-xs text-muted-foreground mb-3">Messages</p>
                  <OrderMessages orderId={order._id} userName="admin" />
                 </div>
               )}
             </div>
             
             {/* Delete button for founder */}
-            <div className="mt-3 pt-3 border-t flex justify-end">
+           <div className="flex justify-end border-t border-border/50 px-6 py-4">
               <Button
                 size="sm"
                 variant="outline"
@@ -1316,6 +1385,9 @@ const getServiceRange = (service: string) => {
 
 
 
+
+
+
        {/* Completed Orders Tab - Moderator only */}
        {activeTab === 'completed' && isModeratorRole(userRole) && (
          <div className="space-y-4">
@@ -1329,7 +1401,10 @@ const getServiceRange = (service: string) => {
              </Card>
            ) : (
                         orders.filter(o => o.status === 'completed' && o.assignedTo === currentUserId).map((order) => (
-               <Card key={order._id} className="border-0 shadow-sm hover:shadow-md transition-shadow">
+               <Card
+               key={order._id}
+               className="overflow-hidden border border-border/60 bg-card shadow-sm transition-all hover:border-yellow-500/30 hover:shadow-lg"
+                  >
                  <CardContent className="p-6">
                    <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
                      <div>
@@ -1349,7 +1424,9 @@ const getServiceRange = (service: string) => {
                        </div>
                      </div>
                      <div className="text-right">
-                       <p className="font-bold text-green-600 text-lg">${order.price}</p>
+                       <p className="font-bold text-green-600 text-lg">
+                        ${order.finalPrice || order.price}
+                        </p>
                      </div>
                    </div>
                       {ratings[order._id] && (
@@ -1379,7 +1456,7 @@ const getServiceRange = (service: string) => {
 
        {activeTab === 'orders' && (
   <>
-    <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4 mb-8">
+          <div className="grid grid-cols-2 gap-4 md:grid-cols-3 lg:grid-cols-6 mb-10">
                    {[ 
             { label: 'Total', value: stats.total, icon: Package, color: 'bg-slate-100 text-slate-700', valueColor: 'text-foreground' },
             { label: 'Pending', value: stats.pending, icon: Clock, color: 'bg-yellow-100 dark:bg-yellow-900/30 text-yellow-700 dark:text-yellow-400', valueColor: 'text-yellow-700 dark:text-yellow-400' },
@@ -1403,22 +1480,22 @@ const getServiceRange = (service: string) => {
             </Card>
           ))}              
         </div>
-        <Card className="mb-6 border-0 shadow-sm">
-          <CardContent className="p-4">
-            <div className="flex flex-col sm:flex-row gap-4">
+     <Card className="mb-8 overflow-hidden border border-border/50 bg-background/80 shadow-xl backdrop-blur">
+          <CardContent className="p-5">
+            <div className="flex flex-col gap-4 xl:flex-row xl:items-center">
               <div className="flex-1 relative">
                 <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-gray-400" />
                 <input
                   type="text"
                   placeholder="Search by email, ID, or requirements..."
-                  className="w-full pl-10 pr-4 py-2 border border-input bg-background text-foreground rounded-lg text-sm focus:ring-2 focus:ring-blue-500 outline-none"
+                  className="h-11 w-full rounded-xl border border-input bg-background/70 pl-10 pr-4 text-sm text-foreground placeholder:text-muted-foreground outline-none transition-all focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20"
                   value={searchQuery}
                   onChange={(e) => setSearchQuery(e.target.value)}
                 />
               </div>
 
   <select
-  className="px-3 py-2 border border-input bg-background text-foreground rounded-lg text-sm focus:ring-2 focus:ring-blue-500 outline-none"
+ className="h-11 rounded-xl border border-input bg-background/70 px-4 text-sm text-foreground outline-none transition-all focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20"
   value={statusFilter}
   onChange={(e) => setStatusFilter(e.target.value as StatusFilter)}
 >
@@ -1427,7 +1504,7 @@ const getServiceRange = (service: string) => {
   ))}
 </select>
 <select
-  className="px-3 py-2 border border-input bg-background text-foreground rounded-lg text-sm focus:ring-2 focus:ring-blue-500 outline-none"
+  className="h-11 rounded-xl border border-input bg-background/70 px-4 text-sm text-foreground outline-none transition-all focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20"
   value={serviceFilter}
   onChange={(e) => setServiceFilter(e.target.value as ServiceFilter)}
 >
@@ -1435,9 +1512,12 @@ const getServiceRange = (service: string) => {
     <option key={option.value} value={option.value}>{option.label}</option>
   ))}
 </select>
-              <Button
-                variant="outline"
-                size="sm"
+
+
+             <Button
+  variant="outline"
+  size="default"
+ className="h-11 border-border bg-background/70 text-foreground hover:bg-muted"
                 onClick={() => setSortOrder(sortOrder === 'newest' ? 'oldest' : 'newest')}
               >
                 <ArrowUpDown className="h-4 w-4 mr-1" />
@@ -1451,8 +1531,7 @@ const getServiceRange = (service: string) => {
                   setStatusFilter('all')
                   setServiceFilter('all')
                 }}
-                className="mt-3 text-xs text-blue-600 hover:text-blue-800 flex items-center gap-1"
-              >
+                className="mt-4 inline-flex items-center gap-1 rounded-lg border border-blue-500/20 bg-blue-500/10 px-3 py-2 text-xs font-medium text-blue-600 dark:text-blue-300 transition hover:bg-blue-500/20"              >
                 <X className="h-3 w-3" />
                 Clear all filters
               </button>
@@ -1475,391 +1554,504 @@ const getServiceRange = (service: string) => {
             <p className="text-sm text-muted-foreground">
               Showing {filteredOrders.length} of {orders.length} orders
             </p>
-            {filteredOrders.map((order) => (
-              <Card key={order._id} className="border-0 shadow-sm hover:shadow-md transition-shadow">
-                <CardContent className="p-6">
-                  <div className="flex flex-col lg:flex-row gap-6">
-                    <div className="flex-1 grid grid-cols-1 sm:grid-cols-2 gap-4">
-                      <div className="flex items-center gap-3">
-                        <Mail className="h-4 w-4 text-gray-400 shrink-0" />
-                        <div className="min-w-0">
-                          <p className="text-xs text-muted-foreground">Email</p>
-                          <p className="font-medium truncate">{order.studentEmail}</p>
-                        </div>
-                      </div>
-<div className="flex items-center gap-3">
-  <Package className="h-4 w-4 text-gray-400 shrink-0" />
-  <div>
-    <p className="text-xs text-muted-foreground">Service</p>
-    <p className="font-medium">{SERVICE_NAMES[order.service] || order.service}</p>
-    {/* Show price range for pending OR in-progress orders without final price */}
-    {!order.finalPrice && (order.status === 'pending' || order.status === 'in-progress') && (
-      <p className="text-xs text-muted-foreground">
-        Range: ${getServiceRange(order.service).min} - ${getServiceRange(order.service).max}
-      </p>
-    )}
-  </div>
-</div>
-                    <div className="flex items-center gap-3">
-  <DollarSign className="h-4 w-4 text-gray-400 shrink-0" />
-  <div>
-    <p className="text-xs text-muted-foreground">Price</p>
-    <p className="font-bold text-green-600">
-      {order.finalPrice ? `$${order.finalPrice}` : `$${order.price}`}
-    </p>
-    {order.finalPrice && order.depositAmount && (
-      <p className="text-xs text-muted-foreground">
-        20% deposit: ${order.depositAmount}
-      </p>
-    )}
-  </div>
-</div>
-                      <div className="flex items-center gap-3">
-                        <Calendar className="h-4 w-4 text-gray-400 shrink-0" />
-                        <div>
-                          <p className="text-xs text-muted-foreground">Date</p>
-                          <p className="font-medium text-sm text-foreground">
-                            {new Date(order.createdAt).toLocaleDateString('en-US', {
-                              month: 'short',
-                              day: 'numeric',
-                              year: 'numeric',
-                            })}
-                          </p>
-                        </div>
-                      </div>
-                    </div>
-
-                      <div className="flex items-center gap-3 lg:border-l lg:pl-6">
-                            <span className={`inline-flex items-center gap-1 px-2.5 py-1 rounded-full text-xs font-semibold border ${getStatusColor(order.status)}`}> 
-                          {getStatusIcon(order.status)}
-                          {order.status === 'in-progress' ? 'In Progress' : order.status}                    
-                        </span>
-{/* Payment Status Badges */}
-{order.paymentStatus === 'unpaid' && order.finalPrice && (
-  <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-xs font-semibold bg-yellow-100 text-yellow-700 border border-yellow-300">
-    ⏳ Awaiting Deposit
-  </span>
-)}
-{order.paymentStatus === 'deposit_paid' && (
-  <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-xs font-semibold bg-blue-100 text-blue-700 border border-blue-300">
-    💙 Deposit Paid (20%)
-  </span>
-)}
-{order.paymentStatus === 'fully_paid' && (
-  <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-xs font-semibold bg-emerald-100 text-emerald-700 border border-emerald-300">
-    💚 Fully Paid
-  </span>
-)}
-{/* Commission Display - Founder only */}
-{isFounderRole(userRole) && order.commission && order.paymentStatus === 'fully_paid' && (
-  <span className="text-xs text-purple-600 bg-purple-50 px-2 py-0.5 rounded-full">
-    Commission: ${order.commission}
-  </span>
-)}
-                      <div className="flex items-center gap-2">   
-                        {order.priority === 'urgent' && (
-                          <span className="text-sm" title="Urgent">🔥🔥🔥</span>
-                        )}
-                        {order.priority === 'normal' && (
-                          <span className="text-sm" title="Normal">🔥🔥</span>
-                        )}
-                        {order.priority === 'low' && (
-                          <span className="text-sm" title="Low">🔥</span>
-                        )}
-                            {order.finalPrice && (
-                          <span className="text-xs font-bold text-green-600">${order.finalPrice}</span>
-                        )}
-
-                           {order.assignedToName && (
-                          <>
-                          
-                            <span className="text-xs text-muted-foreground bg-slate-100 dark:bg-slate-800 px-2 py-0.5 rounded-full">
-                              👤 {order.assignedToName}
-                            </span>
-                            {isFounderRole(userRole) && order.status !== 'completed' && order.status !== 'cancelled' && (
-                              <button
-                                onClick={() => setReassignModal({ open: true, orderId: order._id, currentName: order.assignedToName || '' })}
-                                className="text-xs text-purple-600 hover:text-purple-800 underline"
-                              >
-                                Reassign
-                              </button>
-                            )}
-                          </>
-                        )}
-                      </div>
-                    {/* Set Price - Only show if no payment made yet */}
-                     {order.assignedToName && !order.finalPrice && order.paymentStatus === 'unpaid' && 
-                      order.status !== 'completed' && order.status !== 'cancelled' && (
-                        settingPrice === order._id ? (
-                          <div className="flex items-center gap-1">
-                            <span className="text-xs text-muted-foreground">$</span>
-                            <input
-                              type="number"
-                              className="w-20 px-2 py-1 border border-input bg-background text-foreground rounded text-xs"
-                              placeholder="Price"
-                              value={priceInput}
-                              onChange={(e) => setPriceInput(e.target.value)}
-                            />
-                            <Button
-                              size="sm"
-                              onClick={() => setFinalPrice(order._id)}
-                              disabled={savingPrice}
-                              className="text-xs bg-green-600 hover:bg-green-700 text-white"
-                            >
-                              {savingPrice ? <Loader2 className="h-3 w-3 animate-spin" /> : 'Set'}
-                            </Button>
-                            <Button
-                              size="sm"
-                              variant="outline"
-                              onClick={() => { setSettingPrice(null); setPriceInput('') }}
-                              className="text-xs"
-                            >
-                              <X className="h-3 w-3" />
-                            </Button>
-                          </div>
-                        ) : (
-                          <Button
-                            size="sm"
-                            variant="outline"
-                            onClick={() => setSettingPrice(order._id)}
-                            className="text-xs text-purple-600 hover:text-purple-700 hover:bg-purple-50 border-purple-200"
-                          >
-                            💰 Set Price
-                          </Button>
-                        )
-                      )}
-                      {/* Accept button - show for pending/unassigned orders */}
-                      {!order.assignedTo && order.status === 'pending' && (
-                        <Button
-                          size="sm"
-                          variant="outline"
-                          onClick={() => acceptOrder(order._id)}
-                          disabled={acceptingId === order._id}
-                          className="text-xs text-green-600 hover:text-green-700 hover:bg-green-50 border-green-200"
-                        >
-                          {acceptingId === order._id ? (
-                            <Loader2 className="h-3 w-3 animate-spin" />
-                          ) : (
-                            'Accept Order'
-                          )}
-                        </Button>
-                      )}
-{/* Mark Complete - Only show if deposit paid */}
-{order.status === 'in-progress' && order.paymentStatus === 'deposit_paid' && 
- (isFounderRole(userRole) || order.assignedTo === currentUserId) && (
-  <Button
-    size="sm"
-    variant="outline"
-    onClick={() => updateStatus(order._id, 'completed')}
-    disabled={updatingId === order._id}
-    className="text-xs bg-green-600 hover:bg-green-700 text-white"
-  >
-    {updatingId === order._id ? <Loader2 className="h-3 w-3 animate-spin" /> : '✓ Mark Complete'}
-  </Button>
-)}
-
-                      {/* Cancel - founder any, mod only THEIR assigned */}
-                      {(isFounderRole(userRole) || (isModeratorRole(userRole) && order.assignedTo === currentUserId)) && order.status !== 'completed' && order.status !== 'cancelled' && (
-                        <Button
-                          size="sm"
-                          variant="outline"
-                          onClick={() => updateStatus(order._id, 'cancelled')}
-                          disabled={updatingId === order._id}
-                          className="text-xs text-orange-600 hover:text-orange-700 hover:bg-orange-50 border-orange-200"
-                        >
-                          Cancel
-                        </Button>
-                      )}
-
-                      {/* Delete - only founder */}
-                      {isFounderRole(userRole) && (
-                        <Button
-                          size="sm"
-                          variant="outline"
-                          onClick={() => deleteOrder(order._id)}
-                          className="text-red-600 hover:text-red-700 hover:bg-red-50"
-                        >
-                          <Trash2 className="h-3 w-3" />
-                        </Button>
-                      )}
-                    </div>
 
 
-                  </div>
+    {filteredOrders.map((order) => (
+  <Card
+    key={order._id}
+    className="group overflow-hidden border border-border/60 bg-card transition-all duration-300 hover:border-blue-500/30 hover:shadow-2xl hover:shadow-blue-500/5 dark:bg-black/60 dark:backdrop-blur-xl"  >
+    <CardContent className="p-0">
+      {/* Top Header */}
+      <div className="border-b border-border/50 bg-gradient-to-r from-blue-500/[0.03] via-background to-purple-500/[0.03] px-6 py-5 dark:border-white/10">
+        <div className="flex flex-col gap-5 xl:flex-row xl:items-center xl:justify-between">
+          {/* Left */}
+          <div className="grid flex-1 grid-cols-1 gap-5 md:grid-cols-2 xl:grid-cols-4">
+            {/* Email */}
+            <div className="flex items-start gap-3">
+              <div className="rounded-xl bg-blue-500/10 p-2.5">
+                <Mail className="h-4 w-4 text-blue-400" />
+              </div>
 
-                  {order.requirements && (
-                    <div className="mt-4 pt-4 border-t">
-                      <p className="text-xs text-muted-foreground mb-1">Requirements:</p>
-                      <p className="text-sm text-foreground bg-muted rounded-lg p-3">
-                        {order.requirements}
-                      </p>
-                    </div>
+              <div className="min-w-0">
+                <p className="text-xs uppercase tracking-wide text-muted-foreground">
+                  Client
+                </p>
+
+               <p className="truncate text-sm font-semibold text-foreground dark:text-white">
+                  {order.studentEmail}
+                </p>
+              </div>
+            </div>
+
+            {/* Service */}
+            <div className="flex items-start gap-3">
+              <div className="rounded-xl bg-purple-500/10 p-2.5">
+                <Package className="h-4 w-4 text-purple-400" />
+              </div>
+
+              <div>
+                <p className="text-xs uppercase tracking-wide text-muted-foreground">
+                  Service
+                </p>
+
+              <p className="text-sm font-semibold text-foreground dark:text-white">
+                  {SERVICE_NAMES[order.service] || order.service}
+                </p>
+
+                {!order.finalPrice &&
+                  (order.status === 'pending' ||
+                    order.status === 'in-progress') && (
+                    <p className="mt-0.5 text-xs text-muted-foreground">
+                      ${getServiceRange(order.service).min} - $
+                      {getServiceRange(order.service).max}
+                    </p>
                   )}
+              </div>
+            </div>
 
-                  {/* Internal Notes - founder always, mod only for assigned orders */}
-                  {(isFounderRole(userRole) || (isModeratorRole(userRole) && order.assignedTo === currentUserId)) && (
-                    <div className="mt-4 pt-4 border-t">
-                      {editingNote === order._id ? (
-                        <div className="space-y-2">
-                          <p className="text-xs font-medium text-amber-600 flex items-center gap-1">
-                            📝 Edit Note
-                          </p>
-                          <textarea
-                            className="w-full px-3 py-2 border border-amber-300 bg-amber-50 dark:bg-amber-950/30 dark:border-amber-700 text-foreground rounded-lg text-sm resize-none focus:ring-2 focus:ring-amber-500 outline-none"
-                            rows={2}
-                            placeholder="Add internal note..."
-                            value={noteText}
-                            onChange={(e) => setNoteText(e.target.value)}
-                          />
-                          <div className="flex gap-2">
-                            <Button
-                              size="sm"
-                              onClick={() => saveNote(order._id)}
-                              disabled={savingNote}
-                              className="bg-amber-500 hover:bg-amber-600 text-white text-xs"
-                            >
-                              {savingNote ? <Loader2 className="h-3 w-3 animate-spin" /> : 'Save'}
-                            </Button>
-                            <Button
-                              size="sm"
-                              variant="outline"
-                              onClick={() => { setEditingNote(null); setNoteText('') }}
-                              className="text-xs"
-                            >
-                              Cancel
-                            </Button>
-                          </div>
-                        </div>
-                      ) : order.internalNote ? (
-                        <div className="bg-amber-50 dark:bg-amber-950/30 border border-amber-200 dark:border-amber-700 rounded-lg p-3">
-                          <div className="flex items-center justify-between mb-1">
-                            <p className="text-xs font-medium text-amber-600 flex items-center gap-1">
-                              📝 Internal Note
-                            </p>
-                            <div className="flex items-center gap-2">
-                              <span className="text-[10px] text-muted-foreground">
-                                by {order.noteUpdatedBy || 'Staff'}
-                              </span>
-                              <button
-                                onClick={() => {
-                                  setEditingNote(order._id)
-                                  setNoteText(order.internalNote || '')
-                                }}
-                                className="text-xs text-blue-600 hover:underline"
-                              >
-                                Edit
-                              </button>
-                            </div>
-                          </div>
-                          <p className="text-sm text-foreground">{order.internalNote}</p>
-                        </div>
-                      ) : (
-                        <button
-                          onClick={() => {
-                            setEditingNote(order._id)
-                            setNoteText('')
-                          }}
-                          className="text-xs text-amber-600 hover:text-amber-700 flex items-center gap-1"
-                        >
-                          📝 Add Internal Note
-                        </button>
-                      )}
-                    </div>
-                  )}
+            {/* Price */}
+            <div className="flex items-start gap-3">
+              <div className="rounded-xl bg-emerald-500/10 p-2.5">
+                <DollarSign className="h-4 w-4 text-emerald-400" />
+              </div>
 
-                  {/* Files and Chat - founder always, mod only for assigned orders */}
-                  {(isFounderRole(userRole) || (isModeratorRole(userRole) && order.assignedTo === currentUserId)) && (
-                    <>
-                      <div className="mt-3">
-                        <button
-                          onClick={() => fetchFiles(order._id)}
-                          disabled={loadingFiles === order._id}
-                          className="text-xs text-blue-600 hover:text-blue-800 flex items-center gap-1 disabled:opacity-50"
-                        >
-                          {loadingFiles === order._id ? (
-                            <Loader2 className="h-3 w-3 animate-spin" />
-                          ) : (
-                            <FileText className="h-3 w-3" />
-                          )}
-                          {expandedOrder === order._id ? 'Hide Files' : 'View Files'}
-                        </button>
-<button
-  onClick={() => {
-    setChatOrder(chatOrder === order._id ? null : order._id)
+              <div>
+                <p className="text-xs uppercase tracking-wide text-muted-foreground">
+                  Price
+                </p>
 
-    if (chatOrder !== order._id) {
-      setOrders((prev) =>
-        prev.map((o) =>
-          o._id === order._id
-            ? { ...o, unreadMessages: 0, hasUnreadMessages: false }
-            : o
-        )
-      )
+                <p className="text-lg font-bold text-emerald-400">
+                  {order.finalPrice
+                    ? `$${order.finalPrice}`
+                    : `$${order.price}`}
+                </p>
 
-      fetch('/api/messages', {
-        method: 'PUT',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ orderId: order._id }),
-      }).catch(() => {})
+                {order.finalPrice && order.depositAmount && (
+                  <p className="text-xs text-muted-foreground">
+                    Deposit: ${order.depositAmount}
+                  </p>
+                )}
+              </div>
+            </div>
 
-      setTimeout(() => {
-        document
-          .getElementById(`chat-${order._id}`)
-          ?.scrollIntoView({ behavior: 'smooth', block: 'center' })
-      }, 100)
-    }
-  }}
-  className="text-xs text-blue-600 hover:text-blue-800 flex items-center gap-1"
->
-  <MessageCircle className="h-3 w-3" />
+            {/* Date */}
+            <div className="flex items-start gap-3">
+              <div className="rounded-xl bg-orange-500/10 p-2.5">
+                <Calendar className="h-4 w-4 text-orange-400" />
+              </div>
 
-  {order.hasUnreadMessages && (
-    <span className="flex h-5 min-w-[20px] items-center justify-center rounded-full bg-red-500 px-1 text-[10px] font-bold text-white">
-      {order.unreadMessages}
-    </span>
-  )}
+              <div>
+                <p className="text-xs uppercase tracking-wide text-muted-foreground">
+                  Created
+                </p>
 
-  {chatOrder === order._id ? 'Hide Chat' : 'Chat'}
-</button>
-                        {expandedOrder === order._id && orderFiles[order._id] && (
-                          <div className="mt-2 space-y-1">
-                            {orderFiles[order._id].length === 0 ? (
-                              <p className="text-xs text-muted-foreground">No files attached</p>
-                            ) : (
-                              orderFiles[order._id].map((file) => (
-                                <a
-                                  key={file.id}
-                                  href={`/api/files/download?id=${file.id}`}
-                                  download={file.name}
-                                  className="flex items-center gap-2 text-xs text-blue-600 hover:text-blue-800 bg-blue-50 dark:bg-blue-950 rounded px-2 py-1"
-                                >
-                                  <FileText className="h-3 w-3" />
-                                  {file.name}
-                                  <Download className="h-3 w-3 ml-auto" />
-                                </a>
-                              ))
-                            )}
-                          </div>
-                        )}
-                      </div>
-                      {/* Chat */}
-                       {chatOrder === order._id && (
-                        <div id={`chat-${order._id}`} className="mt-4 pt-4 border-t">
-                          <p className="text-xs text-muted-foreground mb-3">Messages</p>
-                          <OrderMessages orderId={order._id} userName="admin" />
-                        </div>
-                      )}
-                    </>
-                  )}
-                </CardContent>
-              </Card>
-            ))}
+               <p className="text-sm font-semibold text-foreground dark:text-white">
+                  {new Date(order.createdAt).toLocaleDateString('en-US', {
+                    month: 'short',
+                    day: 'numeric',
+                    year: 'numeric',
+                  })}
+                </p>
+              </div>
+            </div>
           </div>
-        )}
-     </>
-      )}
+
+          {/* Right Status Area */}
+          <div className="flex flex-wrap items-center gap-2 xl:justify-end">
+            <span
+              className={`inline-flex items-center gap-1 rounded-full border px-3 py-1.5 text-xs font-semibold shadow-sm ${getStatusColor(
+                order.status
+              )}`}
+            >
+              {getStatusIcon(order.status)}
+              {order.status === 'in-progress'
+                ? 'In Progress'
+                : order.status}
+            </span>
+
+            {order.paymentStatus === 'unpaid' && order.finalPrice && (
+              <span className="rounded-full border border-yellow-500/20 bg-yellow-500/10 px-3 py-1 text-xs font-semibold text-yellow-300">
+                Awaiting Deposit
+              </span>
+            )}
+
+            {order.paymentStatus === 'deposit_paid' && (
+              <span className="rounded-full border border-blue-500/20 bg-blue-500/10 px-3 py-1 text-xs font-semibold text-blue-300">
+                Deposit Paid
+              </span>
+            )}
+
+            {order.paymentStatus === 'fully_paid' && (
+              <span className="rounded-full border border-emerald-500/20 bg-emerald-500/10 px-3 py-1 text-xs font-semibold text-emerald-300">
+                Fully Paid
+              </span>
+            )}
+
+            {order.priority === 'urgent' && (
+              <span className="rounded-full bg-red-500/10 px-2 py-1 text-xs font-semibold text-red-400">
+                🔥 Urgent
+              </span>
+            )}
+
+            {order.priority === 'normal' && (
+              <span className="rounded-full bg-orange-500/10 px-2 py-1 text-xs font-semibold text-orange-300">
+                🔥 Normal
+              </span>
+            )}
+
+            {order.priority === 'low' && (
+              <span className="rounded-full bg-slate-700 px-2 py-1 text-xs font-semibold text-foreground">
+                Low
+              </span>
+            )}
+
+            {order.assignedToName && (
+              <span className="rounded-full border border-white/10 bg-background/60 px-3 py-1 text-xs text-foreground">
+                👤 {order.assignedToName}
+              </span>
+            )}
+          </div>
+        </div>
       </div>
-    </main>
+
+      {/* Requirements */}
+      {order.requirements && (
+        <div className="px-6 pt-5">
+          <div className="rounded-2xl border border-border/60 bg-muted/30 p-4 dark:border-white/5 dark:bg-white/[0.03]">
+            <p className="mb-2 text-xs uppercase tracking-wide text-muted-foreground">
+              Requirements
+            </p>
+
+           <p className="whitespace-pre-wrap text-sm leading-relaxed text-foreground dark:text-slate-200">
+              {order.requirements}
+            </p>
+          </div>
+        </div>
+      )}
+
+      {/* Actions */}
+      <div className="flex flex-wrap items-center gap-2 px-6 py-5">
+        {/* Accept */}
+        {!order.assignedTo && order.status === 'pending' && (
+          <Button
+            size="sm"
+            onClick={() => acceptOrder(order._id)}
+            disabled={acceptingId === order._id}
+            className="bg-emerald-600 text-white hover:bg-emerald-700"
+          >
+            {acceptingId === order._id ? (
+              <Loader2 className="h-4 w-4 animate-spin" />
+            ) : (
+              'Accept Order'
+            )}
+          </Button>
+        )}
+
+        {/* Set Price */}
+        {order.assignedToName &&
+          !order.finalPrice &&
+          order.paymentStatus === 'unpaid' &&
+          order.status !== 'completed' &&
+          order.status !== 'cancelled' && (
+            <>
+              {settingPrice === order._id ? (
+                <div className="flex items-center gap-2 rounded-xl border border-purple-500/20 bg-purple-500/5 p-2">
+                  <input
+                    type="number"
+                    className="w-28 rounded-lg border border-white/10 bg-black/40 px-3 py-2 text-sm text-white outline-none focus:border-purple-500"
+                    placeholder="Final price"
+                    value={priceInput}
+                    onChange={(e) => setPriceInput(e.target.value)}
+                  />
+
+                  <Button
+                    size="sm"
+                    onClick={() => setFinalPrice(order._id)}
+                    disabled={savingPrice}
+                    className="bg-purple-600 hover:bg-purple-700"
+                  >
+                    {savingPrice ? (
+                      <Loader2 className="h-4 w-4 animate-spin" />
+                    ) : (
+                      'Save'
+                    )}
+                  </Button>
+
+                  <Button
+                    size="sm"
+                    variant="outline"
+                    onClick={() => {
+                      setSettingPrice(null)
+                      setPriceInput('')
+                    }}
+                  >
+                    Cancel
+                  </Button>
+                </div>
+              ) : (
+                <Button
+                  size="sm"
+                  variant="outline"
+                  onClick={() => setSettingPrice(order._id)}
+                  className="border-purple-500/20 bg-purple-500/10 text-purple-300 hover:bg-purple-500/20"
+                >
+                  💰 Set Price
+                </Button>
+              )}
+            </>
+          )}
+
+        {/* Complete */}
+        {order.status === 'in-progress' &&
+          order.paymentStatus === 'deposit_paid' &&
+          (isFounderRole(userRole) ||
+            order.assignedTo === currentUserId) && (
+            <Button
+              size="sm"
+              onClick={() => updateStatus(order._id, 'completed')}
+              disabled={updatingId === order._id}
+              className="bg-green-600 text-white hover:bg-green-700"
+            >
+              {updatingId === order._id ? (
+                <Loader2 className="h-4 w-4 animate-spin" />
+              ) : (
+                '✓ Mark Complete'
+              )}
+            </Button>
+          )}
+
+        {/* Cancel */}
+        {(isFounderRole(userRole) ||
+          (isModeratorRole(userRole) &&
+            order.assignedTo === currentUserId)) &&
+          order.status !== 'completed' &&
+          order.status !== 'cancelled' && (
+            <Button
+              size="sm"
+              variant="outline"
+              onClick={() => updateStatus(order._id, 'cancelled')}
+              disabled={updatingId === order._id}
+              className="border-orange-500/20 bg-orange-500/10 text-orange-300 hover:bg-orange-500/20"
+            >
+              Cancel
+            </Button>
+          )}
+        {/* Reassign */}
+        {order.assignedToName &&
+          isFounderRole(userRole) &&
+          order.status !== 'completed' &&
+          order.status !== 'cancelled' && (
+            <Button
+              size="sm"
+              variant="outline"
+              onClick={() =>
+                setReassignModal({
+                  open: true,
+                  orderId: order._id,
+                  currentName: order.assignedToName || '',
+                })
+              }
+              className="border-blue-500/20 bg-blue-500/10 text-blue-300 hover:bg-blue-500/20"
+            >
+              Reassign
+            </Button>
+          )}
+      </div>
+{/* Internal Note Preview */}
+{order.internalNote && (
+  <div className="border-t border-border/50 px-6 py-4">
+    <div className="rounded-2xl border border-amber-500/20 bg-amber-500/10 px-4 py-3">
+      <p className="mb-1 text-xs font-semibold uppercase tracking-wide text-amber-500">
+        Internal Note
+      </p>
+      <p className="line-clamp-2 text-sm text-foreground">
+        {order.internalNote}
+      </p>
+    </div>
+  </div>
+)}
+      {/* Quick Links */}
+     <div className="flex flex-wrap items-center justify-between gap-3 border-t border-border/50 bg-muted/10 px-6 py-4 dark:border-white/5 dark:bg-transparent">
+  <div className="flex flex-wrap items-center gap-3">
+        {/* Notes */}
+        {(isFounderRole(userRole) ||
+          (isModeratorRole(userRole) &&
+            order.assignedTo === currentUserId)) && (
+          <button
+            onClick={() => {
+              setEditingNote(order._id)
+              setNoteText(order.internalNote || '')
+            }}
+            className="flex items-center gap-2 rounded-xl border border-amber-500/10 bg-amber-500/5 px-3 py-2 text-xs font-medium text-amber-300 transition hover:bg-amber-500/10"
+          >
+            📝 {order.internalNote ? 'Edit Note' : 'Add Note'}
+          </button> 
+        )}
+
+        {/* Files */}
+        <button
+          onClick={() => fetchFiles(order._id)}
+          disabled={loadingFiles === order._id}
+          className="flex items-center gap-2 rounded-xl border border-blue-500/10 bg-blue-500/5 px-3 py-2 text-xs font-medium text-blue-300 transition hover:bg-blue-500/10"
+        >
+          {loadingFiles === order._id ? (
+            <Loader2 className="h-3 w-3 animate-spin" />
+          ) : (
+            <FileText className="h-3 w-3" />
+          )}
+
+          {expandedOrder === order._id ? 'Hide Files' : 'View Files'}
+        </button>
+
+        {/* Chat */}
+        <button
+          onClick={() => {
+            setChatOrder(chatOrder === order._id ? null : order._id)
+
+            if (chatOrder !== order._id) {
+              setOrders((prev) =>
+                prev.map((o) =>
+                  o._id === order._id
+                    ? {
+                        ...o,
+                        unreadMessages: 0,
+                        hasUnreadMessages: false,
+                      }
+                    : o
+                )
+              )
+
+              fetch('/api/messages', {
+                method: 'PUT',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ orderId: order._id }),
+              }).catch(() => {})
+
+    setTimeout(() => {
+      document
+    .getElementById(`chat-${order._id}`)
+    ?.scrollIntoView({
+      behavior: 'smooth',
+      block: 'start',
+    })
+}, 300)
+            }
+          }}
+          className="relative flex items-center gap-2 rounded-xl border border-emerald-500/10 bg-emerald-500/5 px-3 py-2 text-xs font-medium text-emerald-300 transition hover:bg-emerald-500/10"
+        >
+          <MessageCircle className="h-3 w-3" />
+
+          {order.hasUnreadMessages && (
+            <span className="flex h-5 min-w-[20px] items-center justify-center rounded-full bg-red-500 px-1 text-[10px] font-bold text-white">
+              {order.unreadMessages}
+            </span>
+          )}
+
+          {chatOrder === order._id ? 'Hide Chat' : 'Open Chat'}
+          
+        </button>
+        </div>
+        <Button
+  size="sm"
+  variant="outline"
+  onClick={() => deleteOrder(order._id)}
+  className="border-red-500/20 bg-red-500/5 text-red-400 hover:bg-red-500/10 hover:text-red-300"
+>
+  <Trash2 className="mr-1 h-4 w-4" />
+  Delete
+</Button>
+      </div>
+
+      {/* Files Expanded */}
+      {expandedOrder === order._id && orderFiles[order._id] && (
+        <div className="border-t border-white/5 px-6 py-4">
+          <div className="space-y-2">
+            {orderFiles[order._id].length === 0 ? (
+              <p className="text-sm text-muted-foreground">
+                No files attached
+              </p>
+            ) : (
+              orderFiles[order._id].map((file) => (
+                <a
+                  key={file.id}
+                  href={`/api/files/download?id=${file.id}`}
+                  download={file.name}
+                  className="flex items-center gap-3 rounded-xl border border-white/5 bg-white/[0.03] px-4 py-3 text-sm text-slate-200 transition hover:border-blue-500/20 hover:bg-blue-500/5"
+                >
+                  <FileText className="h-4 w-4 text-blue-400" />
+
+                  <span className="truncate">{file.name}</span>
+
+                  <Download className="ml-auto h-4 w-4 text-muted-foreground" />
+                </a>
+              ))
+            )}
+          </div>
+        </div>
+      )}
+
+      {/* Internal Notes */}
+      {editingNote === order._id && (
+        <div className="border-t border-white/5 px-6 py-4">
+          <div className="rounded-2xl border border-amber-500/10 bg-amber-500/5 p-4">
+            <p className="mb-2 text-xs font-semibold uppercase tracking-wide text-amber-300">
+              Internal Note
+            </p>
+
+            <textarea
+              className="min-h-[90px] w-full rounded-xl border border-white/10 bg-black/40 p-3 text-sm text-white outline-none focus:border-amber-400"
+              placeholder="Write internal note..."
+              value={noteText}
+              onChange={(e) => setNoteText(e.target.value)}
+            />
+
+            <div className="mt-3 flex gap-2">
+              <Button
+                size="sm"
+                onClick={() => saveNote(order._id)}
+                disabled={savingNote}
+                className="bg-amber-500 text-black hover:bg-amber-400"
+              >
+                {savingNote ? (
+                  <Loader2 className="h-4 w-4 animate-spin" />
+                ) : (
+                  'Save Note'
+                )}
+              </Button>
+
+              <Button
+                size="sm"
+                variant="outline"
+                onClick={() => {
+                  setEditingNote(null)
+                  setNoteText('')
+                }}
+              >
+                Cancel
+              </Button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Chat */}
+      {chatOrder === order._id && (
+        <div
+          id={`chat-${order._id}`}
+          className="scroll-mt-24 border-t border-white/5 bg-black/20 px-6 py-5"
+        >
+          <OrderMessages orderId={order._id} userName="admin" />
+        </div>
+      )}
+   </CardContent>
+  </Card>
+))}
+ </div>
+)}
+  </>
+   )}
+</div>
+</main>
   </>
   )
 }

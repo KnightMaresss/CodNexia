@@ -172,7 +172,7 @@ function TrackOrderContent() {
 
         {/* Search Form */}
         {!order && (
-          <Card className="shadow-lg border-0">
+         <Card className="overflow-hidden border border-border/60 bg-card shadow-sm transition-all hover:border-blue-500/30 hover:shadow-xl">
               <CardHeader>
               <CardTitle className="flex items-center gap-2">
                 <Search className="h-5 w-5 text-blue-600" />
@@ -190,8 +190,7 @@ function TrackOrderContent() {
                     type="text"
                     required
                     placeholder="Enter your Order ID (e.g. 69f5f83cd2151c4bf2787d5f)"
-                    className="w-full px-4 py-3 border border-input bg-background text-foreground rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none transition-all font-mono text-sm"
-                    value={orderId}
+                    className="w-full rounded-xl border border-input bg-background px-4 py-3 font-mono text-sm text-foreground outline-none transition-all focus:border-blue-500 focus:ring-2 focus:ring-blue-500"                    value={orderId}
                     onChange={(e) => setOrderId(e.target.value)}
                   />
                 </div>
@@ -200,7 +199,7 @@ function TrackOrderContent() {
                   type="submit"
                   disabled={loading}
                   size="lg"
-                  className="w-full bg-blue-600 hover:bg-blue-700 text-white py-6 text-lg"
+                 className="w-full rounded-2xl bg-blue-600 py-6 text-lg font-semibold text-white transition-all hover:scale-[1.01] hover:bg-blue-700"
                 >
                   {loading ? (
                     <span className="flex items-center gap-2">
@@ -223,7 +222,7 @@ function TrackOrderContent() {
         {order && (
           <div className="space-y-6 animate-in fade-in slide-in-from-bottom-4 duration-500">
             {/* Status Progress */}
-            <Card className="shadow-lg border-0 overflow-hidden">
+          <Card className="overflow-hidden border border-border/60 bg-card shadow-sm transition-all hover:border-blue-500/30 hover:shadow-xl">
               <CardContent className="p-8">
                 <div className="flex items-center justify-between mb-2">
                  <h2 className="text-xl font-bold text-foreground">Order Status</h2>
@@ -236,53 +235,52 @@ function TrackOrderContent() {
                   </span>
                 </div>
 
-                {/* Progress Bar */}
-                <div className="relative mt-8">
-                 <div className="absolute top-5 left-0 right-0 h-1 bg-muted rounded-full">
-                    <div
-                      className="h-full bg-blue-600 rounded-full transition-all duration-1000"
-                      style={{
-                        width: `${(getStatusIndex(order.status) / (STATUS_STEPS.length - 1)) * 100}%`,
-                      }}
-                    />
-                  </div>
+  {/* Progress Tracker */}
+<div className="mt-6 rounded-2xl border border-border/50 bg-card/70 px-4 py-5 backdrop-blur-sm transition-all hover:border-blue-500/30 hover:shadow-lg">
+  <div className="flex items-center justify-between">
+    {STATUS_STEPS.map((step, index, arr) => {
+      const Icon = step.icon
+      const currentIndex = getStatusIndex(order.status)
+      const isActive = currentIndex === index
+      const isDone = currentIndex > index || order.status === 'completed'
 
-                  <div className="relative flex justify-between">
-                    {STATUS_STEPS.map((step, index) => {
-                      const Icon = step.icon
-                      const isActive = getStatusIndex(order.status) >= index
-                      const isCurrent = step.key === order.status
+      return (
+        <div key={step.key} className="flex flex-1 items-center">
+          <div className="flex flex-col items-center gap-2">
+            <div
+              className={`flex h-10 w-10 items-center justify-center rounded-full border transition-all ${
+                isDone
+                  ? 'border-emerald-500 bg-emerald-500 text-white'
+                  : isActive
+                    ? 'border-blue-500 bg-blue-500 text-white shadow-lg shadow-blue-500/20'
+                    : 'border-border bg-background text-muted-foreground'
+              }`}
+            >
+              <Icon className="h-5 w-5" />
+            </div>
 
-                      return (
-                        <div key={step.key} className="flex flex-col items-center">
-                          <div
-                            className={`w-10 h-10 rounded-full flex items-center justify-center transition-all duration-300 ${
-                              isActive ? step.bg + ' shadow-md' : 'bg-muted'
-                            } ${isCurrent ? 'ring-4 ring-offset-2 ring-blue-400' : ''}`}
-                          >
-                            <Icon
-                              className={`h-5 w-5 transition-colors ${
-                                isActive ? step.color : 'text-muted-foreground'
-                              }`}
-                            />
-                          </div>
-                          <span
-                            className={`mt-3 text-xs font-medium text-center ${
-                             isActive ? 'text-foreground' : 'text-muted-foreground'
-                            }`}
-                          >
-                            {step.label}
-                          </span>
-                        </div>
-                      )
-                    })}
-                  </div>
-                </div>
+            <span className="text-center text-xs font-medium text-muted-foreground">
+              {step.label}
+            </span>
+          </div>
+
+          {index < arr.length - 1 && (
+            <div
+              className={`mx-3 h-px flex-1 ${
+                isDone ? 'bg-emerald-500' : 'bg-border'
+              }`}
+            />
+          )}
+        </div>
+      )
+    })}
+  </div>
+</div>
               </CardContent>
             </Card>
 
             {/* Order Details */}
-            <Card className="shadow-lg border-0">
+           <Card className="overflow-hidden border border-border/60 bg-card shadow-sm transition-all hover:border-blue-500/30 hover:shadow-xl">
                 <CardHeader>
                  <CardTitle className="flex items-center gap-2 text-lg">
                   <Package className="h-5 w-5 text-blue-600" />
@@ -354,7 +352,7 @@ function TrackOrderContent() {
                 {order.requirements && (
                   <div className="pt-4 border-t">
                    <p className="text-xs text-muted-foreground mb-2">Your Requirements</p>
-                    <p className="text-sm text-foreground bg-muted rounded-lg p-4">
+                   <p className="rounded-2xl border border-border/50 bg-muted/30 p-4 text-sm text-foreground">
                       {order.requirements}
                     </p>
                   </div>
@@ -371,12 +369,12 @@ function TrackOrderContent() {
                   setOrder(null)
                   setOrderId('')
                 }}
-                className="px-8 py-6 text-lg"
+               className="rounded-2xl border-border/60 px-8 py-6 text-lg transition-all hover:scale-[1.02]"
               >
                 Track Another Order
               </Button>
               <Link href="/orders">
-                <Button size="lg" className="px-8 py-6 text-lg">
+                <Button size="lg" className="rounded-2xl bg-blue-600 px-8 py-6 text-lg font-semibold text-white transition-all hover:scale-[1.02] hover:bg-blue-700">
                   Place New Order
                   <ChevronRight className="ml-1 h-5 w-5" />
                 </Button>

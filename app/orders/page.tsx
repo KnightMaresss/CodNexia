@@ -179,8 +179,7 @@ function OrderFormContent() {
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
           {/* Form */}
           <div className="lg:col-span-2">
-            <Card className="shadow-lg border-0">
-
+           <Card className="overflow-hidden border border-border/60 bg-card shadow-xl transition-all hover:border-blue-500/30 hover:shadow-2xl">
               <CardHeader>
                 <CardTitle className="flex items-center gap-2">
                   <FileText className="h-5 w-5 text-blue-600" />
@@ -222,10 +221,10 @@ function OrderFormContent() {
                           key={key}
                           type="button"
                           onClick={() => handleServiceChange(key)}
-                          className={`text-left p-4 rounded-lg border-2 transition-all ${
+                        className={`text-left p-4 rounded-2xl border-2 transition-all duration-300 hover:scale-[1.02] ${
                             formData.service === key
                              ? 'border-blue-600 bg-blue-50 dark:bg-blue-950 shadow-md'
-                             : 'border-border hover:border-muted-foreground/30 hover:bg-card dark:hover:bg-accent'
+                           : 'border-border bg-background/40 hover:border-blue-500/40 hover:bg-blue-500/5'
                           }`}
                         >
                           <p className="font-semibold text-foreground">{name}</p>
@@ -362,7 +361,7 @@ function OrderFormContent() {
                     type="submit"
                     disabled={loading}
                     size="lg"
-                    className="w-full bg-blue-600 hover:bg-blue-700 text-white py-6 text-lg"
+                   className="w-full bg-blue-600 py-6 text-lg font-semibold text-white shadow-lg shadow-blue-600/20 transition-all hover:bg-blue-700 hover:shadow-blue-600/30"
                   >
                     {loading ? (
                       <span className="flex items-center gap-2">
@@ -384,8 +383,8 @@ function OrderFormContent() {
           {/* Order Summary Sidebar */}
           <div className="lg:col-span-1">
             <div className="sticky top-24 space-y-6">
-              <Card className="shadow-lg border-0 bg-slate-900 text-white overflow-hidden">
-                <CardHeader>
+            <Card className="overflow-hidden border border-border/60 bg-card text-foreground shadow-xl transition-all hover:border-blue-500/30 hover:shadow-2xl dark:border-blue-500/20 dark:bg-blue-950/40 dark:text-white dark:hover:border-blue-400/40 dark:hover:shadow-blue-500/10">             
+              <CardHeader>
                   <CardTitle className="flex items-center gap-2 text-lg">
                     <DollarSign className="h-5 w-5 text-blue-400" />
                     Order Summary
@@ -393,11 +392,11 @@ function OrderFormContent() {
                 </CardHeader>
                 <CardContent className="space-y-4">
                   <div className="flex justify-between items-center py-3 border-b border-white/10">
-                    <span className="text-gray-300">Service</span>
+                    <span className="text-muted-foreground">Service</span>
                     <span className="font-semibold">{selectedService.name}</span>
                   </div>
                   <div className="flex justify-between items-center py-3 border-b border-white/10">
-                    <span className="text-gray-300">Price</span>
+                    <span className="text-muted-foreground">Price</span>
                     <span
                       className="text-2xl font-bold text-blue-400 animate-in fade-in duration-300"
                     >
@@ -405,12 +404,12 @@ function OrderFormContent() {
                     </span>
                   </div>
                   <div className="flex justify-between items-center py-3 border-b border-white/10">
-                    <span className="text-gray-300">Delivery</span>
+                    <span className="text-muted-foreground">Delivery</span>
                     <span className="text-green-400 text-sm text-right">
                       {formatDate(deliveryFrom)} – {formatDate(deliveryTo)}
                     </span>
                   </div>
-                  <div className="pt-2 text-sm text-gray-400 space-y-2">
+                  <div className="pt-2 text-sm text-muted-foreground space-y-2">
                     <p className="flex items-center gap-2">
                       <CheckCircle className="h-4 w-4 text-green-400" />
                       Unlimited revisions

@@ -12,7 +12,6 @@ import {
   CheckCircle2, 
   FileText, 
   Loader2, 
-  ChevronRight, 
   Download, 
   Upload,
   Trash2,
@@ -512,7 +511,10 @@ useEffect(() => {
         ) : (
           <div className="space-y-4">
             {orders.map((order) => (
-              <Card key={order._id} className="hover:shadow-md transition-shadow">
+             <Card
+             key={order._id}
+             className="overflow-hidden border border-border/60 bg-card shadow-sm transition-all hover:border-blue-500/30 hover:shadow-xl"
+                >
                 <CardContent className="p-6">
 
 
@@ -541,7 +543,51 @@ useEffect(() => {
                      <p className="font-bold text-green-600">{order.finalPrice ? `$${order.finalPrice}` : 'TBD'}</p>
                     </div>
                   </div>
+<div className="mt-5 rounded-xl border border-border/50 bg-muted/20 px-4 py-4">
+  <div className="flex items-center justify-between">
+    {[
+      { key: 'pending', label: 'Received', icon: Clock },
+      { key: 'in-progress', label: 'In Progress', icon: FileText },
+      { key: 'completed', label: 'Completed', icon: CheckCircle2 },
+    ].map((step, index, arr) => {
+      const statusOrder = ['pending', 'in-progress', 'completed']
+      const currentIndex = statusOrder.indexOf(order.status)
+      const stepIndex = statusOrder.indexOf(step.key)
+      const isActive = currentIndex === stepIndex
+      const isDone = currentIndex > stepIndex || order.status === 'completed'
+      const Icon = step.icon
 
+      return (
+        <div key={step.key} className="flex flex-1 items-center">
+          <div className="flex flex-col items-center gap-2">
+            <div
+              className={`flex h-9 w-9 items-center justify-center rounded-full border transition-all ${
+                isDone
+                  ? 'border-emerald-500 bg-emerald-500 text-white'
+                  : isActive
+                    ? 'border-blue-500 bg-blue-500 text-white shadow-lg shadow-blue-500/20'
+                    : 'border-border bg-background text-muted-foreground'
+              }`}
+            >
+              <Icon className="h-4 w-4" />
+            </div>
+            <span className="text-xs font-medium text-muted-foreground">
+              {step.label}
+            </span>
+          </div>
+
+          {index < arr.length - 1 && (
+            <div
+              className={`mx-3 h-px flex-1 ${
+                isDone ? 'bg-emerald-500' : 'bg-border'
+              }`}
+            />
+          )}
+        </div>
+      )
+    })}
+  </div>
+</div>
   {/* Payment Info Box - Show for unpaid or deposit_paid orders */}
 {(order.paymentStatus === 'unpaid' || order.paymentStatus === 'deposit_paid') && (
   <div className="mt-3 bg-blue-50 dark:bg-blue-950/30 rounded-lg p-3">
@@ -704,20 +750,14 @@ useEffect(() => {
     </p>
   </div>
 )}
-                    <div className="mt-4 flex gap-2 flex-wrap">
-                    <Link href={`/track?id=${order._id}&direct=true`}>
-                      <Button size="sm" variant="outline">
-                        Track Order
-                        <ChevronRight className="ml-1 h-3 w-3" />
-                      </Button>
-                    </Link>
+                 <div className="mt-5 flex flex-wrap items-center gap-3 border-t border-border/50 pt-5">
                     {order.status === 'pending' && (
                       <Button
                         size="sm"
                         variant="outline"
                         onClick={() => cancelOrder(order._id)}
                         disabled={cancellingId === order._id}
-                        className="text-red-600 hover:text-red-700 hover:bg-red-50"
+                        className="rounded-xl transition-all hover:scale-[1.02] border-red-500/20 bg-red-500/10 text-red-600 hover:bg-red-500/20 dark:text-red-300"
                       >
                         {cancellingId === order._id ? (
                           <Loader2 className="h-3 w-3 animate-spin mr-1" />
@@ -753,12 +793,12 @@ useEffect(() => {
           .getElementById(`chat-${order._id}`)
           ?.scrollIntoView({
             behavior: 'smooth',
-            block: 'center',
+            block: 'start',
           })
-      }, 100)
+      }, 300)
     }
   }}
-  className="flex items-center gap-2"
+ className="rounded-xl transition-all hover:scale-[1.02] flex items-center gap-2 border-emerald-500/20 bg-emerald-500/10 text-emerald-600 hover:bg-emerald-500/20 dark:text-emerald-300"
 >
   <MessageCircle className="h-3 w-3" />
 
@@ -775,6 +815,7 @@ useEffect(() => {
                       size="sm"
                       variant="outline"
                       onClick={() => fetchFiles(order._id)}
+                      className="rounded-xl transition-all hover:scale-[1.02] border-blue-500/20 bg-blue-500/10 text-blue-600 hover:bg-blue-500/20 dark:text-blue-300"
                     >
                       {loadingFiles === order._id ? (
                         <Loader2 className="h-3 w-3 animate-spin mr-1" />
@@ -802,7 +843,7 @@ useEffect(() => {
       }
     }}
     disabled={uploadingToOrder === order._id}
-    className="w-full border-2 border-dashed border-border rounded-lg p-3 text-center hover:border-blue-400 transition-all mb-3"
+    className="mb-3 w-full rounded-2xl border-2 border-dashed border-border bg-muted/20 p-4 text-center transition-all hover:border-blue-400 hover:bg-blue-500/5"
   >
     {uploadingToOrder === order._id ? (
       <Loader2 className="h-4 w-4 animate-spin mx-auto" />
@@ -855,7 +896,7 @@ useEffect(() => {
                   )}
                      {/* Chat */}
 {chatOrder === order._id && (
-  <div id={`chat-${order._id}`} className="mt-4 pt-4 border-t">
+  <div id={`chat-${order._id}`} className="scroll-mt-24 mt-4 pt-4 border-t">
     <p className="text-xs text-muted-foreground mb-3">Messages</p>
    <OrderMessages orderId={order._id} userName="student" />
   </div>

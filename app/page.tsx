@@ -79,38 +79,72 @@ export default function Home() {
 
   return (   
     <main className="min-h-screen pt-15">
-      {/* Hero Section */}
-      <section className="relative py-12 px-4 text-center bg-gradient-to-br from-background via-[#001a5c] to-background text-white">
-        <div className="absolute inset-0 bg-[url('/grid.svg')] opacity-10" />   
-        <div className="relative max-w-4xl mx-auto">
-          <h1 className="text-5xl md:text-6xl font-bold mb-6 leading-tight">
-            Academic Help &{" "}
-            <span className="bg-gradient-to-r from-blue-400 to-cyan-400 bg-clip-text text-transparent">
-              Web Development
-            </span>{" "}
-            for Students
-          </h1>
-          <p className="text-xl text-gray-300 mb-10 max-w-2xl mx-auto">
-            Expert assistance for graduation projects, reports, websites, and apps. 
-            Get high-quality work delivered on time.
-          </p>
-        </div>
-      </section>
+{/* Hero Section */}
+<section className="relative overflow-hidden px-4 py-16 text-white bg-gradient-to-br from-background via-[#001a5c] to-background">
+  <div className="absolute inset-0 bg-[url('/grid.svg')] opacity-10" />
+  <div className="absolute left-1/2 top-32 h-[520px] w-[520px] -translate-x-1/2 rounded-full bg-blue-600/20 blur-[140px]" />
+
+<div className="relative mx-auto max-w-5xl pt-6 text-center">
+  <h1 className="text-5xl font-black leading-tight tracking-tight md:text-7xl">
+      Academic Help &{" "}
+      <span className="bg-gradient-to-r from-blue-400 to-cyan-400 bg-clip-text text-transparent">
+        Web Development
+      </span>{" "}
+      for Students
+    </h1>
+
+    <p className="mx-auto mt-6 max-w-2xl text-lg leading-relaxed text-gray-300 md:text-xl">
+      Expert assistance for graduation projects, reports, websites, and apps.
+      Get high-quality work delivered on time.
+    </p>
+
+    <div className="mt-10 flex flex-col justify-center gap-4 sm:flex-row">
+      <Link href="/orders">
+        <Button
+          size="lg"
+          className="h-14 rounded-2xl bg-blue-600 px-8 text-base font-semibold text-white shadow-[0_0_40px_rgba(37,99,235,0.35)] transition-all hover:scale-[1.02] hover:bg-blue-700"
+        >
+          Place Your Order
+          <ArrowRight className="ml-2 h-5 w-5" />
+        </Button>
+      </Link>
+
+      <Link href="/portfolio">
+        <Button
+          size="lg"
+          variant="outline"
+          className="h-14 rounded-2xl border-white/15 bg-white/5 px-8 text-base text-white backdrop-blur-xl transition-all hover:border-blue-500/40 hover:bg-white/10"
+        >
+          View Portfolio
+        </Button>
+      </Link>
+    </div>
+  </div>
+</section>
+
+
+
 
       {/* Stats Section */}
       <StatsSection />
 
-      {/* Services Section */}
-      <section className="py-16 px-4 bg-muted">
-        <div className="max-w-6xl mx-auto">
-          <div className="text-center mb-12">
-            <h2 className="text-3xl md:text-4xl font-bold mb-2 text-foreground">Our Services</h2>
-            <p className="text-muted-foreground">Click on a service to get started</p>
-          </div>
-
+{/* Services Section */}
+<section className="relative overflow-hidden px-4 py-18 bg-gradient-to-b from-background via-muted to-background dark:from-black dark:via-[#071a4a] dark:to-background">
+  <div className="absolute inset-0 opacity-40">
+  <div className="absolute left-1/2 top-0 h-[500px] w-[500px] -translate-x-1/2 rounded-full bg-blue-600/20 blur-[140px]" />
+</div>
+       <div className="relative max-w-6xl mx-auto">
+     <div className="mb-10 text-center">
+  <h2 className="text-4xl font-black tracking-tight text-foreground md:text-5xl">
+    Our Services
+  </h2>
+ <p className="mx-auto mt-4 max-w-2xl text-lg text-muted-foreground">
+    Choose the service that fits your academic or development needs.
+  </p>
+</div>
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
             {services.map((service, index) => (
-              <Card key={index} className="group hover:shadow-xl transition-all duration-300 hover:-translate-y-1 flex flex-col border-0 shadow-md">
+              <Card key={index} className="group hover:shadow-xl transition-all duration-300 hover:-translate-y-1 flex flex-col border border-border/60 bg-card/80 backdrop-blur-sm shadow-sm transition-all hover:-translate-y-1 hover:border-blue-500/30 hover:shadow-2xl">
                 <CardHeader>
                   <div className="w-12 h-12 rounded-xl bg-blue-100 dark:bg-blue-900/50 flex items-center justify-center mb-4 group-hover:bg-blue-600 transition-all duration-300">
                     <service.icon className="h-6 w-6 text-blue-600 group-hover:text-white transition-colors" />
