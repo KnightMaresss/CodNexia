@@ -4,7 +4,22 @@ import { useState, Suspense, useRef } from 'react'
 import { useSearchParams } from 'next/navigation'
 import { Button } from '@/components/ui/button'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
-import { ArrowRight, CheckCircle, Mail, FileText, DollarSign, Sparkles,Package,Upload, X, FileText as FileIcon } from 'lucide-react'
+import Image from 'next/image'
+import { 
+ ArrowRight,
+ CheckCircle,
+ Mail, 
+ FileText,
+ DollarSign,
+ Sparkles,
+ Package,Upload,
+ X,
+FileText as FileIcon,
+FileImage,
+FileArchive,
+CheckCircle2
+}
+ from 'lucide-react'
 import { Skeleton, CardSkeleton } from '@/components/ui/skeleton'
 import { useAuth } from '@/components/auth-context'
 import PremiumPageShell from '@/components/PremiumPageShell'
@@ -20,7 +35,27 @@ const services: Record<string, { name: string; range: string; min: number; max: 
   'translation': { name: 'Translation (En↔Ar)', range: '$20 - $80', min: 20, max: 80, description: 'Academic document translation — human, no AI used' },
   'code-debugging': { name: 'Code Debugging', range: '$50 - $300', min: 50, max: 300, description: 'Fix bugs, review & optimize your code projects' },
 }
+function getFileIcon(fileName: string) {
+  const ext = fileName.split('.').pop()?.toLowerCase()
 
+  if (ext === 'pdf') {
+    return <FileIcon className="h-4 w-4 text-red-500" />
+  }
+
+  if (['doc', 'docx'].includes(ext || '')) {
+    return <FileIcon className="h-4 w-4 text-blue-500" />
+  }
+
+  if (['jpg', 'jpeg', 'png', 'webp'].includes(ext || '')) {
+    return <FileImage className="h-4 w-4 text-cyan-500" />
+  }
+
+  if (ext === 'zip') {
+    return <FileArchive className="h-4 w-4 text-amber-500" />
+  }
+
+  return <FileIcon className="h-4 w-4 text-slate-500" />
+}
 function OrderFormContent() {
   const [files, setFiles] = useState<File[]>([])
   const fileInputRef = useRef<HTMLInputElement>(null)
@@ -262,7 +297,7 @@ function OrderFormContent() {
                       </span>
                     </div>
                   </div>
-                                    {/* Priority Selection */}
+                   {/* Priority Selection */}
                   <div>
                     <label className="flex items-center gap-2 text-sm font-medium text-foreground mb-2">
                       <FileText className="h-4 w-4 text-blue-600" />
@@ -300,22 +335,49 @@ function OrderFormContent() {
                       <Upload className="h-4 w-4 text-blue-600" />
                       Attach Files (Optional)
                     </label>
-                    
+                    <div className="mb-3 flex items-center justify-between rounded-xl border border-blue-500/15 bg-blue-500/5 px-3 py-2 text-xs">
+  <span className="font-medium text-muted-foreground">
+    Files attached
+  </span>
+
+  <span className="font-bold text-blue-600 dark:text-blue-300">
+    {files.length}/5
+  </span>
+</div>
                     {files.length > 0 && (
                       <div className="space-y-2 mb-3">
                         {files.map((file, index) => (
-                          <div key={index} className="flex items-center justify-between bg-muted rounded-lg px-3 py-2">
+                          <div 
+                          key={index} 
+                          className="group flex items-center justify-between rounded-xl border border-border/40 bg-background/50 px-3 py-2 backdrop-blur-sm transition-all duration-300 hover:-translate-y-0.5 hover:border-blue-500/30 hover:bg-background/80 hover:shadow-[0_8px_24px_rgba(37,99,235,0.10)]">
                             <div className="flex items-center gap-2">
-                              <FileIcon className="h-4 w-4 text-blue-600" />
+                             {file.type.startsWith('image/') ? (
+  <div className="h-9 w-9 overflow-hidden rounded-lg border border-border/40 bg-background/60">
+<Image
+  src={URL.createObjectURL(file)}
+  alt={file.name}
+  width={36}
+  height={36}
+  className="h-full w-full object-cover"
+/>
+  </div>
+) : (
+  getFileIcon(file.name)
+)}
                               <span className="text-sm text-foreground truncate max-w-[200px]">{file.name}</span>
                               <span className="text-xs text-muted-foreground">
+                                
                                 ({(file.size / 1024 / 1024).toFixed(1)}MB)
+                              </span>
+                              <span className="hidden items-center gap-1 rounded-full border border-emerald-500/20 bg-emerald-500/10 px-2 py-0.5 text-[10px] font-semibold text-emerald-600 dark:text-emerald-300 sm:inline-flex">
+                               <CheckCircle2 className="h-3 w-3" />
+                                Uploaded
                               </span>
                             </div>
                             <button
                               type="button"
                               onClick={() => setFiles(files.filter((_, i) => i !== index))}
-                              className="text-muted-foreground hover:text-red-500 transition-colors"
+                              className="rounded-lg p-1 text-muted-foreground transition-all duration-300 hover:bg-red-500/10 hover:text-red-500"
                             >
                               <X className="h-4 w-4" />
                             </button>
@@ -325,19 +387,76 @@ function OrderFormContent() {
                     )}
 
                     {files.length < 5 && (
-                      <button
-                        type="button"
-                        onClick={() => fileInputRef.current?.click()}
-                        className="w-full border-2 border-dashed border-border rounded-lg p-6 text-center hover:border-blue-400 hover:bg-blue-50/50 dark:hover:bg-blue-950/50 transition-all"
-                      >
-                        <Upload className="h-6 w-6 text-muted-foreground mx-auto mb-2" />
-                        <p className="text-sm text-muted-foreground">
-                          Click to upload files
-                        </p>
-                        <p className="text-xs text-muted-foreground mt-1">
-                          PDF, DOCX, JPG, PNG, ZIP • Max 10MB each
-                        </p>
-                      </button>
+             <button
+  type="button"
+  onClick={() => fileInputRef.current?.click()}
+  onDragOver={(e) => {
+    e.preventDefault()
+    e.currentTarget.classList.add(
+      'border-blue-500',
+      'bg-blue-500/10',
+      'shadow-[0_0_40px_rgba(37,99,235,0.18)]',
+      'scale-[1.01]'
+    )
+  }}
+  onDragLeave={(e) => {
+    e.currentTarget.classList.remove(
+      'border-blue-500',
+      'bg-blue-500/10',
+      'shadow-[0_0_40px_rgba(37,99,235,0.18)]',
+      'scale-[1.01]'
+    )
+  }}
+  onDrop={(e) => {
+    e.preventDefault()
+
+    e.currentTarget.classList.remove(
+      'border-blue-500',
+      'bg-blue-500/10',
+      'shadow-[0_0_40px_rgba(37,99,235,0.18)]',
+      'scale-[1.01]'
+    )
+
+    const droppedFiles = Array.from(e.dataTransfer.files || [])
+
+    const validFiles = droppedFiles.filter(
+      (f) => f.size <= 10 * 1024 * 1024
+    )
+
+    if (validFiles.length + files.length > 5) {
+      showToast('Maximum 5 files per order', 'warning')
+      return
+    }
+
+    if (validFiles.length !== droppedFiles.length) {
+      showToast('Some files were too large (max 10MB)', 'warning')
+    }
+
+    setFiles([...files, ...validFiles])
+  }}
+  className="group relative w-full overflow-hidden rounded-2xl border-2 border-dashed border-border/60 bg-background/30 p-6 text-center backdrop-blur-xl transition-all duration-300 hover:border-blue-400 hover:bg-blue-500/5 hover:shadow-[0_0_30px_rgba(37,99,235,0.12)]"
+>
+  <div className="absolute inset-0 bg-gradient-to-r from-blue-500/0 via-cyan-400/5 to-purple-500/0 opacity-0 transition-opacity duration-500 group-hover:opacity-100" />
+
+<div className="relative mx-auto mb-3 flex h-12 w-12 items-center justify-center">
+  <div className="absolute inset-0 rounded-full bg-blue-500/10 blur-xl transition-all duration-500 group-hover:bg-blue-500/20" />
+
+  <Upload className="relative h-7 w-7 text-blue-400 transition-transform duration-300 group-hover:-translate-y-1 group-hover:scale-110" />
+</div>
+
+  <p className="text-sm font-medium text-foreground">
+    Drag & drop files here
+  </p>
+
+  <p className="mt-1 text-sm text-muted-foreground">
+    or click to browse files
+  </p>
+
+  <p className="mt-2 text-xs text-muted-foreground">
+    PDF, DOCX, JPG, PNG, ZIP • Max 10MB each
+  </p>
+</button>
+
                     )}
                     <input
                       ref={fileInputRef}
