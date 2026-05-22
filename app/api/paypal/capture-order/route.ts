@@ -4,6 +4,7 @@ import { cookies } from 'next/headers'
 import { ObjectId } from 'mongodb'
 import clientPromise from '@/lib/mongodb'
 import { getJwtSecret } from '@/lib/jwt-secret'
+import { createNotification } from '@/lib/notifications'
 const JWT_SECRET = new TextEncoder().encode(getJwtSecret())
 
 async function getPayPalAccessToken() {
@@ -61,14 +62,64 @@ export async function POST(request: Request) {
     const client = await clientPromise
     const db = client.db(process.env.DB_NAME || 'student_services')
 
-    const newPaymentStatus = paymentType === 'deposit' ? 'deposit_paid' : 'fully_paid'
+const newPaymentStatus = paymentType === 'deposit' ? 'deposit_paid' : 'fully_paid'
 
-    await db.collection('orders').updateOne(
-      { _id: new ObjectId(orderId) },
-      { $set: { paymentStatus: newPaymentStatus, updatedAt: new Date() } }
-    )
+const order = await db.collection('orders').findOne({
+  _id: new ObjectId(orderId),
+  studentEmail: payload.email,
+})
 
-    return NextResponse.json({ success: true, paymentStatus: newPaymentStatus })
+if (!order) {
+  return NextResponse.json(
+    { success: false, error: 'Order not found' },
+    { status: 404 }
+  )
+}
+
+await db.collection('orders').updateOne(
+  { _id: new ObjectId(orderId) },
+  { $set: { paymentStatus: newPaymentStatus, updatedAt: new Date() } }
+)
+
+try {
+  const studentUser = await db.collection('users').findOne({
+    email: order.studentEmail,
+  })
+
+  if (studentUser?._id) {
+    await createNotification({
+      userId: studentUser._id.toString(),
+      type: 'payment_confirmed',
+      title: paymentType === 'deposit' ? 'Deposit payment confirmed' : 'Final payment confirmed',
+      message:
+        paymentType === 'deposit'
+          ? 'Your 20% deposit payment was confirmed.'
+          : 'Your final payment was confirmed.',
+      link: '/my-orders',
+      orderId,
+    })
+  }
+
+  if (order.assignedTo) {
+    await createNotification({
+      userId: order.assignedTo.toString(),
+      type: 'payment_confirmed',
+      title: paymentType === 'deposit' ? 'Deposit payment received' : 'Final payment received',
+      message:
+        paymentType === 'deposit'
+          ? 'A 20% deposit payment was received for your assigned order.'
+          : 'The final payment was received for your assigned order.',
+      link: '/admin',
+      orderId,
+    })
+  }
+} catch (notificationError) {
+  console.error('PAYMENT_NOTIFICATION_ERROR:', notificationError)
+}
+
+return NextResponse.json({ success: true, paymentStatus: newPaymentStatus })
+
+
   } catch (error) {
     console.error('PayPal capture error:', error)
     return NextResponse.json({ success: false, error: 'Failed to capture payment' }, { status: 500 })

@@ -4,6 +4,7 @@ import { jwtVerify } from 'jose'
 import { cookies } from 'next/headers'
 import { ObjectId } from 'mongodb'
 import { getJwtSecret } from '@/lib/jwt-secret'
+import { createManyNotifications, createNotification } from '@/lib/notifications'
 const JWT_SECRET = new TextEncoder().encode(getJwtSecret())
 
 export async function PUT(request: Request) {
@@ -51,7 +52,37 @@ export async function PUT(request: Request) {
       { _id: new ObjectId(orderId) },
       { $set: { status: 'cancelled', updatedAt: new Date() } }
     )
+try {
+  if (order.assignedTo) {
+    await createNotification({
+      userId: order.assignedTo.toString(),
+      type: 'order_updated',
+      title: 'Order cancelled',
+      message: 'A student cancelled an assigned order.',
+      link: `/admin`,
+      orderId,
+    })
+  } else {
+    const founders = await db
+      .collection('users')
+      .find({
+        role: 'founder',
+      })
+      .project({ _id: 1 })
+      .toArray()
 
+    await createManyNotifications({
+      userIds: founders.map((founder) => founder._id.toString()),
+      type: 'order_updated',
+      title: 'Order cancelled',
+      message: 'A student cancelled a pending order.',
+      link: '/admin',
+      orderId,
+    })
+  }
+} catch (notificationError) {
+  console.error('ORDER_CANCELLED_NOTIFICATION_ERROR:', notificationError)
+}
     return NextResponse.json({ success: true })
   } catch (error) {
     console.error('Cancel order error:', error)

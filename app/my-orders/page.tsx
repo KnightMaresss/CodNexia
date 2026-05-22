@@ -95,6 +95,7 @@ export default function MyOrdersPage() {
   const [cancelModal, setCancelModal] = useState<{ open: boolean; orderId: string }>({ open: false, orderId: '' })
   const [payingOrder, setPayingOrder] = useState<string | null>(null)
   const previousUnreadTotalRef = useRef(0)
+  const handledChatParamRef = useRef(false)
   const fetchOrders = async () => {
     try {
       const res = await fetch('/api/my-orders')
@@ -349,25 +350,49 @@ useEffect(() => {
   clearTimeout(startTimeout)
   clearInterval(interval)
 }
-
 // eslint-disable-next-line react-hooks/exhaustive-deps
 }, [user])
 
 
+// Auto-open chat from notification/email link once after orders load
+useEffect(() => {
+  if (handledChatParamRef.current) return
+  if (orders.length === 0) return
+
+  const params = new URLSearchParams(window.location.search)
+  const chatId = params.get('chat')
+
+  if (!chatId) return
+
+  const orderExists = orders.some((order) => order._id === chatId)
+
+  if (!orderExists) return
+
+  handledChatParamRef.current = true
+
+  window.setTimeout(() => {
+    setChatOrder(chatId)
+
+    fetch('/api/messages', {
+      method: 'PUT',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ orderId: chatId }),
+    }).catch(() => {})
+
+    window.setTimeout(() => {
+      document
+        .getElementById(`chat-${chatId}`)
+        ?.scrollIntoView({
+          behavior: 'smooth',
+          block: 'center',
+        })
+    }, 500)
+  }, 0)
+}, [orders])
 
 
+  
 
-
-
-  // Auto-open chat from email link
-  useEffect(() => {
-    const params = new URLSearchParams(window.location.search)
-    const chatId = params.get('chat')
-    if (chatId) {
-      // eslint-disable-next-line react-hooks/set-state-in-effect
-      setChatOrder(chatId)
-    }
-  }, [])
 
   useEffect(() => {
     if (orders.length > 0) {

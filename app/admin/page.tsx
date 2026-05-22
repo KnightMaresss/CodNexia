@@ -153,6 +153,7 @@ export default function AdminPage() {
   const knownOrderIdsRef = useRef<Set<string>>(new Set())
   const initializedOrdersRef = useRef(false)
   const previousUnreadTotalRef = useRef(0)
+  const handledChatParamRef = useRef(false)
   const [userRole, setUserRole] = useState<string>('')
   const [currentUserId, setCurrentUserId] = useState<string>('')
   const [streamConnected, setStreamConnected] = useState(false)
@@ -455,24 +456,50 @@ const startTimeout = setTimeout(() => {
 // eslint-disable-next-line react-hooks/exhaustive-deps
 }, [authenticated, userRole])
 
+// Auto-open chat from notification/email link once after orders load
+useEffect(() => {
+  if (handledChatParamRef.current) return
+  if (!authenticated) return
+  if (orders.length === 0) return
+
+  const params = new URLSearchParams(window.location.search)
+  const chatId = params.get('chat')
+
+  if (!chatId) return
+
+  const orderExists = orders.some((order) => order._id === chatId)
+
+  if (!orderExists) return
+
+  handledChatParamRef.current = true
+
+  window.setTimeout(() => {
+    setActiveTab('orders')
+    setSearchQuery('')
+    setStatusFilter('all')
+    setServiceFilter('all')
+    setChatOrder(chatId)
+
+    fetch('/api/messages', {
+      method: 'PUT',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ orderId: chatId }),
+    }).catch(() => {})
+
+    window.setTimeout(() => {
+      document
+        .getElementById(`chat-${chatId}`)
+        ?.scrollIntoView({
+          behavior: 'smooth',
+          block: 'center',
+        })
+    }, 500)
+  }, 0)
+}, [authenticated, orders])
 
 
 
 
-
-
-
-
-
-  // Auto-open chat from email link
-  useEffect(() => {
-    const params = new URLSearchParams(window.location.search)
-    const chatId = params.get('chat')
-    if (chatId) {
-     // eslint-disable-next-line react-hooks/set-state-in-effect
-      setChatOrder(chatId)
-    }
-  }, [])
   const handleLogout = async () => {
     await fetch('/api/auth/logout', { method: 'POST' })
     window.location.href = '/'

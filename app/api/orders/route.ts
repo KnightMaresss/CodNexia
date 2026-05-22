@@ -8,7 +8,7 @@ import { sendOrderConfirmation } from '@/lib/email'
 import { notifyNewOrder } from '@/lib/orders-stream'
 import { getJwtSecret } from '@/lib/jwt-secret'
 import { canAccessAdmin, isModeratorRole } from '@/lib/roles'
-
+import { createManyNotifications } from '@/lib/notifications'
 const JWT_SECRET = new TextEncoder().encode(getJwtSecret())
 
 const SERVICE_NAMES: Record<string, string> = {
@@ -126,7 +126,26 @@ export async function POST(request: Request) {
 
     const result = await db.collection('orders').insertOne(sanitizedOrder)
     const orderId = result.insertedId.toString()
+try {
+  const admins = await db
+    .collection('users')
+    .find({
+      role: { $in: ['founder', 'moderator'] },
+    })
+    .project({ _id: 1 })
+    .toArray()
 
+  await createManyNotifications({
+    userIds: admins.map((admin) => admin._id.toString()),
+    type: 'order_created',
+    title: 'New order received',
+    message: `A new ${SERVICE_NAMES[service] || service} order was submitted.`,
+    link: '/admin',
+    orderId,
+  })
+} catch (notificationError) {
+  console.error('NEW_ORDER_NOTIFICATION_ERROR:', notificationError)
+}
     sendOrderConfirmation(
       sanitizedOrder.studentEmail,
       SERVICE_NAMES[service],

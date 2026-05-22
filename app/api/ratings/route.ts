@@ -4,6 +4,7 @@ import { jwtVerify } from 'jose'
 import { cookies } from 'next/headers'
 import { ObjectId } from 'mongodb'
 import { getJwtSecret } from '@/lib/jwt-secret'
+import { createManyNotifications, createNotification } from '@/lib/notifications'
 const JWT_SECRET = new TextEncoder().encode(getJwtSecret())
 
 // POST - Submit a rating
@@ -59,9 +60,41 @@ export async function POST(request: Request) {
       createdAt: new Date(),
     }
 
-    await db.collection('ratings').insertOne(ratingDoc)
+await db.collection('ratings').insertOne(ratingDoc)
 
-    return NextResponse.json({ success: true, rating: ratingDoc })
+try {
+  if (order.assignedTo) {
+    await createNotification({
+      userId: order.assignedTo.toString(),
+      type: 'order_updated',
+      title: 'New rating received',
+      message: `A client rated your completed order ${rating}/5.`,
+      link: '/admin',
+      orderId,
+    })
+  } else {
+    const founders = await db
+      .collection('users')
+      .find({ role: 'founder' })
+      .project({ _id: 1 })
+      .toArray()
+
+    await createManyNotifications({
+      userIds: founders.map((founder) => founder._id.toString()),
+      type: 'order_updated',
+      title: 'New rating received',
+      message: `A client rated a completed order ${rating}/5.`,
+      link: '/admin',
+      orderId,
+    })
+  }
+} catch (notificationError) {
+  console.error('RATING_NOTIFICATION_ERROR:', notificationError)
+}
+
+return NextResponse.json({ success: true, rating: ratingDoc })
+
+
   } catch (error) {
     console.error('Rating error:', error)
     return NextResponse.json({ success: false, error: 'Failed to submit rating' }, { status: 500 })

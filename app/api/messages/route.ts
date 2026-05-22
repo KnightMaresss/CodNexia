@@ -6,7 +6,10 @@ import { ObjectId } from 'mongodb'
 import { getJwtSecret } from '@/lib/jwt-secret'
 import { canAccessAdmin, isModeratorRole } from '@/lib/roles'
 import { notifyMessageSent } from '@/lib/orders-stream'
-
+import {
+  createManyNotifications,
+  createOrUpdateChatNotification,
+} from '@/lib/notifications'
 const JWT_SECRET = new TextEncoder().encode(getJwtSecret())
 const MESSAGE_EDIT_DELETE_LIMIT_MS = 10 * 60 * 1000
 
@@ -380,11 +383,66 @@ if (replyToMessageId && ObjectId.isValid(replyToMessageId)) {
       _id: new ObjectId(orderId),
     })
 
-
-
-
-    
 if (order) {
+    try {
+    const notificationMessage = fileUrl
+      ? `${sender} sent a file: ${fileName}`
+      : `${sender} sent a new message.`
+
+    if (senderRole === 'student') {
+    const notificationLink = `/admin?chat=${orderId}`
+
+      if (order.assignedTo && ObjectId.isValid(order.assignedTo)) {
+        await createOrUpdateChatNotification({
+          userId: order.assignedTo.toString(),
+          orderId,
+          link: notificationLink,
+          relatedMessageId: result.insertedId.toString(),
+          title: 'New message received',
+          message: notificationMessage,
+        })
+      } else {
+        const admins = await db
+          .collection('users')
+          .find({
+            role: { $in: ['founder', 'moderator'] },
+          })
+          .project({ _id: 1 })
+          .toArray()
+
+        await createManyNotifications({
+          userIds: admins.map((admin) => admin._id.toString()),
+          type: 'new_message',
+          title: 'New message received',
+          message: notificationMessage,
+          link: notificationLink,
+          orderId,
+          relatedMessageId: result.insertedId.toString(),
+        })
+      }
+    }
+
+    if (senderRole === 'admin') {
+      const studentUser = await db.collection('users').findOne({
+        email: order.studentEmail,
+      })
+
+      if (studentUser?._id) {
+        await createOrUpdateChatNotification({
+          userId: studentUser._id.toString(),
+          orderId,
+          link: `/my-orders?chat=${orderId}`,
+          relatedMessageId: result.insertedId.toString(),
+          title: 'New message from moderator',
+          message: fileUrl
+            ? 'A moderator sent you a file.'
+            : 'A moderator replied to your order.',
+        })
+      }
+    }
+  } catch (notificationError) {
+    console.error('CHAT_NOTIFICATION_ERROR:', notificationError)
+  }
   const SERVICE_NAMES: Record<string, string> = {
     'graduation-projects': 'Graduation Projects',
     'academic-reports': 'Academic Reports',

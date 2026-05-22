@@ -503,7 +503,7 @@ function OrderFormContent() {
           {/* Order Summary Sidebar */}
           <div className="lg:col-span-1">
             <div className="sticky top-24 space-y-6">
-               <Card className="group relative overflow-hidden rounded-3xl border-2 border-blue-500/20 bg-white/35 text-foreground backdrop-blur-2xl shadow-[0_20px_60px_rgba(37,99,235,0.12)] transition-all duration-500 hover:-translate-y-1 hover:border-blue-500/40 hover:bg-white/45 hover:shadow-[0_24px_70px_rgba(37,99,235,0.20)] dark:bg-blue-950/40 dark:text-white dark:hover:shadow-blue-500/20">
+<Card className="group relative overflow-hidden rounded-3xl border-2 border-blue-500/20 bg-white/35 text-foreground backdrop-blur-2xl shadow-[0_20px_60px_rgba(37,99,235,0.12)] transition-all duration-500 hover:-translate-y-1 hover:border-blue-500/40 hover:bg-white/45 hover:shadow-[0_24px_70px_rgba(37,99,235,0.20)] dark:border-blue-400/20 dark:bg-slate-950/70 dark:text-white dark:shadow-[0_20px_60px_rgba(37,99,235,0.16)] dark:hover:border-blue-400/35 dark:hover:bg-slate-950/85 dark:hover:shadow-[0_24px_70px_rgba(37,99,235,0.25)]">
               <CardHeader>
                   <CardTitle className="flex items-center gap-2 text-lg">
                     <DollarSign className="h-5 w-5 text-blue-400" />
@@ -511,20 +511,20 @@ function OrderFormContent() {
                   </CardTitle>
                 </CardHeader>
                 <CardContent className="space-y-4">
-                  <div className="flex justify-between items-center py-3 border-b border-white/10">
-                    <span className="text-muted-foreground">Service</span>
+                  <div className="flex justify-between items-center py-3 border-b border-border/50 dark:border-white/10">
+                   <span className="text-muted-foreground dark:text-white/60">Service</span>
                     <span className="font-semibold">{selectedService.name}</span>
                   </div>
-                  <div className="flex justify-between items-center py-3 border-b border-white/10">
-                    <span className="text-muted-foreground">Price</span>
+                  <div className="flex justify-between items-center py-3 border-b border-border/50 dark:border-white/10">
+                   <span className="text-muted-foreground dark:text-white/60">Price</span>
                     <span
                       className="text-2xl font-bold text-blue-400 animate-in fade-in duration-300"
                     >
                       {selectedService.range}
                     </span>
                   </div>
-                  <div className="flex justify-between items-center py-3 border-b border-white/10">
-                    <span className="text-muted-foreground">Delivery</span>
+                  <div className="flex justify-between items-center py-3 border-b border-border/50 dark:border-white/10">
+                    <span className="text-muted-foreground dark:text-white/60">Delivery</span>
                     <span className="text-green-400 text-sm text-right">
                       {formatDate(deliveryFrom)} – {formatDate(deliveryTo)}
                     </span>

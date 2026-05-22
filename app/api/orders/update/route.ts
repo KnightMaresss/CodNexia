@@ -7,7 +7,7 @@ import { getJwtSecret } from '@/lib/jwt-secret'
 import { canAccessAdmin, isModeratorRole } from '@/lib/roles'
 import { createAuditLog } from '@/lib/audit-log'
 import { notifyOrderUpdated } from '@/lib/orders-stream'
-
+import { createNotification } from '@/lib/notifications'
 const JWT_SECRET = new TextEncoder().encode(getJwtSecret())
 
 export async function PUT(request: Request) {
@@ -120,7 +120,24 @@ export async function PUT(request: Request) {
       })
 
     notifyOrderUpdated({ orderId, type: 'price' })
+try {
+  const studentUser = await db.collection('users').findOne({
+    email: order.studentEmail,
+  })
 
+  if (studentUser?._id) {
+    await createNotification({
+      userId: studentUser._id.toString(),
+      type: 'order_updated',
+      title: 'Price ready',
+      message: 'Your order price has been reviewed and is ready for payment.',
+      link: '/my-orders',
+      orderId,
+    })
+  }
+} catch (notificationError) {
+  console.error('PRICE_READY_NOTIFICATION_ERROR:', notificationError)
+}
 const SERVICE_NAMES: Record<string, string> = {
   'graduation-projects': 'Graduation Projects',
   'academic-reports': 'Academic Reports',
@@ -175,7 +192,43 @@ return NextResponse.json({ success: true })
       })
 
       notifyOrderUpdated({ orderId, type: 'payment-status', paymentStatus })
+try {
+  if (paymentStatus === 'paid' || paymentStatus === 'deposit-paid') {
+    const studentUser = await db.collection('users').findOne({
+      email: order.studentEmail,
+    })
 
+    if (studentUser?._id) {
+      await createNotification({
+        userId: studentUser._id.toString(),
+        type: 'payment_confirmed',
+        title: 'Payment confirmed',
+        message:
+          paymentStatus === 'deposit-paid'
+            ? 'Your deposit payment was confirmed.'
+            : 'Your payment was confirmed.',
+        link: '/my-orders',
+        orderId,
+      })
+    }
+
+    if (order.assignedTo) {
+      await createNotification({
+        userId: order.assignedTo.toString(),
+        type: 'payment_confirmed',
+        title: 'Payment received',
+        message:
+          paymentStatus === 'deposit-paid'
+            ? 'A deposit payment was received for your assigned order.'
+            : 'Payment was received for your assigned order.',
+        link: '/admin',
+        orderId,
+      })
+    }
+  }
+} catch (notificationError) {
+  console.error('PAYMENT_STATUS_NOTIFICATION_ERROR:', notificationError)
+}
       return NextResponse.json({ success: true })
     }
 
@@ -226,7 +279,38 @@ return NextResponse.json({ success: true })
     })
 
     notifyOrderUpdated({ orderId, type: 'status', oldStatus, newStatus: status })
+try {
+  const studentUser = await db.collection('users').findOne({
+    email: order.studentEmail,
+  })
 
+  if (studentUser?._id) {
+    const statusTitle =
+      status === 'completed'
+        ? 'Order completed'
+        : status === 'cancelled'
+          ? 'Order cancelled'
+          : 'Order updated'
+
+    const statusMessage =
+      status === 'completed'
+        ? 'Your order has been completed.'
+        : status === 'cancelled'
+          ? 'Your order has been cancelled.'
+          : `Your order status changed from ${oldStatus} to ${status}.`
+
+    await createNotification({
+      userId: studentUser._id.toString(),
+      type: status === 'completed' ? 'order_completed' : 'order_updated',
+      title: statusTitle,
+      message: statusMessage,
+      link: '/my-orders',
+      orderId,
+    })
+  }
+} catch (notificationError) {
+  console.error('ORDER_STATUS_NOTIFICATION_ERROR:', notificationError)
+}
     const SERVICE_NAMES: Record<string, string> = {
       'graduation-projects': 'Graduation Projects',
       'academic-reports': 'Academic Reports',

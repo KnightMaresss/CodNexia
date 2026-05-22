@@ -7,7 +7,7 @@ import { getJwtSecret } from '@/lib/jwt-secret'
 import { canAccessAdmin, isFounderRole, isModeratorRole } from '@/lib/roles'
 import { createAuditLog } from '@/lib/audit-log'
 import { notifyOrderUpdated } from '@/lib/orders-stream'
-
+import { createNotification } from '@/lib/notifications'
 const JWT_SECRET = new TextEncoder().encode(getJwtSecret())
 
 export async function POST(request: Request) {
@@ -137,7 +137,24 @@ export async function POST(request: Request) {
       assignedToName: userName,
       type: 'accepted',
     })
-    
+    try {
+  const studentUser = await db.collection('users').findOne({
+    email: order.studentEmail,
+  })
+
+  if (studentUser?._id) {
+    await createNotification({
+      userId: studentUser._id.toString(),
+      type: 'order_accepted',
+      title: 'Order accepted',
+      message: `${userName} accepted your order and started working on it.`,
+      link: '/my-orders',
+      orderId,
+    })
+  }
+} catch (notificationError) {
+  console.error('ORDER_ACCEPTED_NOTIFICATION_ERROR:', notificationError)
+}
     return NextResponse.json({ success: true })
   } catch (error) {
     console.error('Accept order error:', error)

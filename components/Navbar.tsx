@@ -2,6 +2,7 @@
 import Link from 'next/link'
 import { useAuth } from '@/components/auth-context'
 import { canAccessAdmin } from '@/lib/roles'
+
 import { 
   User,
   Package,
@@ -14,6 +15,7 @@ import {
   } 
 from 'lucide-react'
 import { ThemeToggle } from '@/components/theme-toggle'
+import { NotificationBell } from '@/components/notifications/NotificationBell'
 import { usePathname } from 'next/navigation'
 export function Navbar() {
   const pathname = usePathname()
@@ -128,9 +130,11 @@ export function Navbar() {
               )}
             </>
           )}
-    <div className="flex items-center gap-4">
-      <ThemeToggle />
-    </div>
+{user && <NotificationBell />}
+
+<div className="flex items-center gap-4">
+  <ThemeToggle />
+</div>
         </div>
        
       </div>

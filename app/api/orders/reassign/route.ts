@@ -7,7 +7,7 @@ import { getJwtSecret } from '@/lib/jwt-secret'
 import { isFounderRole } from '@/lib/roles'
 import { createAuditLog } from '@/lib/audit-log'
 import { notifyOrderReassigned } from '@/lib/orders-stream'
-
+import { createNotification } from '@/lib/notifications'
 const JWT_SECRET = new TextEncoder().encode(getJwtSecret())
 
 export async function PUT(request: Request) {
@@ -100,7 +100,18 @@ export async function PUT(request: Request) {
       newModId,
       newModName,
     })
-
+try {
+  await createNotification({
+    userId: newModId,
+    type: 'order_updated',
+    title: 'Order assigned to you',
+    message: `Founder reassigned an order to you.`,
+    link: '/admin',
+    orderId,
+  })
+} catch (notificationError) {
+  console.error('ORDER_REASSIGNED_NOTIFICATION_ERROR:', notificationError)
+}
     return NextResponse.json({ success: true })
   } catch (error) {
     console.error('Reassign error:', error)

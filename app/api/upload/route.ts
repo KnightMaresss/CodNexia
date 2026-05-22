@@ -1,8 +1,12 @@
 import { NextResponse } from 'next/server'
 import { jwtVerify } from 'jose'
 import { cookies } from 'next/headers'
+import { ObjectId } from 'mongodb'
+import clientPromise from '@/lib/mongodb'
 import cloudinary from '@/lib/cloudinary'
 import { getJwtSecret } from '@/lib/jwt-secret'
+import { canAccessAdmin } from '@/lib/roles'
+import { createNotification } from '@/lib/notifications'
 const JWT_SECRET = new TextEncoder().encode(getJwtSecret())
 
 export async function POST(request: Request) {
@@ -12,32 +16,46 @@ export async function POST(request: Request) {
     const adminToken = cookieStore.get('admin_token')?.value
     const studentToken = cookieStore.get('student_token')?.value
 
-    let authenticated = false
+let authenticated = false
+let uploaderRole: 'admin' | 'student' | null = null
+let uploaderId = ''
+let uploaderEmail = ''
 
-    if (adminToken) {
-      try {
-        const { payload } = await jwtVerify(adminToken, JWT_SECRET)
-        if (payload.role === 'admin') {
-          authenticated = true
-        }
-      } catch {}
-    }
+if (adminToken) {
+  try {
+    const { payload } = await jwtVerify(adminToken, JWT_SECRET)
+    const role = typeof payload.role === 'string' ? payload.role : null
 
-    if (!authenticated && studentToken) {
-      try {
-        const { payload } = await jwtVerify(studentToken, JWT_SECRET)
-        if (payload.role === 'student') {
-          authenticated = true
-        }
-      } catch {}
+    if (canAccessAdmin(role)) {
+      authenticated = true
+      uploaderRole = 'admin'
+      uploaderId = typeof payload.userId === 'string' ? payload.userId : ''
+      uploaderEmail = typeof payload.email === 'string' ? payload.email : ''
     }
+  } catch {}
+}
 
-    if (!authenticated) {
-      return NextResponse.json(
-        { success: false, error: 'Unauthorized' },
-        { status: 401 }
-      )
+if (!authenticated && studentToken) {
+  try {
+    const { payload } = await jwtVerify(studentToken, JWT_SECRET)
+
+    if (payload.role === 'student') {
+      authenticated = true
+      uploaderRole = 'student'
+      uploaderId = typeof payload.userId === 'string' ? payload.userId : ''
+      uploaderEmail = typeof payload.email === 'string' ? payload.email : ''
     }
+  } catch {}
+}
+
+if (!authenticated || !uploaderRole) {
+  return NextResponse.json(
+    { success: false, error: 'Unauthorized' },
+    { status: 401 }
+  )
+}
+
+
 
     const formData = await request.formData()
     const file = formData.get('file') as File
@@ -77,9 +95,39 @@ export async function POST(request: Request) {
     }
 
     // Check file count for this order
-    const client = (await import('@/lib/mongodb')).default
-    const db = (await client).db(process.env.DB_NAME || 'student_services')
+   const client = await clientPromise
+   const db = client.db(process.env.DB_NAME || 'student_services')
+if (!ObjectId.isValid(orderId)) {
+  return NextResponse.json(
+    { success: false, error: 'Invalid order ID' },
+    { status: 400 }
+  )
+}
 
+const order = await db.collection('orders').findOne({
+  _id: new ObjectId(orderId),
+})
+
+if (!order) {
+  return NextResponse.json(
+    { success: false, error: 'Order not found' },
+    { status: 404 }
+  )
+}
+
+if (uploaderRole === 'student' && order.studentEmail !== uploaderEmail) {
+  return NextResponse.json(
+    { success: false, error: 'Access denied' },
+    { status: 403 }
+  )
+}
+
+if (uploaderRole === 'admin' && order.assignedTo && order.assignedTo !== uploaderId) {
+  return NextResponse.json(
+    { success: false, error: 'You can only upload files to orders assigned to you' },
+    { status: 403 }
+  )
+}
     const fileCount = await db.collection('order_files').countDocuments({ orderId })
     if (fileCount >= 5) {
       return NextResponse.json(
@@ -110,10 +158,43 @@ export async function POST(request: Request) {
       uploadedAt: new Date(),
     }
 
-    await db.collection('order_files').insertOne(fileDoc)
+   await db.collection('order_files').insertOne(fileDoc)
 
-    return NextResponse.json({
-      success: true,
+try {
+  if (uploaderRole === 'student' && order.assignedTo) {
+    await createNotification({
+      userId: order.assignedTo.toString(),
+      type: 'files_uploaded',
+      title: 'Files uploaded',
+      message: `A client uploaded a file: ${file.name}`,
+      link: '/admin',
+      orderId,
+    })
+  }
+
+  if (uploaderRole === 'admin') {
+    const studentUser = await db.collection('users').findOne({
+      email: order.studentEmail,
+    })
+
+    if (studentUser?._id) {
+      await createNotification({
+        userId: studentUser._id.toString(),
+        type: 'files_uploaded',
+        title: 'Files uploaded',
+        message: `A file was uploaded to your order: ${file.name}`,
+        link: '/my-orders',
+        orderId,
+      })
+    }
+  }
+} catch (notificationError) {
+  console.error('FILE_UPLOAD_NOTIFICATION_ERROR:', notificationError)
+}
+
+return NextResponse.json({
+  success: true,
+
       file: {
         id: fileDoc.cloudinaryPublicId,
         name: fileDoc.fileName,
