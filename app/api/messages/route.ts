@@ -8,7 +8,11 @@ import { canAccessAdmin, isModeratorRole } from '@/lib/roles'
 import { notifyMessageSent } from '@/lib/orders-stream'
 
 const JWT_SECRET = new TextEncoder().encode(getJwtSecret())
+const MESSAGE_EDIT_DELETE_LIMIT_MS = 10 * 60 * 1000
 
+function isMessageLocked(createdAt: Date | string) {
+  return Date.now() - new Date(createdAt).getTime() > MESSAGE_EDIT_DELETE_LIMIT_MS
+}
 function getRole(payload: Record<string, unknown>) {
   return typeof payload.role === 'string' ? payload.role : null
 }
@@ -92,18 +96,58 @@ export async function GET(request: Request) {
       .sort({ createdAt: 1 })
       .toArray()
 
+     const studentView = await db.collection('chat_views').findOne({
+  orderId,
+  viewer: 'student',
+})
+const adminView = await db.collection('chat_views').findOne({
+  orderId,
+  viewer: 'admin',
+})
+
+
+
     return NextResponse.json({
       success: true,
-      messages: messages.map((m) => ({
+        messages: messages.map((m) => ({
         id: m._id.toString(),
         orderId: m.orderId,
         sender: m.sender,
         senderRole: m.senderRole,
-        message: m.message || '',
-        fileUrl: m.fileUrl || '',
-        fileName: m.fileName || '',
-        fileType: m.fileType || '',
+        message: m.isDeleted ? '' : m.message || '',
+        fileUrl: m.isDeleted ? '' : m.fileUrl || '',
+        fileName: m.isDeleted ? '' : m.fileName || '',
+        fileType: m.isDeleted ? '' : m.fileType || '',
         createdAt: m.createdAt,
+        editedAt: m.editedAt || '',
+        isDeleted: Boolean(m.isDeleted),
+        deletedAt: m.deletedAt || '',
+        deletedBy: m.deletedBy || '',
+        deletedByRole: m.deletedByRole || '',
+        replyToMessageId: m.replyToMessageId || '',
+        replyToMessage: m.replyToMessage
+  ? {
+      ...m.replyToMessage,
+      message: m.replyToMessage.isDeleted
+        ? ''
+        : m.replyToMessage.message || '',
+      fileName: m.replyToMessage.isDeleted
+        ? ''
+        : m.replyToMessage.fileName || '',
+      fileType: m.replyToMessage.isDeleted
+        ? ''
+        : m.replyToMessage.fileType || '',
+      isDeleted: Boolean(m.replyToMessage.isDeleted),
+    }
+  : null,
+        status:
+  m.senderRole === 'student'
+    ? adminView?.lastSeenAt && new Date(adminView.lastSeenAt) >= new Date(m.createdAt)
+      ? 'seen'
+      : 'delivered'
+    : studentView?.lastSeenAt && new Date(studentView.lastSeenAt) >= new Date(m.createdAt)
+      ? 'seen'
+      : 'delivered',
       })),
     })
   } catch (error) {
@@ -190,12 +234,14 @@ export async function POST(request: Request) {
     let fileUrl = ''
     let fileName = ''
     let fileType = ''
+    let replyToMessageId = ''
 
     if (contentType.includes('multipart/form-data')) {
       const formData = await request.formData()
 
       orderId = String(formData.get('orderId') || '')
       message = String(formData.get('message') || '')
+      replyToMessageId = String(formData.get('replyToMessageId') || '')
 
       const file = formData.get('file') as File | null
 
@@ -219,6 +265,7 @@ export async function POST(request: Request) {
 
       orderId = body.orderId
       message = body.message || ''
+      replyToMessageId = body.replyToMessageId || ''
     }
 
     if (!orderId || (!message.trim() && !fileUrl)) {
@@ -279,7 +326,25 @@ export async function POST(request: Request) {
 
     const client = await clientPromise
     const db = client.db(process.env.DB_NAME || 'student_services')
+let replyToMessage = null
 
+if (replyToMessageId && ObjectId.isValid(replyToMessageId)) {
+  const originalMessage = await db.collection('messages').findOne({
+    _id: new ObjectId(replyToMessageId),
+    orderId,
+  })
+
+  if (originalMessage) {
+      replyToMessage = {
+      id: originalMessage._id.toString(),
+      sender: originalMessage.sender,
+      senderRole: originalMessage.senderRole,
+      message: originalMessage.message || '',
+      fileName: originalMessage.fileName || '',
+      fileType: originalMessage.fileType || '',
+    }
+  }
+}
     const newMessage = {
       orderId,
       sender,
@@ -289,6 +354,8 @@ export async function POST(request: Request) {
       fileName,
       fileType,
       createdAt: new Date(),
+      replyToMessageId,
+      replyToMessage,
     }
 
     const result = await db.collection('messages').insertOne(newMessage)
@@ -315,6 +382,8 @@ export async function POST(request: Request) {
 
 
 
+
+    
 if (order) {
   const SERVICE_NAMES: Record<string, string> = {
     'graduation-projects': 'Graduation Projects',
@@ -429,4 +498,168 @@ const existingNotification = await db
     
   }
   
+}
+// PATCH - Edit a message text
+export async function PATCH(request: Request) {
+  try {
+    const { messageId, message } = await request.json()
+
+    if (!messageId || !message?.trim()) {
+      return NextResponse.json(
+        { success: false, error: 'Message ID and message required' },
+        { status: 400 }
+      )
+    }
+
+    if (!ObjectId.isValid(messageId)) {
+      return NextResponse.json(
+        { success: false, error: 'Invalid message ID' },
+        { status: 400 }
+      )
+    }
+
+    const cookieStore = await cookies()
+    const adminToken = cookieStore.get('admin_token')?.value
+    const studentToken = cookieStore.get('student_token')?.value
+    const token = adminToken || studentToken
+
+    if (!token) {
+      return NextResponse.json({ success: false, error: 'Unauthorized' }, { status: 401 })
+    }
+
+    const { payload } = await jwtVerify(token, JWT_SECRET)
+    const role = getRole(payload)
+
+    const senderRole = role === 'student' ? 'student' : canAccessAdmin(role) ? 'admin' : null
+
+    if (!senderRole) {
+      return NextResponse.json({ success: false, error: 'Unauthorized' }, { status: 401 })
+    }
+
+    const client = await clientPromise
+    const db = client.db(process.env.DB_NAME || 'student_services')
+
+    const existingMessage = await db.collection('messages').findOne({
+      _id: new ObjectId(messageId),
+    })
+
+    if (!existingMessage || existingMessage.senderRole !== senderRole) {
+      return NextResponse.json({ success: false, error: 'Access denied' }, { status: 403 })
+    }
+if (existingMessage.isDeleted) {
+  return NextResponse.json(
+    { success: false, error: 'Deleted messages cannot be edited' },
+    { status: 400 }
+  )
+}
+
+if (isMessageLocked(existingMessage.createdAt)) {
+  return NextResponse.json(
+    { success: false, error: 'Messages can only be edited within 10 minutes' },
+    { status: 403 }
+  )
+}
+    await db.collection('messages').updateOne(
+      { _id: new ObjectId(messageId) },
+      {
+        $set: {
+          message: message.trim(),
+          editedAt: new Date(),
+        },
+      }
+    )
+
+    return NextResponse.json({ success: true })
+  } catch (error) {
+    console.error('Edit message error:', error)
+    return NextResponse.json(
+      { success: false, error: 'Failed to edit message' },
+      { status: 500 }
+    )
+  }
+}
+
+// DELETE - Delete a message
+export async function DELETE(request: Request) {
+  try {
+    const { messageId } = await request.json()
+
+    if (!messageId || !ObjectId.isValid(messageId)) {
+      return NextResponse.json(
+        { success: false, error: 'Invalid message ID' },
+        { status: 400 }
+      )
+    }
+
+    const cookieStore = await cookies()
+    const adminToken = cookieStore.get('admin_token')?.value
+    const studentToken = cookieStore.get('student_token')?.value
+    const token = adminToken || studentToken
+
+    if (!token) {
+      return NextResponse.json({ success: false, error: 'Unauthorized' }, { status: 401 })
+    }
+
+    const { payload } = await jwtVerify(token, JWT_SECRET)
+    const role = getRole(payload)
+
+    const senderRole = role === 'student' ? 'student' : canAccessAdmin(role) ? 'admin' : null
+
+    if (!senderRole) {
+      return NextResponse.json({ success: false, error: 'Unauthorized' }, { status: 401 })
+    }
+
+    const client = await clientPromise
+    const db = client.db(process.env.DB_NAME || 'student_services')
+
+    const existingMessage = await db.collection('messages').findOne({
+      _id: new ObjectId(messageId),
+    })
+
+    if (!existingMessage || existingMessage.senderRole !== senderRole) {
+      return NextResponse.json({ success: false, error: 'Access denied' }, { status: 403 })
+    }
+
+if (existingMessage.isDeleted) {
+  return NextResponse.json({ success: true })
+}
+
+if (isMessageLocked(existingMessage.createdAt)) {
+  return NextResponse.json(
+    { success: false, error: 'Messages can only be deleted within 10 minutes' },
+    { status: 403 }
+  )
+}
+
+await db.collection('messages').updateOne(
+  { _id: new ObjectId(messageId) },
+
+  {
+   $set: {
+  isDeleted: true,
+  deletedAt: new Date(),
+  deletedBy: getName(payload),
+  deletedByRole: senderRole,
+},
+  }
+)
+await db.collection('messages').updateMany(
+  { replyToMessageId: messageId },
+  {
+    $set: {
+      'replyToMessage.isDeleted': true,
+      'replyToMessage.message': '',
+      'replyToMessage.fileName': '',
+      'replyToMessage.fileType': '',
+    },
+  }
+)
+    return NextResponse.json({ success: true })
+  } catch (error) {
+    console.error('Delete message error:', error)
+    return NextResponse.json(
+      { success: false, error: 'Failed to delete message' },
+      { status: 500 }
+    )
+  }
 }
