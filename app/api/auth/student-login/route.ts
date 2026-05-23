@@ -15,7 +15,16 @@ export async function POST(request: Request) {
                headersList.get('x-real-ip') || 
                'unknown'
 
-    const { allowed } = rateLimit(ip, 5, 15 * 60_000) // 5 attempts per 15 min
+    const { email, password } = await request.json()
+
+const normalizedEmail =
+  typeof email === 'string' ? email.toLowerCase().trim() : 'unknown'
+
+const { allowed } = rateLimit(
+  `student-login:${ip}:${normalizedEmail}`,
+  5,
+  15 * 60_000
+)
     
     if (!allowed) {
       return NextResponse.json(
@@ -23,9 +32,6 @@ export async function POST(request: Request) {
         { status: 429 }
       )
     }
-
-    const { email, password } = await request.json()
-
     if (!email || !password) {
       return NextResponse.json(
         { success: false, error: 'Email and password are required' },
@@ -52,7 +58,18 @@ export async function POST(request: Request) {
         { status: 403 }
       )
     }
-
+    
+if (!user.emailVerified) {
+  return NextResponse.json(
+    {
+      success: false,
+      error: 'Please verify your email before logging in.',
+      code: 'EMAIL_NOT_VERIFIED',
+      email: user.email,
+    },
+    { status: 403 }
+  )
+}
 
     
     const isPasswordValid = await bcrypt.compare(password, user.password)

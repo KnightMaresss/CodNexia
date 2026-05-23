@@ -17,7 +17,9 @@ import {
 FileText as FileIcon,
 FileImage,
 FileArchive,
-CheckCircle2
+CheckCircle2,
+LogIn,
+ShieldCheck
 }
  from 'lucide-react'
 import { Skeleton, CardSkeleton } from '@/components/ui/skeleton'
@@ -59,7 +61,7 @@ function getFileIcon(fileName: string) {
 function OrderFormContent() {
   const [files, setFiles] = useState<File[]>([])
   const fileInputRef = useRef<HTMLInputElement>(null)
-  const { user } = useAuth()
+  const { user, loading: authLoading } = useAuth()
   const searchParams = useSearchParams()
   const serviceParam = searchParams.get('service')
   const defaultService = serviceParam && services[serviceParam] ? serviceParam : 'graduation-projects'
@@ -68,7 +70,6 @@ function OrderFormContent() {
   const [submitted, setSubmitted] = useState(false)
 
     const [formData, setFormData] = useState({
-    studentEmail: user?.email || '',
     service: defaultService,
     requirements: '',
     price: 0,
@@ -76,7 +77,6 @@ function OrderFormContent() {
   })
 
   const selectedService = services[formData.service]
-
   const deliveryFrom = new Date()
   deliveryFrom.setDate(deliveryFrom.getDate() + 3)
   const deliveryTo = new Date()
@@ -95,13 +95,22 @@ function OrderFormContent() {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
+    if (!user?.email) {
+  showToast('Please log in before placing an order.', 'error')
+  return
+}
     setLoading(true)
 
     try {
       const response = await fetch('/api/orders', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(formData),
+        body: JSON.stringify({
+        service: formData.service,
+        requirements: formData.requirements,
+        price: formData.price,
+        priority: formData.priority,
+    }),
       })
 
       const data = await response.json()
@@ -146,7 +155,7 @@ function OrderFormContent() {
               <h2 className="text-2xl font-bold text-foreground mb-2">Order Submitted!</h2>
              <p className="text-muted-foreground">
                 We have received your request and will contact you at{' '}
-                <strong>{formData.studentEmail}</strong> within 24 hours.
+               <strong>{user?.email || 'your verified email'}</strong>
               </p>
             </div>
             <div className="flex gap-4 justify-center flex-wrap">
@@ -160,7 +169,6 @@ function OrderFormContent() {
                 onClick={() => {
                   setSubmitted(false)
                   setFormData({
-                    studentEmail: user?.email || '',
                     service: defaultService,
                     requirements: '',
                     price: 0,
@@ -178,7 +186,52 @@ function OrderFormContent() {
     
     )
   }
+if (authLoading) {
+  return (
+    <PremiumPageShell className="pt-24 py-16 px-4">
+      <div className="mx-auto max-w-4xl">
+        <CardSkeleton />
+      </div>
+    </PremiumPageShell>
+  )
+}
 
+if (!user) {
+  return (
+    <PremiumPageShell className="flex min-h-screen items-center justify-center px-4 py-24">
+      <Card className="w-full max-w-lg rounded-3xl border-border/50 bg-background/70 shadow-2xl backdrop-blur-2xl">
+        <CardContent className="px-6 py-10 text-center">
+          <div className="mx-auto mb-6 flex h-16 w-16 items-center justify-center rounded-3xl border border-blue-500/20 bg-blue-500/10">
+            <ShieldCheck className="h-8 w-8 text-blue-500" />
+          </div>
+
+          <h1 className="text-2xl font-black tracking-tight text-foreground">
+            Login required
+          </h1>
+
+          <p className="mt-3 text-sm leading-relaxed text-muted-foreground">
+            Please sign in with a verified Codnexia account before placing an order. This keeps your order, chat, files, payments, and email updates linked to the correct account.
+          </p>
+
+          <div className="mt-8 grid gap-3 sm:grid-cols-2">
+            <Link href="/login">
+              <Button className="w-full bg-blue-600 text-white hover:bg-blue-700">
+                <LogIn className="mr-2 h-4 w-4" />
+                Sign in
+              </Button>
+            </Link>
+
+            <Link href="/register">
+              <Button variant="outline" className="w-full">
+                Create account
+              </Button>
+            </Link>
+          </div>
+        </CardContent>
+      </Card>
+    </PremiumPageShell>
+  )
+}
   return (
   <PremiumPageShell className="pt-24 py-16 px-4">
       <div className="max-w-4xl mx-auto">
@@ -233,17 +286,19 @@ function OrderFormContent() {
                       <Mail className="h-4 w-4 text-blue-600" />
                       Your Email
                     </label>
-                    <input
-                      type="email"
-                      required
-                      placeholder="student@example.com"
-                      className="w-full rounded-xl border-2 border-border/50 bg-background/50 px-4 py-3 text-foreground outline-none backdrop-blur-sm transition-all duration-300 hover:border-blue-500/30 hover:bg-background/80 focus:border-blue-500/50 focus:ring-4 focus:ring-blue-500/10"
-                      value={formData.studentEmail}
-                      onChange={(e) => setFormData({ ...formData, studentEmail: e.target.value })}
+
+                   <input
+                 type="email"
+                 required
+                 readOnly
+                 placeholder="student@example.com"
+                 className="w-full cursor-not-allowed rounded-xl border-2 border-border/50 bg-muted/50 px-4 py-3 text-foreground outline-none backdrop-blur-sm"
+                 value={user.email}
                     />
-                    <p className="text-xs text-muted-foreground mt-1">
-                      We will send your order confirmation to this email
-                    </p>
+
+                  <p className="text-xs text-muted-foreground mt-1">
+                    Orders are linked to your verified account email.
+                   </p>
                   </div>
 
                   {/* Service Selection */}

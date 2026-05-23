@@ -3,7 +3,7 @@ import { useState } from 'react'
 import { Button } from '@/components/ui/button'
 import { Card, CardContent } from '@/components/ui/card'
 import { showToast } from '@/components/ui/toast'
-import {  LogIn, Mail, Lock } from 'lucide-react'
+import { LogIn, Mail, Lock, Send, ShieldAlert } from 'lucide-react'
 import Link from 'next/link'
 import { useAuth } from '@/components/auth-context'
 import { useRouter } from 'next/navigation'
@@ -12,6 +12,9 @@ export default function LoginPage() {
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
   const [loading, setLoading] = useState(false)
+  const [unverifiedEmail, setUnverifiedEmail] = useState('')
+  const [resendLoading, setResendLoading] = useState(false)
+  const [resendCooldown, setResendCooldown] = useState(0)
   const { login } = useAuth()
   const router = useRouter()
 
@@ -21,16 +24,59 @@ export default function LoginPage() {
 
     const result = await login(email, password)
 
-    if (result.success) {
-      showToast('Welcome back!', 'success')
-      router.push('/profile')
-    } else {
-      showToast(result.error || 'Login failed', 'error')
-    }
-
-    setLoading(false)
+if (result.success) {
+  showToast('Welcome back!', 'success')
+  router.push('/profile')
+} else {
+  if (result.code === 'EMAIL_NOT_VERIFIED') {
+    setUnverifiedEmail(result.email || email)
   }
 
+  showToast(result.error || 'Login failed', 'error')
+}
+    setLoading(false)
+  }
+const handleResendVerification = async () => {
+  if (!unverifiedEmail || resendLoading || resendCooldown > 0) return
+
+  setResendLoading(true)
+
+  try {
+    const res = await fetch('/api/auth/resend-verification', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ email: unverifiedEmail }),
+    })
+
+    const data = await res.json()
+
+    if (data.success) {
+      showToast(
+        data.message || 'Verification email sent. Please check your inbox.',
+        'success'
+      )
+
+      setResendCooldown(60)
+
+      const interval = window.setInterval(() => {
+        setResendCooldown((prev) => {
+          if (prev <= 1) {
+            window.clearInterval(interval)
+            return 0
+          }
+
+          return prev - 1
+        })
+      }, 1000)
+    } else {
+      showToast(data.error || 'Failed to resend verification email.', 'error')
+    }
+  } catch {
+    showToast('Failed to resend verification email.', 'error')
+  }
+
+  setResendLoading(false)
+}
   return (
   <PremiumPageShell className="py-24 px-4">
       <div className="max-w-md mx-auto">
@@ -48,6 +94,45 @@ export default function LoginPage() {
 
        <Card className="premium-card border-white/20 bg-white/70 shadow-[0_20px_80px_rgba(59,130,246,0.15)] backdrop-blur-2xl dark:bg-black/40">
           <CardContent className="pt-6">
+            {unverifiedEmail && (
+  <div className="mb-5 rounded-2xl border border-amber-500/20 bg-amber-500/10 p-4">
+    <div className="flex gap-3">
+      <div className="mt-0.5 flex h-9 w-9 shrink-0 items-center justify-center rounded-xl border border-amber-500/20 bg-amber-500/10">
+        <ShieldAlert className="h-4 w-4 text-amber-500" />
+      </div>
+
+      <div className="min-w-0 flex-1">
+        <p className="text-sm font-semibold text-foreground">
+          Email verification required
+        </p>
+
+        <p className="mt-1 text-xs leading-relaxed text-muted-foreground">
+          We sent a verification link to{' '}
+          <span className="font-semibold text-foreground">
+            {unverifiedEmail}
+          </span>
+          . Please verify your email before logging in.
+        </p>
+
+        <Button
+          type="button"
+          variant="outline"
+          size="sm"
+          disabled={resendLoading || resendCooldown > 0}
+          onClick={handleResendVerification}
+          className="mt-3 rounded-xl"
+        >
+          <Send className="mr-2 h-3.5 w-3.5" />
+          {resendLoading
+            ? 'Sending...'
+            : resendCooldown > 0
+              ? `Resend in ${resendCooldown}s`
+              : 'Resend verification email'}
+        </Button>
+      </div>
+    </div>
+  </div>
+)}
             <form onSubmit={handleSubmit} className="space-y-4">
               <div>
                 <label className="flex items-center gap-2 text-sm font-medium text-foreground mb-2">

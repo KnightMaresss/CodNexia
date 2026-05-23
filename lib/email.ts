@@ -87,3 +87,45 @@ export async function sendOrderConfirmation(
     return false
   }
 }
+export async function sendEmailVerificationEmail(
+  recipientEmail: string,
+  name: string,
+  token: string
+) {
+  const verificationUrl = `${SITE_URL}/verify-email?token=${token}`
+
+  try {
+    await resend.emails.send({
+      from: FROM_EMAIL,
+      to: recipientEmail,
+      subject: 'Verify your Codnexia account',
+      html: emailTemplate(`
+        <h2 style="color: #1e293b; margin: 0 0 10px;">Verify your email ✅</h2>
+
+        <p style="color: #64748b; font-size: 15px; margin: 0 0 20px;">
+          Hi ${name}, welcome to Codnexia. Please verify your email address to activate your account.
+        </p>
+
+        <div style="background: #f1f5f9; border-radius: 8px; padding: 18px; margin-bottom: 24px;">
+          <p style="margin: 0; color: #475569; font-size: 14px;">
+            This verification link expires in <strong>1 hour</strong>. After verification, you can place orders, chat with staff, upload files, and receive updates.
+          </p>
+        </div>
+
+        <a href="${verificationUrl}"
+           style="display: inline-block; background: #2563eb; color: white; padding: 14px 28px; border-radius: 8px; text-decoration: none; font-weight: 600; font-size: 14px;">
+          Verify Email →
+        </a>
+
+        <p style="color: #94a3b8; font-size: 12px; margin: 24px 0 0;">
+          If you did not create a Codnexia account, you can safely ignore this email.
+        </p>
+      `),
+    })
+
+    return true
+  } catch (error) {
+    console.error('Verification email failed:', error)
+    return false
+  }
+}

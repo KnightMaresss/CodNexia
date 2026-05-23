@@ -33,10 +33,7 @@ const ALLOWED_SERVICES = [
   'code-debugging',
 ]
 
-function validateEmail(email: string): boolean {
-  const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/
-  return emailRegex.test(email) && email.length <= 254
-}
+
 
 function validateRequirements(requirements: string): boolean {
   const trimmed = requirements.trim()
@@ -66,27 +63,98 @@ export async function POST(request: Request) {
       )
     }
 
-    const body = await request.json()
-    const { studentEmail, service, requirements, price } = body
 
-    if (!studentEmail || !service || !requirements || price === undefined) {
-      return NextResponse.json(
-        {
-          success: false,
-          error:
-            'All fields are required: email, service, requirements, price',
-        },
-        { status: 400 }
-      )
-    }
+const cookieStore = await cookies()
+const studentToken = cookieStore.get('student_token')?.value
 
-    if (!validateEmail(studentEmail)) {
-      return NextResponse.json(
-        { success: false, error: 'Please provide a valid email address' },
-        { status: 400 }
-      )
-    }
+if (!studentToken) {
+  return NextResponse.json(
+    {
+      success: false,
+      error: 'Please log in with a verified account before placing an order.',
+    },
+    { status: 401 }
+  )
+}
 
+const { payload } = await jwtVerify(studentToken, JWT_SECRET)
+
+if (
+  payload.role !== 'student' ||
+  typeof payload.email !== 'string' ||
+  typeof payload.userId !== 'string'
+) {
+  return NextResponse.json(
+    {
+      success: false,
+      error: 'Only verified student accounts can place orders.',
+    },
+    { status: 403 }
+  )
+}
+
+const accountEmail = payload.email.toLowerCase().trim()
+const accountUserId = payload.userId
+
+const client = await clientPromise
+const db = client.db(process.env.DB_NAME || 'student_services')
+
+const { ObjectId } = await import('mongodb')
+
+if (!ObjectId.isValid(accountUserId)) {
+  return NextResponse.json(
+    { success: false, error: 'Invalid account session. Please log in again.' },
+    { status: 401 }
+  )
+}
+
+const accountUser = await db.collection('users').findOne({
+  _id: new ObjectId(accountUserId),
+  email: accountEmail,
+})
+
+if (!accountUser) {
+  return NextResponse.json(
+    { success: false, error: 'Account not found. Please log in again.' },
+    { status: 401 }
+  )
+}
+
+if (accountUser.blocked) {
+  return NextResponse.json(
+    {
+      success: false,
+      error: 'Your account has been suspended. Please contact support.',
+    },
+    { status: 403 }
+  )
+}
+
+if (!accountUser.emailVerified) {
+  return NextResponse.json(
+    {
+      success: false,
+      error: 'Please verify your email before placing an order.',
+    },
+    { status: 403 }
+  )
+}
+
+const body = await request.json()
+const { service, requirements, price } = body
+
+if (!service || !requirements || price === undefined) {
+  return NextResponse.json(
+    {
+      success: false,
+      error: 'All fields are required: service, requirements, price',
+    },
+    { status: 400 }
+  )
+}
+
+
+    
     if (!ALLOWED_SERVICES.includes(service)) {
       return NextResponse.json(
         { success: false, error: 'Invalid service selected' },
@@ -105,7 +173,8 @@ export async function POST(request: Request) {
     }
 
     const sanitizedOrder = {
-      studentEmail: studentEmail.toLowerCase().trim(),
+      studentEmail: accountEmail,
+      studentId: accountUserId,
       service,
       requirements: requirements.trim(),
       price: 0,
@@ -120,9 +189,6 @@ export async function POST(request: Request) {
       createdAt: new Date(),
       updatedAt: new Date(),
     }
-
-    const client = await clientPromise
-    const db = client.db(process.env.DB_NAME || 'student_services')
 
     const result = await db.collection('orders').insertOne(sanitizedOrder)
     const orderId = result.insertedId.toString()

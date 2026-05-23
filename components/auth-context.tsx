@@ -10,11 +10,18 @@ interface User {
   createdAt: string
 }
 
+interface AuthResult {
+  success: boolean
+  error?: string
+  code?: string
+  email?: string
+}
+
 interface AuthContextType {
   user: User | null
   loading: boolean
-  login: (email: string, password: string) => Promise<{ success: boolean; error?: string }>
-  register: (name: string, email: string, password: string) => Promise<{ success: boolean; error?: string }>
+  login: (email: string, password: string) => Promise<AuthResult>
+  register: (name: string, email: string, password: string) => Promise<AuthResult>
   logout: () => Promise<void>
   refreshUser: () => Promise<void>
 }
@@ -85,7 +92,12 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
         }
         return { success: true }
       }
-      return { success: false, error: data.error }
+      return {
+  success: false,
+  error: data.error,
+  code: data.code,
+  email: data.email,
+}
     } catch {
       return { success: false, error: 'Login failed' }
     }

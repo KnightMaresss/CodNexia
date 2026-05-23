@@ -1,15 +1,46 @@
 import clientPromise from '@/lib/mongodb'
 import { NextResponse } from 'next/server'
 import bcrypt from 'bcryptjs'
+import { headers } from 'next/headers'
+import { rateLimit } from '@/lib/rate-limit'
+import {
+  createEmailVerificationToken,
+  getEmailVerificationExpiry,
+} from '@/lib/email-verification'
+import { sendEmailVerificationEmail } from '@/lib/email'
 
 export async function POST(request: Request) {
   try {
+    const headersList = await headers()
+    const ip =
+      headersList.get('x-forwarded-for') ||
+      headersList.get('x-real-ip') ||
+      'unknown'
+
+    const { allowed } = rateLimit(`register:${ip}`, 5, 15 * 60_000)
+
+    if (!allowed) {
+      return NextResponse.json(
+        {
+          success: false,
+          error: 'Too many registration attempts. Please try again later.',
+        },
+        { status: 429 }
+      )
+    }
+
     const { name, email, password } = await request.json()
 
-    // Validate
     if (!name || !email || !password) {
       return NextResponse.json(
         { success: false, error: 'All fields are required' },
+        { status: 400 }
+      )
+    }
+
+    if (name.trim().length < 2 || name.trim().length > 80) {
+      return NextResponse.json(
+        { success: false, error: 'Please enter a valid name' },
         { status: 400 }
       )
     }
@@ -21,8 +52,11 @@ export async function POST(request: Request) {
       )
     }
 
+    const normalizedEmail = email.toLowerCase().trim()
+
     const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/
-    if (!emailRegex.test(email)) {
+
+    if (!emailRegex.test(normalizedEmail) || normalizedEmail.length > 254) {
       return NextResponse.json(
         { success: false, error: 'Please provide a valid email' },
         { status: 400 }
@@ -32,9 +66,8 @@ export async function POST(request: Request) {
     const client = await clientPromise
     const db = client.db(process.env.DB_NAME || 'student_services')
 
-    // Check if user exists
     const existingUser = await db.collection('users').findOne({
-      email: email.toLowerCase().trim(),
+      email: normalizedEmail,
     })
 
     if (existingUser) {
@@ -44,27 +77,48 @@ export async function POST(request: Request) {
       )
     }
 
-    // Hash password
     const hashedPassword = await bcrypt.hash(password, 12)
+    const { token, tokenHash } = createEmailVerificationToken()
+    const expiresAt = getEmailVerificationExpiry()
+    const now = new Date()
 
-    // Create user
     const user = {
       name: name.trim(),
-      email: email.toLowerCase().trim(),
+      email: normalizedEmail,
       password: hashedPassword,
+      role: 'student',
       profilePic: '',
-      createdAt: new Date(),
-      updatedAt: new Date(),
+      blocked: false,
+      emailVerified: false,
+      emailVerifiedAt: null,
+      emailVerificationTokenHash: tokenHash,
+      emailVerificationExpires: expiresAt,
+      verificationEmailLastSentAt: now,
+      verificationEmailSendCount: 1,
+      verificationEmailWindowStart: now,
+      createdAt: now,
+      updatedAt: now,
     }
 
     const result = await db.collection('users').insertOne(user)
 
+    const emailSent = await sendEmailVerificationEmail(
+      normalizedEmail,
+      name.trim(),
+      token
+    )
+
     return NextResponse.json({
       success: true,
       userId: result.insertedId.toString(),
+      emailSent,
+      message: emailSent
+        ? 'Account created. Please check your email to verify your account.'
+        : 'Account created, but verification email could not be sent. Please request a new verification email.',
     })
   } catch (error) {
     console.error('Registration error:', error)
+
     return NextResponse.json(
       { success: false, error: 'Registration failed' },
       { status: 500 }

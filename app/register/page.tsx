@@ -13,30 +13,39 @@ export default function RegisterPage() {
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
   const [loading, setLoading] = useState(false)
-  const { register, login } = useAuth()
+  const [loadingText, setLoadingText] = useState('Creating Account...')
+  const { register } = useAuth()
   const router = useRouter()
 
   const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault()
-    setLoading(true)
+   e.preventDefault()
+   setLoading(true)
+   setLoadingText('Creating account...')
 
-    const result = await register(name, email, password)
+const sendingTimer = window.setTimeout(() => {
+  setLoadingText('Sending verification email...')
+}, 2000)
 
-    if (result.success) {
-      const loginResult = await login(email, password)
-      if (loginResult.success) {
-        showToast('Account created successfully!', 'success')
-        router.push('/profile')
-      } else {
-        showToast('Account created! Please log in.', 'success')
-        router.push('/login')
-      }
-    } else {
-      showToast(result.error || 'Registration failed', 'error')
-    }
+const finalTimer = window.setTimeout(() => {
+  setLoadingText('Almost done...')
+}, 4500)
 
-    setLoading(false)
-  }
+
+const result = await register(name, email, password)
+if (result.success) {
+  showToast(
+    'Account created! Please check your email to verify your account.',
+    'success'
+  )
+  router.push(`/login?verifyEmail=${encodeURIComponent(email)}`)
+} else {
+  showToast(result.error || 'Registration failed', 'error')
+}  
+window.clearTimeout(sendingTimer)
+window.clearTimeout(finalTimer)
+setLoading(false)
+setLoadingText('Creating Account...')
+}
 
   return (
     <PremiumPageShell className="py-24 px-4">
@@ -106,7 +115,7 @@ export default function RegisterPage() {
             size="lg"
             className="group h-14 w-full rounded-2xl border border-blue-500/30 bg-gradient-to-r from-blue-600 to-blue-500 text-lg font-semibold text-white shadow-[0_10px_40px_rgba(37,99,235,0.35)] transition-all duration-300 hover:scale-[1.02] hover:from-blue-500 hover:to-cyan-400 hover:shadow-[0_18px_50px_rgba(37,99,235,0.45)]"
                >
-                {loading ? 'Creating Account...' : 'Create Account'}
+               {loading ? loadingText : 'Create Account'}
               </Button>
             </form>
 
