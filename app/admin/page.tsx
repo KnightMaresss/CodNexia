@@ -1932,6 +1932,7 @@ if (loading) {
                        <p className="font-bold text-green-600 text-lg">
                         ${order.finalPrice || order.price}
                         </p>
+                        
                      </div>
                    </div>
                       {ratings[order._id] && (
@@ -2703,10 +2704,8 @@ if (loading) {
         )}
 
         {/* Set Price */}
-        {order.assignedToName &&
-          !order.finalPrice &&
-          order.paymentStatus === 'unpaid' &&
-          order.status !== 'completed' &&
+          {order.assignedToName &&
+          order.paymentStatus !== 'fully_paid' &&
           order.status !== 'cancelled' && (
             <>
               {settingPrice === order._id ? (
