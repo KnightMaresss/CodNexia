@@ -18,19 +18,10 @@ export async function verifyTronUsdtPayment({
   expectedAmount: number
   expectedReceiver: string
 }): Promise<TronVerificationResult> {
-  const apiKey = process.env.TRONGRID_API_KEY
-
   try {
     const res = await fetch(
-      `https://api.trongrid.io/v1/transactions/${txHash}/events`,
-      {
-        headers: apiKey
-          ? {
-              'TRON-PRO-API-KEY': apiKey,
-            }
-          : {},
-        cache: 'no-store',
-      }
+      `https://apilist.tronscanapi.com/api/transaction-info?hash=${txHash}`,
+      { cache: 'no-store' }
     )
 
     if (!res.ok) {
@@ -43,20 +34,27 @@ export async function verifyTronUsdtPayment({
 
     const data = await res.json()
 
-    const transferEvent = data.data?.find(
-      (event: {
-        event_name?: string
+    if (!data?.confirmed || data?.contractRet !== 'SUCCESS') {
+      return {
+        status: 'not_found',
+        reason: 'Transaction is not confirmed yet.',
+        checkedAt: new Date(),
+      }
+    }
+
+    const transfer = data.trc20TransferInfo?.find(
+      (item: {
         contract_address?: string
-        result?: {
-          to?: string
-          value?: string
-        }
+        symbol?: string
+        to_address?: string
+        amount_str?: string
+        decimals?: number
       }) =>
-        event.event_name === 'Transfer' &&
-        event.contract_address === USDT_TRC20_CONTRACT
+        item.contract_address === USDT_TRC20_CONTRACT ||
+        item.symbol === 'USDT'
     )
 
-    if (!transferEvent) {
+    if (!transfer) {
       return {
         status: 'failed',
         reason: 'No USDT TRC20 transfer was found in this transaction.',
@@ -64,10 +62,11 @@ export async function verifyTronUsdtPayment({
       }
     }
 
-    const receiver = transferEvent.result?.to
-    const rawValue = transferEvent.result?.value
+    const receiver = transfer.to_address
+    const rawAmount = transfer.amount_str
+    const decimals = Number(transfer.decimals ?? 6)
 
-    if (!receiver || !rawValue) {
+    if (!receiver || !rawAmount) {
       return {
         status: 'failed',
         reason: 'Transaction transfer details are incomplete.',
@@ -75,7 +74,7 @@ export async function verifyTronUsdtPayment({
       }
     }
 
-    const receivedAmount = Number(rawValue) / 1_000_000
+    const receivedAmount = Number(rawAmount) / Math.pow(10, decimals)
 
     if (receiver !== expectedReceiver) {
       return {
@@ -88,7 +87,7 @@ export async function verifyTronUsdtPayment({
       }
     }
 
-    if (Math.abs(receivedAmount - expectedAmount) > 0.01) {
+    if (receivedAmount + 0.01 < expectedAmount) {
       return {
         status: 'failed',
         reason: `Amount mismatch. Expected ${expectedAmount} USDT but received ${receivedAmount} USDT.`,
