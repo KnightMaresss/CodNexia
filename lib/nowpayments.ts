@@ -30,6 +30,7 @@ export type NowPaymentsCreatePaymentResponse = {
 export async function createNowPaymentsPayment({
   priceAmount,
   priceCurrency,
+  payCurrency,
   orderId,
   orderDescription,
   ipnCallbackUrl,
@@ -48,17 +49,17 @@ export async function createNowPaymentsPayment({
       'Content-Type': 'application/json',
       'x-api-key': apiKey,
     },
-    body: JSON.stringify({
 
-price_amount: priceAmount,
-price_currency: priceCurrency,
-order_id: orderId,
-order_description: orderDescription,
-ipn_callback_url: ipnCallbackUrl,
-success_url: successUrl,
-cancel_url: cancelUrl,
-
-    }),
+body: JSON.stringify({
+  price_amount: priceAmount,
+  price_currency: priceCurrency,
+  ...(payCurrency ? { pay_currency: payCurrency } : {}),
+  order_id: orderId,
+  order_description: orderDescription,
+  ipn_callback_url: ipnCallbackUrl,
+  success_url: successUrl,
+  cancel_url: cancelUrl,
+}),
   })
 
   const data = await res.json()
