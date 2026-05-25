@@ -4,7 +4,7 @@ import { jwtVerify } from 'jose'
 import { cookies } from 'next/headers'
 import { ObjectId } from 'mongodb'
 import { getJwtSecret } from '@/lib/jwt-secret'
-import { canAccessAdmin, isModeratorRole } from '@/lib/roles'
+import { canAccessAdmin} from '@/lib/roles'
 import { createAuditLog } from '@/lib/audit-log'
 import { notifyOrderUpdated } from '@/lib/orders-stream'
 import { createNotification } from '@/lib/notifications'
@@ -75,15 +75,15 @@ export async function PUT(request: Request) {
       )
     }
 
-    if (isModeratorRole(userRole) && order.assignedTo !== userId) {
-      return NextResponse.json(
-        {
-          success: false,
-          error: 'You can only update orders assigned to you',
-        },
-        { status: 403 }
-      )
-    }
+if (order.assignedTo && order.assignedTo !== userId) {
+  return NextResponse.json(
+    {
+      success: false,
+      error: 'This order is assigned to another moderator',
+    },
+    { status: 403 }
+  )
+}
 
     if (finalPrice !== undefined && !status) {
       await db.collection('orders').updateOne(
@@ -193,7 +193,7 @@ return NextResponse.json({ success: true })
 
       notifyOrderUpdated({ orderId, type: 'payment-status', paymentStatus })
 try {
-  if (paymentStatus === 'paid' || paymentStatus === 'deposit-paid') {
+  if (paymentStatus === 'fully_paid' || paymentStatus === 'deposit_paid') {
     const studentUser = await db.collection('users').findOne({
       email: order.studentEmail,
     })
@@ -204,7 +204,7 @@ try {
         type: 'payment_confirmed',
         title: 'Payment confirmed',
         message:
-          paymentStatus === 'deposit-paid'
+         paymentStatus === 'deposit_paid'
             ? 'Your deposit payment was confirmed.'
             : 'Your payment was confirmed.',
         link: '/my-orders',
@@ -218,7 +218,7 @@ try {
         type: 'payment_confirmed',
         title: 'Payment received',
         message:
-          paymentStatus === 'deposit-paid'
+        paymentStatus === 'deposit_paid'
             ? 'A deposit payment was received for your assigned order.'
             : 'Payment was received for your assigned order.',
         link: '/admin',

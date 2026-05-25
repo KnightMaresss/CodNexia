@@ -93,7 +93,6 @@ export default function MyOrdersPage() {
   const [orderFiles, setOrderFiles] = useState<Record<string, OrderFile[]>>({})
   const [loadingFiles, setLoadingFiles] = useState<string | null>(null)
   const [cancelModal, setCancelModal] = useState<{ open: boolean; orderId: string }>({ open: false, orderId: '' })
-  const [payingOrder, setPayingOrder] = useState<string | null>(null)
   const previousUnreadTotalRef = useRef(0)
   const handledChatParamRef = useRef(false)
   const fetchOrders = async () => {
@@ -191,63 +190,14 @@ const fetchRating = async (orderId: string) => {
     }
     setSubmittingRating(false)
   }
-
-  // Load PayPal SDK
-useEffect(() => {
-  // Check if script already exists to avoid duplicates
-  const existingScript = document.querySelector('script[src*="paypal.com/sdk/js"]')
-  if (existingScript) return
-  
-  const script = document.createElement('script')
-  script.src = `https://www.paypal.com/sdk/js?client-id=${process.env.NEXT_PUBLIC_PAYPAL_CLIENT_ID}&currency=EUR`
-  script.async = true
-  script.id = 'paypal-sdk-script'
-  document.body.appendChild(script)
-  
-  return () => {
-    // Safely remove only if it exists and is still a child
-    const scriptToRemove = document.getElementById('paypal-sdk-script')
-    if (scriptToRemove && scriptToRemove.parentNode) {
-      scriptToRemove.parentNode.removeChild(scriptToRemove)
-    }
-  }
-}, [])
-
-
-
-const handlePayPalPayment = async (orderId: string, paymentType: 'deposit' | 'final') => {
-  setPayingOrder(orderId)
-
-  try {
-    const res = await fetch('/api/orders/update-payment-test', {
-      method: 'PUT',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ orderId, paymentType }),
-    })
-
-    const data = await res.json()
-
-    if (data.success) {
-      showToast(
-        paymentType === 'deposit'
-          ? 'Deposit marked as paid ✅'
-          : 'Final payment marked as paid ✅',
-        'success'
-      )
-      fetchOrders()
-    } else {
-      showToast(data.error || 'Payment update failed', 'error')
-    }
-  } catch {
-    showToast('Payment update failed', 'error')
-  }
-
-  setPayingOrder(null)
+const openCheckout = (
+  orderId: string,
+  paymentType: 'deposit' | 'final'
+) => {
+  router.push(
+    `/checkout?orderId=${orderId}&type=${paymentType}`
+  )
 }
-
-
-
-
   const cancelOrder = (orderId: string) => {
     setCancelModal({ open: true, orderId })
   }
@@ -331,6 +281,8 @@ const handlePayPalPayment = async (orderId: string, paymentType: 'deposit' | 'fi
   }
 
 
+
+
 useEffect(() => {
   if (!authLoading && !user) {
     router.push('/login')
@@ -403,54 +355,6 @@ useEffect(() => {
       })
     }
   }, [orders])
-
-// Handle PayPal return redirect
-useEffect(() => {
-  const urlParams = new URLSearchParams(window.location.search)
-  const token = urlParams.get('token')
-  const payerId = urlParams.get('PayerID')
-  
-  if (token && payerId) {
-    // IMMEDIATELY clear URL parameters - this prevents re-running
-    window.history.replaceState({}, '', '/my-orders')
-    
-    const orderId = sessionStorage.getItem('pendingOrderId')
-    const paymentType = sessionStorage.getItem('pendingPaymentType')
-    
-    if (orderId && paymentType) {
-      showToast('Completing payment...', 'success')
-      
-      fetch('/api/paypal/capture-order', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ 
-          paypalOrderId: token, 
-          orderId, 
-          paymentType 
-        }),
-      })
-      .then(res => res.json())
-      .then(data => {
-        if (data.success) {
-          showToast('Payment successful! ✅', 'success')
-          fetchOrders()
-        } else {
-          showToast(data.error || 'Payment verification failed', 'error')
-        }
-      })
-      .catch(() => {
-        showToast('Payment verification failed', 'error')
-      })
-      .finally(() => {
-        sessionStorage.removeItem('pendingOrderId')
-        sessionStorage.removeItem('pendingPaymentType')
-      })
-    }
-  }
-// eslint-disable-next-line react-hooks/exhaustive-deps
-}, [])
-
-
 
   const getStatusBadge = (status: string) => {
     switch (status) {
@@ -610,7 +514,7 @@ if (authLoading || loading) {
   </div>
 </div>
   {/* Payment Info Box - Show for unpaid or deposit_paid orders */}
-{(order.paymentStatus === 'unpaid' || order.paymentStatus === 'deposit_paid') && (
+{order.paymentStatus === 'unpaid' && (
   <div className="mt-3 bg-blue-500/10 dark:bg-blue-950/30 rounded-lg p-3">
     <h4 className="text-xs font-semibold text-blue-800 dark:text-blue-300 mb-1">
       💡 How payments work
@@ -618,8 +522,21 @@ if (authLoading || loading) {
     <ul className="text-xs text-blue-700 dark:text-blue-400 space-y-0.5">
       <li>• 20% deposit starts your project</li>
       <li>• 80% final payment when work is complete</li>
-      <li>• Secure payment via PayPal</li>
+     <li>• Secure payment via USDT TRC20 crypto transfer</li>
     </ul>
+  </div>
+)}
+{order.paymentStatus === 'pending_crypto_verification' && (
+  <div className="mt-3 bg-amber-500/10 dark:bg-amber-950/30 rounded-lg p-3">
+    <div className="flex items-center gap-2">
+      <Clock className="h-4 w-4 text-amber-600" />
+      <p className="text-sm font-medium text-amber-800 dark:text-amber-300">
+        ⏳ Payment submitted and waiting for verification.
+      </p>
+    </div>
+    <p className="text-xs text-amber-700 dark:text-amber-400 mt-1 ml-6">
+      We are checking your crypto transaction. You will be notified once it is confirmed.
+    </p>
   </div>
 )}
                     {/* Rating Section */}
@@ -714,11 +631,10 @@ if (authLoading || loading) {
     </div>
     <Button
       size="sm"
-      onClick={() => handlePayPalPayment(order._id, 'deposit')}
-      disabled={payingOrder === order._id}
+      onClick={() => openCheckout(order._id, 'deposit')}
       className="bg-blue-600 hover:bg-blue-700 text-white text-sm px-4 py-2"
     >
-      {payingOrder === order._id ? <Loader2 className="h-4 w-4 animate-spin mr-2" /> : "💰"}
+      💰
       Pay 20% Deposit (${order.depositAmount}) to Start
     </Button>
   </div>
@@ -749,11 +665,10 @@ if (authLoading || loading) {
     </div>
     <Button
       size="sm"
-      onClick={() => handlePayPalPayment(order._id, 'final')}
-      disabled={payingOrder === order._id}
+      onClick={() => openCheckout(order._id, 'final')}
       className="bg-green-600 hover:bg-green-700 text-white text-sm px-4 py-2"
     >
-      {payingOrder === order._id ? <Loader2 className="h-4 w-4 animate-spin mr-2" /> : "📥"}
+      📥
       Pay ${order.remainingAmount} to Download Work
     </Button>
   </div>
@@ -1017,6 +932,7 @@ className="group flex items-center justify-between rounded-xl border border-bord
         }}
       />  
   </PremiumPageShell>
+
      </>
   )
 }

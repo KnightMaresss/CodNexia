@@ -34,6 +34,7 @@ import {
   User,
   Wifi,
   WifiOff,
+  ExternalLink,
 } from 'lucide-react'
 import PremiumPageShell from '@/components/PremiumPageShell'
 interface Order {
@@ -46,6 +47,18 @@ interface Order {
   finalPrice?: number
   priority?: string
   paymentStatus?: string
+  cryptoPayments?: {
+  txHash: string
+  amount: number
+  currency: string
+  network: string
+  type: 'deposit' | 'final'
+  status: 'pending' | 'confirmed' | 'rejected'
+  submittedAt: string
+  confirmedAt?: string
+  reviewedAt?: string
+  reviewedBy?: string
+}[]
   depositAmount?: number
   remainingAmount?: number
   commission?: number
@@ -79,7 +92,7 @@ const SERVICE_NAMES: Record<string, string> = {
   'code-debugging': 'Code Debugging',
 }
 
-type TabType = 'orders' | 'users' | 'completed' | 'ratings'
+type TabType = 'orders' | 'users' | 'completed' | 'ratings' | 'crypto'
 type StatusFilter = 'all' | 'pending' | 'in-progress' | 'completed' | 'cancelled' | 'fully_paid'
 type ServiceFilter = 'all' | keyof typeof SERVICE_NAMES
 type SortOrder = 'newest' | 'oldest'
@@ -123,6 +136,13 @@ interface ModeratorStat {
     completionRate: number
   }
 }
+type CryptoPaymentWithOrder = NonNullable<Order['cryptoPayments']>[number] & {
+  orderId: string
+  studentEmail: string
+  service: string
+  assignedTo?: string
+  assignedToName?: string
+}
 export default function AdminPage() {
   const [chatOrder, setChatOrder] = useState<string | null>(null)
   const [deleteModal, setDeleteModal] = useState<{ open: boolean; orderId: string }>({ open: false, orderId: '' })
@@ -159,8 +179,12 @@ export default function AdminPage() {
   const [streamConnected, setStreamConnected] = useState(false)
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const [ratings, setRatings] = useState<Record<string, any>>({})
-  
-    const reassignOrder = async (orderId: string, newModId: string, newModName: string) => {
+  const [reviewingCrypto, setReviewingCrypto] = useState<string | null>(null)
+  const [cryptoSearch, setCryptoSearch] = useState('')
+  const [cryptoStatusFilter, setCryptoStatusFilter] = useState<'all' | 'confirmed' | 'pending' | 'rejected'>('all')
+  const [cryptoTypeFilter, setCryptoTypeFilter] = useState<'all' | 'deposit' | 'final'>('all')
+  const [selectedCryptoPayment, setSelectedCryptoPayment] = useState<CryptoPaymentWithOrder | null>(null)
+  const reassignOrder = async (orderId: string, newModId: string, newModName: string) => {
     setReassigningId(orderId)
     try {
       const res = await fetch('/api/orders/reassign', {
@@ -243,7 +267,39 @@ export default function AdminPage() {
     }
     setSavingPrice(false)
   }
+const reviewCryptoPayment = async (
+  orderId: string,
+  txHash: string,
+  action: 'confirm' | 'reject'
+) => {
+  setReviewingCrypto(`${orderId}-${txHash}-${action}`)
 
+  try {
+    const res = await fetch('/api/crypto/admin-review', {
+      method: 'PUT',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ orderId, txHash, action }),
+    })
+
+    const data = await res.json()
+
+    if (data.success) {
+      showToast(
+        action === 'confirm'
+          ? 'Crypto payment confirmed'
+          : 'Crypto payment rejected',
+        'success'
+      )
+      fetchOrders()
+    } else {
+      showToast(data.error || 'Failed to review payment', 'error')
+    }
+  } catch {
+    showToast('Failed to review payment', 'error')
+  }
+
+  setReviewingCrypto(null)
+}
   const saveNote = async (orderId: string) => {
     setSavingNote(true)
     try {
@@ -747,6 +803,113 @@ const getServiceRange = (service: string) => {
   return ranges[service] || { min: 0, max: 0 }
 }
 
+const cryptoPayments = useMemo(() => {
+  return orders
+    .filter((order) => {
+      if (isModeratorRole(userRole)) {
+        return order.assignedTo === currentUserId
+      }
+
+      return true
+    })
+    .flatMap((order) =>
+      (order.cryptoPayments || []).map((payment) => ({
+        ...payment,
+        orderId: order._id,
+        studentEmail: order.studentEmail,
+        service: order.service,
+        assignedTo: order.assignedTo,
+        assignedToName: order.assignedToName,
+      }))
+    )
+    .filter((payment) => {
+      const query = cryptoSearch.toLowerCase().trim()
+
+      const matchesSearch =
+        !query ||
+        payment.txHash.toLowerCase().includes(query) ||
+        payment.studentEmail.toLowerCase().includes(query) ||
+        payment.orderId.toLowerCase().includes(query) ||
+        (SERVICE_NAMES[payment.service] || payment.service)
+          .toLowerCase()
+          .includes(query)
+
+      const matchesStatus =
+        cryptoStatusFilter === 'all' || payment.status === cryptoStatusFilter
+
+      const matchesType =
+        cryptoTypeFilter === 'all' || payment.type === cryptoTypeFilter
+
+      return matchesSearch && matchesStatus && matchesType
+    })
+    .sort(
+      (a, b) =>
+        new Date(b.submittedAt).getTime() -
+        new Date(a.submittedAt).getTime()
+    )
+}, [
+  orders,
+  cryptoSearch,
+  cryptoStatusFilter,
+  cryptoTypeFilter,
+  userRole,
+  currentUserId,
+])
+
+
+const cryptoStats = useMemo(() => {
+  const allPayments = orders.flatMap((order) =>
+    (order.cryptoPayments || []).map((payment) => ({
+      ...payment,
+      assignedTo: order.assignedTo,
+    }))
+  )
+
+  const visibleConfirmed = cryptoPayments.filter(
+    (payment) => payment.status === 'confirmed'
+  )
+
+  const visiblePending = cryptoPayments.filter(
+    (payment) => payment.status === 'pending'
+  )
+
+  const visibleRejected = cryptoPayments.filter(
+    (payment) => payment.status === 'rejected'
+  )
+
+  const founderOwnConfirmed = allPayments.filter(
+    (payment) =>
+      payment.status === 'confirmed' &&
+      payment.assignedTo === currentUserId
+  )
+
+  const siteConfirmed = allPayments.filter(
+    (payment) => payment.status === 'confirmed'
+  )
+
+  return {
+    visibleRevenue: visibleConfirmed.reduce(
+      (sum, payment) => sum + Number(payment.amount || 0),
+      0
+    ),
+    pendingAmount: visiblePending.reduce(
+      (sum, payment) => sum + Number(payment.amount || 0),
+      0
+    ),
+    confirmedCount: visibleConfirmed.length,
+    rejectedCount: visibleRejected.length,
+    founderOwnRevenue: founderOwnConfirmed.reduce(
+      (sum, payment) => sum + Number(payment.amount || 0),
+      0
+    ),
+    siteRevenue: siteConfirmed.reduce(
+      (sum, payment) => sum + Number(payment.amount || 0),
+      0
+    ),
+  }
+}, [orders, cryptoPayments, currentUserId])
+
+
 if (loading) {
   return null
 }
@@ -802,7 +965,148 @@ if (loading) {
       />
       <SoundNotification play={playSound} />
       <PremiumPageShell className="pt-20 py-8 px-4">
+{selectedCryptoPayment && (
+  <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/70 p-4 backdrop-blur-sm">
+    <div className="w-full max-w-2xl rounded-3xl border border-border/60 bg-background p-6 shadow-2xl">
+      <div className="mb-5 flex items-start justify-between gap-4">
+        <div>
+          <h3 className="text-xl font-black text-foreground">
+            Crypto Payment Details
+          </h3>
+          <p className="mt-1 text-sm text-muted-foreground">
+            {SERVICE_NAMES[selectedCryptoPayment.service] || selectedCryptoPayment.service}
+          </p>
+        </div>
 
+        <button
+          onClick={() => setSelectedCryptoPayment(null)}
+          className="rounded-xl p-2 hover:bg-muted"
+        >
+          <X className="h-5 w-5" />
+        </button>
+      </div>
+
+      <div className="grid gap-3 sm:grid-cols-2">
+        <div className="rounded-2xl bg-muted/40 p-4">
+          <p className="text-xs text-muted-foreground">Status</p>
+          <p className="mt-1 font-bold text-foreground">{selectedCryptoPayment.status}</p>
+        </div>
+
+        <div className="rounded-2xl bg-muted/40 p-4">
+          <p className="text-xs text-muted-foreground">Amount</p>
+          <p className="mt-1 font-bold text-green-600">
+            {selectedCryptoPayment.amount} {selectedCryptoPayment.currency}
+          </p>
+        </div>
+
+        <div className="rounded-2xl bg-muted/40 p-4">
+          <p className="text-xs text-muted-foreground">Network</p>
+          <p className="mt-1 font-bold text-foreground">{selectedCryptoPayment.network}</p>
+        </div>
+
+        <div className="rounded-2xl bg-muted/40 p-4">
+          <p className="text-xs text-muted-foreground">Type</p>
+          <p className="mt-1 font-bold text-foreground">
+            {selectedCryptoPayment.type === 'deposit' ? 'Deposit' : 'Final Payment'}
+          </p>
+        </div>
+
+        <div className="rounded-2xl bg-muted/40 p-4 sm:col-span-2">
+          <p className="text-xs text-muted-foreground">Order ID</p>
+          <p className="mt-1 break-all font-mono text-xs text-foreground">
+            {selectedCryptoPayment.orderId}
+          </p>
+        </div>
+
+        <div className="rounded-2xl bg-muted/40 p-4 sm:col-span-2">
+          <p className="text-xs text-muted-foreground">Transaction Hash</p>
+          <p className="mt-1 break-all font-mono text-xs text-foreground">
+            {selectedCryptoPayment.txHash}
+          </p>
+        </div>
+
+        <div className="rounded-2xl bg-muted/40 p-4">
+          <p className="text-xs text-muted-foreground">Submitted At</p>
+          <p className="mt-1 text-sm font-semibold text-foreground">
+            {new Date(selectedCryptoPayment.submittedAt).toLocaleString()}
+          </p>
+        </div>
+
+        <div className="rounded-2xl bg-muted/40 p-4">
+          <p className="text-xs text-muted-foreground">Confirmed At</p>
+          <p className="mt-1 text-sm font-semibold text-foreground">
+            {selectedCryptoPayment.confirmedAt
+              ? new Date(selectedCryptoPayment.confirmedAt).toLocaleString()
+              : 'Not confirmed yet'}
+          </p>
+        </div>
+
+        <div className="rounded-2xl bg-muted/40 p-4 sm:col-span-2">
+          <p className="text-xs text-muted-foreground">Reviewed By</p>
+          <p className="mt-1 break-all text-sm font-semibold text-foreground">
+            {selectedCryptoPayment.reviewedBy || 'Not reviewed yet'}
+          </p>
+        </div>
+      </div>
+
+      <div className="mt-6 rounded-2xl border border-border/60 p-4">
+        <h4 className="mb-4 text-sm font-bold text-foreground">Payment Timeline</h4>
+
+        <div className="space-y-4">
+          <div className="flex gap-3">
+            <div className="mt-1 h-3 w-3 rounded-full bg-blue-500" />
+            <div>
+              <p className="text-sm font-semibold text-foreground">Payment submitted</p>
+              <p className="text-xs text-muted-foreground">
+                {new Date(selectedCryptoPayment.submittedAt).toLocaleString()}
+              </p>
+            </div>
+          </div>
+
+          {selectedCryptoPayment.status === 'confirmed' && (
+            <div className="flex gap-3">
+              <div className="mt-1 h-3 w-3 rounded-full bg-emerald-500" />
+              <div>
+                <p className="text-sm font-semibold text-foreground">Payment confirmed</p>
+                <p className="text-xs text-muted-foreground">
+                  {selectedCryptoPayment.confirmedAt
+                    ? new Date(selectedCryptoPayment.confirmedAt).toLocaleString()
+                    : 'Confirmed'}
+                </p>
+              </div>
+            </div>
+          )}
+
+          {selectedCryptoPayment.status === 'rejected' && (
+            <div className="flex gap-3">
+              <div className="mt-1 h-3 w-3 rounded-full bg-red-500" />
+              <div>
+                <p className="text-sm font-semibold text-foreground">Payment rejected</p>
+                <p className="text-xs text-muted-foreground">
+                  {selectedCryptoPayment.reviewedAt
+                    ? new Date(selectedCryptoPayment.reviewedAt).toLocaleString()
+                    : 'Rejected'}
+                </p>
+              </div>
+            </div>
+          )}
+
+          {selectedCryptoPayment.status === 'pending' && (
+            <div className="flex gap-3">
+              <div className="mt-1 h-3 w-3 rounded-full bg-amber-500" />
+              <div>
+                <p className="text-sm font-semibold text-foreground">Waiting for review</p>
+                <p className="text-xs text-muted-foreground">
+                  Admin has not confirmed or rejected this payment yet.
+                </p>
+              </div>
+            </div>
+          )}
+        </div>
+      </div>
+    </div>
+  </div>
+)}
 
       <div className="max-w-7xl mx-auto">
        <div className="mb-10 flex flex-col gap-6 xl:flex-row xl:items-center xl:justify-between">
@@ -886,6 +1190,16 @@ if (loading) {
       {stats.pending} pending
     </span>
   )}
+</button>
+<button
+  onClick={() => setActiveTab('crypto')}
+  className={`px-4 py-2 rounded-lg text-sm font-medium transition-all ${
+    activeTab === 'crypto'
+      ? 'bg-emerald-600 text-white'
+      : 'border border-border/60 bg-white/45 dark:bg-black/35 backdrop-blur-xl text-muted-foreground hover:border-emerald-500/30 hover:text-foreground'
+  }`}
+>
+  💳 Crypto History
 </button>
           {/* Completed tab - only for moderators */}
           {isModeratorRole(userRole) && (
@@ -1449,6 +1763,224 @@ if (loading) {
            )}
          </div>
        )}
+{activeTab === 'crypto' && (
+  <div className="space-y-4">
+    <h2 className="text-lg font-semibold text-foreground">
+      💳 Crypto Payment History
+    </h2>
+    <div className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-4">
+  {[
+
+   {
+  label: isFounderRole(userRole) ? 'My Accepted Revenue' : 'My Crypto Revenue',
+  value: `${isFounderRole(userRole) ? cryptoStats.founderOwnRevenue : cryptoStats.visibleRevenue} USDT`,
+  icon: DollarSign,
+  color: 'bg-emerald-500/10 text-emerald-500',
+},
+...(isFounderRole(userRole)
+  ? [
+      {
+        label: 'Entire Site Revenue',
+        value: `${cryptoStats.siteRevenue} USDT`,
+        icon: DollarSign,
+        color: 'bg-purple-500/10 text-purple-500',
+      },
+    ]
+  : []),
+    {
+      label: 'Pending Amount',
+      value: `${cryptoStats.pendingAmount} USDT`,
+      icon: Clock,
+      color: 'bg-amber-500/10 text-amber-500',
+    },
+    {
+      label: 'Confirmed Payments',
+      value: cryptoStats.confirmedCount,
+      icon: CheckCircle2,
+      color: 'bg-blue-500/10 text-blue-500',
+    },
+    {
+      label: 'Rejected Payments',
+      value: cryptoStats.rejectedCount,
+      icon: XCircle,
+      color: 'bg-red-500/10 text-red-500',
+    },
+  ].map((stat) => (
+    <Card
+      key={stat.label}
+      className="group relative overflow-hidden rounded-3xl border border-border/60 bg-card shadow-sm transition-all hover:border-emerald-500/30"
+    >
+      <CardContent className="flex items-center gap-4 p-5">
+        <div className={`flex h-12 w-12 items-center justify-center rounded-2xl ${stat.color}`}>
+          <stat.icon className="h-5 w-5" />
+        </div>
+
+        <div>
+          <p className="text-xs text-muted-foreground">{stat.label}</p>
+          <p className="text-xl font-black text-foreground">{stat.value}</p>
+        </div>
+      </CardContent>
+    </Card>
+  ))}
+</div>
+<Card className="border border-border/60 bg-card shadow-sm">
+  <CardContent className="p-4">
+    <div className="flex flex-col gap-3 lg:flex-row lg:items-center">
+      <div className="relative flex-1">
+        <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
+        <input
+          value={cryptoSearch}
+          onChange={(e) => setCryptoSearch(e.target.value)}
+          placeholder="Search by email, order ID, service, or transaction hash..."
+          className="h-11 w-full rounded-xl border border-input bg-background/70 pl-10 pr-4 text-sm text-foreground outline-none focus:border-emerald-500"
+        />
+      </div>
+
+      <select
+        value={cryptoStatusFilter}
+        onChange={(e) =>
+          setCryptoStatusFilter(e.target.value as 'all' | 'confirmed' | 'pending' | 'rejected')
+        }
+        className="h-11 rounded-xl border border-input bg-background/70 px-4 text-sm text-foreground outline-none focus:border-emerald-500"
+      >
+        <option value="all">All Statuses</option>
+        <option value="confirmed">Confirmed</option>
+        <option value="pending">Pending</option>
+        <option value="rejected">Rejected</option>
+      </select>
+
+      <select
+        value={cryptoTypeFilter}
+        onChange={(e) =>
+          setCryptoTypeFilter(e.target.value as 'all' | 'deposit' | 'final')
+        }
+        className="h-11 rounded-xl border border-input bg-background/70 px-4 text-sm text-foreground outline-none focus:border-emerald-500"
+      >
+        <option value="all">All Types</option>
+        <option value="deposit">Deposit</option>
+        <option value="final">Final Payment</option>
+      </select>
+
+      {(cryptoSearch || cryptoStatusFilter !== 'all' || cryptoTypeFilter !== 'all') && (
+        <Button
+          variant="outline"
+          onClick={() => {
+            setCryptoSearch('')
+            setCryptoStatusFilter('all')
+            setCryptoTypeFilter('all')
+          }}
+        >
+          Clear
+        </Button>
+      )}
+    </div>
+  </CardContent>
+</Card>
+
+   {cryptoPayments.length === 0 ? (
+      <Card className="border-0 shadow-sm">
+        <CardContent className="py-16 text-center">
+          <DollarSign className="h-12 w-12 text-gray-300 mx-auto mb-4" />
+          <p className="text-muted-foreground text-lg">
+            No crypto payments yet
+          </p>
+        </CardContent>
+      </Card>
+    ) : (
+      <div className="space-y-3">
+
+      {cryptoPayments.map((payment) => (
+            <Card
+              key={`${payment.orderId}-${payment.txHash}`}
+              className="overflow-hidden border border-border/60 bg-card shadow-sm"
+            >
+              <CardContent className="p-5">
+                <div className="flex flex-col gap-4 lg:flex-row lg:items-start lg:justify-between">
+                  <div className="space-y-2">
+                    <div className="flex flex-wrap items-center gap-2">
+                      <span
+                        className={`rounded-full px-2 py-0.5 text-xs font-semibold ${
+                          payment.status === 'confirmed'
+                            ? 'bg-emerald-500/10 text-emerald-600'
+                            : payment.status === 'rejected'
+                              ? 'bg-red-500/10 text-red-600'
+                              : 'bg-amber-500/10 text-amber-600'
+                        }`}
+                      >
+                        {payment.status}
+                      </span>
+
+                      <span className="text-sm font-semibold text-foreground">
+                        {payment.type === 'deposit'
+                          ? 'Deposit'
+                          : 'Final Payment'}
+                      </span>
+
+                      <span className="text-sm font-bold text-green-600">
+                        {payment.amount} {payment.currency}
+                      </span>
+                    </div>
+
+                    <p className="text-sm text-muted-foreground">
+                      {SERVICE_NAMES[payment.service] || payment.service} •{' '}
+                      {payment.studentEmail}
+                    </p>
+
+                    <p className="text-xs text-muted-foreground">
+                      Submitted:{' '}
+                      {new Date(payment.submittedAt).toLocaleString()}
+                    </p>
+
+                   <div className="flex items-start gap-2 rounded-lg bg-muted/40 p-2">
+  <p className="flex-1 break-all font-mono text-xs text-foreground">
+    {payment.txHash}
+  </p>
+
+  <button
+    type="button"
+    onClick={async () => {
+      await navigator.clipboard.writeText(payment.txHash)
+      showToast('Transaction hash copied', 'success')
+    }}
+    className="shrink-0 rounded-lg border border-border/60 bg-background px-2 py-1 text-xs font-semibold text-muted-foreground hover:text-foreground"
+  >
+    Copy
+  </button>
+</div>
+                  </div>
+<div className="flex flex-wrap gap-2">
+<Button
+  size="sm"
+  type="button"
+  onClick={(e) => {
+    e.preventDefault()
+    e.stopPropagation()
+    setSelectedCryptoPayment(payment)
+  }}
+  className="h-9 rounded-xl border border-emerald-500/20 bg-emerald-500/10 px-4 text-xs font-semibold text-emerald-400 transition-all hover:border-emerald-500/40 hover:bg-emerald-500/20 hover:text-emerald-300"
+>
+  Payment Details
+</Button>
+                  <a
+                    href={`https://tronscan.org/#/transaction/${payment.txHash}`}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="inline-flex items-center gap-1 rounded-lg border border-blue-500/20 bg-blue-500/10 px-3 py-2 text-xs font-semibold text-blue-600 hover:bg-blue-500/20 dark:text-blue-300" 
+                  >
+
+                    View on Tronscan
+                    <ExternalLink className="h-3 w-3" />
+                    
+                  </a>
+                  </div>
+                  </div>
+              </CardContent>
+            </Card>
+          ))}
+      </div>
+    )}
+  </div>
+)}
 
        {activeTab === 'orders' && (
   <>
@@ -1725,7 +2257,114 @@ if (loading) {
           </div>
         </div>
       )}
+{order.cryptoPayments?.some((payment) => payment.status === 'pending') && (
+  <div className="mt-3 rounded-2xl border border-amber-500/30 bg-amber-500/10 p-4">
+    <h4 className="mb-3 text-sm font-semibold text-amber-800 dark:text-amber-300">
+      Pending Crypto Payment
+    </h4>
 
+    <div className="space-y-3">
+      {order.cryptoPayments
+        .filter((payment) => payment.status === 'pending')
+        .map((payment) => (
+          <div
+            key={payment.txHash}
+            className="rounded-xl border border-border/40 bg-background/60 p-3"
+          >
+            <div className="grid gap-2 text-xs text-muted-foreground sm:grid-cols-2">
+              <p>
+                Type:{' '}
+                <span className="font-semibold text-foreground">
+                  {payment.type === 'deposit' ? 'Deposit' : 'Final Payment'}
+                </span>
+              </p>
+
+              <p>
+                Amount:{' '}
+                <span className="font-semibold text-foreground">
+                  {payment.amount} {payment.currency}
+                </span>
+              </p>
+
+              <p>
+                Network:{' '}
+                <span className="font-semibold text-foreground">
+                  {payment.network}
+                </span>
+              </p>
+
+              <p>
+                Submitted:{' '}
+                <span className="font-semibold text-foreground">
+                  {new Date(payment.submittedAt).toLocaleString()}
+                </span>
+              </p>
+            </div>
+
+            <div className="mt-3 rounded-lg bg-muted/40 p-2">
+              <p className="mb-1 text-xs text-muted-foreground">
+                Transaction Hash
+              </p>
+
+  <div className="flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between">
+  <p className="break-all text-xs font-mono text-foreground">
+    {payment.txHash}
+  </p>
+
+  <a
+    href={`https://tronscan.org/#/transaction/${payment.txHash}`}
+    target="_blank"
+    rel="noopener noreferrer"
+    className="inline-flex items-center gap-1 rounded-lg border border-blue-500/20 bg-blue-500/10 px-2 py-1 text-xs font-semibold text-blue-600 hover:bg-blue-500/20 dark:text-blue-300"
+  >
+    View on Tronscan
+    <ExternalLink className="h-3 w-3" />
+  </a>
+</div>
+
+            </div>
+
+            <div className="mt-3 flex flex-wrap gap-2">
+              <Button
+                size="sm"
+                onClick={() =>
+                  reviewCryptoPayment(order._id, payment.txHash, 'confirm')
+                }
+                disabled={
+                  reviewingCrypto ===
+                  `${order._id}-${payment.txHash}-confirm`
+                }
+                className="bg-green-600 hover:bg-green-700 text-white"
+              >
+                {reviewingCrypto ===
+                `${order._id}-${payment.txHash}-confirm`
+                  ? 'Confirming...'
+                  : 'Confirm Payment'}
+              </Button>
+
+              <Button
+                size="sm"
+                variant="outline"
+                onClick={() =>
+                  reviewCryptoPayment(order._id, payment.txHash, 'reject')
+                }
+                disabled={
+                  reviewingCrypto ===
+                  `${order._id}-${payment.txHash}-reject`
+                }
+                className="border-red-500/30 text-red-600 hover:bg-red-500/10"
+              >
+                {reviewingCrypto ===
+                `${order._id}-${payment.txHash}-reject`
+                  ? 'Rejecting...'
+                  : 'Reject'}
+              </Button>
+            </div>
+          </div>
+        ))}
+    </div>
+  </div>
+)}
       {/* Actions */}
       <div className="flex flex-wrap items-center gap-2 px-6 py-5">
         {/* Accept */}
