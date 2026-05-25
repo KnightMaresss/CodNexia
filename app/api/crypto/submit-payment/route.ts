@@ -6,6 +6,7 @@ import { ObjectId } from 'mongodb'
 import { getJwtSecret } from '@/lib/jwt-secret'
 import { notifyOrderUpdated } from '@/lib/orders-stream'
 import { createNotification, createManyNotifications } from '@/lib/notifications'
+import { verifyTronUsdtPayment } from '@/lib/crypto/tron'
 
 const JWT_SECRET = new TextEncoder().encode(getJwtSecret())
 
@@ -150,15 +151,22 @@ export async function POST(request: Request) {
       )
     }
 
-    const cryptoPayment = {
-      txHash: cleanTxHash,
-      amount: paymentAmount,
-      currency: currency || 'USDT',
-      network: network || 'TRC20',
-      type: paymentType,
-      status: 'pending',
-      submittedAt: new Date(),
-    }
+const verification = await verifyTronUsdtPayment({
+  txHash: cleanTxHash,
+  expectedAmount,
+  expectedReceiver: process.env.NEXT_PUBLIC_CRYPTO_WALLET_ADDRESS || '',
+})
+
+const cryptoPayment = {
+  txHash: cleanTxHash,
+  amount: paymentAmount,
+  currency: currency || 'USDT',
+  network: network || 'TRC20',
+  type: paymentType,
+  status: 'pending',
+  submittedAt: new Date(),
+  verification,
+}
 
     await db.collection('orders').updateOne(
       { _id: new ObjectId(orderId) },

@@ -58,6 +58,29 @@ interface Order {
   confirmedAt?: string
   reviewedAt?: string
   reviewedBy?: string
+  verification?: {
+  status: 'verified' | 'failed' | 'not_found'
+  reason: string
+  checkedAt: string
+  receivedAmount?: number
+  receiver?: string
+  tokenSymbol?: string
+}
+}[]
+  nowPayments?: {
+  paymentId: string
+  purchaseId?: string | null
+  type: 'deposit' | 'final'
+  amount: number
+  currency: string
+  payCurrency?: string
+  status: string
+  invoiceUrl?: string | null
+  createdAt: string
+  updatedAt?: string
+  confirmedAt?: string
+  actuallyPaid?: number | null
+  payAmount?: number | null
 }[]
   depositAmount?: number
   remainingAmount?: number
@@ -136,7 +159,31 @@ interface ModeratorStat {
     completionRate: number
   }
 }
-type CryptoPaymentWithOrder = NonNullable<Order['cryptoPayments']>[number] & {
+type CryptoPaymentWithOrder = {
+  source?: 'manual' | 'nowpayments'
+  id?: string
+  rawStatus?: string
+  displayStatus?: string
+  txHash: string | null
+  invoiceUrl?: string | null
+  paymentId?: string | null
+  amount: number
+  currency: string
+  network?: string
+  type: 'deposit' | 'final'
+  status: string
+  submittedAt: string
+  confirmedAt?: string
+  reviewedAt?: string
+  reviewedBy?: string
+  verification?: {
+    status: 'verified' | 'failed' | 'not_found'
+    reason: string
+    checkedAt: string
+    receivedAmount?: number
+    receiver?: string
+    tokenSymbol?: string
+  }
   orderId: string
   studentEmail: string
   service: string
@@ -180,8 +227,10 @@ export default function AdminPage() {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const [ratings, setRatings] = useState<Record<string, any>>({})
   const [reviewingCrypto, setReviewingCrypto] = useState<string | null>(null)
+  const [recheckingCrypto, setRecheckingCrypto] = useState<string | null>(null)
   const [cryptoSearch, setCryptoSearch] = useState('')
   const [cryptoStatusFilter, setCryptoStatusFilter] = useState<'all' | 'confirmed' | 'pending' | 'rejected'>('all')
+  const [cryptoSourceFilter, setCryptoSourceFilter] = useState<'all' | 'manual' | 'nowpayments'>('all')
   const [cryptoTypeFilter, setCryptoTypeFilter] = useState<'all' | 'deposit' | 'final'>('all')
   const [selectedCryptoPayment, setSelectedCryptoPayment] = useState<CryptoPaymentWithOrder | null>(null)
   const reassignOrder = async (orderId: string, newModId: string, newModName: string) => {
@@ -282,7 +331,6 @@ const reviewCryptoPayment = async (
     })
 
     const data = await res.json()
-
     if (data.success) {
       showToast(
         action === 'confirm'
@@ -299,6 +347,30 @@ const reviewCryptoPayment = async (
   }
 
   setReviewingCrypto(null)
+}
+const recheckCryptoPayment = async (orderId: string, txHash: string) => {
+  setRecheckingCrypto(`${orderId}-${txHash}`)
+
+  try {
+    const res = await fetch('/api/crypto/recheck-payment', {
+      method: 'PUT',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ orderId, txHash }),
+    })
+
+    const data = await res.json()
+
+    if (data.success) {
+      showToast('Blockchain verification updated', 'success')
+      fetchOrders()
+    } else {
+      showToast(data.error || 'Failed to re-check payment', 'error')
+    }
+  } catch {
+    showToast('Failed to re-check payment', 'error')
+  }
+
+  setRecheckingCrypto(null)
 }
   const saveNote = async (orderId: string) => {
     setSavingNote(true)
@@ -812,35 +884,94 @@ const cryptoPayments = useMemo(() => {
 
       return true
     })
-    .flatMap((order) =>
-      (order.cryptoPayments || []).map((payment) => ({
-        ...payment,
+    .flatMap((order) => {
+      const manualPayments = (order.cryptoPayments || []).map((payment) => ({
+        source: 'manual' as const,
+        id: payment.txHash,
+        rawStatus: payment.status,
+        displayStatus: payment.status,
+        status: payment.status,
+        txHash: payment.txHash,
+        network: payment.network,
+        invoiceUrl: null,
+        paymentId: null,
+        amount: payment.amount,
+        currency: payment.currency,
+        type: payment.type,
+        submittedAt: payment.submittedAt,
+        confirmedAt: payment.confirmedAt,
+        reviewedAt: payment.reviewedAt,
+        reviewedBy: payment.reviewedBy,
+        verification: payment.verification,
         orderId: order._id,
         studentEmail: order.studentEmail,
         service: order.service,
         assignedTo: order.assignedTo,
         assignedToName: order.assignedToName,
       }))
-    )
+
+      const nowPayments = (order.nowPayments || []).map((payment) => {
+        const rawStatus = payment.status || 'waiting'
+
+        const displayStatus =
+          ['finished', 'confirmed', 'sending'].includes(rawStatus)
+            ? 'confirmed'
+            : ['failed', 'refunded', 'expired'].includes(rawStatus)
+              ? 'rejected'
+              : 'pending'
+
+        return {
+          source: 'nowpayments' as const,
+          id: payment.paymentId,
+          rawStatus,
+          displayStatus,
+          status: displayStatus,
+          txHash: null,
+          network: payment.payCurrency || 'NOWPayments',
+          invoiceUrl: payment.invoiceUrl || null,
+          paymentId: payment.paymentId,
+          amount: payment.amount,
+          currency: payment.currency || 'USD',
+          type: payment.type,
+          submittedAt: payment.createdAt,
+          confirmedAt: payment.confirmedAt,
+          reviewedAt: undefined,
+          reviewedBy: 'NOWPayments',
+          verification: undefined,
+          orderId: order._id,
+          studentEmail: order.studentEmail,
+          service: order.service,
+          assignedTo: order.assignedTo,
+          assignedToName: order.assignedToName,
+        }
+      })
+
+      return [...manualPayments, ...nowPayments]
+    })
     .filter((payment) => {
       const query = cryptoSearch.toLowerCase().trim()
 
       const matchesSearch =
         !query ||
-        payment.txHash.toLowerCase().includes(query) ||
         payment.studentEmail.toLowerCase().includes(query) ||
         payment.orderId.toLowerCase().includes(query) ||
+        payment.id.toLowerCase().includes(query) ||
+        (payment.txHash || '').toLowerCase().includes(query) ||
+        (payment.paymentId || '').toLowerCase().includes(query) ||
         (SERVICE_NAMES[payment.service] || payment.service)
           .toLowerCase()
           .includes(query)
 
       const matchesStatus =
-        cryptoStatusFilter === 'all' || payment.status === cryptoStatusFilter
+        cryptoStatusFilter === 'all' || payment.displayStatus === cryptoStatusFilter
 
       const matchesType =
         cryptoTypeFilter === 'all' || payment.type === cryptoTypeFilter
 
-      return matchesSearch && matchesStatus && matchesType
+      const matchesSource =
+        cryptoSourceFilter === 'all' || payment.source === cryptoSourceFilter
+
+      return matchesSearch && matchesStatus && matchesType && matchesSource
     })
     .sort(
       (a, b) =>
@@ -852,9 +983,11 @@ const cryptoPayments = useMemo(() => {
   cryptoSearch,
   cryptoStatusFilter,
   cryptoTypeFilter,
+  cryptoSourceFilter,
   userRole,
   currentUserId,
 ])
+
 
 
 const cryptoStats = useMemo(() => {
@@ -909,7 +1042,35 @@ const cryptoStats = useMemo(() => {
   }
 }, [orders, cryptoPayments, currentUserId])
 
+const getVerificationBadge = (
+  verification?: CryptoPaymentWithOrder['verification']
+) => {
+  if (!verification) {
+    return {
+      label: 'Not checked',
+      className: 'bg-muted text-muted-foreground',
+    }
+  }
 
+  if (verification.status === 'verified') {
+    return {
+      label: '✅ Verified on TRON',
+      className: 'bg-emerald-500/10 text-emerald-600',
+    }
+  }
+
+  if (verification.status === 'failed') {
+    return {
+      label: '❌ Verification failed',
+      className: 'bg-red-500/10 text-red-600',
+    }
+  }
+
+  return {
+    label: '⏳ Not found yet',
+    className: 'bg-amber-500/10 text-amber-600',
+  }
+}
 if (loading) {
   return null
 }
@@ -1024,7 +1185,41 @@ if (loading) {
             {selectedCryptoPayment.txHash}
           </p>
         </div>
+<div className="rounded-2xl bg-muted/40 p-4 sm:col-span-2">
+  <p className="text-xs text-muted-foreground">Blockchain Verification</p>
 
+  <div
+    className={`mt-2 inline-flex rounded-full px-3 py-1 text-xs font-semibold ${
+      getVerificationBadge(selectedCryptoPayment.verification).className
+    }`}
+  >
+    {getVerificationBadge(selectedCryptoPayment.verification).label}
+  </div>
+
+  <p className="mt-2 text-sm text-foreground">
+    {selectedCryptoPayment.verification?.reason || 'This payment has not been checked yet.'}
+  </p>
+
+  {selectedCryptoPayment.verification?.receivedAmount && (
+    <p className="mt-2 text-xs text-muted-foreground">
+      Received: {selectedCryptoPayment.verification.receivedAmount}{' '}
+      {selectedCryptoPayment.verification.tokenSymbol || 'USDT'}
+    </p>
+  )}
+
+  {selectedCryptoPayment.verification?.receiver && (
+    <p className="mt-2 break-all text-xs text-muted-foreground">
+      Receiver: {selectedCryptoPayment.verification.receiver}
+    </p>
+  )}
+
+  {selectedCryptoPayment.verification?.checkedAt && (
+    <p className="mt-2 text-xs text-muted-foreground">
+      Checked At:{' '}
+      {new Date(selectedCryptoPayment.verification.checkedAt).toLocaleString()}
+    </p>
+  )}
+</div>
         <div className="rounded-2xl bg-muted/40 p-4">
           <p className="text-xs text-muted-foreground">Submitted At</p>
           <p className="mt-1 text-sm font-semibold text-foreground">
@@ -1848,7 +2043,17 @@ if (loading) {
         <option value="pending">Pending</option>
         <option value="rejected">Rejected</option>
       </select>
-
+<select
+  value={cryptoSourceFilter}
+  onChange={(e) =>
+    setCryptoSourceFilter(e.target.value as 'all' | 'manual' | 'nowpayments')
+  }
+  className="h-11 rounded-xl border border-input bg-background/70 px-4 text-sm text-foreground outline-none focus:border-emerald-500"
+>
+  <option value="all">All Sources</option>
+  <option value="manual">Manual Crypto</option>
+  <option value="nowpayments">NOWPayments</option>
+</select>
       <select
         value={cryptoTypeFilter}
         onChange={(e) =>
@@ -1861,10 +2066,11 @@ if (loading) {
         <option value="final">Final Payment</option>
       </select>
 
-      {(cryptoSearch || cryptoStatusFilter !== 'all' || cryptoTypeFilter !== 'all') && (
+      {(cryptoSearch || cryptoStatusFilter !== 'all' || cryptoTypeFilter !== 'all' || cryptoSourceFilter !== 'all') && (
         <Button
           variant="outline"
           onClick={() => {
+            setCryptoSourceFilter('all')
             setCryptoSearch('')
             setCryptoStatusFilter('all')
             setCryptoTypeFilter('all')
@@ -1887,96 +2093,165 @@ if (loading) {
         </CardContent>
       </Card>
     ) : (
-      <div className="space-y-3">
 
-      {cryptoPayments.map((payment) => (
-            <Card
-              key={`${payment.orderId}-${payment.txHash}`}
-              className="overflow-hidden border border-border/60 bg-card shadow-sm"
-            >
-              <CardContent className="p-5">
-                <div className="flex flex-col gap-4 lg:flex-row lg:items-start lg:justify-between">
-                  <div className="space-y-2">
-                    <div className="flex flex-wrap items-center gap-2">
-                      <span
-                        className={`rounded-full px-2 py-0.5 text-xs font-semibold ${
-                          payment.status === 'confirmed'
-                            ? 'bg-emerald-500/10 text-emerald-600'
-                            : payment.status === 'rejected'
-                              ? 'bg-red-500/10 text-red-600'
-                              : 'bg-amber-500/10 text-amber-600'
-                        }`}
-                      >
-                        {payment.status}
-                      </span>
 
-                      <span className="text-sm font-semibold text-foreground">
-                        {payment.type === 'deposit'
-                          ? 'Deposit'
-                          : 'Final Payment'}
-                      </span>
-
-                      <span className="text-sm font-bold text-green-600">
-                        {payment.amount} {payment.currency}
-                      </span>
-                    </div>
-
-                    <p className="text-sm text-muted-foreground">
-                      {SERVICE_NAMES[payment.service] || payment.service} •{' '}
-                      {payment.studentEmail}
-                    </p>
-
-                    <p className="text-xs text-muted-foreground">
-                      Submitted:{' '}
-                      {new Date(payment.submittedAt).toLocaleString()}
-                    </p>
-
-                   <div className="flex items-start gap-2 rounded-lg bg-muted/40 p-2">
-  <p className="flex-1 break-all font-mono text-xs text-foreground">
-    {payment.txHash}
-  </p>
-
-  <button
-    type="button"
-    onClick={async () => {
-      await navigator.clipboard.writeText(payment.txHash)
-      showToast('Transaction hash copied', 'success')
-    }}
-    className="shrink-0 rounded-lg border border-border/60 bg-background px-2 py-1 text-xs font-semibold text-muted-foreground hover:text-foreground"
-  >
-    Copy
-  </button>
-</div>
-                  </div>
-<div className="flex flex-wrap gap-2">
-<Button
-  size="sm"
-  type="button"
-  onClick={(e) => {
-    e.preventDefault()
-    e.stopPropagation()
-    setSelectedCryptoPayment(payment)
-  }}
-  className="h-9 rounded-xl border border-emerald-500/20 bg-emerald-500/10 px-4 text-xs font-semibold text-emerald-400 transition-all hover:border-emerald-500/40 hover:bg-emerald-500/20 hover:text-emerald-300"
+<div className="space-y-3">
+  {cryptoPayments.map((payment) => (
+    <Card
+      key={`${payment.orderId}-${payment.source}-${payment.id}`}
+  className="overflow-hidden border border-border/60 bg-card shadow-sm"
 >
-  Payment Details
-</Button>
-                  <a
-                    href={`https://tronscan.org/#/transaction/${payment.txHash}`}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="inline-flex items-center gap-1 rounded-lg border border-blue-500/20 bg-blue-500/10 px-3 py-2 text-xs font-semibold text-blue-600 hover:bg-blue-500/20 dark:text-blue-300" 
-                  >
+  <CardContent className="p-5">
+    <div className="flex flex-col gap-4 lg:flex-row lg:items-start lg:justify-between">
+      <div className="min-w-0 flex-1 space-y-2">
+        <div className="flex flex-wrap items-center gap-2">
+          <span
+            className={`rounded-full px-2 py-0.5 text-xs font-semibold ${
+              payment.status === 'confirmed'
+                ? 'bg-emerald-500/10 text-emerald-600'
+                : payment.status === 'rejected'
+                  ? 'bg-red-500/10 text-red-600'
+                  : 'bg-amber-500/10 text-amber-600'
+            }`}
+          >
+            {payment.status}
+          </span>
 
-                    View on Tronscan
-                    <ExternalLink className="h-3 w-3" />
-                    
-                  </a>
-                  </div>
-                  </div>
-              </CardContent>
-            </Card>
-          ))}
+          <span
+            className={`rounded-full px-2 py-0.5 text-xs font-semibold ${
+              payment.source === 'nowpayments'
+                ? 'bg-blue-500/10 text-blue-500'
+                : 'bg-green-500/10 text-green-500'
+            }`}
+          >
+            {payment.source === 'nowpayments' ? 'NOWPayments' : 'Manual'}
+          </span>
+
+          <span className="font-bold text-foreground">
+            {payment.type === 'deposit' ? 'Deposit' : 'Final Payment'}
+          </span>
+
+          <span className="font-bold text-green-600">
+            {payment.amount} {payment.currency}
+          </span>
+
+          {payment.source !== 'nowpayments' && (
+            <span
+              className={`rounded-full px-2 py-0.5 text-xs font-semibold ${
+                getVerificationBadge(payment.verification).className
+              }`}
+            >
+              {getVerificationBadge(payment.verification).label}
+            </span>
+          )}
+        </div>
+
+        <p className="text-sm text-muted-foreground">
+          {SERVICE_NAMES[payment.service] || payment.service} • {payment.studentEmail}
+        </p>
+
+        <p className="text-xs text-muted-foreground">
+          Submitted: {new Date(payment.submittedAt).toLocaleString()}
+        </p>
+
+        {payment.source === 'nowpayments' ? (
+          <div className="max-w-xl rounded-xl bg-muted/40 p-3">
+            <p className="text-xs text-muted-foreground">NOWPayments Payment ID</p>
+            <p className="mt-1 break-all font-mono text-xs text-foreground">
+              {payment.paymentId}
+            </p>
+            <p className="mt-2 text-xs text-muted-foreground">
+              Gateway status: {payment.rawStatus}
+            </p>
+          </div>
+        ) : (
+          <div className="flex max-w-xl items-center gap-2 rounded-xl bg-muted/40 p-3">
+            <p className="flex-1 break-all font-mono text-xs text-foreground">
+              {payment.txHash}
+            </p>
+
+            <button
+              type="button"
+              onClick={async () => {
+                if (!payment.txHash) return
+                await navigator.clipboard.writeText(payment.txHash)
+                showToast('Transaction hash copied', 'success')
+              }}
+              className="rounded-lg bg-background px-2 py-1 text-xs font-semibold text-muted-foreground hover:text-foreground"
+            >
+              Copy
+            </button>
+          </div>
+        )}
+      </div>
+
+      <div className="flex flex-wrap gap-2 lg:justify-end">
+        <Button
+          size="sm"
+          type="button"
+          onClick={(e) => {
+            e.preventDefault()
+            e.stopPropagation()
+            setSelectedCryptoPayment(payment)
+          }}
+          className="h-9 rounded-xl border border-emerald-500/20 bg-emerald-500/10 px-4 text-xs font-semibold text-emerald-400 hover:bg-emerald-500/20"
+        >
+          Payment Details
+        </Button>
+
+        {payment.source === 'nowpayments' ? (
+          payment.invoiceUrl && (
+            <a
+              href={payment.invoiceUrl}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex h-9 items-center gap-1 rounded-xl border border-blue-500/20 bg-blue-500/10 px-4 text-xs font-semibold text-blue-600 hover:bg-blue-500/20 dark:text-blue-300"
+            >
+              Open Invoice
+              <ExternalLink className="h-3 w-3" />
+            </a>
+          )
+        ) : (
+          <>
+            <Button
+              size="sm"
+              type="button"
+              onClick={() => {
+                if (!payment.txHash) return
+                recheckCryptoPayment(payment.orderId, payment.txHash)
+              }}
+              disabled={recheckingCrypto === `${payment.orderId}-${payment.txHash}`}
+              className="h-9 rounded-xl border border-amber-500/20 bg-amber-500/10 px-4 text-xs font-semibold text-amber-500 hover:bg-amber-500/20"
+            >
+              {recheckingCrypto === `${payment.orderId}-${payment.txHash}` ? 'Checking.' : 'Re-check'}
+            </Button>
+
+            {payment.txHash && (
+              <a
+                href={`https://tronscan.org/#/transaction/${payment.txHash}`}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex h-9 items-center gap-1 rounded-xl border border-blue-500/20 bg-blue-500/10 px-4 text-xs font-semibold text-blue-600 hover:bg-blue-500/20 dark:text-blue-300"
+              >
+                View on Tronscan
+                <ExternalLink className="h-3 w-3" />
+              </a>
+            )}
+          </>
+        )}
+      </div>
+    </div>
+  </CardContent>
+</Card>
+  ))}
+
+
+
+
+
+
+
+        
       </div>
     )}
   </div>
@@ -2197,7 +2472,25 @@ if (loading) {
                 ? 'In Progress'
                 : order.status}
             </span>
-
+<span
+  className={`inline-flex items-center gap-1 rounded-full border px-3 py-1 text-xs font-semibold ${
+    !order.paymentStatus || order.paymentStatus === 'unpaid'
+      ? 'border-red-500/20 bg-red-500/10 text-red-500'
+      : order.paymentStatus === 'deposit_paid'
+        ? 'border-blue-500/20 bg-blue-500/10 text-blue-500'
+        : order.paymentStatus === 'fully_paid'
+          ? 'border-emerald-500/20 bg-emerald-500/10 text-emerald-500'
+          : 'border-amber-500/20 bg-amber-500/10 text-amber-500'
+  }`}
+>
+  {!order.paymentStatus || order.paymentStatus === 'unpaid'
+    ? '💸 Unpaid'
+    : order.paymentStatus === 'deposit_paid'
+      ? '💙 Deposit Paid'
+      : order.paymentStatus === 'fully_paid'
+        ? '✅ Fully Paid'
+        : '⏳ Payment Pending'}
+</span>
             {order.paymentStatus === 'unpaid' && order.finalPrice && (
               <span className="rounded-full border border-yellow-500/20 bg-yellow-500/10 px-3 py-1 text-xs font-semibold text-yellow-700 dark:text-yellow-300">
                 Awaiting Deposit
@@ -2323,7 +2616,18 @@ if (loading) {
 </div>
 
             </div>
-
+{payment.verification && (
+  <div
+    className={`mt-3 rounded-xl p-3 text-xs font-semibold ${
+      getVerificationBadge(payment.verification).className
+    }`}
+  >
+    <p>{getVerificationBadge(payment.verification).label}</p>
+    <p className="mt-1 font-normal">
+      {payment.verification.reason}
+    </p>
+  </div>
+)}
             <div className="mt-3 flex flex-wrap gap-2">
               <Button
                 size="sm"
@@ -2359,6 +2663,21 @@ if (loading) {
                   ? 'Rejecting...'
                   : 'Reject'}
               </Button>
+              <Button
+  size="sm"
+  type="button"
+  onClick={() =>
+    recheckCryptoPayment(order._id, payment.txHash)
+  }
+  disabled={
+    recheckingCrypto === `${order._id}-${payment.txHash}`
+  }
+  className="rounded-xl border border-amber-500/20 bg-amber-500/10 text-amber-500 hover:border-amber-500/40 hover:bg-amber-500/20"
+>
+  {recheckingCrypto === `${order._id}-${payment.txHash}`
+    ? 'Checking...'
+    : 'Re-check'}
+</Button>
             </div>
           </div>
         ))}

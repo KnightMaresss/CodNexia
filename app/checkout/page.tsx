@@ -53,7 +53,7 @@ function CheckoutContent() {
   const coin = process.env.NEXT_PUBLIC_CRYPTO_COIN || 'USDT'
   const network = process.env.NEXT_PUBLIC_CRYPTO_NETWORK || 'TRC20'
   const walletAddress = process.env.NEXT_PUBLIC_CRYPTO_WALLET_ADDRESS || ''
-
+  const [creatingNowPayment, setCreatingNowPayment] = useState(false)
   const amount = useMemo(() => {
     if (!order) return 0
     return paymentType === 'deposit'
@@ -61,33 +61,38 @@ function CheckoutContent() {
       : Number(order.remainingAmount || 0)
   }, [order, paymentType])
 
-  const fetchOrder = async () => {
-    try {
-      const res = await fetch('/api/my-orders')
-      const data = await res.json()
+const fetchOrder = async () => {
+  setLoading(true)
 
-      if (!data.success) {
-        showToast(data.error || 'Failed to load order', 'error')
-        router.push('/my-orders')
-        return
-      }
+  try {
+    const res = await fetch('/api/my-orders', {
+      cache: 'no-store',
+    })
 
-      const found = data.orders.find((item: Order) => item._id === orderId)
+    const data = await res.json()
 
-      if (!found) {
-        showToast('Order not found', 'error')
-        router.push('/my-orders')
-        return
-      }
-
-      setOrder(found)
-    } catch {
-      showToast('Failed to load checkout', 'error')
-      router.push('/my-orders')
+    if (!data.success) {
+      showToast(data.error || 'Failed to load order', 'error')
+      router.replace('/my-orders')
+      return
     }
 
+    const found = data.orders.find((item: Order) => item._id === orderId)
+
+    if (!found) {
+      showToast('Order not found', 'error')
+      router.replace('/my-orders')
+      return
+    }
+
+    setOrder(found)
+  } catch {
+    showToast('Failed to load checkout', 'error')
+    router.replace('/my-orders')
+  } finally {
     setLoading(false)
   }
+}
 
 useEffect(() => {
   if (!orderId) {
@@ -102,7 +107,20 @@ useEffect(() => {
   return () => clearTimeout(timeout)
   // eslint-disable-next-line react-hooks/exhaustive-deps
 }, [orderId])
+useEffect(() => {
+  const handlePageShow = () => {
+    if (orderId) {
+      fetchOrder()
+    }
+  }
 
+  window.addEventListener('pageshow', handlePageShow)
+
+  return () => {
+    window.removeEventListener('pageshow', handlePageShow)
+  }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+}, [orderId])
   const copyAddress = async () => {
     try {
       await navigator.clipboard.writeText(walletAddress)
@@ -137,7 +155,6 @@ useEffect(() => {
       })
 
       const data = await res.json()
-
       if (data.success) {
         showToast('Payment submitted successfully! Awaiting verification.', 'success')
         router.push('/my-orders')
@@ -147,13 +164,60 @@ useEffect(() => {
     } catch {
       showToast('Failed to submit payment', 'error')
     }
-
     setSubmitting(false)
   }
+const createNowPayment = async () => {
+  if (!order) return
 
-  if (loading) return null
+  setCreatingNowPayment(true)
 
-  if (!order) return null
+  try {
+    const res = await fetch('/api/nowpayments/create-payment', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        orderId: order._id,
+        paymentType,
+      }),
+    })
+
+    const data = await res.json()
+
+   if (data.success && data.paymentUrl) {
+  window.open(data.paymentUrl, '_blank', 'noopener,noreferrer')
+  showToast('NOWPayments checkout opened in a new tab.', 'success')
+} else {
+  showToast(data.error || 'Failed to create NOWPayments checkout', 'error')
+}
+  } catch {
+    showToast('Failed to create NOWPayments checkout', 'error')
+  }
+
+  setCreatingNowPayment(false)
+}
+
+if (loading) {
+  return (
+    <PremiumPageShell className="pt-24 py-16 px-4">
+      <div className="flex min-h-[60vh] items-center justify-center">
+        <Loader2 className="h-8 w-8 animate-spin text-blue-500" />
+      </div>
+    </PremiumPageShell>
+  )
+}
+  
+ if (!order) {
+  return (
+    <PremiumPageShell className="pt-24 py-16 px-4">
+      <div className="flex min-h-[60vh] flex-col items-center justify-center gap-4 text-center">
+        <Loader2 className="h-8 w-8 animate-spin text-blue-500" />
+        <p className="text-sm text-muted-foreground">
+          Reloading checkout...
+        </p>
+      </div>
+    </PremiumPageShell>
+  )
+}
 
   return (
     <PremiumPageShell className="pt-24 py-16 px-4">
@@ -253,6 +317,8 @@ useEffect(() => {
                   </div>
                 </button>
 
+
+
                 <button
                   onClick={() => setSelectedMethod('nowpayments')}
                   className={`w-full rounded-2xl border p-4 text-left transition-all ${
@@ -271,9 +337,6 @@ useEffect(() => {
                         <p className="font-bold text-foreground">
                           NOWPayments Checkout
                         </p>
-                        <span className="rounded-full bg-muted px-2 py-0.5 text-[10px] font-semibold text-muted-foreground">
-                          Coming Soon
-                        </span>
                       </div>
                       <p className="mt-1 text-xs text-muted-foreground">
                         Automated crypto checkout with invoice tracking.
@@ -284,6 +347,8 @@ useEffect(() => {
               </div>
             </div>
           </div>
+
+
 
           <div className="rounded-3xl border border-border/50 bg-white/45 p-6 shadow-2xl backdrop-blur-2xl dark:bg-black/45">
             {selectedMethod === 'manual_crypto' ? (
@@ -373,13 +438,23 @@ useEffect(() => {
                   <ShieldCheck className="h-8 w-8 text-blue-500" />
                 </div>
 
-                <h2 className="text-2xl font-black text-foreground">
-                  NOWPayments Coming Soon
-                </h2>
+               <h2 className="text-2xl font-black text-foreground">
+  NOWPayments Checkout
+</h2>
 
-                <p className="mt-3 max-w-sm text-sm text-muted-foreground">
-                  Automated crypto checkout will be added here later. For now, please use manual crypto transfer.
-                </p>
+<p className="mt-3 max-w-sm text-sm text-muted-foreground">
+  Pay through a secure hosted crypto checkout. NOWPayments will track the payment automatically.
+</p>
+
+<Button
+  onClick={createNowPayment}
+  disabled={creatingNowPayment}
+  className="mt-6 rounded-xl bg-blue-600 px-8 py-6 text-white hover:bg-blue-700"
+>
+  {creatingNowPayment ? 'Creating checkout...' : 'Continue to NOWPayments'}
+</Button>
+
+
               </div>
             )}
           </div>
