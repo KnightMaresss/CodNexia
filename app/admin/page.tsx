@@ -2491,25 +2491,12 @@ if (loading) {
       : order.paymentStatus === 'fully_paid'
         ? '✅ Fully Paid'
         : '⏳ Payment Pending'}
-</span>
+              </span>
             {order.paymentStatus === 'unpaid' && order.finalPrice && (
               <span className="rounded-full border border-yellow-500/20 bg-yellow-500/10 px-3 py-1 text-xs font-semibold text-yellow-700 dark:text-yellow-300">
                 Awaiting Deposit
               </span>
             )}
-
-            {order.paymentStatus === 'deposit_paid' && (
-              <span className="rounded-full border border-blue-500/20 bg-blue-500/10 px-3 py-1 text-xs font-semibold text-blue-700 dark:text-blue-300">
-                Deposit Paid
-              </span>
-            )}
-
-            {order.paymentStatus === 'fully_paid' && (
-              <span className="rounded-full border border-emerald-500/20 bg-emerald-500/10 px-3 py-1 text-xs font-semibold text-emerald-700 dark:text-emerald-300">
-                Fully Paid
-              </span>
-            )}
-
             {order.priority === 'urgent' && (
               <span className="rounded-full bg-red-500/10 px-2 py-1 text-xs font-semibold text-red-400">
                 🔥 Urgent

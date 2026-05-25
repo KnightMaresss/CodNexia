@@ -83,7 +83,6 @@ if (
     const nowPayment = await createNowPaymentsPayment({
       priceAmount: amount,
       priceCurrency: 'usd',
-      payCurrency: 'usdttrc20',
       orderId: `${orderId}:${paymentType}`,
       orderDescription: `Codnexia ${paymentType === 'deposit' ? 'Deposit' : 'Final Payment'} - ${order.service}`,
       ipnCallbackUrl: `${siteUrl}/api/nowpayments/ipn`,
@@ -97,7 +96,6 @@ const nowPaymentRecord = {
   type: paymentType,
   amount,
   currency: 'USD',
-  payCurrency: nowPayment.pay_currency || 'usdttrc20',
   status: nowPayment.payment_status || 'waiting',
   invoiceUrl: nowPayment.invoice_url || nowPayment.payment_url || null,
   createdAt: new Date(),
