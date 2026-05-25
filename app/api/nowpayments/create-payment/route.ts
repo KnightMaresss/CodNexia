@@ -79,7 +79,12 @@ if (
     }
 
     const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://codnexia.com'
-
+console.log('NOWPAYMENTS REQUEST:', {
+  amount,
+  priceCurrency: 'usd',
+  orderId: `${orderId}:${paymentType}`,
+  paymentType,
+})
     const nowPayment = await createNowPaymentsPayment({
       priceAmount: amount,
       priceCurrency: 'usd',
