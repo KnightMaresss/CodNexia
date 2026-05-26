@@ -55,7 +55,7 @@ export async function sendOrderConfirmation(
         
         <p style="color: #64748b; font-size: 14px; margin: 0 0 25px;"We will review your requirements first, then send you the final price, deposit amount, and estimated timeline.</p>
         
-        <a href="${SITE_URL}/track?id=${orderId}" 
+        <a href="${SITE_URL}/track?id=${orderId}&direct=true"
            style="display: inline-block; background: #2563eb; color: white; padding: 14px 28px; border-radius: 8px; text-decoration: none; font-weight: 600; font-size: 14px;">
           Track Your Order →
         </a>

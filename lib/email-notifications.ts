@@ -82,7 +82,7 @@ remainingAmount = 0
             ${newStatus === 'in-progress' 
               ? 'We have started working on your project. We will keep you updated on the progress.' 
               : newStatus === 'completed' 
-              ? 'Your project is complete! We hope you are satisfied with the results.' 
+              ? 'Your project is complete. The final work will be sent to you shortly.' 
               : 'We have received your order and will review it shortly.'}
           </p>
         </div>
@@ -137,7 +137,7 @@ export async function sendOrderReviewStartedEmail(
           </p>
         </div>
 
-        <a href="${SITE_URL}/my-orders?chat=${orderId}"
+          <a href="${SITE_URL}/my-orders?order=${orderId}"
            style="display: inline-block; background: #2563eb; color: white; padding: 14px 28px; border-radius: 8px; text-decoration: none; font-weight: 600; font-size: 14px;">
           View Order →
         </a>
@@ -181,7 +181,7 @@ export async function sendPriceReadyEmail(
           <p style="margin: 0; font-size: 14px;"><strong>Remaining:</strong> $${remainingAmount}</p>
         </div>
 
-        <a href="${SITE_URL}/my-orders?chat=${orderId}"
+        <a href="${SITE_URL}/my-orders?order=${orderId}"
            style="display: inline-block; background: #2563eb; color: white; padding: 14px 28px; border-radius: 8px; text-decoration: none; font-weight: 600; font-size: 14px;">
           View Order →
         </a>
