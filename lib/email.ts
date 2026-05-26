@@ -74,7 +74,7 @@ export async function sendOrderConfirmation(
           <p style="margin: 0 0 8px; font-size: 14px;"><strong style="color: #1e293b;">Order ID:</strong> ${orderId}</p>
           <p style="margin: 0 0 8px; font-size: 14px;"><strong style="color: #1e293b;">Student:</strong> ${studentEmail}</p>
           <p style="margin: 0 0 8px; font-size: 14px;"><strong style="color: #1e293b;">Service:</strong> ${serviceName}</p>
-          <p style="margin: 0; font-size: 14px;"><strong style="color: #1e293b;">Amount:</strong> <span style="color: #16a34a; font-weight: bold;">$${price}</span></p>
+          <p style="margin: 0; font-size: 14px;"><strong style="color: #1e293b;">Status:</strong><span style="color: #2563eb; font-weight: bold;"> Pending Review</span></p>
         </div>
         
         <a href="${SITE_URL}/admin" 

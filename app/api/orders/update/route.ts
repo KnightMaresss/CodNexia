@@ -105,7 +105,12 @@ if (order.assignedTo && order.assignedTo !== userId) {
       )
 
       await createAuditLog({
-        action: 'ORDER_PRICE_UPDATED',
+        action:
+  finalPrice !== undefined && deliveryEstimate !== undefined
+    ? 'ORDER_QUOTE_UPDATED'
+    : deliveryEstimate !== undefined
+      ? 'ORDER_TIMELINE_UPDATED'
+      : 'ORDER_PRICE_UPDATED',
         actor: {
           id: userId,
           email: typeof payload.email === 'string' ? payload.email : null,
@@ -114,10 +119,12 @@ if (order.assignedTo && order.assignedTo !== userId) {
         },
         targetType: 'order',
         targetId: orderId,
-       message:
-       deliveryEstimate
-    ? `Order ${orderId} timeline was updated`
-    : `Order ${orderId} price was updated`,
+    message:
+  finalPrice !== undefined && deliveryEstimate !== undefined
+    ? `Order ${orderId} quote and timeline were updated`
+    : deliveryEstimate !== undefined
+      ? `Order ${orderId} timeline was updated`
+      : `Order ${orderId} price was updated`,
         metadata: {
           orderId,
           finalPrice,

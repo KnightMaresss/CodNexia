@@ -4,28 +4,28 @@ import { ChevronDown } from 'lucide-react'
 
 const faqs = [
   {
-    question: 'How does the order process work?',
-    answer: 'Simply choose your service, provide your email and project requirements, and submit your order. We will review your request and contact you within 24 hours to confirm details and timeline.',
+    question: 'How does the project process work?',
+    answer: 'Choose your service, submit your project requirements, and place your order. Our team will review your request, then send you a detailed quote including pricing, timeline, and project scope before work begins.',
   },
   {
-    question: 'How long does it take to complete a project?',
-    answer: 'Most projects are completed within 3-7 days depending on complexity. Graduation projects typically take 5-7 days, academic reports 3-5 days, and websites/apps 5-10 days. Rush delivery is available upon request.',
-  },
-  {
-    question: 'Is my information kept private?',
-    answer: 'Absolutely. We take privacy seriously. Your email and project details are only used to communicate with you about your order. We never share your information with third parties.',
-  },
-  {
-    question: 'What if I need revisions?',
-    answer: 'We offer unlimited revisions on all orders. If something is not exactly how you want it, just let us know and we will make the necessary changes at no extra cost.',
-  },
-  {
-    question: 'How do I track my order status?',
-    answer: 'You can track your order anytime using our Track Order page. Just enter your Order ID (sent to your email after placing the order) to see real-time status updates.',
+    question: 'How are pricing and timelines determined?',
+    answer: 'Every project is reviewed individually based on complexity, features, and delivery expectations. After reviewing your requirements, we provide a final price, estimated timeline, deposit amount, and project plan.',
   },
   {
     question: 'What payment methods do you accept?',
-    answer: 'We currently work on a project basis. After reviewing your requirements, we will send you a confirmation email with payment details. We accept various payment methods which will be discussed during the confirmation process.',
+    answer: 'We currently accept secure cryptocurrency payments including USDT TRC20. Deposit and remaining payment instructions are sent after project review and approval.',
+  },
+  {
+    question: 'Can I track my project progress?',
+    answer: 'Yes. Every client receives a unique Order ID and access to real-time order tracking, project updates, status changes, file delivery, and direct communication with our team.',
+  },
+  {
+    question: 'Do you offer revisions and support?',
+    answer: 'Yes. Revision support is included to ensure the final result meets the agreed project scope and quality standards. Additional support is also available after delivery if needed.',
+  },
+  {
+    question: 'Is my information and project kept private?',
+    answer: 'Absolutely. All client information, files, and project details are handled confidentially. Your data is never shared with third parties.',
   },
 ]
 

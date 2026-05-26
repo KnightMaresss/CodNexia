@@ -55,9 +55,12 @@ function getActionIcon(action: string) {
   if (action === 'ORDER_DELETED') return Trash2
   if (action === 'ORDER_REASSIGNED') return Repeat
   if (action === 'ORDER_ACCEPTED') return CheckCircle2
+  if (action === 'ORDER_TIMELINE_UPDATED') return Clock
+  if (action === 'ORDER_QUOTE_UPDATED') return DollarSign
   if (action === 'ORDER_PRICE_UPDATED') return DollarSign
   if (action === 'ORDER_PAYMENT_STATUS_UPDATED') return CreditCard
   if (action === 'ORDER_STATUS_UPDATED') return Activity
+
   return Activity
 }
 
