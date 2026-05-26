@@ -45,6 +45,7 @@ export async function PUT(request: Request) {
       remainingAmount,
       commission,
       paymentStatus,
+      deliveryEstimate,
     } = body
 
     if (!orderId) {
@@ -85,17 +86,21 @@ if (order.assignedTo && order.assignedTo !== userId) {
   )
 }
 
-    if (finalPrice !== undefined && !status) {
+  if (
+  (finalPrice !== undefined || deliveryEstimate !== undefined) &&
+  !status
+) {
       await db.collection('orders').updateOne(
         { _id: new ObjectId(orderId) },
         {
-          $set: {
-            finalPrice,
-            depositAmount,
-            remainingAmount,
-            commission,
-            updatedAt: new Date(),
-          },
+        $set: {
+  ...(finalPrice !== undefined && { finalPrice }),
+  ...(depositAmount !== undefined && { depositAmount }),
+  ...(remainingAmount !== undefined && { remainingAmount }),
+  ...(commission !== undefined && { commission }),
+  ...(deliveryEstimate !== undefined && { deliveryEstimate }),
+  updatedAt: new Date(),
+},
         }
       )
 
@@ -109,13 +114,17 @@ if (order.assignedTo && order.assignedTo !== userId) {
         },
         targetType: 'order',
         targetId: orderId,
-        message: `Order ${orderId} price was updated`,
+       message:
+       deliveryEstimate
+    ? `Order ${orderId} timeline was updated`
+    : `Order ${orderId} price was updated`,
         metadata: {
           orderId,
           finalPrice,
           depositAmount,
           remainingAmount,
           commission,
+          deliveryEstimate,
         },
       })
 
@@ -130,7 +139,10 @@ try {
       userId: studentUser._id.toString(),
       type: 'order_updated',
       title: 'Price ready',
-      message: 'Your order price has been reviewed and is ready for payment.',
+      message:
+      deliveryEstimate
+    ? 'Your order timeline was updated.'
+    : 'Your order price has been reviewed and is ready for payment.',
       link: '/my-orders',
       orderId,
     })
@@ -145,20 +157,35 @@ const SERVICE_NAMES: Record<string, string> = {
   'mobile-apps': 'Mobile Apps',
   'powerpoint-presentations': 'PowerPoint Presentations',
   'cv-resume-writing': 'CV/Resume Writing',
-  translation: 'Translation (En↔Ar)',
+  'translation': 'Translation (En↔Ar)',
   'code-debugging': 'Code Debugging',
+  'ai-automation': 'AI Automation',
+   'ui-ux-design': 'UI/UX Design',
 }
 
 const { sendPriceReadyEmail } = await import('@/lib/email-notifications')
 
-sendPriceReadyEmail(
-  order.studentEmail,
-  SERVICE_NAMES[order.service] || order.service,
-  finalPrice,
-  depositAmount || 0,
-  remainingAmount || 0,
-  orderId
-).catch((err) => console.error('Price ready email error:', err))
+const nextFinalPrice = finalPrice ?? order.finalPrice
+const nextDepositAmount = depositAmount ?? order.depositAmount ?? 0
+const nextRemainingAmount = remainingAmount ?? order.remainingAmount ?? 0
+const nextDeliveryEstimate = deliveryEstimate ?? order.deliveryEstimate
+
+const shouldSendPriceReadyEmail =
+  finalPrice !== undefined &&
+  nextFinalPrice &&
+  nextDeliveryEstimate
+
+if (shouldSendPriceReadyEmail) {
+  sendPriceReadyEmail(
+    order.studentEmail,
+    SERVICE_NAMES[order.service] || order.service,
+    nextFinalPrice,
+    nextDepositAmount,
+    nextRemainingAmount,
+    orderId,
+    nextDeliveryEstimate
+  ).catch((err) => console.error('Price ready email error:', err))
+}
 
 return NextResponse.json({ success: true })
     }
@@ -229,6 +256,7 @@ try {
 } catch (notificationError) {
   console.error('PAYMENT_STATUS_NOTIFICATION_ERROR:', notificationError)
 }
+
       return NextResponse.json({ success: true })
     }
 

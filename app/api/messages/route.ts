@@ -450,8 +450,10 @@ if (order) {
     'mobile-apps': 'Mobile Apps',
     'powerpoint-presentations': 'PowerPoint Presentations',
     'cv-resume-writing': 'CV/Resume Writing',
-    translation: 'Translation (En↔Ar)',
+    'translation': 'Translation (En↔Ar)',
     'code-debugging': 'Code Debugging',
+    'ai-automation': 'AI Automation',
+    'ui-ux-design': 'UI/UX Design',
   }
 
   const notifyMsg = fileUrl

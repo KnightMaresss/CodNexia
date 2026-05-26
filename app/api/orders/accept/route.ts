@@ -155,6 +155,26 @@ export async function POST(request: Request) {
 } catch (notificationError) {
   console.error('ORDER_ACCEPTED_NOTIFICATION_ERROR:', notificationError)
 }
+const SERVICE_NAMES: Record<string, string> = {
+  'graduation-projects': 'Graduation Projects',
+  'academic-reports': 'Academic Reports',
+  'custom-websites': 'Custom Websites',
+  'mobile-apps': 'Mobile Apps',
+  'powerpoint-presentations': 'PowerPoint Presentations',
+  'cv-resume-writing': 'CV/Resume Writing',
+  'translation': 'Translation (En↔Ar)',
+  'code-debugging': 'Code Debugging',
+  'ai-automation': 'AI Automation',
+  'ui-ux-design': 'UI/UX Design',
+}
+
+const { sendOrderReviewStartedEmail } = await import('@/lib/email-notifications')
+
+sendOrderReviewStartedEmail(
+  order.studentEmail,
+  SERVICE_NAMES[order.service] || order.service,
+  orderId
+).catch((err) => console.error('Review started email error:', err))
     return NextResponse.json({ success: true })
   } catch (error) {
     console.error('Accept order error:', error)

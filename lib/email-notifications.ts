@@ -47,6 +47,8 @@ remainingAmount = 0
     'completed': '✅',
   }
 
+
+  
   try {
     await resend.emails.send({
       from: FROM_EMAIL,
@@ -99,13 +101,64 @@ remainingAmount = 0
   }
   
 }
+export async function sendOrderReviewStartedEmail(
+  studentEmail: string,
+  serviceName: string,
+  orderId: string
+) {
+  try {
+    await resend.emails.send({
+      from: FROM_EMAIL,
+      to: studentEmail,
+      subject: `Your Order Is Under Review - ${serviceName}`,
+      html: emailTemplate(`
+        <h2 style="color: #1e293b; margin: 0 0 10px;">
+          Order Accepted ✅
+        </h2>
+
+        <p style="color: #64748b; font-size: 15px; margin: 0 0 25px;">
+          Your order has been accepted and is now under review by our team.
+          We are currently preparing the final pricing and delivery timeline.
+        </p>
+
+        <div style="background: #f1f5f9; border-radius: 8px; padding: 20px; margin-bottom: 20px; border-left: 4px solid #2563eb;">
+          <p style="margin: 0 0 8px; font-size: 14px;">
+            <strong>Order ID:</strong> ${orderId}
+          </p>
+
+          <p style="margin: 0; font-size: 14px;">
+            <strong>Service:</strong> ${serviceName}
+          </p>
+        </div>
+
+        <div style="background: #eff6ff; border-radius: 8px; padding: 15px; margin-bottom: 25px;">
+          <p style="margin: 0; font-size: 14px; color: #1e40af;">
+            You will receive another update once pricing and estimated delivery time are finalized.
+          </p>
+        </div>
+
+        <a href="${SITE_URL}/my-orders?chat=${orderId}"
+           style="display: inline-block; background: #2563eb; color: white; padding: 14px 28px; border-radius: 8px; text-decoration: none; font-weight: 600; font-size: 14px;">
+          View Order →
+        </a>
+      `),
+    })
+
+    return true
+  } catch (error) {
+    console.error('Review started email failed:', JSON.stringify(error, null, 2))
+    return false
+  }
+}
+
 export async function sendPriceReadyEmail(
   studentEmail: string,
   serviceName: string,
   finalPrice: number,
   depositAmount: number,
   remainingAmount: number,
-  orderId: string
+  orderId: string,
+  deliveryEstimate: string
 ) {
   try {
     await resend.emails.send({
@@ -124,6 +177,7 @@ export async function sendPriceReadyEmail(
           <p style="margin: 0 0 8px; font-size: 14px;"><strong>Service:</strong> ${serviceName}</p>
           <p style="margin: 0 0 8px; font-size: 14px;"><strong>Total Price:</strong> $${finalPrice}</p>
           <p style="margin: 0 0 8px; font-size: 14px;"><strong>Deposit:</strong> $${depositAmount}</p>
+          <p style="margin: 0 0 8px; font-size: 14px;"><strong>Estimated Timeline:</strong> ${deliveryEstimate}</p>
           <p style="margin: 0; font-size: 14px;"><strong>Remaining:</strong> $${remainingAmount}</p>
         </div>
 

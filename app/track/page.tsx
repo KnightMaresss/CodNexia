@@ -29,6 +29,8 @@ const SERVICE_NAMES: Record<string, string> = {
   'cv-resume-writing': 'CV/Resume Writing',
   'translation': 'Translation (En↔Ar)',
   'code-debugging': 'Code Debugging',
+  'ai-automation': 'AI Automation',
+  'ui-ux-design': 'UI/UX Design',
 }
 
 const STATUS_STEPS = [

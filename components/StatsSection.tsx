@@ -52,8 +52,8 @@ function AnimatedStat({ end, suffix, label }: { end: number; suffix: string; lab
   }, [label])
 
   return (
-    <div ref={ref}>
-      <p className="text-3xl font-bold text-foreground tabular-nums dark:text-blue-400 dark:drop-shadow-[0_0_8px_rgba(96,165,250,0.5)]">
+   <div ref={ref} className="px-4">
+    <p className="text-3xl font-black tracking-tight text-blue-500 tabular-nums dark:text-blue-400 dark:drop-shadow-[0_0_12px_rgba(96,165,250,0.45)]">
         {count}{suffix}
       </p>
     <p className="text-muted-foreground">{label}</p>
@@ -63,14 +63,11 @@ function AnimatedStat({ end, suffix, label }: { end: number; suffix: string; lab
 
 export default function StatsSection() {
   return (
-   <section className="py-2 px-4 bg-background border-b border-border">
-      <div className="max-w-6xl mx-auto grid grid-cols-3 gap-8 text-center">
-        <AnimatedStat end={500} suffix="+" label="Happy Clients" />
-        <AnimatedStat end={98} suffix="%" label="Satisfaction Rate" />
-        <div>
-         <p className="text-3xl font-bold text-foreground dark:text-blue-400 dark:drop-shadow-[0_0_8px_rgba(96,165,250,0.5)]">24/7</p>
-         <p className="text-muted-foreground">Support</p>
-        </div>
+    <section className="relative border-y border-border/30 bg-background/40 px-6 py-2 backdrop-blur-xl">
+      <div className="mx-auto grid max-w-5xl grid-cols-3 divide-x divide-border/30 text-center">
+        <AnimatedStat end={10} suffix="+" label="Services" />
+        <AnimatedStat end={98} suffix="%" label="Satisfaction" />
+        <AnimatedStat end={2} suffix="h" label="Response Time" />
       </div>
     </section>
   )

@@ -19,7 +19,16 @@ FileImage,
 FileArchive,
 CheckCircle2,
 LogIn,
-ShieldCheck
+ShieldCheck,
+GraduationCap,
+Globe,
+Smartphone,
+Presentation,
+FileUser,
+Languages,
+Bug,
+Bot,
+Palette,
 }
  from 'lucide-react'
 import { Skeleton, CardSkeleton } from '@/components/ui/skeleton'
@@ -27,16 +36,108 @@ import { useAuth } from '@/components/auth-context'
 import PremiumPageShell from '@/components/PremiumPageShell'
 import Link from 'next/link'
 
-const services: Record<string, { name: string; range: string; min: number; max: number; description: string }> = {
-  'graduation-projects': { name: 'Graduation Projects', range: '$150 - $400', min: 150, max: 400, description: 'Complete thesis, documentation & presentation' },
-  'academic-reports': { name: 'Academic Reports', range: '$50 - $200', min: 50, max: 200, description: 'Research papers, essays & literature reviews' },
-  'custom-websites': { name: 'Custom Websites', range: '$400 - $1,000', min: 400, max: 1000, description: 'Professional portfolio or business websites' },
-  'mobile-apps': { name: 'Mobile Apps', range: '$500 - $1,500', min: 500, max: 1500, description: 'iOS/Android apps for student projects' },
-  'powerpoint-presentations': { name: 'PowerPoint Presentations', range: '$30 - $100', min: 30, max: 100, description: 'Professional slides for thesis defense & class projects' },
-  'cv-resume-writing': { name: 'CV/Resume Writing', range: '$50 - $150', min: 50, max: 150, description: 'Professional CV for fresh graduates with ATS optimization' },
-  'translation': { name: 'Translation (En↔Ar)', range: '$20 - $80', min: 20, max: 80, description: 'Academic document translation — human, no AI used' },
-  'code-debugging': { name: 'Code Debugging', range: '$50 - $300', min: 50, max: 300, description: 'Fix bugs, review & optimize your code projects' },
+const services = {
+  'graduation-projects': {
+    name: 'Graduation Projects',
+    range: '$250 - $1200',
+    min: 250,
+    max: 1200,
+    delivery: '1–4 weeks',
+    icon: GraduationCap,
+    color: 'from-sky-500 to-cyan-500',
+  },
+
+  'academic-reports': {
+    name: 'Academic Reports',
+    range: '$40 - $250',
+    min: 40,
+    max: 250,
+    delivery: '2–5 days',
+    icon: FileText,
+    color: 'from-pink-500 to-fuchsia-500',
+  },
+
+  'custom-websites': {
+    name: 'Custom Websites',
+    range: '$500 - $3,000',
+    min: 500,
+    max: 3000,
+    delivery: '1–4 weeks',
+    icon: Globe,
+    color: 'from-emerald-500 to-teal-500',
+  },
+
+  'mobile-apps': {
+    name: 'Mobile Apps',
+    range: '$1000 - $8,000',
+    min: 1000,
+    max: 8000,
+    delivery: '3–12 weeks',
+    icon: Smartphone,
+    color: 'from-orange-500 to-red-500',
+  },
+
+  'powerpoint-presentations': {
+    name: 'PowerPoint Presentations',
+    range: '$40 - $300',
+    min: 40,
+    max: 300,
+    delivery: '1–3 days',
+    icon: Presentation,
+    color: 'from-rose-500 to-pink-500',
+  },
+
+  'cv-resume-writing': {
+    name: 'CV/Resume Writing',
+    range: '$30 - $120',
+    min: 30,
+    max: 120,
+    delivery: '1–2 days',
+    icon: FileUser,
+    color: 'from-amber-500 to-yellow-500',
+  },
+
+  'translation': {
+    name: 'Translation (En↔Ar)',
+    range: '$15 - $200',
+    min: 15,
+    max: 200,
+    delivery: '1–4 days',
+    icon: Languages,
+    color: 'from-violet-500 to-purple-500',
+  },
+
+  'code-debugging': {
+    name: 'Code Debugging',
+    range: '$50 - $500',
+    min: 50,
+    max: 500,
+    delivery: '1–7 days',
+    icon: Bug,
+    color: 'from-cyan-500 to-blue-500',
+  },
+
+  'ai-automation': {
+    name: 'AI Automation',
+    range: '$300 - $5,000',
+    min: 300,
+    max: 5000,
+    delivery: '1–8 weeks',
+    icon: Bot,
+    color: 'from-fuchsia-500 to-purple-500',
+  },
+
+  'ui-ux-design': {
+    name: 'UI/UX Design',
+    range: '$150 - $1500',
+    min: 150,
+    max: 1500,
+    delivery: '3–10 days',
+    icon: Palette,
+    color: 'from-pink-500 to-rose-500',
+  },
 }
+
 function getFileIcon(fileName: string) {
   const ext = fileName.split('.').pop()?.toLowerCase()
 
@@ -58,13 +159,17 @@ function getFileIcon(fileName: string) {
 
   return <FileIcon className="h-4 w-4 text-slate-500" />
 }
+type ServiceKey = keyof typeof services
 function OrderFormContent() {
   const [files, setFiles] = useState<File[]>([])
   const fileInputRef = useRef<HTMLInputElement>(null)
   const { user, loading: authLoading } = useAuth()
   const searchParams = useSearchParams()
   const serviceParam = searchParams.get('service')
-  const defaultService = serviceParam && services[serviceParam] ? serviceParam : 'graduation-projects'
+const defaultService: ServiceKey =
+  serviceParam && serviceParam in services
+    ? (serviceParam as ServiceKey)
+    : 'graduation-projects'
 
   const [loading, setLoading] = useState(false)
   const [submitted, setSubmitted] = useState(false)
@@ -77,15 +182,9 @@ function OrderFormContent() {
   })
 
   const selectedService = services[formData.service]
-  const deliveryFrom = new Date()
-  deliveryFrom.setDate(deliveryFrom.getDate() + 3)
-  const deliveryTo = new Date()
-  deliveryTo.setDate(deliveryTo.getDate() + 7)
+  
 
-  const formatDate = (date: Date) =>
-    date.toLocaleDateString('en-US', { month: 'short', day: 'numeric' })
-
-  const handleServiceChange = (service: string) => {
+ const handleServiceChange = (service: ServiceKey) => {
     setFormData({
       ...formData,
       service,
@@ -105,12 +204,16 @@ function OrderFormContent() {
       const response = await fetch('/api/orders', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-        service: formData.service,
-        requirements: formData.requirements,
-        price: formData.price,
-        priority: formData.priority,
-    }),
+
+  body: JSON.stringify({
+  service: formData.service,
+  requirements: formData.requirements,
+  price: formData.price,
+  priority: formData.priority,
+  deliveryEstimate: selectedService.delivery,
+}),
+
+
       })
 
       const data = await response.json()
@@ -307,22 +410,41 @@ if (!user) {
                       <FileText className="h-4 w-4 text-blue-600" />
                       Select Service
                     </label>
-                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-                      {Object.entries(services).map(([key, { name, range }]) => (
+                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
+                   {Object.entries(services).map(([key, service]) => {
+                      const serviceKey = key as ServiceKey
+                          const Icon = service.icon
+                            return (
                         <button
-                          key={key}
+                         key={serviceKey}
                           type="button"
-                          onClick={() => handleServiceChange(key)}
-                         className={`group text-left p-4 rounded-2xl border-2 backdrop-blur-sm transition-all duration-300 hover:-translate-y-1 hover:scale-[1.02] ${
-                            formData.service === key
+                          onClick={() => handleServiceChange(serviceKey)}
+                           className={`group text-left px-4 py-3 rounded-xl border-2 backdrop-blur-sm transition-all duration-300 hover:-translate-y-1 hover:scale-[1.02] ${
+                             formData.service === serviceKey
                             ? 'border-blue-600 bg-blue-500/10 shadow-[0_8px_30px_rgba(37,99,235,0.18)] dark:bg-blue-950/50'
                             : 'border-border/50 bg-background/40 hover:border-blue-500/40 hover:bg-blue-500/5 hover:shadow-[0_8px_24px_rgba(37,99,235,0.10)]'
                           }`}
                         >
-                          <p className="font-semibold text-foreground">{name}</p>
-                          <p className="text-blue-600 font-bold mt-1">{range}</p>
+                       <div className="flex items-center justify-between gap-3">
+  <div className="flex items-center gap-3">
+    <div className={`flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-gradient-to-br ${service.color}`}>
+      <Icon className="h-4 w-4 text-white" />
+    </div>
+
+    <p className="font-semibold text-foreground">
+      {service.name}
+    </p>
+  </div>
+
+  {formData.service === key && (
+    <CheckCircle2 className="h-4 w-4 shrink-0 text-blue-500" />
+  )}
+</div>
+
+
                         </button>
-                      ))}
+                        )
+                     })}
                     </div>
                   </div>
 
@@ -579,20 +701,28 @@ if (!user) {
                     </span>
                   </div>
                   <div className="flex justify-between items-center py-3 border-b border-border/50 dark:border-white/10">
-                    <span className="text-muted-foreground dark:text-white/60">Delivery</span>
-                    <span className="text-green-400 text-sm text-right">
-                      {formatDate(deliveryFrom)} – {formatDate(deliveryTo)}
-                    </span>
+                  <span className="text-muted-foreground dark:text-white/60">Estimated Timeline</span>
+                   <span className="text-green-400 text-sm text-right">
+                     {selectedService.delivery}
+                      </span>
                   </div>
                   <div className="pt-2 text-sm text-muted-foreground space-y-2">
                     <p className="flex items-center gap-2">
                       <CheckCircle className="h-4 w-4 text-green-400" />
-                      Unlimited revisions
+                     Revision Support Included
                     </p>
                     <p className="flex items-center gap-2">
                       <CheckCircle className="h-4 w-4 text-green-400" />
-                      24/7 support
+                       Secure & Confidential
                     </p>
+                     <p className="flex items-center gap-2">
+                      <CheckCircle className="h-4 w-4 text-green-400" />
+                       Fast Delivery
+                    </p>
+                      <p className="flex items-center gap-2">
+                      <CheckCircle className="h-4 w-4 text-green-400" />
+                       Fast Response Time
+                    </p> 
                   </div>
                 </CardContent>
               </Card>

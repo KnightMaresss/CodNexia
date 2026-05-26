@@ -45,6 +45,7 @@ interface Order {
   status: string
   price: number
   finalPrice?: number
+  deliveryEstimate?: string
   priority?: string
   paymentStatus?: string
   cryptoPayments?: {
@@ -65,6 +66,7 @@ interface Order {
   receivedAmount?: number
   receiver?: string
   tokenSymbol?: string
+
 }
 }[]
   nowPayments?: {
@@ -113,6 +115,8 @@ const SERVICE_NAMES: Record<string, string> = {
   'cv-resume-writing': 'CV/Resume Writing',
   'translation': 'Translation (En↔Ar)',
   'code-debugging': 'Code Debugging',
+  'ai-automation': 'AI Automation',
+  'ui-ux-design': 'UI/UX Design',
 }
 
 type TabType = 'orders' | 'users' | 'completed' | 'ratings' | 'crypto'
@@ -213,6 +217,9 @@ export default function AdminPage() {
   const [settingPrice, setSettingPrice] = useState<string | null>(null)
   const [priceInput, setPriceInput] = useState('')
   const [savingPrice, setSavingPrice] = useState(false)
+  const [settingTimeline, setSettingTimeline] = useState<string | null>(null)
+  const [timelineInput, setTimelineInput] = useState('')
+  const [savingTimeline, setSavingTimeline] = useState(false)
   const [reassigningId, setReassigningId] = useState<string | null>(null)
   const [reassignModal, setReassignModal] = useState<{ open: boolean; orderId: string; currentName: string }>({ open: false, orderId: '', currentName: '' })
   const [moderatorStats, setModeratorStats] = useState<ModeratorStat[]>([])
@@ -316,6 +323,48 @@ export default function AdminPage() {
     }
     setSavingPrice(false)
   }
+
+ const setDeliveryTimeline = async (orderId: string) => {
+  const timeline = timelineInput.trim()
+
+  if (!timeline || timeline.length < 3) {
+    showToast('Please enter a valid delivery timeline', 'error')
+    return
+  }
+
+  setSavingTimeline(true)
+
+  try {
+    const res = await fetch('/api/orders/update', {
+      method: 'PUT',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        orderId,
+        deliveryEstimate: timeline,
+      }),
+    })
+
+    const data = await res.json()
+
+    if (data.success) {
+      setOrders((prev) =>
+        prev.map((o) =>
+          o._id === orderId ? { ...o, deliveryEstimate: timeline } : o
+        )
+      )
+
+      setSettingTimeline(null)
+      setTimelineInput('')
+      showToast('Delivery timeline updated', 'success')
+    } else {
+      showToast(data.error || 'Failed to update timeline', 'error')
+    }
+  } catch {
+    showToast('Failed to update timeline', 'error')
+  }
+
+  setSavingTimeline(false)
+} 
 const reviewCryptoPayment = async (
   orderId: string,
   txHash: string,
@@ -863,15 +912,18 @@ const stats = useMemo(() => {
 
 const getServiceRange = (service: string) => {
   const ranges: Record<string, { min: number; max: number }> = {
-    'graduation-projects': { min: 150, max: 400 },
-    'academic-reports': { min: 50, max: 200 },
-    'custom-websites': { min: 400, max: 1000 },
-    'mobile-apps': { min: 500, max: 1500 },
-    'powerpoint-presentations': { min: 30, max: 100 },
-    'cv-resume-writing': { min: 50, max: 150 },
-    'translation': { min: 20, max: 80 },
-    'code-debugging': { min: 50, max: 300 },
+    'graduation-projects': { min: 250, max: 1200 },
+    'academic-reports': { min: 40, max: 250 },
+    'custom-websites': { min: 500, max: 3000 },
+    'mobile-apps': { min: 1000, max: 8000 },
+    'powerpoint-presentations': { min: 40, max: 300 },
+    'cv-resume-writing': { min: 30, max: 120 },
+    'translation': { min: 15, max: 200 },
+    'code-debugging': { min: 50, max: 500 },
+    'ai-automation': { min: 300, max: 5000 },
+    'ui-ux-design': { min: 150, max: 1500 },
   }
+
   return ranges[service] || { min: 0, max: 0 }
 }
 
@@ -2370,7 +2422,7 @@ if (loading) {
       <div className="border-b border-border/50 bg-gradient-to-r from-blue-500/[0.03] via-background to-purple-500/[0.03] px-6 py-5 dark:border-white/10">
         <div className="flex flex-col gap-5 xl:flex-row xl:items-center xl:justify-between">
           {/* Left */}
-          <div className="grid flex-1 grid-cols-1 gap-5 md:grid-cols-2 xl:grid-cols-4">
+         <div className="grid flex-1 grid-cols-1 gap-5 md:grid-cols-2 xl:grid-cols-5">
             {/* Email */}
             <div className="flex items-start gap-3">
               <div className="rounded-xl bg-blue-500/10 p-2.5">
@@ -2439,25 +2491,44 @@ if (loading) {
               </div>
             </div>
 
-            {/* Date */}
-            <div className="flex items-start gap-3">
-              <div className="rounded-xl bg-orange-500/10 p-2.5">
-                <Calendar className="h-4 w-4 text-orange-400" />
-              </div>
+         
+<div className="flex items-start gap-3">
+{/* Timeline */}
+<div className="flex items-center gap-3 min-w-[140px]">
+  <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-cyan-500/10">
+    <Clock className="h-4 w-4 text-cyan-400" />
+  </div>
 
-              <div>
-                <p className="text-xs uppercase tracking-wide text-muted-foreground">
-                  Created
-                </p>
+  <div className="leading-tight">
+    <p className="text-[10px] uppercase tracking-wider text-muted-foreground">
+      Timeline
+    </p>
 
-               <p className="text-sm font-semibold text-foreground dark:text-white">
-                  {new Date(order.createdAt).toLocaleDateString('en-US', {
-                    month: 'short',
-                    day: 'numeric',
-                    year: 'numeric',
-                  })}
-                </p>
-              </div>
+    <p className="text-sm font-bold text-cyan-400">
+      {order.deliveryEstimate || 'Not set'}
+    </p>
+  </div>
+</div>
+
+{/* Created */}
+<div className="flex items-center gap-3 min-w-[140px]">
+  <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-orange-500/10">
+    <Calendar className="h-4 w-4 text-orange-400" />
+  </div>
+  <div className="leading-tight">
+    <p className="text-[10px] uppercase tracking-wider text-muted-foreground">
+      Created
+    </p>
+
+    <p className="text-sm font-bold text-foreground">
+      {new Date(order.createdAt).toLocaleDateString('en-US', {
+        month: 'short',
+        day: 'numeric',
+        year: 'numeric',
+      })}
+    </p>
+  </div>
+</div>
             </div>
           </div>
 
@@ -2739,6 +2810,55 @@ if (loading) {
                   💰 Set Price
                 </Button>
               )}
+              {order.assignedToName &&
+  order.paymentStatus !== 'fully_paid' &&
+  order.status !== 'cancelled' && (
+    <>
+      {settingTimeline === order._id ? (
+        <div className="flex items-center gap-2 rounded-xl border border-cyan-500/20 bg-cyan-500/5 p-2">
+          <input
+            type="text"
+            className="w-36 rounded-lg border border-white/10 bg-black/40 px-3 py-2 text-sm text-white outline-none focus:border-cyan-500"
+            placeholder="e.g. 2–4 weeks"
+            value={timelineInput}
+            onChange={(e) => setTimelineInput(e.target.value)}
+          />
+
+          <Button
+            size="sm"
+            onClick={() => setDeliveryTimeline(order._id)}
+            disabled={savingTimeline}
+            className="bg-cyan-600 hover:bg-cyan-700"
+          >
+            {savingTimeline ? <Loader2 className="h-4 w-4 animate-spin" /> : 'Save'}
+          </Button>
+
+          <Button
+            size="sm"
+            variant="outline"
+            onClick={() => {
+              setSettingTimeline(null)
+              setTimelineInput('')
+            }}
+          >
+            Cancel
+          </Button>
+        </div>
+      ) : (
+        <Button
+          size="sm"
+          variant="outline"
+          onClick={() => {
+            setSettingTimeline(order._id)
+            setTimelineInput(order.deliveryEstimate || '')
+          }}
+          className="border-cyan-500/20 bg-cyan-500/10 text-cyan-700 dark:text-cyan-300 hover:bg-cyan-500/20"
+        >
+          🗓 Set Timeline
+        </Button>
+      )}
+    </>
+  )}
             </>
           )}
 

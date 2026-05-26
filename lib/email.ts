@@ -39,7 +39,7 @@ export async function sendOrderConfirmation(
     await resend.emails.send({
       from: FROM_EMAIL,
       to: studentEmail,
-      subject: 'Order Confirmed - Codnexia',
+      subject: 'Order Received - Codnexia',
       html: emailTemplate(`
         <h2 style="color: #1e293b; margin: 0 0 10px;">Order Confirmed! 🎉</h2>
         <p style="color: #64748b; font-size: 15px; margin: 0 0 25px;">Thank you for choosing Codnexia. Your order has been received.</p>
@@ -47,10 +47,13 @@ export async function sendOrderConfirmation(
         <div style="background: #f1f5f9; border-radius: 8px; padding: 20px; margin-bottom: 20px;">
           <p style="margin: 0 0 8px; font-size: 14px;"><strong style="color: #1e293b;">Order ID:</strong> <span style="color: #2563eb;">${orderId}</span></p>
           <p style="margin: 0 0 8px; font-size: 14px;"><strong style="color: #1e293b;">Service:</strong> ${serviceName}</p>
-          <p style="margin: 0; font-size: 14px;"><strong style="color: #1e293b;">Amount:</strong> <span style="color: #16a34a; font-weight: bold;">$${price}</span></p>
+          <p style="margin: 0; font-size: 14px;">
+          <strong style="color: #1e293b;">Status:</strong>
+          <span style="color: #2563eb; font-weight: bold;"> Pending Review</span>
+         </p>
         </div>
         
-        <p style="color: #64748b; font-size: 14px; margin: 0 0 25px;">We will review your requirements and get back to you within 24 hours.</p>
+        <p style="color: #64748b; font-size: 14px; margin: 0 0 25px;"We will review your requirements first, then send you the final price, deposit amount, and estimated timeline.</p>
         
         <a href="${SITE_URL}/track?id=${orderId}" 
            style="display: inline-block; background: #2563eb; color: white; padding: 14px 28px; border-radius: 8px; text-decoration: none; font-weight: 600; font-size: 14px;">

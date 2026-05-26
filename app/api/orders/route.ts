@@ -18,8 +18,10 @@ const SERVICE_NAMES: Record<string, string> = {
   'mobile-apps': 'Mobile Apps',
   'powerpoint-presentations': 'PowerPoint Presentations',
   'cv-resume-writing': 'CV/Resume Writing',
-  translation: 'Translation (En↔Ar)',
+  'translation': 'Translation (En↔Ar)',
   'code-debugging': 'Code Debugging',
+  'ai-automation': 'AI Automation',
+  'ui-ux-design': 'UI/UX Design',
 }
 
 const ALLOWED_SERVICES = [
@@ -31,9 +33,22 @@ const ALLOWED_SERVICES = [
   'cv-resume-writing',
   'translation',
   'code-debugging',
+  'ai-automation',
+  'ui-ux-design',
 ]
 
-
+const SERVICE_DELIVERY_ESTIMATES: Record<string, string> = {
+  'graduation-projects': '1–4 weeks',
+  'academic-reports': '2–5 days',
+  'custom-websites': '1–4 weeks',
+  'mobile-apps': '3–12 weeks',
+  'powerpoint-presentations': '1–3 days',
+  'cv-resume-writing': '1–2 days',
+  translation: '1–4 days',
+  'code-debugging': '1–7 days',
+  'ai-automation': '1–8 weeks',
+  'ui-ux-design': '3–10 days',
+}
 
 function validateRequirements(requirements: string): boolean {
   const trimmed = requirements.trim()
@@ -141,7 +156,7 @@ if (!accountUser.emailVerified) {
 }
 
 const body = await request.json()
-const { service, requirements, price } = body
+const { service, requirements, price, deliveryEstimate } = body
 
 if (!service || !requirements || price === undefined) {
   return NextResponse.json(
@@ -171,7 +186,11 @@ if (!service || !requirements || price === undefined) {
         { status: 400 }
       )
     }
-
+const safeDeliveryEstimate =
+  typeof deliveryEstimate === 'string' &&
+  deliveryEstimate === SERVICE_DELIVERY_ESTIMATES[service]
+    ? deliveryEstimate
+    : SERVICE_DELIVERY_ESTIMATES[service]
     const sanitizedOrder = {
       studentEmail: accountEmail,
       studentId: accountUserId,
@@ -180,6 +199,7 @@ if (!service || !requirements || price === undefined) {
       price: 0,
       priceRange: { min: 0, max: 0 },
       finalPrice: null,
+      deliveryEstimate: safeDeliveryEstimate,
       priority: body.priority || 'normal',
       status: 'pending',
       paymentStatus: 'unpaid',

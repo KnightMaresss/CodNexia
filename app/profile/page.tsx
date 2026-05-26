@@ -23,12 +23,27 @@ import {
   Star,
   LayoutDashboard,
   BarChart3,
+  CreditCard,
+  Receipt,
+  ExternalLink,
 } from 'lucide-react'
 import Image from 'next/image'
 import Link from 'next/link'
 import { useAuth } from '@/components/auth-context'
 import { useRouter } from 'next/navigation'
 import PremiumPageShell from '@/components/PremiumPageShell'
+const SERVICE_NAMES: Record<string, string> = {
+  'graduation-projects': 'Graduation Projects',
+  'academic-reports': 'Academic Reports',
+  'custom-websites': 'Custom Websites',
+  'mobile-apps': 'Mobile Apps',
+  'powerpoint-presentations': 'PowerPoint Presentations',
+  'cv-resume-writing': 'CV/Resume Writing',
+  'translation': 'Translation (En↔Ar)',
+  'code-debugging': 'Code Debugging',
+  'ai-automation': 'AI Automation',
+  'ui-ux-design': 'UI/UX Design',
+}
 export default function ProfilePage() {
   const { user, loading, refreshUser } = useAuth()
   const router = useRouter()
@@ -37,7 +52,7 @@ export default function ProfilePage() {
   const fileInputRef = useRef<HTMLInputElement>(null)
   const [saving, setSaving] = useState(false)
   const [uploadingPic, setUploadingPic] = useState(false)
-  const [activeTab, setActiveTab] = useState<'profile' | 'password'>('profile')
+  const [activeTab, setActiveTab] = useState<'profile' | 'password' | 'payments'>('profile')
   const [stats, setStats] = useState({
     totalOrders: 0,
     totalRevenue: 0,
@@ -47,6 +62,35 @@ export default function ProfilePage() {
     myRating: 0,
     modCount: 0,
   })
+  type PaymentOrder = {
+  _id: string
+  service: string
+  cryptoPayments?: {
+    txHash: string
+    amount: number
+    currency: string
+    network: string
+    type: 'deposit' | 'final'
+    status: string
+    submittedAt: string
+    confirmedAt?: string
+  }[]
+  nowPayments?: {
+    paymentId: string
+    type: 'deposit' | 'final'
+    amount: number
+    currency: string
+    status: string
+    invoiceUrl?: string | null
+    createdAt: string
+    confirmedAt?: string
+    payCurrency?: string | null
+    payAmount?: number | null
+    actuallyPaid?: number | null
+  }[]
+}
+
+const [paymentOrders, setPaymentOrders] = useState<PaymentOrder[]>([])
   const [ordersCount, setOrdersCount] = useState<number | null>(null)
   const [formData, setFormData] = useState({
     name: '',
@@ -76,6 +120,19 @@ export default function ProfilePage() {
         .catch(() => {})
     }
   }, [user])
+
+useEffect(() => {
+  if (!user || canAccessAdmin(user.role)) return
+
+  fetch('/api/my-orders')
+    .then((res) => res.json())
+    .then((data) => {
+      if (data.success) {
+        setPaymentOrders(data.orders || [])
+      }
+    })
+    .catch(() => {})
+}, [user])
 
 // Fetch viewed user's orders count (all orders, all statuses)
 useEffect(() => {
@@ -263,7 +320,32 @@ if (loading) {
   const isViewingOther = !!viewedUser
  const isFounder = isFounderRole(displayUser.role)
 const isModerator = isModeratorRole(displayUser.role)
-
+const paymentHistory = paymentOrders
+  .flatMap((order) => [
+    ...(order.cryptoPayments || []).map((payment) => ({
+      source: 'Manual Crypto',
+      id: payment.txHash,
+      type: payment.type,
+      amount: payment.amount,
+      currency: payment.currency,
+      status: payment.status,
+      date: payment.confirmedAt || payment.submittedAt,
+      service: order.service,
+      link: `https://tronscan.org/#/transaction/${payment.txHash}`,
+    })),
+    ...(order.nowPayments || []).map((payment) => ({
+      source: 'NOWPayments',
+      id: payment.paymentId,
+      type: payment.type,
+      amount: payment.actuallyPaid || payment.payAmount || payment.amount,
+      currency: payment.payCurrency || payment.currency,
+      status: payment.status,
+      date: payment.confirmedAt || payment.createdAt,
+      service: order.service,
+      link: payment.invoiceUrl || null,
+    })),
+  ])
+  .sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime())
   return (
     <PremiumPageShell className="pt-24 py-12 px-4">
       <div className="max-w-5xl mx-auto">
@@ -428,6 +510,19 @@ const isModerator = isModeratorRole(displayUser.role)
           >
             <Lock className="h-4 w-4" />Change Password
           </button>
+          {!canAccessAdmin(user.role) && (
+  <button
+    onClick={() => setActiveTab('payments')}
+    className={`flex items-center gap-2 rounded-xl px-5 py-2.5 text-sm font-medium transition-all ${
+      activeTab === 'payments'
+        ? 'bg-blue-600 text-white shadow-lg shadow-blue-500/20'
+        : 'border border-border/60 bg-white/45 dark:bg-black/35 backdrop-blur-xl text-muted-foreground hover:border-blue-500/30 hover:text-foreground'
+    }`}
+  >
+    <Receipt className="h-4 w-4" />
+    My Payments
+  </button>
+)}
         </div>
  )}
          {isViewingOther && (
@@ -460,8 +555,8 @@ const isModerator = isModeratorRole(displayUser.role)
           </div>
         )}
          {/* Content - only show when viewing own profile */}
-        {!isViewingOther && (
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+       {!isViewingOther && activeTab !== 'payments' && (
+          <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
           <div className="lg:col-span-2">
             {activeTab === 'profile' ? (
           <Card className="group relative overflow-hidden rounded-3xl border-2 border-border/40 bg-white/45 dark:bg-white/45 dark:bg-black/45 backdrop-blur-2xl shadow-2xl transition-all duration-500 hover:-translate-y-1 hover:border-blue-500/30 hover:shadow-[0_20px_60px_rgba(37,99,235,0.18)] before:absolute before:inset-0 before:rounded-3xl before:border before:border-white/5 before:pointer-events-none">
@@ -590,6 +685,93 @@ const isModerator = isModeratorRole(displayUser.role)
           </div>
         </div>
      )}
+     {!isViewingOther && activeTab === 'payments' && !canAccessAdmin(user.role) && (
+  <Card className="group relative overflow-hidden rounded-3xl border-2 border-border/40 bg-white/45 dark:bg-black/45 backdrop-blur-2xl shadow-2xl">
+    <CardHeader>
+      <CardTitle className="flex items-center gap-2">
+        <CreditCard className="h-5 w-5 text-blue-600" />
+        My Payments
+      </CardTitle>
+    </CardHeader>
+
+    <CardContent>
+      {paymentHistory.length === 0 ? (
+        <div className="py-12 text-center">
+          <Receipt className="mx-auto mb-4 h-12 w-12 text-muted-foreground" />
+          <p className="font-semibold text-foreground">No payments yet</p>
+          <p className="mt-1 text-sm text-muted-foreground">
+            Your confirmed and pending payments will appear here.
+          </p>
+        </div>
+      ) : (
+        <div className="space-y-3">
+          {paymentHistory.map((payment) => (
+            <div
+              key={`${payment.source}-${payment.id}`}
+              className="rounded-2xl border border-border/50 bg-background/50 p-4"
+            >
+              <div className="flex flex-wrap items-start justify-between gap-3">
+                <div>
+                  <div className="flex flex-wrap items-center gap-2">
+                    <span className="rounded-full bg-blue-500/10 px-2 py-0.5 text-xs font-semibold text-blue-600">
+                      {payment.source}
+                    </span>
+
+                    <span
+                      className={`rounded-full px-2 py-0.5 text-xs font-semibold ${
+                        ['confirmed', 'finished', 'sending'].includes(payment.status)
+                          ? 'bg-emerald-500/10 text-emerald-600'
+                          : payment.status === 'rejected' || payment.status === 'failed'
+                            ? 'bg-red-500/10 text-red-600'
+                            : 'bg-amber-500/10 text-amber-600'
+                      }`}
+                    >
+                      {payment.status}
+                    </span>
+
+                    <span className="text-xs font-semibold text-muted-foreground">
+                      {payment.type === 'deposit' ? 'Deposit' : 'Final Payment'}
+                    </span>
+                  </div>
+
+                  <p className="mt-2 font-semibold text-foreground">
+                    {SERVICE_NAMES[payment.service] || payment.service}
+                  </p>
+
+                  <p className="mt-1 text-xs text-muted-foreground">
+                    {new Date(payment.date).toLocaleString()}
+                  </p>
+
+                  <p className="mt-2 break-all font-mono text-xs text-muted-foreground">
+                    {payment.id}
+                  </p>
+                </div>
+
+                <div className="text-right">
+                  <p className="text-lg font-black text-emerald-600">
+                    {payment.amount} {payment.currency}
+                  </p>
+
+                  {payment.link && (
+                    <a
+                      href={payment.link}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="mt-2 inline-flex items-center gap-1 text-xs font-semibold text-blue-600 hover:underline"
+                    >
+                      View Details
+                      <ExternalLink className="h-3 w-3" />
+                    </a>
+                  )}
+                </div>
+              </div>
+            </div>
+          ))}
+        </div>
+      )}
+    </CardContent>
+  </Card>
+)}
       </div>
   </PremiumPageShell>
   )

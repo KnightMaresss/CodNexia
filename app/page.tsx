@@ -13,10 +13,11 @@ import {
   Languages,
   Bug,
   Star,
-  Shield,
   Zap,
   Clock,
   ArrowUpRight,
+  Bot,
+  Palette,
 } from "lucide-react"
 import StatsSection from '@/components/StatsSection'
 import FAQSection from '@/components/FAQSection'
@@ -53,7 +54,7 @@ useEffect(() => {
     {
       title: "Graduation Projects",
       description: "Complete thesis, documentation, and presentation",
-      priceRange: "$150 – $400",
+      priceRange: "$250 – $1200",
       icon: GraduationCap,
       slug: "graduation-projects",
       tag: "Most Popular",
@@ -63,7 +64,7 @@ useEffect(() => {
     {
       title: "Academic Reports",
       description: "Research papers, essays, and literature reviews",
-      priceRange: "$50 – $200",
+      priceRange: "$40 – $250",
       icon: FileText,
       slug: "academic-reports",
       tag: null,
@@ -73,7 +74,7 @@ useEffect(() => {
     {
       title: "Custom Websites",
       description: "Professional websites for portfolio or business",
-      priceRange: "$400 – $1,000",
+      priceRange: "$500 – $3,000",
       icon: Globe,
       slug: "custom-websites",
       tag: null,
@@ -82,8 +83,8 @@ useEffect(() => {
     },
     {
       title: "Mobile Apps",
-      description: "iOS/Android apps for student projects",
-      priceRange: "$500 – $1,500",
+      description: "iOS/Android apps for startups, brands, and businesses",
+      priceRange: "$1000 – $8,000",
       icon: Smartphone,
       slug: "mobile-apps",
       tag: "Premium",
@@ -92,8 +93,8 @@ useEffect(() => {
     },
     {
       title: "PowerPoint Presentations",
-      description: "Professional slides for thesis defense & class projects",
-      priceRange: "$30 – $100",
+      description: "Professional slides for business, training, and pitch decks",
+      priceRange: "$40 – $300",
       icon: Presentation,
       slug: "powerpoint-presentations",
       tag: null,
@@ -102,8 +103,8 @@ useEffect(() => {
     },
     {
       title: "CV / Resume Writing",
-      description: "ATS-optimized CVs for fresh graduates",
-      priceRange: "$50 – $150",
+      description: "ATS-optimized CVs and resumes for professionals",
+      priceRange: "$30 – $120",
       icon: FileUser,
       slug: "cv-resume-writing",
       tag: null,
@@ -112,8 +113,8 @@ useEffect(() => {
     },
     {
       title: "Translation (En ↔ Ar)",
-      description: "Human academic translation — no AI used",
-      priceRange: "$20 – $80",
+      description: "Human translation — no AI used",
+      priceRange: "$15 – $200",
       icon: Languages,
       slug: "translation",
       tag: null,
@@ -123,18 +124,37 @@ useEffect(() => {
     {
       title: "Code Debugging",
       description: "Fix bugs, review, and optimize your code",
-      priceRange: "$50 – $300",
+      priceRange: "$50 – $500",
       icon: Bug,
       slug: "code-debugging",
       tag: null,
       color: "from-cyan-500 to-blue-600",
       darkColor: "from-cyan-400 to-blue-500",
     },
+    {
+  title: "AI Automation",
+  description: "Smart AI workflows, chatbots, and automation systems",
+  priceRange: "$300 – $5,000",
+  icon: Bot,
+  slug: "ai-automation",
+  tag: "Trending",
+  color: "from-fuchsia-500 to-purple-600",
+  darkColor: "from-fuchsia-400 to-purple-500",
+},
+{
+  title: "UI/UX Design",
+  description: "Modern interfaces and premium user experiences",
+  priceRange: "$150 – $1500",
+  icon: Palette,
+  slug: "ui-ux-design",
+  tag: null,
+  color: "from-pink-500 to-rose-600",
+  darkColor: "from-pink-400 to-rose-500",
+},
   ]
 
   const trust = [
-    { icon: Star, label: "5-Star Rated", sub: "By 200+ students" },
-    { icon: Shield, label: "Plagiarism-Free", sub: "100% original work" },
+    { icon: Star, label: "5-Star Rated", sub: "Trusted by clients" },
     { icon: Zap, label: "Fast Delivery", sub: "On-time, every time" },
     { icon: Clock, label: "24/7 Support", sub: "Always available" },
   ]
@@ -143,7 +163,7 @@ useEffect(() => {
     <main className="min-h-screen bg-background text-foreground overflow-x-hidden">
       
       {/* ─── ENHANCED HERO ─── */}
-    <section className="relative min-h-[82vh] flex flex-col items-center justify-center px-6 pt-16 pb-10 text-center overflow-hidden">
+    <section className="relative min-h-[81vh] flex flex-col items-center justify-center px-6 pt-16 pb-10 text-center overflow-hidden">
         
         {/* Premium multi-layered background */}
         <div className="absolute inset-0">
@@ -178,25 +198,23 @@ useEffect(() => {
           <div className="absolute inset-0 bg-[url('/grid.svg')] opacity-[0.02] dark:opacity-[0.04] animate-fade-in" />
         </div>
         {/* Premium headline with gradient animation */}
-        <h1 className={`relative max-w-4xl text-5xl font-black leading-[1.05] tracking-[-0.04em] md:text-7xl lg:text-8xl transition-all duration-1000 delay-200 ${isMounted ? 'translate-y-0 opacity-100' : 'translate-y-8 opacity-0'}`}>
-          <span className="block text-foreground/90">Academic Help &</span>
-          <span className="block bg-gradient-to-r from-blue-600 via-blue-500 to-cyan-500 dark:from-blue-400 dark:via-blue-300 dark:to-cyan-400 bg-clip-text text-transparent animate-gradient bg-[length:200%_auto]">
-            Web Development
+        <h1 className={`relative max-w-5xl text-5xl font-black leading-[1] tracking-[-0.04em] md:text-7xl lg:text-8xl transition-all duration-1000 delay-200 ${isMounted ? 'translate-y-0 opacity-100' : 'translate-y-8 opacity-0'}`}>
+          <span className="block text-foreground/90">Build Smarter.</span>
+          <span className="block bg-gradient-to-r from-blue-400 via-sky-400 to-cyan-300 dark:from-blue-400 dark:via-blue-300 dark:to-cyan-400 bg-clip-text text-transparent animate-gradient bg-[length:200%_auto]">
+            Scale Faster.
           </span>
-          <span className="block text-foreground/90">for Students</span>
         </h1>
 
          {/* Enhanced description */}
-         <p className={`relative mt-8 max-w-2xl text-lg leading-relaxed text-slate-600 dark:text-slate-400 md:text-xl transition-all duration-1000 delay-300 ${isMounted ? 'translate-y-0 opacity-100' : 'translate-y-4 opacity-0'}`}>
-            Expert assistance for graduation projects, reports, websites, and apps - 
-          <span className="font-semibold text-foreground/90"> delivered on time, every time.</span>
+         <p className={`relative mt-8 max-w-3xl text-lg leading-relaxed text-slate-600 dark:text-slate-400 md:text-xl transition-all duration-1000 delay-300 ${isMounted ? 'translate-y-0 opacity-100' : 'translate-y-4 opacity-0'}`}>
+          Professional websites, mobile apps, AI automation, UI/UX design, and technical solutions for modern businesses.
         </p>
 
         {/* Premium CTAs with enhanced hover effects */}
         <div className={`relative mt-12 flex flex-col items-center gap-4 sm:flex-row transition-all duration-1000 delay-400 ${isMounted ? 'translate-y-0 opacity-100' : 'translate-y-4 opacity-0'}`}>
           <Link href="/orders">
             <button className="group relative h-14 overflow-hidden rounded-2xl bg-gradient-to-r from-blue-600 to-blue-700 dark:from-blue-500 dark:to-blue-600 px-8 text-base font-semibold text-white shadow-[0_8px_32px_rgba(37,99,235,0.3)] dark:shadow-[0_8px_32px_rgba(37,99,235,0.4)] transition-all duration-300 hover:shadow-[0_12px_40px_rgba(37,99,235,0.5)] hover:scale-[1.03] flex items-center gap-2">
-              <span className="relative z-10">Place Your Order</span>
+              <span className="relative z-10">Get Started</span>
               <ArrowRight className="relative z-10 h-4 w-4 transition-all duration-300 group-hover:translate-x-1.5 group-hover:scale-110" />
               <div className="absolute inset-0 bg-gradient-to-r from-blue-500 to-blue-600 dark:from-blue-400 dark:to-blue-500 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
               <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/10 to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-700" />
@@ -244,19 +262,19 @@ useEffect(() => {
           <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-blue-500/20 to-transparent" />
         </div>
 
-        <div className="relative mx-auto max-w-6xl">
+       <div className="relative mx-auto max-w-[1500px]">
           {/* Enhanced section header */}
           <div className="mb-8 text-center">
             <h2 className="text-5xl font-black tracking-[-0.04em] text-foreground md:text-6xl bg-gradient-to-r from-foreground via-foreground/90 to-foreground bg-clip-text">
-              Our Premium Services
+              Our Services
             </h2>
             <p className="mx-auto mt-4 max-w-lg text-muted-foreground/70">
-              Everything a student needs — from first draft to final delivery, crafted with excellence.
+              Premium digital solutions — from first idea to final delivery, crafted with excellence.
             </p>
           </div>
 
           {/* Enhanced services grid */}
-          <div className="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-4">
+        <div className="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-5">
             {services.map((service, index) => (
               <div
                 key={service.slug}

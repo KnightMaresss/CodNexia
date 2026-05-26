@@ -41,6 +41,7 @@ interface Order {
   assignedToName?: string
   unreadMessages?: number
   hasUnreadMessages?: boolean
+  deliveryEstimate?: string
 }
 interface OrderFile {
   id: string
@@ -57,6 +58,8 @@ const SERVICE_NAMES: Record<string, string> = {
   'cv-resume-writing': 'CV/Resume Writing',
   'translation': 'Translation (En↔Ar)',
   'code-debugging': 'Code Debugging',
+  'ai-automation': 'AI Automation',
+  'ui-ux-design': 'UI/UX Design',
 }
 
 function getFileIcon(fileName: string) {
@@ -455,9 +458,11 @@ if (authLoading || loading) {
                           day: 'numeric',
                         })}
                       </p>
-                        <p className="text-xs text-muted-foreground">
-                        Estimated delivery: {new Date(new Date(order.createdAt).setDate(new Date(order.createdAt).getDate() + 3)).toLocaleDateString('en-US', { month: 'short', day: 'numeric' })} – {new Date(new Date(order.createdAt).setDate(new Date(order.createdAt).getDate() + 7)).toLocaleDateString('en-US', { month: 'short', day: 'numeric' })}
-                      </p>
+                      
+                      <p className="text-xs text-muted-foreground">
+                       Estimated timeline: {order.deliveryEstimate || 'To be confirmed after review'}
+                         </p>
+
                     </div>
 
                     <div className="flex items-center gap-3">
