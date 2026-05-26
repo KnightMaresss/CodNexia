@@ -88,7 +88,6 @@ console.log('NOWPAYMENTS REQUEST:', {
     const nowPayment = await createNowPaymentsPayment({
       priceAmount: amount,
       priceCurrency: 'usd',
-      payCurrency: 'ltc',
       orderId: `${orderId}:${paymentType}`,
       orderDescription: `Codnexia ${paymentType === 'deposit' ? 'Deposit' : 'Final Payment'} - ${order.service}`,
       ipnCallbackUrl: `${siteUrl}/api/nowpayments/ipn`,
