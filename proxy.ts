@@ -6,9 +6,12 @@ export function proxy(request: NextRequest) {
   const lockKey = process.env.SITE_LOCK_KEY
   const pathname = request.nextUrl.pathname
 
-  if (pathname.startsWith('/api/cron/')) {
-    return NextResponse.next()
-  }
+if (
+  pathname.startsWith('/api/cron/') ||
+  pathname === '/api/nowpayments/ipn'
+) {
+  return NextResponse.next()
+}
 
   if (!lockEnabled) {
     return NextResponse.next()

@@ -77,14 +77,22 @@ if (
     if (!amount || amount <= 0) {
       return NextResponse.json({ success: false, error: 'Invalid payment amount' }, { status: 400 })
     }
+const existingNowPayment = (order.nowPayments || [])
+  .filter((payment: { type?: string; status?: string; invoiceUrl?: string | null }) =>
+    payment.type === paymentType &&
+    payment.invoiceUrl &&
+    !['finished', 'confirmed', 'failed', 'expired', 'refunded'].includes(payment.status || 'waiting')
+  )
+  .at(-1)
 
+if (existingNowPayment?.invoiceUrl) {
+  return NextResponse.json({
+    success: true,
+    paymentUrl: existingNowPayment.invoiceUrl,
+    reused: true,
+  })
+}
     const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://codnexia.com'
-console.log('NOWPAYMENTS REQUEST:', {
-  amount,
-  priceCurrency: 'usd',
-  orderId: `${orderId}:${paymentType}`,
-  paymentType,
-})
     const nowPayment = await createNowPaymentsPayment({
       priceAmount: amount,
       priceCurrency: 'usd',

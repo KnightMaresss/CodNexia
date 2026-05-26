@@ -61,9 +61,11 @@ function CheckoutContent() {
       : Number(order.remainingAmount || 0)
   }, [order, paymentType])
 
+const nowPaymentsRecommended = amount >= 15
+
+
 const fetchOrder = async () => {
   setLoading(true)
-
   try {
     const res = await fetch('/api/my-orders', {
       cache: 'no-store',
@@ -341,6 +343,11 @@ if (loading) {
                       <p className="mt-1 text-xs text-muted-foreground">
                         Automated crypto checkout with invoice tracking.
                       </p>
+                      {!nowPaymentsRecommended && (
+  <p className="mt-1 text-[11px] font-semibold text-amber-600 dark:text-amber-300">
+    Recommended for payments $20+. For smaller payments, manual crypto is more reliable.
+  </p>
+)}
                     </div>
                   </div>
                 </button>
