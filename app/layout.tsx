@@ -8,36 +8,67 @@ import { Navbar } from '@/components/Navbar'
 
 export const metadata: Metadata = {
   metadataBase: new URL('https://codnexia.com'),
+
   title: {
-    default: 'Codnexia | Academic Help & Web Development',
+    default: 'Codnexia',
     template: '%s | Codnexia',
   },
-  description: 'Expert assistance for graduation projects, reports, websites, and apps. High-quality work delivered on time by Codnexia.',
-  keywords: ['academic help', 'graduation projects', 'web development', 'Codnexia', 'thesis help'],
+
+  description:
+    'Premium digital services including websites, mobile apps, AI automation, UI/UX design, and technical solutions.',
+
+  keywords: [
+    'Codnexia',
+    'web development',
+    'mobile apps',
+    'AI automation',
+    'UI/UX design',
+    'technical support',
+    'digital solutions',
+  ],
+
   authors: [{ name: 'Codnexia' }],
- icons: {
+
+  icons: {
     icon: '/favicon-cx.png',
     apple: '/apple-touch-icon.png',
   },
+
   manifest: '/manifest.json',
+
   openGraph: {
-    type: 'website',
-    locale: 'en_US',
+    title: 'Codnexia',
+    description:
+      'Premium digital services for modern businesses and creators.',
+    url: 'https://codnexia.com',
     siteName: 'Codnexia',
-    title: 'Codnexia | Academic Help & Web Development',
-    description: 'Expert assistance for graduation projects, reports, websites, and apps.',
+
+    images: [
+      {
+        url: '/og-image.png',
+        width: 1200,
+        height: 630,
+        alt: 'Codnexia',
+      },
+    ],
+
+    locale: 'en_US',
+    type: 'website',
   },
+
   twitter: {
     card: 'summary_large_image',
-    title: 'Codnexia | Academic Help & Web Development',
-    description: 'Expert assistance for graduation projects, reports, websites, and apps.',
+    title: 'Codnexia',
+    description:
+      'Premium digital services for modern businesses and creators.',
+    images: ['/og-image.png'],
   },
+
   robots: {
     index: true,
     follow: true,
   },
 }
-
 
 
 export default function RootLayout({
