@@ -137,7 +137,7 @@ useEffect(() => {
   priceRange: "$300 – $5,000",
   icon: Bot,
   slug: "ai-automation",
-  tag: "Trending",
+  tag: null,
   color: "from-fuchsia-500 to-purple-600",
   darkColor: "from-fuchsia-400 to-purple-500",
 },
