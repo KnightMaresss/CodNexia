@@ -331,6 +331,7 @@ if (loading) {
                       : 'border-border/50 bg-background/40 hover:border-blue-500/40'
                   }`}
                 >
+                  
                   <div className="flex items-start gap-3">
                     <div className="rounded-xl bg-blue-500/10 p-2">
                       <ShieldCheck className="h-5 w-5 text-blue-500" />
@@ -353,6 +354,67 @@ if (loading) {
                     </div>
                   </div>
                 </button>
+                <button
+  disabled
+  className="w-full cursor-not-allowed rounded-2xl border border-border/40 bg-background/30 p-4 text-left opacity-60"
+>
+  <div className="flex items-start gap-3">
+    <div className="rounded-xl bg-sky-500/10 p-2">
+      <CreditCard className="h-5 w-5 text-sky-500" />
+    </div>
+
+    <div className="flex-1">
+      <div className="flex items-center justify-between gap-2">
+        <p className="font-bold text-foreground">
+          PayPal
+        </p>
+
+        <span className="rounded-full bg-amber-500/10 px-2 py-1 text-[10px] font-bold uppercase tracking-wide text-amber-600 dark:text-amber-300">
+          Temporarily Unavailable
+        </span>
+      </div>
+
+      <p className="mt-1 text-xs text-muted-foreground">
+        Card and PayPal checkout support will return soon.
+      </p>
+    </div>
+  </div>
+</button>
+<button
+  disabled
+  className="w-full cursor-not-allowed rounded-2xl border border-border/40 bg-background/30 p-4 text-left opacity-60"
+>
+  <div className="flex items-start gap-3">
+    <div className="rounded-xl bg-purple-500/10 p-2">
+      <Wallet className="h-5 w-5 text-purple-500" />
+    </div>
+
+    <div className="flex-1">
+      <div className="flex items-center justify-between gap-2">
+        <p className="font-bold text-foreground">
+          Bank Card
+        </p>
+
+        <span className="rounded-full bg-amber-500/10 px-2 py-1 text-[10px] font-bold uppercase tracking-wide text-amber-600 dark:text-amber-300">
+          Temporarily Unavailable
+        </span>
+      </div>
+
+      <p className="mt-1 text-xs text-muted-foreground">
+        Secure direct bank payments for international clients.
+      </p>
+    </div>
+  </div>
+</button>
+<div className="rounded-2xl border border-amber-500/20 bg-amber-500/5 p-4">
+  <p className="text-xs leading-relaxed text-amber-700 dark:text-amber-300">
+    Some international payment methods are temporarily unavailable due to regional banking restrictions and sanctions affecting Russia/CIS payment processing.
+    Cryptocurrency payments remain fully operational and are currently the fastest payment method.
+    <br />
+    <br />
+    For large projects or special cases, manual international bank transfers can be accepted upon agreement with our team.
+  </p>
+</div>
               </div>
             </div>
           </div>
