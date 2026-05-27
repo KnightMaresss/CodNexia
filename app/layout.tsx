@@ -20,7 +20,7 @@ export const metadata = {
     siteName: 'Codnexia',
     images: [
       {
-        url: '/og-image.png',
+        url: '/og-banner-v2.png',
         width: 1200,
         height: 630,
         alt: 'Codnexia',
@@ -35,7 +35,7 @@ export const metadata = {
     title: 'Codnexia',
     description:
       'Premium websites, mobile apps, AI automation, UI/UX design, and technical solutions for modern businesses.',
-    images: ['/og-image.png'],
+    images: ['/og-banner-v2.png'],
   },
 }
 
