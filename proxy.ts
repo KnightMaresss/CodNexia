@@ -8,7 +8,13 @@ export function proxy(request: NextRequest) {
 
 if (
   pathname.startsWith('/api/cron/') ||
-  pathname === '/api/nowpayments/ipn'
+  pathname === '/api/nowpayments/ipn'||
+  pathname === '/og-image.png'||
+  pathname === '/og-banner-v2.png'||
+  pathname === '/favicon-cx.png'||
+  pathname === '/apple-touch-icon.png'||
+  pathname === '/manifest.json'||
+  pathname.startsWith('/_next/')
 ) {
   return NextResponse.next()
 }
