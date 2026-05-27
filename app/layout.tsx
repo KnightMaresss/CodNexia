@@ -1,4 +1,3 @@
-import type { Metadata } from "next"
 import "./globals.css"
 import { ToastContainer } from "@/components/ui/toast"
 import { ThemeProvider } from "@/components/theme-provider"
@@ -6,43 +5,19 @@ import { AuthProvider } from '@/components/auth-context'
 import { Navbar } from '@/components/Navbar'
 
 
-export const metadata: Metadata = {
+export const metadata = {
   metadataBase: new URL('https://codnexia.com'),
 
-  title: {
-    default: 'Codnexia',
-    template: '%s | Codnexia',
-  },
-
+  title: 'Codnexia',
   description:
-    'Premium digital services including websites, mobile apps, AI automation, UI/UX design, and technical solutions.',
-
-  keywords: [
-    'Codnexia',
-    'web development',
-    'mobile apps',
-    'AI automation',
-    'UI/UX design',
-    'technical support',
-    'digital solutions',
-  ],
-
-  authors: [{ name: 'Codnexia' }],
-
-  icons: {
-    icon: '/favicon-cx.png',
-    apple: '/apple-touch-icon.png',
-  },
-
-  manifest: '/manifest.json',
+    'Premium websites, mobile apps, AI automation, UI/UX design, and technical solutions for modern businesses.',
 
   openGraph: {
     title: 'Codnexia',
     description:
-      'Premium digital services for modern businesses and creators.',
+      'Premium websites, mobile apps, AI automation, UI/UX design, and technical solutions for modern businesses.',
     url: 'https://codnexia.com',
     siteName: 'Codnexia',
-
     images: [
       {
         url: '/og-image.png',
@@ -51,7 +26,6 @@ export const metadata: Metadata = {
         alt: 'Codnexia',
       },
     ],
-
     locale: 'en_US',
     type: 'website',
   },
@@ -60,13 +34,8 @@ export const metadata: Metadata = {
     card: 'summary_large_image',
     title: 'Codnexia',
     description:
-      'Premium digital services for modern businesses and creators.',
+      'Premium websites, mobile apps, AI automation, UI/UX design, and technical solutions for modern businesses.',
     images: ['/og-image.png'],
-  },
-
-  robots: {
-    index: true,
-    follow: true,
   },
 }
 
