@@ -29,7 +29,7 @@ interface Order {
 const SERVICE_NAMES: Record<string, string> = {
   'graduation-projects': 'Graduation Projects',
   'academic-reports': 'Academic Reports',
-  'custom-websites': 'Custom Websites',
+  'custom-websites': 'Custom Apps / Websites',
   'mobile-apps': 'Mobile Apps',
   'powerpoint-presentations': 'PowerPoint Presentations',
   'cv-resume-writing': 'CV/Resume Writing',

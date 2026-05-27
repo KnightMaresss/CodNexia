@@ -58,7 +58,7 @@ const services = {
   },
 
   'custom-websites': {
-    name: 'Custom Websites',
+    name: 'Custom Apps / Websites',
     range: '$500 - $3,000',
     min: 500,
     max: 3000,

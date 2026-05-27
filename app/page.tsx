@@ -72,7 +72,7 @@ useEffect(() => {
       darkColor: "from-purple-400 to-pink-400",
     },
     {
-      title: "Custom Websites",
+      title: "Custom Apps / Websites",
       description: "Professional websites for portfolio or business",
       priceRange: "$500 – $3,000",
       icon: Globe,
