@@ -1,37 +1,40 @@
 'use client'
 import { useState } from 'react'
 import { ChevronDown } from 'lucide-react'
+import { useTranslations } from 'next-intl'
 
-const faqs = [
-  {
-    question: 'How does the project process work?',
-    answer: 'Choose your service, submit your project requirements, and place your order. Our team will review your request, then send you a detailed quote including pricing, timeline, and project scope before work begins.',
-  },
-  {
-    question: 'How are pricing and timelines determined?',
-    answer: 'Every project is reviewed individually based on complexity, features, and delivery expectations. After reviewing your requirements, we provide a final price, estimated timeline, deposit amount, and project plan.',
-  },
-  {
-    question: 'What payment methods do you accept?',
-    answer: 'We currently accept secure cryptocurrency payments including USDT TRC20. Deposit and remaining payment instructions are sent after project review and approval.',
-  },
-  {
-    question: 'Can I track my project progress?',
-    answer: 'Yes. Every client receives a unique Order ID and access to real-time order tracking, project updates, status changes, file delivery, and direct communication with our team.',
-  },
-  {
-    question: 'Do you offer revisions and support?',
-    answer: 'Yes. Revision support is included to ensure the final result meets the agreed project scope and quality standards. Additional support is also available after delivery if needed.',
-  },
-  {
-    question: 'Is my information and project kept private?',
-    answer: 'Absolutely. All client information, files, and project details are handled confidentially. Your data is never shared with third parties.',
-  },
-]
+
 
 export default function FAQSection() {
   const [openIndex, setOpenIndex] = useState<number | null>(null)
-
+  const t = useTranslations('FAQ')
+  const faqs = [
+  
+  {
+    question: t('q1'),
+    answer: t('a1'),
+  },
+  {
+    question: t('q2'),
+    answer: t('a2'),
+  },
+  {
+    question: t('q3'),
+    answer: t('a3'),
+  },
+  {
+    question: t('q4'),
+    answer: t('a4'),
+  },
+  {
+    question: t('q5'),
+    answer: t('a5'),
+  },
+  {
+    question: t('q6'),
+    answer: t('a6'),
+  },
+]
   const toggleFAQ = (index: number) => {
     setOpenIndex(openIndex === index ? null : index)
   }
@@ -41,10 +44,10 @@ export default function FAQSection() {
       <div className="max-w-3xl mx-auto">
         <div className="text-center mb-16">
           <h2 className="text-3xl md:text-4xl font-bold text-foreground mb-4">
-            Frequently Asked Questions
+            {t('title')}
           </h2>
           <p className="text-muted-foreground text-lg">
-            Everything you need to know about our services
+           {t('subtitle')}
           </p>
         </div>
 

@@ -1,0 +1,985 @@
+{
+  "Navbar": {
+    "portfolio": "Portfolio",
+    "placeOrder": "Passer commande",
+    "trackOrder": "Suivi de commande",
+    "myOrders": "Mes commandes",
+    "myProfile": "Mon profil",
+    "dashboard": "Tableau de bord",
+    "logout": "Déconnexion",
+    "signIn": "Connexion"
+  },
+  "Home": {
+    "heroTitle1": "Là où les idées",
+     "heroTitle2": "deviennent réalité",
+    "heroDescription": "Sites web professionnels, applications mobiles, automatisation par IA, design UI/UX et solutions techniques pour les entreprises modernes.",
+    "getStarted": "Commencer",
+    "viewPortfolio": "Voir le portfolio",
+    "fiveStar": "Noté 5 étoiles",
+    "trustedClients": "Approuvé par les clients",
+    "fastDelivery": "Livraison rapide",
+    "onTime": "Toujours à l'heure",
+    "support247": "Support 24/7",
+    "alwaysAvailable": "Toujours disponible",
+    "ourServices": "Nos services",
+    "servicesDescription": "Solutions numériques premium — de la première idée à la livraison finale, réalisées avec excellence.",
+    "orderNow": "Commander",
+    "readyToBegin": "Prêt à commencer ?",
+    "ctaDescription": "Dites-nous ce dont vous avez besoin et nous vous répondrons dans les 24 heures avec un devis personnalisé.",
+    "startYourOrder": "Démarrer votre commande",
+    "trackOrder": "Suivre une commande",
+    "trackDescription": "Vous avez déjà passé commande ? Entrez votre ID de commande pour vérifier le statut instantanément.",
+    "trackPlaceholder": "Collez votre ID de commande ici…",
+    "trackButton": "Suivre ma commande",
+    "footer": "© 2026 Codnexia. Tous droits réservés.",
+    "services": {
+      "graduationProjects": {
+        "title": "Projets de fin d'études",
+        "description": "Thèse complète, documentation et présentation",
+        "tag": "Le plus populaire"
+      },
+      "academicReports": {
+        "title": "Rapports académiques",
+        "description": "Articles de recherche, essais et revues de littérature"
+      },
+      "customWebsites": {
+        "title": "Apps / Sites web personnalisés",
+        "description": "Sites web professionnels pour portfolio ou entreprise"
+      },
+      "mobileApps": {
+        "title": "Applications mobiles",
+        "description": "Apps iOS/Android pour startups, marques et entreprises",
+        "tag": "Premium"
+      },
+      "powerpoint": {
+        "title": "Présentations PowerPoint",
+        "description": "Diapositives professionnelles pour affaires, formation et pitch decks"
+      },
+      "cv": {
+        "title": "Rédaction de CV",
+        "description": "CV optimisés ATS pour les professionnels"
+      },
+      "translation": {
+        "title": "Traduction (En ↔ Ar)",
+        "description": "Traduction humaine — sans IA"
+      },
+      "debugging": {
+        "title": "Débogage de code",
+        "description": "Correction de bugs, révision et optimisation de code"
+      },
+      "ai": {
+        "title": "Automatisation IA",
+        "description": "Workflows IA intelligents, chatbots et systèmes d'automatisation"
+      },
+      "uiux": {
+        "title": "Design UI/UX",
+        "description": "Interfaces modernes et expériences utilisateur premium"
+      }
+    }
+  },
+  "Stats": {
+    "services": "Services",
+    "satisfaction": "Satisfaction",
+    "responseTime": "Temps de réponse"
+  },
+  "FAQ": {
+    "title": "Questions fréquentes",
+    "subtitle": "Tout ce que vous devez savoir sur nos services",
+    "q1": "Comment fonctionne le processus de projet ?",
+    "a1": "Choisissez votre service, soumettez vos exigences et passez commande. Notre équipe examinera votre demande, puis vous enverra un devis détaillé incluant le prix, le calendrier et l'étendue du projet avant de commencer.",
+    "q2": "Comment les prix et les délais sont-ils déterminés ?",
+    "a2": "Chaque projet est évalué individuellement en fonction de la complexité, des fonctionnalités et des attentes de livraison. Après examen de vos exigences, nous fournissons un prix final, un délai estimé, le montant de l'acompte et un plan de projet.",
+    "q3": "Quels moyens de paiement acceptez-vous ?",
+    "a3": "Nous acceptons actuellement les paiements sécurisés en cryptomonnaie, y compris USDT TRC20. Les instructions d'acompte et de paiement restant sont envoyées après examen et approbation du projet.",
+    "q4": "Puis-je suivre l'avancement de mon projet ?",
+    "a4": "Oui. Chaque client reçoit un ID de commande unique et un accès au suivi en temps réel, aux mises à jour du projet, aux changements de statut, à la livraison de fichiers et à la communication directe avec notre équipe.",
+    "q5": "Proposez-vous des révisions et du support ?",
+    "a5": "Oui. Le support de révision est inclus pour garantir que le résultat final correspond à l'étendue convenue du projet et aux normes de qualité. Un support supplémentaire est également disponible après la livraison si nécessaire.",
+    "q6": "Mes informations et mon projet restent-ils confidentiels ?",
+    "a6": "Absolument. Toutes les informations, fichiers et détails du projet des clients sont traités de manière confidentielle. Vos données ne sont jamais partagées avec des tiers."
+  },
+  "Orders": {
+    "title": "Passer commande",
+    "subtitle": "Remplissez les détails ci-dessous et nous commencerons à travailler sur votre projet immédiatement",
+    "badge": "Service rapide et fiable",
+    "steps": {
+      "select": "Choisir service",
+      "details": "Remplir détails",
+      "submit": "Envoyer demande"
+    },
+    "services": {
+      "graduationProjects": {
+        "name": "Projets de fin d'études"
+      },
+      "academicReports": {
+        "name": "Rapports académiques"
+      },
+      "customWebsites": {
+        "name": "Apps / Sites web personnalisés"
+      },
+      "mobileApps": {
+        "name": "Applications mobiles"
+      },
+      "powerpoint": {
+        "name": "Présentations PowerPoint"
+      },
+      "cv": {
+        "name": "Rédaction de CV"
+      },
+      "translation": {
+        "name": "Traduction (En↔Ar)"
+      },
+      "debugging": {
+        "name": "Débogage de code"
+      },
+      "ai": {
+        "name": "Automatisation IA"
+      },
+      "uiux": {
+        "name": "Design UI/UX"
+      }
+    },
+    "delivery": {
+      "days1to2": "1–2 jours",
+      "days1to3": "1–3 jours",
+      "days1to4": "1–4 jours",
+      "days1to7": "1–7 jours",
+      "days2to5": "2–5 jours",
+      "days3to10": "3–10 jours",
+      "weeks1to4": "1–4 semaines",
+      "weeks1to8": "1–8 semaines",
+      "weeks3to12": "3–12 semaines"
+    },
+    "form": {
+      "projectDetails": "Détails du projet",
+      "yourEmail": "Votre e-mail",
+      "emailNote": "Les commandes sont liées à l'e-mail vérifié de votre compte.",
+      "selectService": "Sélectionner service",
+      "projectRequirements": "Exigences du projet",
+      "requirementsPlaceholder": "Décrivez votre projet, la date limite et les exigences spécifiques...",
+      "priorityLevel": "Niveau de priorité",
+      "attachFiles": "Joindre des fichiers (Optionnel)"
+    },
+    "priority": {
+      "low": "Faible",
+      "normal": "Normal",
+      "urgent": "Urgent"
+    },
+    "summary": {
+      "title": "Résumé de la commande",
+      "service": "Service",
+      "timeline": "Livraison estimée",
+      "price": "Prix de départ"
+    },
+    "buttons": {
+      "submit": "Envoyer commande",
+      "submitting": "Envoi...",
+      "login": "Connexion requise"
+    },
+    "upload": {
+      "filesAttached": "Fichiers joints",
+      "uploaded": "Téléchargé",
+      "dragDrop": "Glissez-déposez les fichiers ici",
+      "browse": "ou cliquez pour parcourir",
+      "supported": "PDF, DOCX, JPG, PNG, ZIP • Max 10 Mo chacun"
+    },
+    "requirements": {
+      "short": "Veuillez fournir plus de détails",
+      "medium": "Ajoutez plus de détails pour de meilleurs résultats",
+      "good": "Excellents détails ! Nous savons exactement ce dont vous avez besoin",
+      "characters": "caractères"
+    },
+    "messages": {
+      "loginRequired": "Veuillez vous connecter avant de passer commande.",
+      "success": "Commande envoyée avec succès ! Vérifiez votre e-mail pour confirmation.",
+      "error": "Quelque chose s'est mal passé. Veuillez réessayer.",
+      "network": "Erreur réseau. Vérifiez votre connexion et réessayez.",
+      "maxFiles": "Maximum 5 fichiers par commande",
+      "fileTooLarge": "Certains fichiers étaient trop volumineux (max 10 Mo)"
+    },
+    "success": {
+      "title": "Commande envoyée !",
+      "description": "Nous avons reçu votre demande et vous contacterons à",
+      "emailFallback": "votre e-mail vérifié",
+      "track": "Suivre votre commande",
+      "another": "Passer une autre commande"
+    },
+    "auth": {
+      "title": "Connexion requise",
+      "description": "Veuillez vous connecter avec un compte Codnexia vérifié avant de passer commande. Cela permet de lier votre commande, chat, fichiers, paiements et e-mails au bon compte.",
+      "signin": "Se connecter",
+      "create": "Créer un compte"
+    },
+    "features": {
+      "revision": "Support de révision inclus",
+      "secure": "Sécurisé et confidentiel",
+      "delivery": "Livraison rapide",
+      "response": "Temps de réponse rapide"
+    }
+  },
+  "Track": {
+    "title": "Suivre votre commande",
+    "subtitle": "Entrez votre ID de commande pour vérifier le statut de votre projet",
+    "search": {
+      "title": "Trouver votre commande",
+      "orderId": "ID de commande",
+      "placeholder": "Entrez votre ID de commande",
+      "searching": "Recherche...",
+      "button": "Suivre commande"
+    },
+    "services": {
+      "graduationProjects": "Projets de fin d'études",
+      "academicReports": "Rapports académiques",
+      "customWebsites": "Apps / Sites web personnalisés",
+      "mobileApps": "Applications mobiles",
+      "powerpoint": "Présentations PowerPoint",
+      "cv": "Rédaction de CV",
+      "translation": "Traduction (En↔Ar)",
+      "debugging": "Débogage de code",
+      "ai": "Automatisation IA",
+      "uiux": "Design UI/UX"
+    },
+    "status": {
+      "title": "Statut de la commande",
+      "pending": "Commande reçue",
+      "inProgress": "En cours",
+      "completed": "Terminé"
+    },
+    "details": {
+      "title": "Détails de la commande",
+      "orderId": "ID de commande",
+      "service": "Service",
+      "price": "Prix",
+      "orderedOn": "Commandé le",
+      "requirements": "Vos exigences",
+      "depositPaid": "Acompte de 20 % payé",
+      "fullyPaid": "Entièrement payé"
+    },
+    "actions": {
+      "trackAnother": "Suivre une autre commande",
+      "placeNew": "Nouvelle commande",
+      "hint": "Vous trouverez votre ID de commande dans l'e-mail de confirmation envoyé après votre commande.",
+      "loading": "Recherche de votre commande..."
+    },
+    "errors": {
+      "notFound": "Commande introuvable",
+      "generic": "Quelque chose s'est mal passé. Veuillez réessayer."
+    }
+  },
+  "MyOrders": {
+    "services": {
+      "graduationProjects": "Projets de fin d'études",
+      "academicReports": "Rapports académiques",
+      "customWebsites": "Apps / Sites web personnalisés",
+      "mobileApps": "Applications mobiles",
+      "powerpoint": "Présentations PowerPoint",
+      "cv": "Rédaction de CV",
+      "translation": "Traduction (En↔Ar)",
+      "debugging": "Débogage de code",
+      "ai": "Automatisation IA",
+      "uiux": "Design UI/UX"
+    },
+    "title": "Mes commandes",
+    "subtitle": "Suivez toutes vos commandes en un seul endroit",
+    "empty": {
+      "title": "Votre espace de travail est prêt",
+      "description": "Téléchargez des fichiers, discutez avec nous, suivez les progrès et gérez tout depuis un espace de travail premium.",
+      "button": "Démarrer votre premier projet"
+    },
+    "status": {
+      "pending": "En attente",
+      "inProgress": "En cours",
+      "completed": "Terminé",
+      "cancelled": "Annulé",
+      "received": "Reçu"
+    },
+    "order": {
+      "estimatedTimeline": "Délai estimé",
+      "toBeConfirmed": "À confirmer après examen",
+      "tbd": "À déterminer"
+    },
+    "modal": {
+      "cancelTitle": "Annuler la commande",
+      "cancelMessage": "Êtes-vous sûr de vouloir annuler cette commande ? Cette action est irréversible."
+    },
+    "messages": {
+      "newChat": "Nouveau message reçu",
+      "selectRating": "Veuillez sélectionner une note",
+      "ratingThanks": "Merci pour votre évaluation ! ⭐",
+      "ratingFailed": "Échec de l'envoi de l'évaluation",
+      "cancelled": "Commande annulée",
+      "cancelFailed": "Échec de l'annulation",
+      "cancelOrderFailed": "Échec de l'annulation de la commande",
+      "fileTooLarge": "Fichier trop volumineux. Max 10 Mo",
+      "fileTooLargeDot": "Le fichier est trop volumineux. Max 10 Mo.",
+      "fileUploaded": "Fichier téléchargé !",
+      "uploadFailed": "Échec du téléchargement",
+      "fileDeleted": "Fichier supprimé",
+      "deleteFailed": "Échec de la suppression du fichier"
+    },
+    "rating": {
+      "rated": "Noté",
+      "title": "Évaluez votre expérience :",
+      "placeholder": "Partagez votre expérience (optionnel)...",
+      "submit": "Envoyer l'évaluation",
+      "cancel": "Annuler",
+      "button": "Noter la commande"
+    },
+    "actions": {
+      "cancel": "Annuler",
+      "chat": "Messages",
+      "hideChat": "Cacher le chat",
+      "viewFiles": "Voir fichiers",
+      "hideFiles": "Cacher fichiers",
+      "messages": "Messages"
+    },
+    "files": {
+      "attached": "Fichiers joints",
+      "dragUpload": "Glissez le fichier ici ou cliquez pour télécharger",
+      "noneTitle": "Aucun fichier téléchargé",
+      "noneDescription": "Téléchargez des documents, captures d'écran, PDFs ou ressources de projet",
+      "uploaded": "Téléchargé"
+    },
+    "payments": {
+      "howTitle": "💡 Comment fonctionnent les paiements",
+      "depositStart": "• 20 % d'acompte démarre votre projet",
+      "finalPayment": "• 80 % de paiement final à la fin du travail",
+      "crypto": "• Paiement sécurisé par virement crypto USDT TRC20",
+      "pendingVerification": "⏳ Paiement soumis et en attente de vérification.",
+      "verificationText": "Nous vérifions votre transaction crypto. Vous serez notifié une fois confirmée.",
+      "readyTitle": "💰 Prêt à commencer ?",
+      "readyText": "Payez 20 % d'acompte (${deposit}) pour démarrer votre projet. Les ${remaining} restants sont dus à la fin du travail.",
+      "payDeposit": "💰 Payer 20 % d'acompte (${deposit}) pour commencer",
+      "depositPaid": "✅ Acompte payé ! Nous avons commencé à travailler sur votre projet.",
+      "depositPaidText": "Vous paierez les ${remaining} restants lorsque le travail sera terminé.",
+      "projectReady": "🎉 Votre projet est prêt !",
+      "projectReadyText": "Payez les ${remaining} restants pour télécharger votre travail terminé.",
+      "downloadWork": "📥 Payer ${remaining} pour télécharger le travail",
+      "fullyPaid": "✅ Entièrement payé — Merci pour votre confiance !",
+      "fullyPaidText": "Vos fichiers sont disponibles au téléchargement ci-dessous."
+    }
+  },
+  "Checkout": {
+    "back": "Retour à Mes commandes",
+    "title": "Paiement",
+    "subtitle": "Choisissez votre méthode de paiement préférée et finalisez votre paiement en toute sécurité.",
+    "summary": "Résumé de la commande",
+    "service": "Service",
+    "paymentType": "Type de paiement",
+    "deposit": "Acompte 20 %",
+    "final": "Paiement final",
+    "totalPrice": "Prix total",
+    "amountDue": "Montant dû",
+    "paymentMethods": "Moyens de paiement",
+    "manualTitle": "Virement crypto manuel",
+    "manualDescription": "Payez avec {coin} sur le réseau {network}. Rapide et fiable.",
+    "nowTitle": "Paiement NOWPayments",
+    "nowDescription": "Paiement crypto automatisé avec suivi de facture.",
+    "nowSmall": "Recommandé pour les paiements de 20 $+. Pour les petits montants, le virement crypto manuel est plus fiable.",
+    "paypal": "PayPal",
+    "bank": "Carte bancaire",
+    "unavailable": "Temporairement indisponible",
+    "paypalDescription": "Le paiement par carte et PayPal sera bientôt de retour.",
+    "bankDescription": "Paiements bancaires directs sécurisés pour les clients internationaux.",
+    "restrictionNotice": "Certains moyens de paiement internationaux sont temporairement indisponibles en raison de restrictions bancaires régionales et de sanctions affectant le traitement des paiements en Russie/CEI. Les paiements en cryptomonnaie restent pleinement opérationnels et sont actuellement la méthode la plus rapide.\n\nPour les grands projets ou les cas particuliers, des virements bancaires internationaux manuels peuvent être acceptés en accord avec notre équipe.",
+    "sendExactly": "Envoyez exactement {amount} {coin} via le réseau {network}, puis collez votre hash de transaction ci-dessous.",
+    "scanQr": "Scannez le QR ou copiez l'adresse du portefeuille",
+    "walletAddress": "Adresse du portefeuille",
+    "warning": "⚠️ Envoyez UNIQUEMENT {coin} via {network}. L'envoi via un autre réseau peut entraîner une perte permanente des fonds.",
+    "txHash": "Hash de transaction",
+    "txPlaceholder": "Collez votre hash de transaction ici...",
+    "submit": "Soumettre le paiement pour vérification",
+    "secureCheckout": "Payez via un paiement crypto hébergé sécurisé. NOWPayments suivra le paiement automatiquement.",
+    "creating": "Création du paiement...",
+    "continue": "Continuer vers NOWPayments",
+    "loading": "Rechargement du paiement...",
+    "services": {
+      "graduationProjects": "Projets de fin d'études",
+      "academicReports": "Rapports académiques",
+      "customWebsites": "Apps / Sites web personnalisés",
+      "mobileApps": "Applications mobiles",
+      "powerpoint": "Présentations PowerPoint",
+      "cv": "Rédaction de CV",
+      "translation": "Traduction (En↔Ar)",
+      "debugging": "Débogage de code",
+      "ai": "Automatisation IA",
+      "uiux": "Design UI/UX"
+    },
+    "toasts": {
+      "walletCopied": "Adresse du portefeuille copiée !",
+      "copyFailed": "Échec de la copie de l'adresse",
+      "enterHash": "Veuillez entrer le hash de transaction",
+      "paymentSubmitted": "Paiement soumis avec succès ! En attente de vérification.",
+      "submitFailed": "Échec de la soumission du paiement",
+      "checkoutOpened": "Paiement NOWPayments ouvert dans un nouvel onglet.",
+      "checkoutFailed": "Échec de la création du paiement NOWPayments",
+      "loadOrderFailed": "Échec du chargement de la commande",
+      "orderNotFound": "Commande introuvable",
+      "checkoutLoadFailed": "Échec du chargement du paiement",
+      "invalidTxHash": "Hash de transaction invalide. Veuillez entrer un hash de transaction TRON valide de 64 caractères."
+    }
+  },
+  "Admin": {
+    "services": {
+      "graduationProjects": "Projets de fin d'études",
+      "academicReports": "Rapports académiques",
+      "customWebsites": "Apps / Sites web personnalisés",
+      "mobileApps": "Applications mobiles",
+      "powerpoint": "Présentations PowerPoint",
+      "cv": "Rédaction de CV",
+      "translation": "Traduction (En↔Ar)",
+      "debugging": "Débogage de code",
+      "ai": "Automatisation IA",
+      "uiux": "Design UI/UX"
+    },
+    "filters": {
+      "allServices": "Tous les services",
+      "searchUsers": "Rechercher par nom ou e-mail...",
+      "status": {
+        "all": "Tous les statuts",
+        "pending": "En attente",
+        "in-progress": "En cours",
+        "completed": "Terminé (Paiement attendu)",
+        "cancelled": "Annulé",
+        "fully_paid": "Terminé et payé",
+        "sort": {
+          "newest": "Plus récent",
+          "oldest": "Plus ancien"
+        }
+      }
+    },
+    "dashboard": {
+      "founder": "Tableau de bord Fondateur",
+      "staff": "Tableau de bord Personnel",
+      "description": "Gérez les commandes, paiements, clients, modérateurs, chats, fichiers et flux de travail depuis un centre de contrôle unifié.",
+      "founderAccess": "Accès Fondateur",
+      "staffAccess": "Accès Personnel"
+    },
+    "buttons": {
+      "auditLogs": "Journaux d'audit",
+      "profile": "Mon profil",
+      "refresh": "Actualiser",
+      "logout": "Déconnexion"
+    },
+    "tabs": {
+      "orders": "Commandes",
+      "crypto": "Historique crypto",
+      "completed": "Mes terminés",
+      "ratings": "Évaluations",
+      "users": "Utilisateurs"
+    },
+    "stats": {
+      "totalUsers": "Utilisateurs totaux",
+      "activeUsers": "Actifs",
+      "blockedUsers": "Bloqués",
+      "totalOrders": "Total",
+      "pendingOrders": "En attente",
+      "inProgressOrders": "En cours",
+      "completedOrders": "Terminés",
+      "cancelledOrders": "Annulés",
+      "revenue": "Revenus"
+    },
+    "users": {
+      "moderatorPerformance": "Performance modérateurs",
+      "allUsers": "Tous les utilisateurs",
+      "assigned": "Assignés",
+      "inProgress": "En cours",
+      "completed": "Terminés",
+      "cancelled": "Annulés",
+      "completionRate": "Taux d'achèvement",
+      "top": "Top",
+      "moderator": "Modérateur",
+      "blocked": "Bloqué",
+      "removeMod": "Retirer mod",
+      "makeMod": "Nommer mod",
+      "unblock": "Débloquer",
+      "block": "Bloquer"
+    },
+    "ratings": {
+      "title": "Commandes terminées & Évaluations",
+      "noCompleted": "Aucune commande terminée",
+      "fullyPaid": "Entièrement payé",
+      "depositPaid": "Acompte payé",
+      "completed": "Terminé",
+      "moderator": "Modérateur",
+      "requirements": "Exigences",
+      "deposit": "Acompte",
+      "noRating": "Pas encore noté",
+      "hideChat": "Cacher chat",
+      "chat": "Messages",
+      "noFiles": "Aucun fichier joint",
+      "messages": "Messages"
+    },
+    "system": {
+      "liveSync": "Synchro en direct",
+      "offline": "Hors ligne",
+      "joined": "A rejoint",
+      "cancel": "Annuler",
+      "online": "En ligne",
+      "clear": "Effacer",
+      "copy": "Copier"
+    },
+    "reassign": {
+      "title": "Réassigner commande",
+      "currentlyAssigned": "Actuellement assigné à :"
+    },
+    "cryptoModal": {
+      "title": "Détails paiement crypto",
+      "status": "Statut",
+      "amount": "Montant",
+      "network": "Réseau",
+      "type": "Type",
+      "deposit": "Acompte",
+      "finalPayment": "Paiement final",
+      "orderId": "ID commande",
+      "txHash": "Hash transaction",
+      "verification": "Vérification blockchain",
+      "notChecked": "Ce paiement n'a pas encore été vérifié.",
+      "received": "Reçu",
+      "receiver": "Destinataire",
+      "checkedAt": "Vérifié le",
+      "submittedAt": "Soumis le",
+      "confirmedAt": "Confirmé le",
+      "notConfirmed": "Pas encore confirmé",
+      "reviewedBy": "Examiné par",
+      "notReviewed": "Pas encore examiné",
+      "timeline": "Chronologie du paiement",
+      "submitted": "Paiement soumis",
+      "confirmed": "Paiement confirmé",
+      "confirmedShort": "Confirmé",
+      "rejected": "Paiement rejeté",
+      "rejectedShort": "Rejeté",
+      "waiting": "En attente d'examen",
+      "waitingDescription": "L'admin n'a pas encore confirmé ou rejeté ce paiement."
+    },
+    "deleteModal": {
+      "title": "Supprimer commande",
+      "message": "Êtes-vous sûr de vouloir supprimer cette commande ? Cette action est irréversible."
+    },
+    "toasts": {
+      "orderReassigned": "Commande réassignée à {name}",
+      "failedReassign": "Échec de la réassignation",
+      "orderAccepted": "Commande acceptée !",
+      "failedAccept": "Échec de l'acceptation",
+      "validPrice": "Veuillez entrer un prix valide",
+      "priceSet": "Prix fixé à ${price}. Acompte 20 % : ${deposit}",
+      "failedSetPrice": "Échec de la définition du prix",
+      "validTimeline": "Veuillez entrer un délai de livraison valide",
+      "timelineUpdated": "Délai de livraison mis à jour",
+      "failedTimeline": "Échec de la mise à jour du délai",
+      "cryptoConfirmed": "Paiement crypto confirmé",
+      "cryptoRejected": "Paiement crypto rejeté",
+      "failedReviewPayment": "Échec de l'examen du paiement",
+      "blockchainUpdated": "Vérification blockchain mise à jour",
+      "failedRecheck": "Échec de la revérification du paiement",
+      "noteSaved": "Note enregistrée !",
+      "failedSaveNote": "Échec de l'enregistrement de la note",
+      "newOrder": "Nouvelle commande reçue !",
+      "newChat": "Nouveau message reçu",
+      "userUnblocked": "Utilisateur débloqué",
+      "userBlocked": "Utilisateur bloqué",
+      "failedUpdateUser": "Échec de la mise à jour de l'utilisateur",
+      "userNowModerator": "L'utilisateur est maintenant modérateur",
+      "moderatorRemoved": "Modérateur retiré",
+      "failedUpdateRole": "Échec de la mise à jour du rôle",
+      "orderDeleted": "Commande supprimée avec succès",
+      "failedDeleteOrder": "Échec de la suppression de la commande",
+      "markedInProgress": "Commande marquée En cours",
+      "markedCompleted": "Commande marquée Terminée",
+      "statusUpdated": "Statut mis à jour à {status}",
+      "failedUpdateOrder": "Échec de la mise à jour de la commande",
+      "txCopied": "Hash de transaction copié"
+    },
+    "status": {
+      "pending": "En attente",
+      "inProgress": "En cours",
+      "completed": "Terminé",
+      "cancelled": "Annulé",
+      "fullyPaid": "Entièrement payé"
+    },
+    "verification": {
+      "notChecked": "Non vérifié",
+      "verifiedTron": "✅ Vérifié sur TRON",
+      "failed": "❌ Échec vérification",
+      "notFoundYet": "⏳ Pas encore trouvé"
+    },
+    "time": {
+      "minutesAgo": "il y a {count} min",
+      "hoursAgo": "il y a {count} h",
+      "daysAgo": "il y a {count} j"
+    },
+    "orders": {
+      "client": "Client",
+      "service": "Service",
+      "price": "Prix",
+      "deposit": "Acompte",
+      "timeline": "Délai",
+      "created": "Créé",
+      "notSet": "Non défini",
+      "requirements": "Exigences",
+      "showing": "Affichage de {count} sur {total} commandes",
+      "unpaid": "Non payé",
+      "depositPaid": "Acompte payé",
+      "fullyPaid": "Entièrement payé",
+      "paymentPending": "Paiement en attente",
+      "awaitingDeposit": "En attente d'acompte",
+      "urgent": "Urgent",
+      "normal": "Normal",
+      "low": "Faible",
+      "reassign": "Réassigner",
+      "setTimeline": "Définir délai",
+      "setPrice": "Définir prix",
+      "openChat": "Ouvrir chat",
+      "hideChat": "Cacher chat",
+      "viewFiles": "Voir fichiers",
+      "hideFiles": "Cacher fichiers",
+      "addNote": "Ajouter note",
+      "editNote": "Modifier note",
+      "delete": "Supprimer",
+      "save": "Enregistrer",
+      "saveNote": "Enregistrer note",
+      "acceptOrder": "Accepter commande",
+      "markComplete": "Marquer terminé",
+      "internalNote": "Note interne",
+      "writeInternalNote": "Écrire note interne...",
+      "newest": "Récent",
+      "oldest": "Ancien",
+      "finalPrice": "Prix final",
+      "timelinePlaceholder": "ex. 2–4 semaines",
+      "cancelOrder": "Annuler commande",
+      "pendingCryptoPayment": "Paiement crypto en attente",
+      "type": "Type",
+      "amount": "Montant",
+      "network": "Réseau",
+      "submitted": "Soumis",
+      "transactionHash": "Hash transaction",
+      "viewOnTronscan": "Voir sur Tronscan",
+      "confirmPayment": "Confirmer paiement",
+      "confirming": "Confirmation...",
+      "reject": "Rejeter",
+      "rejecting": "Rejet...",
+      "recheck": "Revérifier",
+      "checking": "Vérification...",
+      "finalPayment": "Paiement final",
+      "deleteOrder": "Supprimer commande",
+      "searchPlaceholder": "Rechercher par e-mail, ID ou exigences...",
+      "empty": "Aucune commande passée.",
+      "emptyFiltered": "Essayez d'ajuster vos filtres.",
+      "noOrdersFound": "Aucune commande trouvée",
+      "clearFilters": "Effacer les filtres",
+      "openInvoice": "Ouvrir facture"
+    },
+    "crypto": {
+      "title": "Historique paiements crypto",
+      "myRevenue": "Mes revenus acceptés",
+      "myCryptoRevenue": "Mes revenus crypto",
+      "siteRevenue": "Revenus du site entier",
+      "pendingAmount": "Montant en attente",
+      "confirmedPayments": "Paiements confirmés",
+      "rejectedPayments": "Paiements rejetés",
+      "searchPlaceholder": "Rechercher par e-mail, ID commande, service ou hash...",
+      "allStatuses": "Tous statuts",
+      "confirmed": "Confirmé",
+      "pending": "En attente",
+      "rejected": "Rejeté",
+      "allSources": "Toutes sources",
+      "manualCrypto": "Crypto manuel",
+      "allTypes": "Tous types",
+      "noPayments": "Aucun paiement crypto",
+      "manual": "Manuel",
+      "submitted": "Soumis",
+      "paymentId": "ID paiement NOWPayments",
+      "gatewayStatus": "Statut passerelle",
+      "paymentDetails": "Détails du paiement",
+      "checking": "Vérification...",
+      "recheck": "Revérifier",
+      "viewOnTronscan": "Voir sur Tronscan"
+    },
+    "audit": {
+      "backToDashboard": "Retour tableau de bord",
+      "title": "Journaux d'audit",
+      "subtitle": "Surveillez les actions importantes des fondateurs et modérateurs sur Codnexia.",
+      "exportCsv": "Exporter CSV",
+      "totalLogs": "Total journaux",
+      "roleChanges": "Changements de rôle",
+      "orderActions": "Actions commandes",
+      "dangerActions": "Actions dangereuses",
+      "searchPlaceholder": "Rechercher par message, acteur, cible ou action...",
+      "allActions": "Toutes actions",
+      "recentActivity": "Activité récente",
+      "loading": "Chargement des journaux...",
+      "noLogs": "Aucun journal d'audit trouvé.",
+      "by": "Par",
+      "targetId": "ID cible",
+      "hideDetails": "Cacher détails",
+      "viewDetails": "Voir détails",
+      "metadata": "Métadonnées",
+      "noMetadata": "Aucune métadonnée enregistrée pour cette action.",
+      "page": "Page",
+      "of": "sur",
+      "totalLogsFooter": "total journaux",
+      "previous": "Précédent",
+      "next": "Suivant",
+      "unknown": "Inconnu"
+    }
+  },
+  "Profile": {
+    "services": {
+      "graduationProjects": "Projets de fin d'études",
+      "academicReports": "Rapports académiques",
+      "customWebsites": "Apps / Sites web personnalisés",
+      "mobileApps": "Applications mobiles",
+      "powerpoint": "Présentations PowerPoint",
+      "cv": "Rédaction de CV",
+      "translation": "Traduction (En↔Ar)",
+      "debugging": "Débogage de code",
+      "ai": "Automatisation IA",
+      "uiux": "Design UI/UX"
+    },
+    "toasts": {
+      "profileUpdated": "Profil mis à jour avec succès !",
+      "updateFailed": "Échec de la mise à jour",
+      "somethingWentWrong": "Quelque chose s'est mal passé",
+      "passwordsDoNotMatch": "Les mots de passe ne correspondent pas",
+      "passwordMinLength": "Le mot de passe doit contenir au moins 6 caractères",
+      "passwordChanged": "Mot de passe changé avec succès !",
+      "passwordChangeFailed": "Échec du changement de mot de passe",
+      "pictureUpdated": "Photo de profil mise à jour !",
+      "uploadFailed": "Échec du téléchargement",
+      "profilePicture": "Photo de profil"
+    },
+    "stats": {
+      "allOrders": "Toutes commandes",
+      "revenue": "Revenus",
+      "users": "Utilisateurs",
+      "moderators": "Modérateurs",
+      "myOrders": "Mes commandes",
+      "myCompleted": "Mes terminées",
+      "myRating": "Mon évaluation",
+      "active": "Actif",
+      "account": "Compte",
+      "memberSince": "Membre depuis",
+      "new": "Nouveau",
+      "completed": "Terminé",
+      "orders": "Commandes",
+      "youHaveOrders": "Vous avez {count} commande",
+      "youHaveOrdersPlural": "Vous avez {count} commandes"
+    },
+    "tabs": {
+      "editProfile": "Modifier profil",
+      "changePassword": "Changer mot de passe",
+      "myPayments": "Mes paiements"
+    },
+    "viewed": {
+      "role": "Rôle",
+      "email": "E-mail",
+      "lastSeen": "Dernière visite",
+      "never": "Jamais"
+    },
+    "form": {
+      "fullName": "Nom complet",
+      "email": "E-mail",
+      "saving": "Enregistrement...",
+      "saveChanges": "Enregistrer modifications",
+      "currentPassword": "Mot de passe actuel",
+      "newPassword": "Nouveau mot de passe",
+      "passwordPlaceholder": "Min. 6 caractères",
+      "confirmPassword": "Confirmer mot de passe",
+      "changing": "Modification..."
+    },
+    "links": {
+      "quickLinks": "Liens rapides",
+      "dashboard": "Tableau de bord",
+      "manageUsers": "Gérer utilisateurs",
+      "allOrders": "Toutes commandes",
+      "completedOrders": "Commandes terminées",
+      "viewDashboard": "Voir tableau de bord",
+      "goToDashboard": "Aller au tableau de bord",
+      "yourOrders": "Vos commandes",
+      "viewMyOrders": "Voir mes commandes",
+      "placeFirstOrder": "Passer première commande"
+    },
+    "payments": {
+      "title": "Mes paiements",
+      "noPayments": "Aucun paiement",
+      "description": "Vos paiements confirmés et en attente apparaîtront ici.",
+      "deposit": "Acompte",
+      "finalPayment": "Paiement final",
+      "viewDetails": "Voir détails",
+      "confirmed": "Confirmé",
+      "pending": "En attente",
+      "rejected": "Rejeté",
+      "manualCrypto": "Crypto manuel",
+      "nowPayments": "NOWPayments"
+    },
+    "moderator": {
+      "completedOrders": "Vous avez terminé {count} commande",
+      "completedOrdersPlural": "Vous avez terminé {count} commandes",
+      "noCompletedOrders": "Aucune commande terminée"
+    }
+  },
+  "Notifications": {
+    "title": "Notifications",
+    "markAllRead": "Tout marquer lu",
+    "unread": "Non lues",
+    "all": "Toutes",
+    "loginRequired": "Vous devez vous connecter pour voir vos notifications.",
+    "goToLogin": "Aller à la connexion",
+    "notificationCenter": "Centre de notifications",
+    "subtitle": "Suivez les mises à jour importantes sur les commandes, messages, paiements, fichiers, évaluations et flux de travail en un seul endroit.",
+    "total": "Total",
+    "recentActivity": "Activité récente",
+    "latest100": "Affichage de vos 100 dernières notifications.",
+    "noNotifications": "Aucune notification",
+    "noNotificationsDesc": "Les mises à jour concernant les commandes, messages, paiements, fichiers et évaluations apparaîtront ici en cas de nouvelle activité.",
+    "recently": "Récemment",
+    "justNow": "À l'instant",
+    "minutesAgo": "il y a {count} min",
+    "hoursAgo": "il y a {count} h",
+    "daysAgo": "il y a {count} j",
+    "unreadNotifications": "notifications non lues",
+    "allCaughtUp": "Tout est à jour",
+    "viewAllNotifications": "Voir toutes les notifications",
+    "items": {
+      "order_created": {
+        "title": "Nouvelle commande reçue",
+        "message": "Une nouvelle commande a été soumise."
+      },
+      "order_accepted": {
+        "title": "Commande acceptée",
+        "message": "Votre commande a été acceptée et le travail a commencé."
+      },
+      "new_message": {
+        "title": "Nouveau message reçu",
+        "message": "Vous avez un nouveau message."
+      },
+      "payment_confirmed": {
+        "title": "Paiement confirmé",
+        "message": "Un paiement a été confirmé."
+      },
+      "files_uploaded": {
+        "title": "Fichiers téléchargés",
+        "message": "Un fichier a été téléchargé sur la commande."
+      },
+      "order_completed": {
+        "title": "Commande terminée",
+        "message": "Votre commande a été terminée."
+      },
+      "order_updated": {
+        "title": "Commande mise à jour",
+        "message": "Il y a une nouvelle mise à jour sur cette commande."
+      },
+      "system": {
+        "title": "Notification système",
+        "message": "Il y a une nouvelle notification système."
+      },
+      "payment_submitted": {
+        "title": "Paiement soumis",
+        "message": "Un paiement est en attente de vérification."
+      },
+      "rating_received": {
+        "title": "Nouvelle évaluation reçue",
+        "message": "Un client a évalué une commande terminée."
+      }
+    }
+  },
+  "Register": {
+    "title": "Créer un compte",
+    "subtitle": "Rejoignez Codnexia et gérez vos projets professionnellement.",
+    "fullName": "Nom complet",
+    "fullNamePlaceholder": "Jean Dupont",
+    "email": "E-mail",
+    "emailPlaceholder": "etudiant@exemple.com",
+    "password": "Mot de passe",
+    "passwordPlaceholder": "Min. 6 caractères",
+    "createAccount": "Créer compte",
+    "creatingAccount": "Création du compte...",
+    "sendingVerification": "Envoi e-mail de vérification...",
+    "almostDone": "Presque terminé...",
+    "accountCreated": "Compte créé ! Vérifiez votre e-mail pour confirmer votre compte.",
+    "registrationFailed": "Échec de l'inscription",
+    "alreadyHaveAccount": "Vous avez déjà un compte ?",
+    "signIn": "Se connecter"
+  },
+  "Login": {
+    "title": "Bon retour",
+    "subtitle": "Connectez-vous pour accéder à vos commandes, chats et tableau de bord.",
+    "email": "E-mail",
+    "emailPlaceholder": "etudiant@exemple.com",
+    "password": "Mot de passe",
+    "passwordPlaceholder": "Entrez votre mot de passe",
+    "signIn": "Se connecter",
+    "signingIn": "Connexion...",
+    "welcomeBack": "Bon retour parmi nous !",
+    "loginFailed": "Échec de connexion",
+    "noAccount": "Pas encore de compte ?",
+    "createOne": "En créer un",
+    "verificationRequired": "Vérification e-mail requise",
+    "verificationMessage": "Nous avons envoyé un lien de vérification à {email}. Veuillez vérifier votre e-mail avant de vous connecter.",
+    "verificationSent": "E-mail de vérification envoyé. Vérifiez votre boîte de réception.",
+    "resendFailed": "Échec du renvoi de l'e-mail de vérification.",
+    "sending": "Envoi...",
+    "resendIn": "Renvoyer dans {seconds}s",
+    "resendVerification": "Renvoyer l'e-mail de vérification"
+  },
+  "Unauthorized": {
+    "title": "Accès refusé",
+    "description": "Vous n'avez pas la permission d'accéder à cette page.",
+    "goHome": "Accueil",
+    "myOrders": "Mes commandes"
+  },
+  "VerifyEmail": {
+    "verifying": "Vérification e-mail",
+    "verified": "E-mail vérifié",
+    "failed": "Échec vérification",
+    "verifyingMessage": "Vérification de votre e-mail...",
+    "missingToken": "Le jeton de vérification est manquant.",
+    "verifiedMessage": "E-mail vérifié avec succès.",
+    "failedMessage": "Échec de la vérification.",
+    "failedRetry": "Échec de la vérification. Veuillez réessayer.",
+    "continueLogin": "Continuer vers connexion",
+    "backLogin": "Retour connexion",
+    "loadingVerification": "Chargement vérification",
+    "preparingLink": "Préparation de votre lien de vérification..."
+  },
+  "Portfolio": {
+    "badge": "Notre portfolio",
+    "title": "Des projets dont nous sommes",
+    "titleHighlight": "fiers",
+    "subtitle": "Chaque projet raconte une histoire de dévouement et d'excellence. Découvrez ce que nos clients disent de nous.",
+    "projectsDone": "Projets réalisés",
+    "avgRating": "Note moyenne",
+    "services": "Services",
+    "happyClients": "Clients satisfaits",
+    "allProjects": "Tous projets",
+    "emptyTitle": "Aucun projet dans cette catégorie",
+    "emptySubtitle": "Revenez bientôt pour les mises à jour !",
+    "completedBy": "Réalisé par",
+    "ctaTitle": "Prêt à démarrer votre projet ?",
+    "ctaSubtitle": "Rejoignez nos clients satisfaits et faites réaliser votre travail par des professionnels.",
+    "ctaButton": "Passez commande maintenant",
+    "client": "Client"
+  },
+  "OrderMessages": {
+    "searchMessages": "Rechercher messages...",
+    "writeMessage": "Écrire un message...",
+    "orderChat": "Chat commande",
+    "liveSupport": "Conversation support en direct",
+    "messageCount": "{count} messages",
+    "messageCountOne": "{count} message",
+    "today": "Aujourd'hui",
+    "yesterday": "Hier",
+    "you": "Vous",
+    "codnexiaTeam": "Équipe Codnexia",
+    "client": "Client",
+    "messageFailedRetry": "Échec du message. Vous pouvez réessayer.",
+    "imagesOnly": "Seuls les téléchargements d'images sont pris en charge",
+    "messageUpdated": "Message mis à jour",
+    "editFailed": "Échec de modification du message",
+    "messageRestored": "Message restauré. Appuyez à nouveau sur envoyer.",
+    "messageCopied": "Message copié",
+    "downloadFailed": "Échec du téléchargement du fichier",
+    "messageDeleted": "Message supprimé",
+    "deleteFailed": "Échec de suppression du message"
+  }
+}

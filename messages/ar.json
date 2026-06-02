@@ -1,0 +1,1055 @@
+{
+  "Navbar": {
+    "portfolio": "معرض الأعمال",
+    "placeOrder": "طلب خدمة",
+    "trackOrder": "تتبع الطلب",
+    "myOrders": "طلباتي",
+    "myProfile": "ملفي الشخصي",
+    "dashboard": "لوحة التحكم",
+    "logout": "تسجيل الخروج",
+    "signIn": "تسجيل الدخول"
+  },
+  "Home": {
+   "heroTitle1": "حيث تتحول الأفكار",
+    "heroTitle2": "إلى واقع",
+    "heroDescription": "مواقع احترافية، تطبيقات موبايل، أتمتة بالذكاء الاصطناعي، تصميم UI/UX، وحلول تقنية للشركات الحديثة.",
+    "getStarted": "ابدأ الآن",
+    "viewPortfolio": "عرض الأعمال",
+    "fiveStar": "تقييم 5 نجوم",
+    "trustedClients": "موثوق من العملاء",
+    "fastDelivery": "تسليم سريع",
+    "onTime": "دائمًا في الوقت",
+    "support247": "دعم 24/7",
+    "alwaysAvailable": "متواجد دائمًا",
+    "ourServices": "خدماتنا",
+    "servicesDescription": "حلول رقمية احترافية من الفكرة الأولى حتى التسليم النهائي.",
+    "orderNow": "اطلب الآن",
+    "readyToBegin": "جاهز للبدء؟",
+    "ctaDescription": "أخبرنا بما تحتاجه وسنرد عليك خلال 24 ساعة بعرض سعر مخصص.",
+    "startYourOrder": "ابدأ طلبك",
+    "trackOrder": "تتبع الطلب",
+    "trackDescription": "هل لديك طلب بالفعل؟ أدخل رقم الطلب لمعرفة حالته فورًا.",
+    "trackPlaceholder": "ألصق رقم الطلب هنا…",
+    "trackButton": "تتبع طلبي",
+    "footer": "© 2026 Codnexia. جميع الحقوق محفوظة.",
+    "services": {
+  "graduationProjects": {
+    "title": "مشاريع التخرج",
+    "description": "رسالة كاملة مع التوثيق والعرض التقديمي",
+    "tag": "الأكثر طلبًا"
+  },
+  "academicReports": {
+    "title": "التقارير الأكاديمية",
+    "description": "أبحاث ومقالات ومراجعات أدبية"
+  },
+  "customWebsites": {
+    "title": "مواقع / تطبيقات مخصصة",
+    "description": "مواقع احترافية للأعمال أو المعارض الشخصية"
+  },
+  "mobileApps": {
+    "title": "تطبيقات الموبايل",
+    "description": "تطبيقات iOS و Android للشركات والمشاريع",
+    "tag": "احترافي"
+  },
+  "powerpoint": {
+    "title": "عروض PowerPoint",
+    "description": "عروض احترافية للأعمال والتدريب"
+  },
+  "cv": {
+    "title": "كتابة السيرة الذاتية",
+    "description": "سير ذاتية احترافية ومتوافقة مع أنظمة ATS"
+  },
+  "translation": {
+    "title": "الترجمة (عربي ↔ إنجليزي)",
+    "description": "ترجمة بشرية بدون استخدام الذكاء الاصطناعي"
+  },
+  "debugging": {
+    "title": "إصلاح الأكواد",
+    "description": "حل المشاكل وتحسين ومراجعة الكود"
+  },
+  "ai": {
+    "title": "أتمتة الذكاء الاصطناعي",
+    "description": "أنظمة ذكية وChatbots وأتمتة احترافية"
+  },
+  "uiux": {
+    "title": "تصميم UI/UX",
+    "description": "واجهات حديثة وتجارب استخدام احترافية"
+  }
+}
+  },
+  "Stats": {
+  "services": "خدمات",
+  "satisfaction": "رضا العملاء",
+  "responseTime": "وقت الاستجابة"
+},
+"FAQ": {
+  "title": "الأسئلة الشائعة",
+  "subtitle": "كل ما تحتاج معرفته عن خدماتنا",
+
+  "q1": "كيف تتم عملية تنفيذ المشروع؟",
+  "a1": "اختر الخدمة المناسبة، ثم أرسل تفاصيل مشروعك وقم بإنشاء الطلب. سيقوم فريقنا بمراجعة طلبك وإرسال عرض سعر يشمل التكلفة والمدة ونطاق العمل قبل البدء.",
+
+  "q2": "كيف يتم تحديد الأسعار ومدة التنفيذ؟",
+  "a2": "يتم تقييم كل مشروع بشكل منفصل حسب التعقيد والخصائص ومتطلبات التسليم. بعد مراجعة طلبك سنرسل السعر النهائي والمدة المتوقعة وخطة المشروع.",
+
+  "q3": "ما طرق الدفع المتوفرة؟",
+  "a3": "نقبل حاليًا مدفوعات العملات الرقمية الآمنة مثل USDT TRC20. سيتم إرسال تعليمات الدفع بعد مراجعة المشروع والموافقة عليه.",
+
+  "q4": "هل يمكنني متابعة تقدم مشروعي؟",
+  "a4": "نعم. يحصل كل عميل على رقم طلب خاص مع إمكانية تتبع الطلب والتحديثات والتواصل المباشر مع فريقنا.",
+
+  "q5": "هل توفرون تعديلات ودعم؟",
+  "a5": "نعم. التعديلات الأساسية متوفرة لضمان مطابقة النتيجة النهائية للاتفاق والجودة المطلوبة، مع إمكانية تقديم دعم إضافي بعد التسليم.",
+
+  "q6": "هل معلوماتي ومشروعي تبقى خاصة؟",
+  "a6": "بالتأكيد. جميع بيانات العملاء والملفات والمشاريع يتم التعامل معها بسرية تامة ولا يتم مشاركتها مع أي طرف ثالث."
+},
+"Orders": {
+  "title": "إنشاء طلب",
+  "subtitle": "املأ التفاصيل وسنبدأ العمل على مشروعك مباشرة",
+   "badge": "خدمة سريعة وموثوقة",
+  "steps": {
+    "select": "اختر الخدمة",
+    "details": "أدخل التفاصيل",
+    "submit": "إرسال الطلب"
+  },
+
+  "services": {
+    "graduationProjects": {
+      "name": "مشاريع التخرج"
+    },
+    "academicReports": {
+      "name": "التقارير الأكاديمية"
+    },
+    "customWebsites": {
+      "name": "مواقع / تطبيقات مخصصة"
+    },
+    "mobileApps": {
+      "name": "تطبيقات الموبايل"
+    },
+    "powerpoint": {
+      "name": "عروض PowerPoint"
+    },
+    "cv": {
+      "name": "كتابة السيرة الذاتية"
+    },
+    "translation": {
+      "name": "الترجمة (عربي↔إنجليزي)"
+    },
+    "debugging": {
+      "name": "إصلاح الأكواد"
+    },
+    "ai": {
+      "name": "أتمتة الذكاء الاصطناعي"
+    },
+    "uiux": {
+      "name": "تصميم UI/UX"
+    }
+  },
+
+  "delivery": {
+    "days1to2": "1–2 يوم",
+    "days1to3": "1–3 أيام",
+    "days1to4": "1–4 أيام",
+    "days1to7": "1–7 أيام",
+    "days2to5": "2–5 أيام",
+    "days3to10": "3–10 أيام",
+    "weeks1to4": "1–4 أسابيع",
+    "weeks1to8": "1–8 أسابيع",
+    "weeks3to12": "3–12 أسبوع"
+  },
+  "form": {
+  "projectDetails": "تفاصيل المشروع",
+  "yourEmail": "بريدك الإلكتروني",
+  "emailNote": "يتم ربط الطلبات ببريد حسابك الموثق.",
+  "selectService": "اختر الخدمة",
+  "projectRequirements": "متطلبات المشروع",
+  "requirementsPlaceholder": "اكتب تفاصيل المشروع، الموعد المطلوب، وأي متطلبات خاصة...",
+  "priorityLevel": "مستوى الأولوية",
+  "attachFiles": "إرفاق ملفات (اختياري)"
+},
+"priority": {
+  "low": "منخفض",
+  "normal": "عادي",
+  "urgent": "مستعجل"
+},
+
+"summary": {
+  "title": "ملخص الطلب",
+  "service": "الخدمة",
+  "price": "السعر المبدئي",
+  "timeline": "المدة المتوقعة"
+},
+
+"buttons": {
+  "submit": "إرسال الطلب",
+  "submitting": "جاري الإرسال...",
+  "login": "تسجيل الدخول مطلوب"
+},
+"upload": {
+  "filesAttached": "الملفات المرفقة",
+  "uploaded": "تم الرفع",
+  "dragDrop": "اسحب الملفات وأفلتها هنا",
+  "browse": "أو اضغط لاختيار الملفات",
+  "supported": "PDF, DOCX, JPG, PNG, ZIP • الحد الأقصى 10MB لكل ملف"
+},
+"requirements": {
+  "short": "يرجى إضافة تفاصيل أكثر",
+  "medium": "أضف تفاصيل أكثر للحصول على نتائج أفضل",
+  "good": "ممتاز! أصبح لدينا فهم واضح لما تحتاجه",
+  "characters": "حرف"
+},
+
+"messages": {
+  "loginRequired": "يرجى تسجيل الدخول قبل إنشاء الطلب.",
+  "success": "تم إرسال الطلب بنجاح! تحقق من بريدك الإلكتروني.",
+  "error": "حدث خطأ ما. حاول مرة أخرى.",
+  "network": "خطأ في الشبكة. تحقق من اتصالك وحاول مجددًا.",
+  "maxFiles": "الحد الأقصى 5 ملفات لكل طلب",
+  "fileTooLarge": "بعض الملفات كبيرة جدًا (الحد الأقصى 10MB)"
+},
+"success": {
+  "title": "تم إرسال الطلب!",
+  "description": "استلمنا طلبك وسنتواصل معك عبر",
+  "emailFallback": "بريدك الإلكتروني الموثق",
+  "track": "تتبع طلبك",
+  "another": "إنشاء طلب آخر"
+},
+
+"auth": {
+  "title": "تسجيل الدخول مطلوب",
+  "description": "يرجى تسجيل الدخول بحساب Codnexia موثق قبل إنشاء الطلب. هذا يربط الطلبات والملفات والدردشة والتحديثات بحسابك الصحيح.",
+  "signin": "تسجيل الدخول",
+  "create": "إنشاء حساب"
+},
+
+"features": {
+  "revision": "دعم التعديلات متضمن",
+  "secure": "آمن وسري",
+  "delivery": "تسليم سريع",
+  "response": "استجابة سريعة"
+}
+},
+"Track": {
+  "title": "تتبع طلبك",
+  "subtitle": "أدخل رقم الطلب لمعرفة حالة مشروعك",
+
+  "search": {
+    "title": "البحث عن طلب",
+    "orderId": "رقم الطلب",
+    "placeholder": "أدخل رقم الطلب",
+    "searching": "جاري البحث...",
+    "button": "تتبع الطلب"
+  },
+
+  "services": {
+    "graduationProjects": "مشاريع التخرج",
+    "academicReports": "التقارير الأكاديمية",
+    "customWebsites": "مواقع / تطبيقات مخصصة",
+    "mobileApps": "تطبيقات الموبايل",
+    "powerpoint": "عروض PowerPoint",
+    "cv": "كتابة السيرة الذاتية",
+    "translation": "الترجمة (عربي ↔ إنجليزي)",
+    "debugging": "إصلاح الأكواد",
+    "ai": "أتمتة الذكاء الاصطناعي",
+    "uiux": "تصميم UI/UX"
+  },
+  "status": {
+  "title": "حالة الطلب",
+  "pending": "تم استلام الطلب",
+  "inProgress": "قيد التنفيذ",
+  "completed": "مكتمل"
+},
+"details": {
+  "title": "تفاصيل الطلب",
+  "orderId": "رقم الطلب",
+  "service": "الخدمة",
+  "price": "السعر",
+  "orderedOn": "تاريخ الطلب",
+  "requirements": "متطلباتك",
+  "depositPaid": "تم دفع 20% كعربون",
+  "fullyPaid": "مدفوع بالكامل"
+},
+"actions": {
+  "trackAnother": "تتبع طلب آخر",
+  "placeNew": "إنشاء طلب جديد",
+  "hint": "يمكنك العثور على رقم الطلب في رسالة التأكيد التي أرسلناها بعد إنشاء الطلب.",
+  "loading": "جاري البحث عن طلبك..."
+},
+"errors": {
+  "notFound": "لم يتم العثور على الطلب",
+  "generic": "حدث خطأ ما. حاول مرة أخرى."
+}
+},
+"MyOrders": {
+  "services": {
+    "graduationProjects": "مشاريع التخرج",
+    "academicReports": "التقارير الأكاديمية",
+    "customWebsites": "مواقع / تطبيقات مخصصة",
+    "mobileApps": "تطبيقات الموبايل",
+    "powerpoint": "عروض PowerPoint",
+    "cv": "كتابة السيرة الذاتية",
+    "translation": "الترجمة (عربي ↔ إنجليزي)",
+    "debugging": "إصلاح الأكواد",
+    "ai": "أتمتة الذكاء الاصطناعي",
+    "uiux": "تصميم UI/UX"
+  },
+  "title": "طلباتي",
+"subtitle": "تابع جميع طلباتك في مكان واحد",
+"empty": {
+  "title": "مساحة العمل جاهزة",
+  "description": "ارفع الملفات، تواصل معنا، تابع التقدم، وأدر كل شيء من مساحة واحدة احترافية.",
+  "button": "ابدأ مشروعك الأول"
+},
+"status": {
+  "pending": "قيد الانتظار",
+  "inProgress": "قيد التنفيذ",
+  "completed": "مكتمل",
+  "cancelled": "ملغي",
+  "received": "تم الاستلام"
+},
+"order": {
+  "estimatedTimeline": "المدة المتوقعة",
+  "toBeConfirmed": "سيتم تأكيدها بعد المراجعة",
+  "tbd": "سيتم التحديد"
+},
+"modal": {
+  "cancelTitle": "إلغاء الطلب",
+  "cancelMessage": "هل أنت متأكد أنك تريد إلغاء هذا الطلب؟ لا يمكن التراجع عن هذا الإجراء."
+},
+"messages": {
+  "newChat": "تم استلام رسالة جديدة",
+  "selectRating": "يرجى اختيار تقييم",
+  "ratingThanks": "شكرًا على تقييمك! ⭐",
+  "ratingFailed": "فشل إرسال التقييم",
+  "cancelled": "تم إلغاء الطلب",
+  "cancelFailed": "فشل الإلغاء",
+  "cancelOrderFailed": "فشل إلغاء الطلب",
+  "fileTooLarge": "الملف كبير جدًا. الحد الأقصى 10MB",
+  "fileTooLargeDot": "الملف كبير جدًا. الحد الأقصى 10MB.",
+  "fileUploaded": "تم رفع الملف!",
+  "uploadFailed": "فشل رفع الملف",
+  "fileDeleted": "تم حذف الملف",
+  "deleteFailed": "فشل حذف الملف"
+},
+"rating": {
+  "rated": "تم التقييم",
+  "title": "قيّم تجربتك:",
+  "placeholder": "شاركنا تجربتك (اختياري)...",
+  "submit": "إرسال التقييم",
+  "cancel": "إلغاء",
+  "button": "تقييم الطلب"
+},
+"actions": {
+  "cancel": "إلغاء",
+  "chat": "الدردشة",
+  "hideChat": "إخفاء الدردشة",
+  "viewFiles": "عرض الملفات",
+  "hideFiles": "إخفاء الملفات",
+  "messages": "الرسائل"
+},
+"files": {
+  "attached": "الملفات المرفقة",
+  "dragUpload": "اسحب الملف هنا أو اضغط للرفع",
+  "noneTitle": "لا توجد ملفات مرفوعة بعد",
+  "noneDescription": "ارفع المستندات أو الصور أو ملفات PDF أو ملفات المشروع",
+  "uploaded": "تم الرفع"
+},
+"payments": {
+  "howTitle": "💡 كيف تعمل الدفعات",
+  "depositStart": "• عربون 20% لبدء المشروع",
+  "finalPayment": "• يتم دفع 80% المتبقية بعد اكتمال العمل",
+  "crypto": "• دفع آمن عبر عملة USDT TRC20",
+
+  "pendingVerification": "⏳ تم إرسال الدفعة وهي بانتظار التحقق.",
+  "verificationText": "نحن نتحقق من عملية التحويل الخاصة بك وسيتم إشعارك بعد التأكيد.",
+
+  "readyTitle": "💰 جاهز للبدء؟",
+  "readyText": "ادفع عربون 20% (${deposit}) لبدء العمل على مشروعك. المبلغ المتبقي ${remaining} يُدفع بعد اكتمال العمل.",
+  "payDeposit": "💰 ادفع عربون 20% (${deposit}) للبدء",
+
+  "depositPaid": "✅ تم دفع العربون وبدأنا العمل على مشروعك.",
+  "depositPaidText": "سيتم دفع المبلغ المتبقي ${remaining} بعد اكتمال العمل.",
+
+  "projectReady": "🎉 مشروعك جاهز!",
+  "projectReadyText": "ادفع المبلغ المتبقي ${remaining} لتحميل العمل المكتمل.",
+  "downloadWork": "📥 ادفع ${remaining} لتحميل العمل",
+
+  "fullyPaid": "✅ تم الدفع بالكامل - شكرًا لتعاملك معنا!",
+  "fullyPaidText": "ملفاتك جاهزة للتحميل بالأسفل."
+}
+},
+"Checkout": {
+  "back": "العودة إلى طلباتي",
+  "title": "الدفع",
+  "subtitle": "اختر طريقة الدفع المناسبة وأكمل الدفع بأمان.",
+
+  "summary": "ملخص الطلب",
+  "service": "الخدمة",
+  "paymentType": "نوع الدفع",
+  "deposit": "عربون 20%",
+  "final": "الدفعة النهائية",
+  "totalPrice": "السعر الكامل",
+  "amountDue": "المبلغ المطلوب",
+
+  "paymentMethods": "طرق الدفع",
+
+  "manualTitle": "تحويل العملات الرقمية يدويًا",
+  "manualDescription": "ادفع باستخدام {coin} عبر شبكة {network}. سريع وآمن.",
+
+  "nowTitle": "الدفع عبر NOWPayments",
+  "nowDescription": "بوابة دفع تلقائية للعملات الرقمية مع تتبع الفاتورة.",
+  "nowSmall": "يُنصح باستخدامها للمدفوعات فوق 20$. للمبالغ الصغيرة، التحويل اليدوي أكثر موثوقية.",
+
+  "paypal": "بايبال",
+  "bank": "بطاقة بنكية",
+  "unavailable": "غير متوفر مؤقتًا",
+
+  "paypalDescription": "دعم الدفع عبر البطاقة وبايبال سيعود قريبًا.",
+  "bankDescription": "دفع مباشر وآمن عبر البطاقات البنكية للعملاء الدوليين.",
+
+  "restrictionNotice": "بعض وسائل الدفع الدولية غير متاحة مؤقتًا بسبب القيود البنكية والعقوبات المؤثرة على روسيا ودول CIS. الدفع بالعملات الرقمية مازال يعمل بالكامل وهو الأسرع حاليًا.\n\nللمشاريع الكبيرة أو الحالات الخاصة يمكن قبول التحويلات البنكية اليدوية بعد الاتفاق مع فريقنا.",
+
+  "sendExactly": "أرسل بالضبط {amount} {coin} عبر شبكة {network} ثم ألصق معرف العملية بالأسفل.",
+
+  "scanQr": "امسح QR أو انسخ عنوان المحفظة",
+  "walletAddress": "عنوان المحفظة",
+
+  "warning": "⚠️ أرسل فقط {coin} عبر شبكة {network}. استخدام شبكة أخرى قد يؤدي لفقدان الأموال.",
+
+  "txHash": "معرف العملية",
+  "txPlaceholder": "ألصق معرف العملية هنا...",
+
+  "submit": "إرسال الدفعة للتحقق",
+
+  "secureCheckout": "ادفع عبر بوابة دفع مشفرة وآمنة. سيتم تتبع الدفعة تلقائيًا بواسطة NOWPayments.",
+
+  "creating": "جارٍ إنشاء صفحة الدفع...",
+  "continue": "المتابعة إلى NOWPayments",
+
+  "loading": "جارٍ إعادة تحميل صفحة الدفع...",
+
+  "services": {
+  "graduationProjects": "مشاريع التخرج",
+  "academicReports": "التقارير الأكاديمية",
+  "customWebsites": "تطبيقات / مواقع مخصصة",
+  "mobileApps": "تطبيقات الجوال",
+  "powerpoint": "عروض PowerPoint",
+  "cv": "كتابة السيرة الذاتية",
+  "translation": "الترجمة (عربي ↔ إنجليزي)",
+  "debugging": "تصحيح أخطاء الكود",
+  "ai": "أتمتة الذكاء الاصطناعي",
+  "uiux": "تصميم UI/UX"
+  },
+
+  "toasts": {
+  "walletCopied": "تم نسخ عنوان المحفظة!",
+  "copyFailed": "فشل نسخ العنوان",
+  "enterHash": "يرجى إدخال معرف العملية",
+  "paymentSubmitted": "تم إرسال الدفعة بنجاح وهي بانتظار التحقق.",
+  "submitFailed": "فشل إرسال الدفعة",
+  "checkoutOpened": "تم فتح صفحة NOWPayments في تبويب جديد.",
+  "checkoutFailed": "فشل إنشاء صفحة الدفع",
+  "loadOrderFailed": "فشل تحميل الطلب",
+  "orderNotFound": "الطلب غير موجود",
+  "checkoutLoadFailed": "فشل تحميل صفحة الدفع",
+  "invalidTxHash": "معرّف العملية غير صالح. يرجى إدخال معرّف TRON صحيح مكوّن من 64 حرفًا."
+  }
+},
+"Admin": {
+"services": {
+  "graduationProjects": "مشاريع التخرج",
+  "academicReports": "التقارير الأكاديمية",
+  "customWebsites": "مواقع / تطبيقات مخصصة",
+  "mobileApps": "تطبيقات الموبايل",
+  "powerpoint": "عروض PowerPoint",
+  "cv": "كتابة السيرة الذاتية",
+  "translation": "الترجمة (عربي ↔ إنجليزي)",
+  "debugging": "إصلاح الأكواد",
+  "ai": "أتمتة الذكاء الاصطناعي",
+  "uiux": "تصميم UI/UX"
+},
+"filters": {
+  "allServices": "كل الخدمات",
+  "searchUsers": "ابحث بالاسم أو البريد الإلكتروني...",
+  "status": {
+  "all": "كل الحالات",
+  "pending": "قيد الانتظار",
+  "in-progress": "قيد التنفيذ",
+  "completed": "مكتمل بانتظار الدفع",
+  "cancelled": "ملغي",
+  "fully_paid": "مكتمل ومدفوع",
+  "sort": {
+  "newest": "الأحدث أولاً",
+  "oldest": "الأقدم أولاً"
+}
+}
+},
+"dashboard": {
+  "founder": "لوحة المؤسس",
+  "staff": "لوحة الموظفين",
+  "description": "إدارة الطلبات، المدفوعات، العملاء، المشرفين، المحادثات، الملفات، وسير العمل من لوحة تحكم موحدة.",
+  "founderAccess": "صلاحية المؤسس",
+  "staffAccess": "صلاحية الموظفين"
+},
+
+"buttons": {
+  "auditLogs": "سجل العمليات",
+  "profile": "ملفي الشخصي",
+  "refresh": "تحديث",
+  "logout": "تسجيل الخروج"
+},
+
+"tabs": {
+  "orders": "الطلبات",
+  "crypto": "سجل العملات الرقمية",
+  "completed": "المكتملة",
+  "ratings": "التقييمات",
+  "users": "المستخدمون"
+},
+"stats": {
+  "totalUsers": "إجمالي المستخدمين",
+  "activeUsers": "النشطون",
+  "blockedUsers": "المحظورون",
+  "totalOrders": "الإجمالي",
+"pendingOrders": "قيد الانتظار",
+"inProgressOrders": "قيد التنفيذ",
+"completedOrders": "مكتملة",
+"cancelledOrders": "ملغاة",
+"revenue": "الإيرادات"
+},
+
+"users": {
+"moderatorPerformance": "أداء المشرفين",
+"allUsers": "جميع المستخدمين",
+"assigned": "المسندة",
+"inProgress": "قيد التنفيذ",
+"completed": "المكتملة",
+"cancelled": "الملغاة",
+"completionRate": "نسبة الإنجاز",
+"top": "الأفضل",
+"moderator": "مشرف",
+"blocked": "محظور",
+"removeMod": "إزالة مشرف",
+"makeMod": "تعيين مشرف",
+"unblock": "إلغاء الحظر",
+"block": "حظر"
+},
+"ratings": {
+  "title": "الطلبات المكتملة والتقييمات",
+  "noCompleted": "لا توجد طلبات مكتملة بعد",
+  "fullyPaid": "مدفوع بالكامل",
+  "depositPaid": "تم دفع العربون",
+  "completed": "مكتمل",
+  "moderator": "المشرف",
+  "requirements": "المتطلبات",
+  "deposit": "العربون",
+  "noRating": "لا يوجد تقييم بعد",
+  "hideChat": "إخفاء المحادثة",
+  "chat": "المحادثة",
+  "noFiles": "لا توجد ملفات مرفقة",
+  "messages": "الرسائل"
+},
+"system": {
+  "liveSync": "مزامنة مباشرة",
+  "offline": "غير متصل",
+  "joined": "انضم",
+  "cancel": "إلغاء",
+  "online": "متصل",
+  "clear": "مسح",
+"copy": "نسخ"
+},
+
+"reassign": {
+  "title": "إعادة تعيين الطلب",
+  "currentlyAssigned": "مُعيّن حالياً إلى:"
+},
+
+"cryptoModal": {
+  "title": "تفاصيل الدفع بالعملات الرقمية",
+  "status": "الحالة",
+  "amount": "المبلغ",
+  "network": "الشبكة",
+  "type": "النوع",
+  "deposit": "عربون",
+  "finalPayment": "الدفعة النهائية",
+  "orderId": "رقم الطلب",
+  "txHash": "معرف العملية",
+  "verification": "التحقق من البلوكشين",
+  "notChecked": "لم يتم التحقق من هذه الدفعة بعد.",
+  "received": "تم الاستلام",
+  "receiver": "المستلم",
+  "checkedAt": "تم التحقق في",
+  "submittedAt": "تاريخ الإرسال",
+  "confirmedAt": "تاريخ التأكيد",
+  "notConfirmed": "لم يتم التأكيد بعد",
+  "reviewedBy": "تمت المراجعة بواسطة",
+  "notReviewed": "لم تتم المراجعة بعد",
+  "timeline": "الجدول الزمني للدفع",
+  "submitted": "تم إرسال الدفعة",
+  "confirmed": "تم تأكيد الدفعة",
+  "confirmedShort": "تم التأكيد",
+  "rejected": "تم رفض الدفعة",
+  "rejectedShort": "مرفوض",
+  "waiting": "بانتظار المراجعة",
+  "waitingDescription": "لم يقم المسؤول بتأكيد أو رفض هذه الدفعة بعد."
+},
+"deleteModal": {
+  "title": "حذف الطلب",
+  "message": "هل أنت متأكد أنك تريد حذف هذا الطلب؟ لا يمكن التراجع عن هذا الإجراء."
+},
+"toasts": {
+  "orderReassigned": "تم إعادة تعيين الطلب إلى {name}",
+  "failedReassign": "فشل إعادة التعيين",
+  "orderAccepted": "تم قبول الطلب!",
+  "failedAccept": "فشل قبول الطلب",
+  "validPrice": "يرجى إدخال سعر صحيح",
+  "priceSet": "تم تحديد السعر بـ ${price}. العربون 20%: ${deposit}",
+  "failedSetPrice": "فشل تحديد السعر",
+  "validTimeline": "يرجى إدخال مدة تسليم صحيحة",
+  "timelineUpdated": "تم تحديث مدة التسليم",
+  "failedTimeline": "فشل تحديث مدة التسليم",
+  "cryptoConfirmed": "تم تأكيد دفعة العملات الرقمية",
+  "cryptoRejected": "تم رفض دفعة العملات الرقمية",
+  "failedReviewPayment": "فشل مراجعة الدفعة",
+  "blockchainUpdated": "تم تحديث التحقق من البلوكشين",
+  "failedRecheck": "فشل إعادة فحص الدفعة",
+  "noteSaved": "تم حفظ الملاحظة!",
+  "failedSaveNote": "فشل حفظ الملاحظة",
+  "newOrder": "تم استلام طلب جديد!",
+  "newChat": "تم استلام رسالة محادثة جديدة",
+  "userUnblocked": "تم إلغاء حظر المستخدم",
+  "userBlocked": "تم حظر المستخدم",
+  "failedUpdateUser": "فشل تحديث المستخدم",
+  "userNowModerator": "أصبح المستخدم مشرفًا",
+  "moderatorRemoved": "تمت إزالة المشرف",
+  "failedUpdateRole": "فشل تحديث الدور",
+  "orderDeleted": "تم حذف الطلب بنجاح",
+  "failedDeleteOrder": "فشل حذف الطلب",
+  "markedInProgress": "تم وضع الطلب قيد التنفيذ",
+ "markedCompleted": "تم وضع الطلب كمكتمل",
+ "statusUpdated": "تم تحديث الحالة إلى {status}",
+ "failedUpdateOrder": "فشل تحديث الطلب",
+ "txCopied": "تم نسخ معرف العملية"
+},
+"status": {
+  "pending": "قيد الانتظار",
+  "inProgress": "قيد التنفيذ",
+  "completed": "مكتمل",
+  "cancelled": "ملغي",
+  "fullyPaid": "مدفوع بالكامل"
+  
+},
+"verification": {
+  "notChecked": "لم يتم التحقق",
+  "verifiedTron": "✅ تم التحقق على شبكة TRON",
+  "failed": "❌ فشل التحقق",
+  "notFoundYet": "⏳ لم يتم العثور عليها بعد"
+},
+"time": {
+  "minutesAgo": "منذ {count} دقيقة",
+  "hoursAgo": "منذ {count} ساعة",
+  "daysAgo": "منذ {count} يوم"
+},
+"orders": {
+"client": "العميل",
+"service": "الخدمة",
+"price": "السعر",
+"deposit": "العربون",
+"timeline": "المدة",
+"created": "تاريخ الإنشاء",
+"notSet": "غير محدد",
+"requirements": "المتطلبات",
+"showing": "عرض {count} من {total} طلب",
+"unpaid": "غير مدفوع",
+"depositPaid": "تم دفع العربون",
+"fullyPaid": "مدفوع بالكامل",
+"paymentPending": "الدفع معلق",
+"awaitingDeposit": "بانتظار العربون",
+"urgent": "مستعجل",
+"normal": "عادي",
+"low": "منخفض",
+"reassign": "إعادة تعيين",
+"setTimeline": "تحديد المدة",
+"setPrice": "تحديد السعر",
+"openChat": "فتح المحادثة",
+"hideChat": "إخفاء المحادثة",
+"viewFiles": "عرض الملفات",
+"hideFiles": "إخفاء الملفات",
+"addNote": "إضافة ملاحظة",
+"editNote": "تعديل الملاحظة",
+"delete": "حذف",
+"save": "حفظ",
+"saveNote": "حفظ الملاحظة",
+"acceptOrder": "قبول الطلب",
+"markComplete": "تحديد كمكتمل",
+"internalNote": "ملاحظة داخلية",
+"writeInternalNote": "اكتب ملاحظة داخلية...",
+"newest": "الأحدث",
+"oldest": "الأقدم",
+"finalPrice": "السعر النهائي",
+"timelinePlaceholder": "مثال: 2–4 أسابيع",
+"cancelOrder": "إلغاء الطلب",
+"pendingCryptoPayment": "دفعة عملات رقمية بانتظار المراجعة",
+"type": "النوع",
+"amount": "المبلغ",
+"network": "الشبكة",
+"submitted": "تاريخ الإرسال",
+"transactionHash": "معرف العملية",
+"viewOnTronscan": "عرض على Tronscan",
+"confirmPayment": "تأكيد الدفعة",
+"confirming": "جاري التأكيد...",
+"reject": "رفض",
+"rejecting": "جاري الرفض...",
+"recheck": "إعادة الفحص",
+"checking": "جاري الفحص...",
+"finalPayment": "الدفعة النهائية",
+"deleteOrder": "حذف الطلب",
+"searchPlaceholder": "ابحث بالبريد الإلكتروني أو رقم الطلب أو المتطلبات...",
+"empty": "لم يتم إنشاء أي طلبات بعد.",
+"emptyFiltered": "جرّب تعديل عوامل التصفية.",
+"noOrdersFound": "لم يتم العثور على أي طلبات",
+"clearFilters": "مسح جميع عوامل التصفية",
+"openInvoice": "فتح الفاتورة"
+},
+"crypto": {
+  "title": "سجل مدفوعات العملات الرقمية",
+  "myRevenue": "إيراداتي المقبولة",
+  "myCryptoRevenue": "إيرادات العملات الرقمية الخاصة بي",
+  "siteRevenue": "إيرادات الموقع بالكامل",
+  "pendingAmount": "المبلغ المعلق",
+  "confirmedPayments": "المدفوعات المؤكدة",
+  "rejectedPayments": "المدفوعات المرفوضة",
+  "searchPlaceholder": "ابحث بالبريد الإلكتروني أو رقم الطلب أو الخدمة أو معرف العملية...",
+  "allStatuses": "كل الحالات",
+  "confirmed": "مؤكد",
+  "pending": "قيد الانتظار",
+  "rejected": "مرفوض",
+  "allSources": "كل المصادر",
+  "manualCrypto": "تحويل يدوي",
+  "allTypes": "كل الأنواع",
+  "noPayments": "لا توجد مدفوعات عملات رقمية بعد",
+  "manual": "يدوي",
+  "submitted": "تاريخ الإرسال",
+  "paymentId": "رقم دفعة NOWPayments",
+  "gatewayStatus": "حالة البوابة",
+  "paymentDetails": "تفاصيل الدفعة",
+  "checking": "جاري الفحص...",
+  "recheck": "إعادة الفحص",
+  "viewOnTronscan": "عرض على Tronscan"
+},
+"audit": {
+  "backToDashboard": "العودة للوحة التحكم",
+  "title": "سجل التدقيق",
+  "subtitle": "مراقبة الإجراءات المهمة للمؤسسين والمشرفين في Codnexia.",
+  "exportCsv": "تصدير CSV",
+
+  "totalLogs": "إجمالي السجلات",
+  "roleChanges": "تغييرات الصلاحيات",
+  "orderActions": "إجراءات الطلبات",
+  "dangerActions": "الإجراءات الخطيرة",
+
+  "searchPlaceholder": "ابحث بالرسالة أو المستخدم أو الهدف أو الإجراء...",
+  "allActions": "كل الإجراءات",
+
+  "recentActivity": "النشاط الأخير",
+
+  "loading": "جاري تحميل السجلات...",
+  "noLogs": "لا توجد سجلات تدقيق.",
+
+  "by": "بواسطة",
+  "targetId": "معرف الهدف",
+
+  "hideDetails": "إخفاء التفاصيل",
+  "viewDetails": "عرض التفاصيل",
+
+  "metadata": "البيانات الوصفية",
+  "noMetadata": "لا توجد بيانات إضافية لهذا الإجراء.",
+
+  "page": "الصفحة",
+  "of": "من",
+  "totalLogsFooter": "إجمالي السجلات",
+
+  "previous": "السابق",
+  "next": "التالي",
+  "unknown": "غير معروف"
+}
+},
+"Profile": {
+"services": {
+"graduationProjects": "مشاريع التخرج",
+"academicReports": "التقارير الأكاديمية",
+"customWebsites": "تطبيقات / مواقع مخصصة",
+"mobileApps": "تطبيقات الجوال",
+"powerpoint": "عروض PowerPoint",
+"cv": "كتابة السيرة الذاتية",
+"translation": "الترجمة (عربي ↔ إنجليزي)",
+"debugging": "تصحيح أخطاء الكود",
+"ai": "أتمتة الذكاء الاصطناعي",
+"uiux": "تصميم UI/UX"
+  },
+   "toasts": {
+"profilePicture": "الصورة الشخصية",
+"profileUpdated": "تم تحديث الملف الشخصي بنجاح",
+"updateFailed": "فشل التحديث",
+"somethingWentWrong": "حدث خطأ ما",
+"passwordsDoNotMatch": "كلمتا المرور غير متطابقتين",
+"passwordMinLength": "يجب أن تكون كلمة المرور 6 أحرف على الأقل",
+"passwordChanged": "تم تغيير كلمة المرور بنجاح",
+"passwordChangeFailed": "فشل تغيير كلمة المرور",
+"pictureUpdated": "تم تحديث الصورة الشخصية",
+"uploadFailed": "فشل رفع الصورة"
+ },
+
+  "stats": {
+  "allOrders": "جميع الطلبات",
+  "revenue": "الإيرادات",
+  "users": "المستخدمون",
+  "moderators": "المشرفون",
+  "myOrders": "طلباتي",
+  "myCompleted": "طلباتي المكتملة",
+  "myRating": "تقييمي",
+  "active": "نشط",
+  "account": "الحساب",
+  "memberSince": "عضو منذ",
+  "new": "جديد",
+  "completed": "مكتمل",
+  "orders": "الطلبات",
+  "youHaveOrders": "لديك {count} طلب",
+"youHaveOrdersPlural": "لديك {count} طلبات"
+},
+"tabs": {
+  "editProfile": "تعديل الملف الشخصي",
+  "changePassword": "تغيير كلمة المرور",
+  "myPayments": "مدفوعاتي"
+},
+"viewed": {
+  "role": "الدور",
+  "email": "البريد الإلكتروني",
+  "lastSeen": "آخر ظهور",
+  "never": "لم يظهر أبدًا"
+},
+"form": {
+  "fullName": "الاسم الكامل",
+  "email": "البريد الإلكتروني",
+  "saving": "جاري الحفظ...",
+  "saveChanges": "حفظ التغييرات",
+  "currentPassword": "كلمة المرور الحالية",
+  "newPassword": "كلمة المرور الجديدة",
+  "passwordPlaceholder": "6 أحرف على الأقل",
+  "confirmPassword": "تأكيد كلمة المرور",
+  "changing": "جاري التغيير..."
+},
+"links": {
+  "quickLinks": "روابط سريعة",
+  "dashboard": "لوحة التحكم",
+  "manageUsers": "إدارة المستخدمين",
+  "allOrders": "جميع الطلبات",
+  "completedOrders": "الطلبات المكتملة",
+  "viewDashboard": "عرض لوحة التحكم",
+  "goToDashboard": "الذهاب إلى لوحة التحكم",
+  "yourOrders": "طلباتك",
+  "viewMyOrders": "عرض طلباتي",
+  "placeFirstOrder": "إنشاء أول طلب"
+},
+"payments": {
+  "title": "مدفوعاتي",
+  "noPayments": "لا توجد مدفوعات بعد",
+  "description": "ستظهر هنا مدفوعاتك المؤكدة والمعلقة.",
+  "deposit": "العربون",
+  "finalPayment": "الدفعة النهائية",
+  "viewDetails": "عرض التفاصيل",
+  "confirmed": "مؤكد",
+"pending": "قيد الانتظار",
+"rejected": "مرفوض",
+"manualCrypto": "عملات رقمية يدوية",
+"nowPayments": "NOWPayments"
+},
+"moderator": {
+  "completedOrders": "لقد أكملت {count} طلب",
+  "completedOrdersPlural": "لقد أكملت {count} طلبات",
+  "noCompletedOrders": "لا توجد طلبات مكتملة بعد"
+}
+},
+"Notifications": {
+  "title": "الإشعارات",
+  "loginRequired": "يجب تسجيل الدخول لعرض الإشعارات.",
+  "goToLogin": "الذهاب لتسجيل الدخول",
+  "notificationCenter": "مركز الإشعارات",
+  "subtitle": "تابع تحديثات الطلبات والرسائل والمدفوعات والملفات والتقييمات ونشاط العمل في مكان واحد.",
+  "total": "الإجمالي",
+  "unread": "غير المقروءة",
+  "all": "الكل",
+  "recentActivity": "النشاط الأخير",
+  "latest100": "عرض آخر 100 إشعار.",
+  "markAllRead": "قراءة الكل",
+  "noNotifications": "لا توجد إشعارات بعد",
+  "noNotificationsDesc": "ستظهر هنا تحديثات الطلبات والرسائل والمدفوعات والملفات والتقييمات عند وجود نشاط جديد.",
+  "recently": "مؤخرًا",
+  "justNow": "الآن",
+  "minutesAgo": "منذ {count} دقيقة",
+  "hoursAgo": "منذ {count} ساعة",
+  "daysAgo": "منذ {count} يوم",
+  "unreadNotifications": "إشعارات غير مقروءة",
+"allCaughtUp": "تمت قراءة جميع الإشعارات",
+"viewAllNotifications": "عرض جميع الإشعارات",
+
+  "items": {
+    "order_created": {
+      "title": "تم استلام طلب جديد",
+      "message": "تم إرسال طلب جديد."
+    },
+    "order_accepted": {
+      "title": "تم قبول الطلب",
+      "message": "تم قبول طلبك وبدأ العمل عليه."
+
+    },
+    "new_message": {
+      "title": "رسالة جديدة",
+      "message": "لديك رسالة جديدة."
+    },
+    "payment_confirmed": {
+      "title": "تم تأكيد الدفعة",
+      "message": "تم تأكيد دفعة."
+    },
+    "payment_submitted": {
+      "title": "تم إرسال الدفعة",
+      "message": "تنتظر الدفعة للتحقق."
+    },
+    "files_uploaded": {
+      "title": "تم رفع ملفات",
+      "message": "تم رفع ملف إلى الطلب."
+    },
+    "order_completed": {
+      "title": "اكتمل الطلب",
+      "message": "تم إكمال طلبك."
+    },
+    "order_updated": {
+      "title": "تم تحديث الطلب",
+      "message": "يوجد تحديث جديد على هذا الطلب."
+    },
+    "system": {
+      "title": "إشعار من النظام",
+      "message": "يوجد إشعار جديد من النظام."
+    },
+    "rating_received": {
+  "title": "تم استلام تقييم جديد",
+  "message": "قام عميل بتقييم طلب مكتمل."
+}
+}
+},
+"Register": {
+  "title": "إنشاء حساب",
+  "subtitle": "انضم إلى Codnexia وأدر مشاريعك باحترافية.",
+
+  "fullName": "الاسم الكامل",
+  "fullNamePlaceholder": "John Doe",
+
+  "email": "البريد الإلكتروني",
+  "emailPlaceholder": "student@example.com",
+
+  "password": "كلمة المرور",
+  "passwordPlaceholder": "6 أحرف على الأقل",
+
+  "createAccount": "إنشاء حساب",
+
+  "creatingAccount": "جارٍ إنشاء الحساب...",
+  "sendingVerification": "جارٍ إرسال رسالة التحقق...",
+  "almostDone": "أوشكنا على الانتهاء...",
+
+  "accountCreated": "تم إنشاء الحساب! يرجى التحقق من بريدك الإلكتروني لتفعيل الحساب.",
+  "registrationFailed": "فشل إنشاء الحساب",
+
+  "alreadyHaveAccount": "لديك حساب بالفعل؟",
+  "signIn": "تسجيل الدخول"
+},
+"Login": {
+  "title": "مرحبًا بعودتك",
+  "subtitle": "سجّل الدخول للوصول إلى طلباتك ومحادثاتك ولوحة التحكم.",
+  "email": "البريد الإلكتروني",
+  "emailPlaceholder": "student@example.com",
+  "password": "كلمة المرور",
+  "passwordPlaceholder": "أدخل كلمة المرور",
+  "signIn": "تسجيل الدخول",
+  "signingIn": "جارٍ تسجيل الدخول...",
+  "welcomeBack": "مرحبًا بعودتك!",
+  "loginFailed": "فشل تسجيل الدخول",
+  "noAccount": "ليس لديك حساب؟",
+  "createOne": "إنشاء حساب",
+  "verificationRequired": "تفعيل البريد الإلكتروني مطلوب",
+  "verificationMessage": "أرسلنا رابط التفعيل إلى {email}. يرجى تفعيل بريدك الإلكتروني قبل تسجيل الدخول.",
+  "verificationSent": "تم إرسال رسالة التفعيل. يرجى التحقق من بريدك الوارد.",
+  "resendFailed": "فشل إعادة إرسال رسالة التفعيل.",
+  "sending": "جارٍ الإرسال...",
+  "resendIn": "إعادة الإرسال خلال {seconds}ث",
+  "resendVerification": "إعادة إرسال رسالة التفعيل"
+},
+"Unauthorized": {
+  "title": "تم رفض الوصول",
+  "description": "ليس لديك صلاحية للوصول إلى هذه الصفحة.",
+  "goHome": "الصفحة الرئيسية",
+  "myOrders": "طلباتي"
+},
+"VerifyEmail": {
+  "verifying": "جارٍ التحقق من البريد الإلكتروني",
+  "verified": "تم تفعيل البريد الإلكتروني",
+  "failed": "فشل التفعيل",
+
+  "verifyingMessage": "جارٍ التحقق من بريدك الإلكتروني...",
+  "missingToken": "رمز التفعيل مفقود.",
+  "verifiedMessage": "تم تفعيل البريد الإلكتروني بنجاح.",
+  "failedMessage": "فشل التفعيل.",
+  "failedRetry": "فشل التفعيل. يرجى المحاولة مرة أخرى.",
+
+  "continueLogin": "متابعة إلى تسجيل الدخول",
+  "backLogin": "العودة إلى تسجيل الدخول",
+
+  "loadingVerification": "جارٍ تحميل التفعيل",
+  "preparingLink": "جارٍ تجهيز رابط التفعيل..."
+},
+"Portfolio": {
+  "badge": "أعمالنا",
+  "title": "أعمال",
+  "titleHighlight": "نفخر بها",
+  "subtitle": "كل مشروع يحكي قصة من الالتزام والجودة. شاهد ما يقوله عملاؤنا عنا.",
+
+  "projectsDone": "مشروع مكتمل",
+  "avgRating": "متوسط التقييم",
+  "services": "الخدمات",
+  "happyClients": "عملاء سعداء",
+
+  "allProjects": "جميع المشاريع",
+
+  "emptyTitle": "لا توجد مشاريع في هذا التصنيف بعد",
+  "emptySubtitle": "تحقق لاحقًا لرؤية المزيد!",
+
+  "completedBy": "تم التنفيذ بواسطة",
+
+  "ctaTitle": "جاهز لبدء مشروعك؟",
+  "ctaSubtitle": "انضم إلى عملائنا واحصل على خدمة احترافية.",
+  "ctaButton": "اطلب الآن",
+  "client": "العميل"
+},
+"OrderMessages": {
+  "searchMessages": "ابحث في الرسائل...",
+  "writeMessage": "اكتب رسالة...",
+  "orderChat": "محادثة الطلب",
+"liveSupport": "محادثة دعم مباشرة",
+"messageCount": "{count} رسائل",
+"messageCountOne": "{count} رسالة",
+"today": "اليوم",
+"yesterday": "أمس",
+"you": "أنت",
+"codnexiaTeam": "فريق Codnexia",
+"client": "العميل",
+"messageFailedRetry": "فشل إرسال الرسالة. يمكنك إعادة المحاولة.",
+"imagesOnly": "يُسمح برفع الصور فقط",
+"messageUpdated": "تم تحديث الرسالة",
+"editFailed": "فشل تعديل الرسالة",
+"messageRestored": "تمت استعادة الرسالة. اضغط إرسال مرة أخرى.",
+"messageCopied": "تم نسخ الرسالة",
+"downloadFailed": "فشل تنزيل الملف",
+"messageDeleted": "تم حذف الرسالة",
+"deleteFailed": "فشل حذف الرسالة"
+}
+}

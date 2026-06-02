@@ -1,5 +1,5 @@
 'use client'
-
+import { useTranslations } from 'next-intl'
 import { useCallback, useEffect, useRef, useState } from 'react'
 import { Button } from './ui/button'
 import { showToast } from './ui/toast'
@@ -59,6 +59,7 @@ interface OrderMessagesProps {
 }
 
 export function OrderMessages({ orderId, userName }: OrderMessagesProps) {
+  const t = useTranslations('OrderMessages')
   const [messages, setMessages] = useState<Message[]>([])
   const [newMessage, setNewMessage] = useState('')
   const [loading, setLoading] = useState(true)
@@ -487,7 +488,7 @@ setFailedMessages((prev) => ({
   [optimisticId]: optimisticMessage,
 }))
 
-showToast(data.error || 'Message failed. You can retry it.', 'error')
+showToast(data.error || t('messageFailedRetry'), 'error')
       }
    } catch {
  setMessages((prev) =>
@@ -503,7 +504,7 @@ setFailedMessages((prev) => ({
   [optimisticId]: optimisticMessage,
 }))
 
-showToast('Message failed. You can retry it.', 'error')
+showToast(t('messageFailedRetry'), 'error')
 } finally {
       setSending(false)
     }
@@ -522,8 +523,8 @@ showToast('Message failed. You can retry it.', 'error')
     const yesterday = new Date(today)
     yesterday.setDate(yesterday.getDate() - 1)
 
-    if (msgDate.toDateString() === today.toDateString()) return 'Today'
-    if (msgDate.toDateString() === yesterday.toDateString()) return 'Yesterday'
+   if (msgDate.toDateString() === today.toDateString()) return t('today')
+   if (msgDate.toDateString() === yesterday.toDateString()) return t('yesterday')
 
     return msgDate.toLocaleDateString('en-US', {
       month: 'short',
@@ -539,9 +540,9 @@ showToast('Message failed. You can retry it.', 'error')
   }
 
   const getSenderLabel = (msg: Message, isOwnMessage: boolean) => {
-    if (isOwnMessage) return 'You'
-    if (msg.senderRole === 'admin') return 'Codnexia Team'
-    return msg.sender || 'Client'
+  if (isOwnMessage) return t('you')
+  if (msg.senderRole === 'admin') return t('codnexiaTeam')
+  return msg.sender || t('client')
   }
 
 const openMessageMenu = (e: React.MouseEvent, msg: Message) => {
@@ -632,10 +633,10 @@ const scrollToLatest = () => {
             <ShieldCheck className="h-4 w-4" />
           </div>
           <div>
-            <p className="text-sm font-semibold text-foreground">Order Chat</p>
+            <p className="text-sm font-semibold text-foreground">{t('orderChat')}</p>
             <p className="flex items-center gap-1 text-xs text-emerald-600">
               <span className="h-1.5 w-1.5 rounded-full bg-emerald-500" />
-              Live support conversation
+              {t('liveSupport')}
             </p>
           </div>
           
@@ -652,7 +653,9 @@ const scrollToLatest = () => {
   </button>
 
   <div className="rounded-full border border-border bg-background px-2.5 py-1 text-xs text-muted-foreground">
-    {messages.length} message{messages.length === 1 ? '' : 's'}
+   {messages.length === 1
+    ? t('messageCountOne', { count: messages.length })
+    : t('messageCount', { count: messages.length })}
   </div>
 </div>
 
@@ -676,7 +679,7 @@ const scrollToLatest = () => {
       jumpToSearchResult(e.shiftKey ? 'prev' : 'next')
     }
   }}
-  placeholder="Search messages..."
+  placeholder={t('searchMessages')}
   className="h-full flex-1 bg-transparent text-sm text-foreground outline-none placeholder:text-muted-foreground"
 />
 
@@ -738,7 +741,7 @@ const scrollToLatest = () => {
     if (!file) return
 
     if (!file.type.startsWith('image/')) {
-      showToast('Only image uploads are supported', 'warning')
+      showToast(t('imagesOnly'), 'warning')
       return
     }
 
@@ -964,12 +967,12 @@ className="group/message flex max-w-[78%] items-start gap-2"
 
           setEditingMessageId(null)
           setEditingText('')
-          showToast('Message updated', 'success')
+          showToast(t('messageUpdated'), 'success')
         } else {
-          showToast(data.error || 'Failed to edit message', 'error')
+          showToast(data.error || t('editFailed'), 'error')
         }
       } catch {
-        showToast('Failed to edit message', 'error')
+        showToast(t('editFailed'), 'error')
       }
     }
   }}
@@ -1023,12 +1026,12 @@ className="group/message flex max-w-[78%] items-start gap-2"
 
                 setEditingMessageId(null)
                 setEditingText('')
-                showToast('Message updated', 'success')
+                showToast(t('messageUpdated'), 'success')
               } else {
-                showToast(data.error || 'Failed to edit message', 'error')
+                showToast(data.error || t('editFailed'), 'error')
               }
             } catch {
-              showToast('Failed to edit message', 'error')
+              showToast(t('editFailed'), 'error')
             }
           }}
           className="rounded-lg bg-blue-600 px-3 py-1 text-xs text-white hover:bg-blue-700"
@@ -1135,7 +1138,7 @@ onClick={() => {
     inputRef.current?.focus()
   }, 50)
 
-  showToast('Message restored. Press send again.', 'success')
+  showToast(t('messageRestored'), 'success')
 }}
 
 
@@ -1311,7 +1314,7 @@ onClick={() => {
         <input
           ref={inputRef}
           type="text"
-          placeholder="Write a message..."
+          placeholder={t('writeMessage')}
           className={`h-10 flex-1 rounded-full border border-transparent bg-muted px-4 text-sm text-foreground outline-none transition-all duration-300 focus:border-blue-500 focus:bg-background focus:ring-2 focus:ring-blue-500/20 ${
           sending ? 'opacity-70' : ''
              }`}
@@ -1354,7 +1357,7 @@ onClick={() => {
         type="button"
         onClick={() => {
           navigator.clipboard.writeText(contextMenu.message.message)
-          showToast('Message copied', 'success')
+          showToast(t('messageCopied'), 'success')
           setContextMenu(null)
         }}
         className="flex w-full items-center gap-2 rounded-xl px-3 py-2 text-sm text-foreground transition hover:bg-muted"
@@ -1421,7 +1424,7 @@ onClick={() => {
 
       setContextMenu(null)
     } catch {
-      showToast('Failed to download file', 'error')
+      showToast(t('downloadFailed'), 'error')
     }
   }}
 
@@ -1464,12 +1467,12 @@ onClick={() => {
       : msg
   )
 )
-            showToast('Message deleted', 'success')
+            showToast(t('messageDeleted'), 'success')
           } else {
-            showToast(data.error || 'Failed to delete message', 'error')
+           showToast(data.error || t('deleteFailed'), 'error')
           }
         } catch {
-          showToast('Failed to delete message', 'error')
+         showToast(t('deleteFailed'), 'error')
         }
       }}
       className="flex w-full items-center gap-2 rounded-xl px-3 py-2 text-sm text-red-500 transition hover:bg-red-500/10"

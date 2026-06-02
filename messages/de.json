@@ -1,0 +1,985 @@
+{
+  "Navbar": {
+    "portfolio": "Portfolio",
+    "placeOrder": "Auftrag erstellen",
+    "trackOrder": "Auftrag verfolgen",
+    "myOrders": "Meine Aufträge",
+    "myProfile": "Mein Profil",
+    "dashboard": "Dashboard",
+    "logout": "Abmelden",
+    "signIn": "Anmelden"
+  },
+  "Home": {
+   "heroTitle1": "Wo Ideen",
+    "heroTitle2": "Wirklichkeit werden",
+    "heroDescription": "Professionelle Websites, Mobile Apps, KI-Automatisierung, UI/UX-Design und technische Lösungen für moderne Unternehmen.",
+    "getStarted": "Loslegen",
+    "viewPortfolio": "Portfolio ansehen",
+    "fiveStar": "5-Sterne-Bewertung",
+    "trustedClients": "Von Kunden vertraut",
+    "fastDelivery": "Schnelle Lieferung",
+    "onTime": "Immer pünktlich",
+    "support247": "24/7 Support",
+    "alwaysAvailable": "Immer erreichbar",
+    "ourServices": "Unsere Leistungen",
+    "servicesDescription": "Premium-Digitallösungen – von der ersten Idee bis zur finalen Lieferung, mit höchster Qualität umgesetzt.",
+    "orderNow": "Jetzt bestellen",
+    "readyToBegin": "Bereit zu starten?",
+    "ctaDescription": "Sagen Sie uns, was Sie benötigen, und wir melden uns innerhalb von 24 Stunden mit einem individuellen Angebot.",
+    "startYourOrder": "Auftrag starten",
+    "trackOrder": "Auftrag verfolgen",
+    "trackDescription": "Sie haben bereits einen Auftrag erstellt? Geben Sie Ihre Auftrags-ID ein, um den Status sofort zu prüfen.",
+    "trackPlaceholder": "Auftrags-ID hier einfügen…",
+    "trackButton": "Meinen Auftrag verfolgen",
+    "footer": "© 2026 Codnexia. Alle Rechte vorbehalten.",
+    "services": {
+      "graduationProjects": {
+        "title": "Abschlussprojekte",
+        "description": "Komplette Abschlussarbeit, Dokumentation und Präsentation",
+        "tag": "Am beliebtesten"
+      },
+      "academicReports": {
+        "title": "Akademische Berichte",
+        "description": "Forschungsarbeiten, Essays und Literaturübersichten"
+      },
+      "customWebsites": {
+        "title": "Individuelle Apps / Websites",
+        "description": "Professionelle Websites für Portfolio oder Unternehmen"
+      },
+      "mobileApps": {
+        "title": "Mobile Apps",
+        "description": "iOS-/Android-Apps für Startups, Marken und Unternehmen",
+        "tag": "Premium"
+      },
+      "powerpoint": {
+        "title": "PowerPoint-Präsentationen",
+        "description": "Professionelle Folien für Business, Schulungen und Pitch Decks"
+      },
+      "cv": {
+        "title": "Lebenslauf-Erstellung",
+        "description": "ATS-optimierte Lebensläufe für Fachkräfte"
+      },
+      "translation": {
+        "title": "Übersetzung (EN ↔ AR)",
+        "description": "Menschliche Übersetzung – ohne KI"
+      },
+      "debugging": {
+        "title": "Code-Debugging",
+        "description": "Fehler beheben, Code prüfen und optimieren"
+      },
+      "ai": {
+        "title": "KI-Automatisierung",
+        "description": "Intelligente KI-Workflows, Chatbots und Automatisierungssysteme"
+      },
+      "uiux": {
+        "title": "UI/UX-Design",
+        "description": "Moderne Oberflächen und hochwertige Nutzererlebnisse"
+      }
+    }
+  },
+  "Stats": {
+    "services": "Leistungen",
+    "satisfaction": "Zufriedenheit",
+    "responseTime": "Antwortzeit"
+  },
+  "FAQ": {
+    "title": "Häufig gestellte Fragen",
+    "subtitle": "Alles, was Sie über unsere Leistungen wissen müssen",
+    "q1": "Wie läuft der Projektprozess ab?",
+    "a1": "Wählen Sie eine Leistung, senden Sie Ihre Projektanforderungen und erstellen Sie Ihren Auftrag. Unser Team prüft Ihre Anfrage und sendet Ihnen vor Beginn ein detailliertes Angebot mit Preis, Zeitplan und Projektumfang.",
+    "q2": "Wie werden Preise und Zeitpläne festgelegt?",
+    "a2": "Jedes Projekt wird individuell nach Komplexität, Funktionen und Liefererwartungen bewertet. Nach Prüfung Ihrer Anforderungen erhalten Sie den finalen Preis, den geschätzten Zeitplan, die Anzahlung und den Projektplan.",
+    "q3": "Welche Zahlungsmethoden akzeptieren Sie?",
+    "a3": "Derzeit akzeptieren wir sichere Kryptowährungszahlungen, einschließlich USDT TRC20. Zahlungsanweisungen für Anzahlung und Restbetrag werden nach Prüfung und Freigabe des Projekts gesendet.",
+    "q4": "Kann ich den Fortschritt meines Projekts verfolgen?",
+    "a4": "Ja. Jeder Kunde erhält eine eindeutige Auftrags-ID sowie Zugriff auf Echtzeit-Tracking, Projektupdates, Statusänderungen, Dateilieferung und direkte Kommunikation mit unserem Team.",
+    "q5": "Bieten Sie Überarbeitungen und Support an?",
+    "a5": "Ja. Überarbeitungssupport ist enthalten, damit das Endergebnis dem vereinbarten Projektumfang und Qualitätsstandard entspricht. Bei Bedarf ist auch nach der Lieferung zusätzlicher Support verfügbar.",
+    "q6": "Bleiben meine Informationen und mein Projekt vertraulich?",
+    "a6": "Absolut. Alle Kundendaten, Dateien und Projektdetails werden vertraulich behandelt. Ihre Daten werden niemals an Dritte weitergegeben."
+  },
+  "Orders": {
+    "title": "Auftrag erstellen",
+    "subtitle": "Füllen Sie die Details unten aus und wir beginnen direkt mit Ihrem Projekt",
+    "badge": "Schneller & zuverlässiger Service",
+    "steps": {
+      "select": "Leistung auswählen",
+      "details": "Details ausfüllen",
+      "submit": "Anfrage senden"
+    },
+    "services": {
+      "graduationProjects": {
+        "name": "Abschlussprojekte"
+      },
+      "academicReports": {
+        "name": "Akademische Berichte"
+      },
+      "customWebsites": {
+        "name": "Individuelle Apps / Websites"
+      },
+      "mobileApps": {
+        "name": "Mobile Apps"
+      },
+      "powerpoint": {
+        "name": "PowerPoint-Präsentationen"
+      },
+      "cv": {
+        "name": "Lebenslauf-Erstellung"
+      },
+      "translation": {
+        "name": "Übersetzung (EN↔AR)"
+      },
+      "debugging": {
+        "name": "Code-Debugging"
+      },
+      "ai": {
+        "name": "KI-Automatisierung"
+      },
+      "uiux": {
+        "name": "UI/UX-Design"
+      }
+    },
+    "delivery": {
+      "days1to2": "1–2 Tage",
+      "days1to3": "1–3 Tage",
+      "days1to4": "1–4 Tage",
+      "days1to7": "1–7 Tage",
+      "days2to5": "2–5 Tage",
+      "days3to10": "3–10 Tage",
+      "weeks1to4": "1–4 Wochen",
+      "weeks1to8": "1–8 Wochen",
+      "weeks3to12": "3–12 Wochen"
+    },
+    "form": {
+      "projectDetails": "Projektdetails",
+      "yourEmail": "Ihre E-Mail",
+      "emailNote": "Aufträge werden mit Ihrer verifizierten Konto-E-Mail verknüpft.",
+      "selectService": "Leistung auswählen",
+      "projectRequirements": "Projektanforderungen",
+      "requirementsPlaceholder": "Beschreiben Sie Ihr Projekt, die Frist und besondere Anforderungen...",
+      "priorityLevel": "Prioritätsstufe",
+      "attachFiles": "Dateien anhängen (optional)"
+    },
+    "priority": {
+      "low": "Niedrig",
+      "normal": "Normal",
+      "urgent": "Dringend"
+    },
+    "summary": {
+      "title": "Auftragsübersicht",
+      "service": "Leistung",
+      "timeline": "Geschätzte Lieferung",
+      "price": "Startpreis"
+    },
+    "buttons": {
+      "submit": "Auftrag senden",
+      "submitting": "Wird gesendet...",
+      "login": "Anmeldung erforderlich"
+    },
+    "upload": {
+      "filesAttached": "Angehängte Dateien",
+      "uploaded": "Hochgeladen",
+      "dragDrop": "Dateien hierher ziehen und ablegen",
+      "browse": "oder klicken, um Dateien auszuwählen",
+      "supported": "PDF, DOCX, JPG, PNG, ZIP • Max. 10 MB pro Datei"
+    },
+    "requirements": {
+      "short": "Bitte geben Sie mehr Details an",
+      "medium": "Fügen Sie mehr Details hinzu, um bessere Ergebnisse zu erzielen",
+      "good": "Sehr gute Angaben! Wir wissen genau, was Sie benötigen",
+      "characters": "Zeichen"
+    },
+    "messages": {
+      "loginRequired": "Bitte melden Sie sich an, bevor Sie einen Auftrag erstellen.",
+      "success": "Auftrag erfolgreich gesendet! Prüfen Sie Ihre E-Mail zur Bestätigung.",
+      "error": "Etwas ist schiefgelaufen. Bitte versuchen Sie es erneut.",
+      "network": "Netzwerkfehler. Bitte prüfen Sie Ihre Verbindung und versuchen Sie es erneut.",
+      "maxFiles": "Maximal 5 Dateien pro Auftrag",
+      "fileTooLarge": "Einige Dateien waren zu groß (max. 10 MB)"
+    },
+    "success": {
+      "title": "Auftrag gesendet!",
+      "description": "Wir haben Ihre Anfrage erhalten und kontaktieren Sie unter",
+      "emailFallback": "Ihre verifizierte E-Mail",
+      "track": "Auftrag verfolgen",
+      "another": "Weiteren Auftrag erstellen"
+    },
+    "auth": {
+      "title": "Anmeldung erforderlich",
+      "description": "Bitte melden Sie sich mit einem verifizierten Codnexia-Konto an, bevor Sie einen Auftrag erstellen. So bleiben Auftrag, Chat, Dateien, Zahlungen und E-Mail-Updates dem richtigen Konto zugeordnet.",
+      "signin": "Anmelden",
+      "create": "Konto erstellen"
+    },
+    "features": {
+      "revision": "Überarbeitungssupport inklusive",
+      "secure": "Sicher & vertraulich",
+      "delivery": "Schnelle Lieferung",
+      "response": "Schnelle Reaktionszeit"
+    }
+  },
+  "Track": {
+    "title": "Auftrag verfolgen",
+    "subtitle": "Geben Sie Ihre Auftrags-ID ein, um den Status Ihres Projekts zu prüfen",
+    "search": {
+      "title": "Auftrag finden",
+      "orderId": "Auftrags-ID",
+      "placeholder": "Auftrags-ID eingeben",
+      "searching": "Suche läuft...",
+      "button": "Auftrag verfolgen"
+    },
+    "services": {
+      "graduationProjects": "Abschlussprojekte",
+      "academicReports": "Akademische Berichte",
+      "customWebsites": "Individuelle Apps / Websites",
+      "mobileApps": "Mobile Apps",
+      "powerpoint": "PowerPoint-Präsentationen",
+      "cv": "Lebenslauf-Erstellung",
+      "translation": "Übersetzung (EN↔AR)",
+      "debugging": "Code-Debugging",
+      "ai": "KI-Automatisierung",
+      "uiux": "UI/UX-Design"
+    },
+    "status": {
+      "title": "Auftragsstatus",
+      "pending": "Auftrag erhalten",
+      "inProgress": "In Bearbeitung",
+      "completed": "Abgeschlossen"
+    },
+    "details": {
+      "title": "Auftragsdetails",
+      "orderId": "Auftrags-ID",
+      "service": "Leistung",
+      "price": "Preis",
+      "orderedOn": "Bestellt am",
+      "requirements": "Ihre Anforderungen",
+      "depositPaid": "20 % Anzahlung bezahlt",
+      "fullyPaid": "Vollständig bezahlt"
+    },
+    "actions": {
+      "trackAnother": "Anderen Auftrag verfolgen",
+      "placeNew": "Neuen Auftrag erstellen",
+      "hint": "Ihre Auftrags-ID finden Sie in der Bestätigungs-E-Mail, die wir nach Auftragserstellung gesendet haben.",
+      "loading": "Auftrag wird gesucht..."
+    },
+    "errors": {
+      "notFound": "Auftrag nicht gefunden",
+      "generic": "Etwas ist schiefgelaufen. Bitte versuchen Sie es erneut."
+    }
+  },
+  "MyOrders": {
+    "services": {
+      "graduationProjects": "Abschlussprojekte",
+      "academicReports": "Akademische Berichte",
+      "customWebsites": "Individuelle Apps / Websites",
+      "mobileApps": "Mobile Apps",
+      "powerpoint": "PowerPoint-Präsentationen",
+      "cv": "Lebenslauf-Erstellung",
+      "translation": "Übersetzung (EN↔AR)",
+      "debugging": "Code-Debugging",
+      "ai": "KI-Automatisierung",
+      "uiux": "UI/UX-Design"
+    },
+    "title": "Meine Aufträge",
+    "subtitle": "Verfolgen Sie alle Ihre Aufträge an einem Ort",
+    "empty": {
+      "title": "Ihr Workspace ist bereit",
+      "description": "Laden Sie Dateien hoch, chatten Sie mit uns, verfolgen Sie den Fortschritt und verwalten Sie alles in einem hochwertigen Workspace.",
+      "button": "Erstes Projekt starten"
+    },
+    "status": {
+      "pending": "Ausstehend",
+      "inProgress": "In Bearbeitung",
+      "completed": "Abgeschlossen",
+      "cancelled": "Storniert",
+      "received": "Erhalten"
+    },
+    "order": {
+      "estimatedTimeline": "Geschätzter Zeitplan",
+      "toBeConfirmed": "Wird nach Prüfung bestätigt",
+      "tbd": "Noch festzulegen"
+    },
+    "modal": {
+      "cancelTitle": "Auftrag stornieren",
+      "cancelMessage": "Möchten Sie diesen Auftrag wirklich stornieren? Diese Aktion kann nicht rückgängig gemacht werden."
+    },
+    "messages": {
+      "newChat": "Neue Chat-Nachricht erhalten",
+      "selectRating": "Bitte wählen Sie eine Bewertung aus",
+      "ratingThanks": "Vielen Dank für Ihre Bewertung! ⭐",
+      "ratingFailed": "Bewertung konnte nicht gesendet werden",
+      "cancelled": "Auftrag storniert",
+      "cancelFailed": "Stornierung fehlgeschlagen",
+      "cancelOrderFailed": "Auftrag konnte nicht storniert werden",
+      "fileTooLarge": "Datei zu groß. Max. 10 MB",
+      "fileTooLargeDot": "Datei ist zu groß. Max. 10 MB.",
+      "fileUploaded": "Datei hochgeladen!",
+      "uploadFailed": "Upload fehlgeschlagen",
+      "fileDeleted": "Datei gelöscht",
+      "deleteFailed": "Datei konnte nicht gelöscht werden"
+    },
+    "rating": {
+      "rated": "Bewertet",
+      "title": "Bewerten Sie Ihre Erfahrung:",
+      "placeholder": "Teilen Sie Ihre Erfahrung (optional)...",
+      "submit": "Bewertung senden",
+      "cancel": "Abbrechen",
+      "button": "Auftrag bewerten"
+    },
+    "actions": {
+      "cancel": "Abbrechen",
+      "chat": "Chat",
+      "hideChat": "Chat ausblenden",
+      "viewFiles": "Dateien anzeigen",
+      "hideFiles": "Dateien ausblenden",
+      "messages": "Nachrichten"
+    },
+    "files": {
+      "attached": "Angehängte Dateien",
+      "dragUpload": "Datei hierher ziehen oder zum Hochladen klicken",
+      "noneTitle": "Noch keine Dateien hochgeladen",
+      "noneDescription": "Laden Sie Dokumente, Screenshots, PDFs oder Projektdateien hoch",
+      "uploaded": "Hochgeladen"
+    },
+    "payments": {
+      "howTitle": "💡 So funktionieren Zahlungen",
+      "depositStart": "• 20 % Anzahlung startet Ihr Projekt",
+      "finalPayment": "• 80 % Restzahlung bei Fertigstellung",
+      "crypto": "• Sichere Zahlung per USDT-TRC20-Kryptotransfer",
+      "pendingVerification": "⏳ Zahlung eingereicht und wartet auf Prüfung.",
+      "verificationText": "Wir prüfen Ihre Krypto-Transaktion. Sie werden benachrichtigt, sobald sie bestätigt wurde.",
+      "readyTitle": "💰 Bereit zu starten?",
+      "readyText": "Zahlen Sie 20 % Anzahlung (${deposit}), damit die Arbeit an Ihrem Projekt beginnt. Die restlichen ${remaining} sind bei Fertigstellung fällig.",
+      "payDeposit": "💰 20 % Anzahlung (${deposit}) zum Start zahlen",
+      "depositPaid": "✅ Anzahlung bezahlt! Wir haben mit der Arbeit an Ihrem Projekt begonnen.",
+      "depositPaidText": "Sie zahlen die restlichen ${remaining}, wenn die Arbeit abgeschlossen ist.",
+      "projectReady": "🎉 Ihr Projekt ist fertig!",
+      "projectReadyText": "Zahlen Sie die restlichen ${remaining}, um die fertige Arbeit herunterzuladen.",
+      "downloadWork": "📥 ${remaining} zahlen, um die Arbeit herunterzuladen",
+      "fullyPaid": "✅ Vollständig bezahlt – vielen Dank für Ihr Vertrauen!",
+      "fullyPaidText": "Ihre Dateien stehen unten zum Download bereit."
+    }
+  },
+  "Checkout": {
+    "back": "Zurück zu meinen Aufträgen",
+    "title": "Zahlung",
+    "subtitle": "Wählen Sie Ihre bevorzugte Zahlungsmethode und schließen Sie die Zahlung sicher ab.",
+    "summary": "Auftragsübersicht",
+    "service": "Leistung",
+    "paymentType": "Zahlungsart",
+    "deposit": "20 % Anzahlung",
+    "final": "Restzahlung",
+    "totalPrice": "Gesamtpreis",
+    "amountDue": "Fälliger Betrag",
+    "paymentMethods": "Zahlungsmethoden",
+    "manualTitle": "Manuelle Krypto-Überweisung",
+    "manualDescription": "Zahlen Sie mit {coin} über {network}. Schnell und zuverlässig.",
+    "nowTitle": "NOWPayments-Zahlung",
+    "nowDescription": "Automatisierte Krypto-Zahlung mit Rechnungsverfolgung.",
+    "nowSmall": "Empfohlen für Zahlungen ab 20 $. Für kleinere Beträge ist die manuelle Krypto-Zahlung zuverlässiger.",
+    "paypal": "PayPal",
+    "bank": "Bankkarte",
+    "unavailable": "Vorübergehend nicht verfügbar",
+    "paypalDescription": "Karten- und PayPal-Zahlungen werden bald wieder unterstützt.",
+    "bankDescription": "Sichere direkte Bankzahlungen für internationale Kunden.",
+    "restrictionNotice": "Einige internationale Zahlungsmethoden sind aufgrund regionaler Bankbeschränkungen und Sanktionen, die Zahlungen in Russland/GUS betreffen, vorübergehend nicht verfügbar. Kryptowährungszahlungen funktionieren weiterhin vollständig und sind derzeit die schnellste Zahlungsmethode.\n\nFür große Projekte oder besondere Fälle können nach Absprache mit unserem Team manuelle internationale Banküberweisungen akzeptiert werden.",
+    "sendExactly": "Senden Sie exakt {amount} {coin} über das {network}-Netzwerk und fügen Sie anschließend unten Ihren Transaktions-Hash ein.",
+    "scanQr": "QR scannen oder Wallet-Adresse kopieren",
+    "walletAddress": "Wallet-Adresse",
+    "warning": "⚠️ Senden Sie NUR {coin} über {network}. Die Nutzung eines anderen Netzwerks kann zum dauerhaften Verlust der Mittel führen.",
+    "txHash": "Transaktions-Hash",
+    "txPlaceholder": "Transaktions-Hash hier einfügen...",
+    "submit": "Zahlung zur Prüfung einreichen",
+    "secureCheckout": "Zahlen Sie über eine sichere gehostete Krypto-Zahlungsseite. NOWPayments verfolgt die Zahlung automatisch.",
+    "creating": "Zahlungsseite wird erstellt...",
+    "continue": "Weiter zu NOWPayments",
+    "loading": "Zahlungsseite wird neu geladen...",
+    "services": {
+      "graduationProjects": "Abschlussprojekte",
+      "academicReports": "Akademische Berichte",
+      "customWebsites": "Individuelle Apps / Websites",
+      "mobileApps": "Mobile Apps",
+      "powerpoint": "PowerPoint-Präsentationen",
+      "cv": "Lebenslauf-Erstellung",
+      "translation": "Übersetzung (EN↔AR)",
+      "debugging": "Code-Debugging",
+      "ai": "KI-Automatisierung",
+      "uiux": "UI/UX-Design"
+    },
+    "toasts": {
+      "walletCopied": "Wallet-Adresse kopiert!",
+      "copyFailed": "Adresse konnte nicht kopiert werden",
+      "enterHash": "Bitte geben Sie den Transaktions-Hash ein",
+      "paymentSubmitted": "Zahlung erfolgreich eingereicht! Warten auf Prüfung.",
+      "submitFailed": "Zahlung konnte nicht eingereicht werden",
+      "checkoutOpened": "NOWPayments-Zahlung wurde in einem neuen Tab geöffnet.",
+      "checkoutFailed": "NOWPayments-Zahlung konnte nicht erstellt werden",
+      "loadOrderFailed": "Auftrag konnte nicht geladen werden",
+      "orderNotFound": "Auftrag nicht gefunden",
+      "checkoutLoadFailed": "Zahlungsseite konnte nicht geladen werden",
+      "invalidTxHash": "Ungültiger Transaktions-Hash. Bitte geben Sie einen gültigen 64-stelligen TRON-Transaktions-Hash ein."
+    }
+  },
+  "Admin": {
+    "services": {
+      "graduationProjects": "Abschlussprojekte",
+      "academicReports": "Akademische Berichte",
+      "customWebsites": "Individuelle Apps / Websites",
+      "mobileApps": "Mobile Apps",
+      "powerpoint": "PowerPoint-Präsentationen",
+      "cv": "Lebenslauf-Erstellung",
+      "translation": "Übersetzung (EN↔AR)",
+      "debugging": "Code-Debugging",
+      "ai": "KI-Automatisierung",
+      "uiux": "UI/UX-Design"
+    },
+    "filters": {
+      "allServices": "Alle Leistungen",
+      "searchUsers": "Benutzer nach Name oder E-Mail suchen...",
+      "status": {
+        "all": "Alle Status",
+        "pending": "Ausstehend",
+        "in-progress": "In Bearbeitung",
+        "completed": "Abgeschlossen (Zahlung ausstehend)",
+        "cancelled": "Storniert",
+        "fully_paid": "Abgeschlossen & bezahlt",
+        "sort": {
+          "newest": "Neueste zuerst",
+          "oldest": "Älteste zuerst"
+        }
+      }
+    },
+    "dashboard": {
+      "founder": "Gründer-Dashboard",
+      "staff": "Mitarbeiter-Dashboard",
+      "description": "Verwalten Sie Aufträge, Zahlungen, Kunden, Moderatoren, Chats, Dateien und Arbeitsabläufe über ein zentrales Kontrollzentrum.",
+      "founderAccess": "Gründerzugriff",
+      "staffAccess": "Mitarbeiterzugriff"
+    },
+    "buttons": {
+      "auditLogs": "Audit-Protokolle",
+      "profile": "Mein Profil",
+      "refresh": "Aktualisieren",
+      "logout": "Abmelden"
+    },
+    "tabs": {
+      "orders": "Aufträge",
+      "crypto": "Krypto-Verlauf",
+      "completed": "Meine abgeschlossenen",
+      "ratings": "Bewertungen",
+      "users": "Benutzer"
+    },
+    "stats": {
+      "totalUsers": "Benutzer insgesamt",
+      "activeUsers": "Aktiv",
+      "blockedUsers": "Blockiert",
+      "totalOrders": "Gesamt",
+      "pendingOrders": "Ausstehend",
+      "inProgressOrders": "In Bearbeitung",
+      "completedOrders": "Abgeschlossen",
+      "cancelledOrders": "Storniert",
+      "revenue": "Umsatz"
+    },
+    "users": {
+      "moderatorPerformance": "Moderator-Leistung",
+      "allUsers": "Alle Benutzer",
+      "assigned": "Zugewiesen",
+      "inProgress": "In Bearbeitung",
+      "completed": "Abgeschlossen",
+      "cancelled": "Storniert",
+      "completionRate": "Abschlussrate",
+      "top": "Top",
+      "moderator": "Moderator",
+      "blocked": "Blockiert",
+      "removeMod": "Moderator entfernen",
+      "makeMod": "Zum Moderator machen",
+      "unblock": "Entsperren",
+      "block": "Sperren"
+    },
+    "ratings": {
+      "title": "Abgeschlossene Aufträge & Bewertungen",
+      "noCompleted": "Noch keine abgeschlossenen Aufträge",
+      "fullyPaid": "Vollständig bezahlt",
+      "depositPaid": "Anzahlung bezahlt",
+      "completed": "Abgeschlossen",
+      "moderator": "Moderator",
+      "requirements": "Anforderungen",
+      "deposit": "Anzahlung",
+      "noRating": "Noch keine Bewertung",
+      "hideChat": "Chat ausblenden",
+      "chat": "Chat",
+      "noFiles": "Keine Dateien angehängt",
+      "messages": "Nachrichten"
+    },
+    "system": {
+      "liveSync": "Live-Synchronisierung",
+      "offline": "Offline",
+      "joined": "Beigetreten",
+      "cancel": "Abbrechen",
+      "online": "Online",
+      "clear": "Löschen",
+      "copy": "Kopieren"
+    },
+    "reassign": {
+      "title": "Auftrag neu zuweisen",
+      "currentlyAssigned": "Derzeit zugewiesen an:"
+    },
+    "cryptoModal": {
+      "title": "Details zur Krypto-Zahlung",
+      "status": "Status",
+      "amount": "Betrag",
+      "network": "Netzwerk",
+      "type": "Typ",
+      "deposit": "Anzahlung",
+      "finalPayment": "Restzahlung",
+      "orderId": "Auftrags-ID",
+      "txHash": "Transaktions-Hash",
+      "verification": "Blockchain-Prüfung",
+      "notChecked": "Diese Zahlung wurde noch nicht geprüft.",
+      "received": "Erhalten",
+      "receiver": "Empfänger",
+      "checkedAt": "Geprüft am",
+      "submittedAt": "Eingereicht am",
+      "confirmedAt": "Bestätigt am",
+      "notConfirmed": "Noch nicht bestätigt",
+      "reviewedBy": "Geprüft von",
+      "notReviewed": "Noch nicht geprüft",
+      "timeline": "Zahlungsverlauf",
+      "submitted": "Zahlung eingereicht",
+      "confirmed": "Zahlung bestätigt",
+      "confirmedShort": "Bestätigt",
+      "rejected": "Zahlung abgelehnt",
+      "rejectedShort": "Abgelehnt",
+      "waiting": "Wartet auf Prüfung",
+      "waitingDescription": "Der Admin hat diese Zahlung noch nicht bestätigt oder abgelehnt."
+    },
+    "deleteModal": {
+      "title": "Auftrag löschen",
+      "message": "Möchten Sie diesen Auftrag wirklich löschen? Diese Aktion kann nicht rückgängig gemacht werden."
+    },
+    "toasts": {
+      "orderReassigned": "Auftrag wurde {name} zugewiesen",
+      "failedReassign": "Neuzuweisung fehlgeschlagen",
+      "orderAccepted": "Auftrag angenommen!",
+      "failedAccept": "Auftrag konnte nicht angenommen werden",
+      "validPrice": "Bitte geben Sie einen gültigen Preis ein",
+      "priceSet": "Preis auf ${price} festgelegt. 20 % Anzahlung: ${deposit}",
+      "failedSetPrice": "Preis konnte nicht festgelegt werden",
+      "validTimeline": "Bitte geben Sie einen gültigen Lieferzeitplan ein",
+      "timelineUpdated": "Lieferzeitplan aktualisiert",
+      "failedTimeline": "Zeitplan konnte nicht aktualisiert werden",
+      "cryptoConfirmed": "Krypto-Zahlung bestätigt",
+      "cryptoRejected": "Krypto-Zahlung abgelehnt",
+      "failedReviewPayment": "Zahlung konnte nicht geprüft werden",
+      "blockchainUpdated": "Blockchain-Prüfung aktualisiert",
+      "failedRecheck": "Zahlung konnte nicht erneut geprüft werden",
+      "noteSaved": "Notiz gespeichert!",
+      "failedSaveNote": "Notiz konnte nicht gespeichert werden",
+      "newOrder": "Neuer Auftrag erhalten!",
+      "newChat": "Neue Chat-Nachricht erhalten",
+      "userUnblocked": "Benutzer entsperrt",
+      "userBlocked": "Benutzer blockiert",
+      "failedUpdateUser": "Benutzer konnte nicht aktualisiert werden",
+      "userNowModerator": "Benutzer ist jetzt Moderator",
+      "moderatorRemoved": "Moderator entfernt",
+      "failedUpdateRole": "Rolle konnte nicht aktualisiert werden",
+      "orderDeleted": "Auftrag erfolgreich gelöscht",
+      "failedDeleteOrder": "Auftrag konnte nicht gelöscht werden",
+      "markedInProgress": "Auftrag als „In Bearbeitung“ markiert",
+      "markedCompleted": "Auftrag als „Abgeschlossen“ markiert",
+      "statusUpdated": "Status auf {status} aktualisiert",
+      "failedUpdateOrder": "Auftrag konnte nicht aktualisiert werden",
+      "txCopied": "Transaktions-Hash kopiert"
+    },
+    "status": {
+      "pending": "Ausstehend",
+      "inProgress": "In Bearbeitung",
+      "completed": "Abgeschlossen",
+      "cancelled": "Storniert",
+      "fullyPaid": "Vollständig bezahlt"
+    },
+    "verification": {
+      "notChecked": "Nicht geprüft",
+      "verifiedTron": "✅ Auf TRON verifiziert",
+      "failed": "❌ Prüfung fehlgeschlagen",
+      "notFoundYet": "⏳ Noch nicht gefunden"
+    },
+    "time": {
+      "minutesAgo": "vor {count} Min.",
+      "hoursAgo": "vor {count} Std.",
+      "daysAgo": "vor {count} T."
+    },
+    "orders": {
+      "client": "Kunde",
+      "service": "Leistung",
+      "price": "Preis",
+      "deposit": "Anzahlung",
+      "timeline": "Zeitplan",
+      "created": "Erstellt",
+      "notSet": "Nicht festgelegt",
+      "requirements": "Anforderungen",
+      "showing": "Zeige {count} von {total} Aufträgen",
+      "unpaid": "Unbezahlt",
+      "depositPaid": "Anzahlung bezahlt",
+      "fullyPaid": "Vollständig bezahlt",
+      "paymentPending": "Zahlung ausstehend",
+      "awaitingDeposit": "Wartet auf Anzahlung",
+      "urgent": "Dringend",
+      "normal": "Normal",
+      "low": "Niedrig",
+      "reassign": "Neu zuweisen",
+      "setTimeline": "Zeitplan festlegen",
+      "setPrice": "Preis festlegen",
+      "openChat": "Chat öffnen",
+      "hideChat": "Chat ausblenden",
+      "viewFiles": "Dateien anzeigen",
+      "hideFiles": "Dateien ausblenden",
+      "addNote": "Notiz hinzufügen",
+      "editNote": "Notiz bearbeiten",
+      "delete": "Löschen",
+      "save": "Speichern",
+      "saveNote": "Notiz speichern",
+      "acceptOrder": "Auftrag annehmen",
+      "markComplete": "Als abgeschlossen markieren",
+      "internalNote": "Interne Notiz",
+      "writeInternalNote": "Interne Notiz schreiben...",
+      "newest": "Neueste",
+      "oldest": "Älteste",
+      "finalPrice": "Endpreis",
+      "timelinePlaceholder": "z. B. 2–4 Wochen",
+      "cancelOrder": "Auftrag stornieren",
+      "pendingCryptoPayment": "Ausstehende Krypto-Zahlung",
+      "type": "Typ",
+      "amount": "Betrag",
+      "network": "Netzwerk",
+      "submitted": "Eingereicht",
+      "transactionHash": "Transaktions-Hash",
+      "viewOnTronscan": "Auf Tronscan ansehen",
+      "confirmPayment": "Zahlung bestätigen",
+      "confirming": "Wird bestätigt...",
+      "reject": "Ablehnen",
+      "rejecting": "Wird abgelehnt...",
+      "recheck": "Erneut prüfen",
+      "checking": "Wird geprüft...",
+      "finalPayment": "Restzahlung",
+      "deleteOrder": "Auftrag löschen",
+      "searchPlaceholder": "Nach E-Mail, ID oder Anforderungen suchen...",
+      "empty": "Es wurden noch keine Aufträge erstellt.",
+      "emptyFiltered": "Versuchen Sie, Ihre Filter anzupassen.",
+      "noOrdersFound": "Keine Aufträge gefunden",
+      "clearFilters": "Alle Filter löschen",
+      "openInvoice": "Rechnung öffnen"
+    },
+    "crypto": {
+      "title": "Krypto-Zahlungsverlauf",
+      "myRevenue": "Mein akzeptierter Umsatz",
+      "myCryptoRevenue": "Mein Krypto-Umsatz",
+      "siteRevenue": "Gesamtumsatz der Website",
+      "pendingAmount": "Ausstehender Betrag",
+      "confirmedPayments": "Bestätigte Zahlungen",
+      "rejectedPayments": "Abgelehnte Zahlungen",
+      "searchPlaceholder": "Nach E-Mail, Auftrags-ID, Leistung oder Transaktions-Hash suchen...",
+      "allStatuses": "Alle Status",
+      "confirmed": "Bestätigt",
+      "pending": "Ausstehend",
+      "rejected": "Abgelehnt",
+      "allSources": "Alle Quellen",
+      "manualCrypto": "Manuelle Krypto-Zahlung",
+      "allTypes": "Alle Typen",
+      "noPayments": "Noch keine Krypto-Zahlungen",
+      "manual": "Manuell",
+      "submitted": "Eingereicht",
+      "paymentId": "NOWPayments-Zahlungs-ID",
+      "gatewayStatus": "Gateway-Status",
+      "paymentDetails": "Zahlungsdetails",
+      "checking": "Wird geprüft...",
+      "recheck": "Erneut prüfen",
+      "viewOnTronscan": "Auf Tronscan ansehen"
+    },
+    "audit": {
+      "backToDashboard": "Zurück zum Dashboard",
+      "title": "Audit-Protokolle",
+      "subtitle": "Überwachen Sie wichtige Aktionen von Gründern und Moderatoren in Codnexia.",
+      "exportCsv": "CSV exportieren",
+      "totalLogs": "Protokolle insgesamt",
+      "roleChanges": "Rollenänderungen",
+      "orderActions": "Auftragsaktionen",
+      "dangerActions": "Kritische Aktionen",
+      "searchPlaceholder": "Nach Nachricht, Akteur, Ziel oder Aktion suchen...",
+      "allActions": "Alle Aktionen",
+      "recentActivity": "Aktuelle Aktivität",
+      "loading": "Audit-Protokolle werden geladen...",
+      "noLogs": "Keine Audit-Protokolle gefunden.",
+      "by": "Von",
+      "targetId": "Ziel-ID",
+      "hideDetails": "Details ausblenden",
+      "viewDetails": "Details anzeigen",
+      "metadata": "Metadaten",
+      "noMetadata": "Für diese Aktion sind keine Metadaten gespeichert.",
+      "page": "Seite",
+      "of": "von",
+      "totalLogsFooter": "Protokolle insgesamt",
+      "previous": "Zurück",
+      "next": "Weiter",
+      "unknown": "Unbekannt"
+    }
+  },
+  "Profile": {
+    "services": {
+      "graduationProjects": "Abschlussprojekte",
+      "academicReports": "Akademische Berichte",
+      "customWebsites": "Individuelle Apps / Websites",
+      "mobileApps": "Mobile Apps",
+      "powerpoint": "PowerPoint-Präsentationen",
+      "cv": "Lebenslauf-Erstellung",
+      "translation": "Übersetzung (EN↔AR)",
+      "debugging": "Code-Debugging",
+      "ai": "KI-Automatisierung",
+      "uiux": "UI/UX-Design"
+    },
+    "toasts": {
+      "profileUpdated": "Profil erfolgreich aktualisiert!",
+      "updateFailed": "Aktualisierung fehlgeschlagen",
+      "somethingWentWrong": "Etwas ist schiefgelaufen",
+      "passwordsDoNotMatch": "Passwörter stimmen nicht überein",
+      "passwordMinLength": "Das Passwort muss mindestens 6 Zeichen lang sein",
+      "passwordChanged": "Passwort erfolgreich geändert!",
+      "passwordChangeFailed": "Passwort konnte nicht geändert werden",
+      "pictureUpdated": "Profilbild aktualisiert!",
+      "uploadFailed": "Upload fehlgeschlagen",
+      "profilePicture": "Profil"
+    },
+    "stats": {
+      "allOrders": "Alle Aufträge",
+      "revenue": "Umsatz",
+      "users": "Benutzer",
+      "moderators": "Moderatoren",
+      "myOrders": "Meine Aufträge",
+      "myCompleted": "Meine abgeschlossenen",
+      "myRating": "Meine Bewertung",
+      "active": "Aktiv",
+      "account": "Konto",
+      "memberSince": "Mitglied seit",
+      "new": "Neu",
+      "completed": "Abgeschlossen",
+      "orders": "Aufträge",
+      "youHaveOrders": "Sie haben {count} Auftrag",
+      "youHaveOrdersPlural": "Sie haben {count} Aufträge"
+    },
+    "tabs": {
+      "editProfile": "Profil bearbeiten",
+      "changePassword": "Passwort ändern",
+      "myPayments": "Meine Zahlungen"
+    },
+    "viewed": {
+      "role": "Rolle",
+      "email": "E-Mail",
+      "lastSeen": "Zuletzt gesehen",
+      "never": "Nie"
+    },
+    "form": {
+      "fullName": "Vollständiger Name",
+      "email": "E-Mail",
+      "saving": "Wird gespeichert...",
+      "saveChanges": "Änderungen speichern",
+      "currentPassword": "Aktuelles Passwort",
+      "newPassword": "Neues Passwort",
+      "passwordPlaceholder": "Mind. 6 Zeichen",
+      "confirmPassword": "Passwort bestätigen",
+      "changing": "Wird geändert..."
+    },
+    "links": {
+      "quickLinks": "Schnelllinks",
+      "dashboard": "Dashboard",
+      "manageUsers": "Benutzer verwalten",
+      "allOrders": "Alle Aufträge",
+      "completedOrders": "Abgeschlossene Aufträge",
+      "viewDashboard": "Dashboard ansehen",
+      "goToDashboard": "Zum Dashboard",
+      "yourOrders": "Ihre Aufträge",
+      "viewMyOrders": "Meine Aufträge anzeigen",
+      "placeFirstOrder": "Ersten Auftrag erstellen"
+    },
+    "payments": {
+      "title": "Meine Zahlungen",
+      "noPayments": "Noch keine Zahlungen",
+      "description": "Ihre bestätigten und ausstehenden Zahlungen werden hier angezeigt.",
+      "deposit": "Anzahlung",
+      "finalPayment": "Restzahlung",
+      "viewDetails": "Details anzeigen",
+      "confirmed": "Bestätigt",
+      "pending": "Ausstehend",
+      "rejected": "Abgelehnt",
+      "manualCrypto": "Manuelle Krypto-Zahlung",
+      "nowPayments": "NOWPayments"
+    },
+    "moderator": {
+      "completedOrders": "Sie haben {count} Auftrag abgeschlossen",
+      "completedOrdersPlural": "Sie haben {count} Aufträge abgeschlossen",
+      "noCompletedOrders": "Noch keine abgeschlossenen Aufträge"
+    }
+  },
+  "Notifications": {
+    "title": "Benachrichtigungen",
+    "markAllRead": "Alle markieren",
+    "unread": "Ungelesen",
+    "all": "Alle",
+    "loginRequired": "Sie müssen sich anmelden, um Ihre Benachrichtigungen zu sehen.",
+    "goToLogin": "Zur Anmeldung",
+    "notificationCenter": "Benachrichtigungszentrum",
+    "subtitle": "Verfolgen Sie wichtige Updates zu Aufträgen, Nachrichten, Zahlungen, Dateien, Bewertungen und Arbeitsabläufen an einem Ort.",
+    "total": "Gesamt",
+    "recentActivity": "Aktuelle Aktivität",
+    "latest100": "Ihre letzten 100 Benachrichtigungen werden angezeigt.",
+    "noNotifications": "Noch keine Benachrichtigungen",
+    "noNotificationsDesc": "Updates zu Aufträgen, Nachrichten, Zahlungen, Dateien und Bewertungen erscheinen hier, sobald es neue Aktivitäten gibt.",
+    "recently": "Kürzlich",
+    "justNow": "Gerade eben",
+    "minutesAgo": "vor {count} Min.",
+    "hoursAgo": "vor {count} Std.",
+    "daysAgo": "vor {count} T.",
+    "unreadNotifications": "ungelesene Benachrichtigungen",
+    "allCaughtUp": "Alles erledigt",
+    "viewAllNotifications": "Alle Benachrichtigungen anzeigen",
+    "items": {
+      "order_created": {
+        "title": "Neuer Auftrag erhalten",
+        "message": "Ein neuer Auftrag wurde eingereicht."
+      },
+      "order_accepted": {
+        "title": "Auftrag angenommen",
+        "message": "Ihr Auftrag wurde angenommen und die Arbeit hat begonnen."
+      },
+      "new_message": {
+        "title": "Neue Nachricht erhalten",
+        "message": "Sie haben eine neue Nachricht."
+      },
+      "payment_confirmed": {
+        "title": "Zahlung bestätigt",
+        "message": "Eine Zahlung wurde bestätigt."
+      },
+      "files_uploaded": {
+        "title": "Dateien hochgeladen",
+        "message": "Eine Datei wurde zum Auftrag hochgeladen."
+      },
+      "order_completed": {
+        "title": "Auftrag abgeschlossen",
+        "message": "Ihr Auftrag wurde abgeschlossen."
+      },
+      "order_updated": {
+        "title": "Auftrag aktualisiert",
+        "message": "Es gibt ein neues Update zu diesem Auftrag."
+      },
+      "system": {
+        "title": "Systembenachrichtigung",
+        "message": "Es gibt eine neue Systembenachrichtigung."
+      },
+      "payment_submitted": {
+        "title": "Zahlung eingereicht",
+        "message": "Eine Zahlung wartet auf Prüfung."
+      },
+      "rating_received": {
+        "title": "Neue Bewertung erhalten",
+        "message": "Ein Kunde hat einen abgeschlossenen Auftrag bewertet."
+      }
+    }
+  },
+  "Register": {
+    "title": "Konto erstellen",
+    "subtitle": "Treten Sie Codnexia bei und verwalten Sie Ihre Projekte professionell.",
+    "fullName": "Vollständiger Name",
+    "fullNamePlaceholder": "Max Mustermann",
+    "email": "E-Mail",
+    "emailPlaceholder": "student@example.com",
+    "password": "Passwort",
+    "passwordPlaceholder": "Mind. 6 Zeichen",
+    "createAccount": "Konto erstellen",
+    "creatingAccount": "Konto wird erstellt...",
+    "sendingVerification": "Bestätigungs-E-Mail wird gesendet...",
+    "almostDone": "Fast fertig...",
+    "accountCreated": "Konto erstellt! Bitte prüfen Sie Ihre E-Mail, um Ihr Konto zu verifizieren.",
+    "registrationFailed": "Registrierung fehlgeschlagen",
+    "alreadyHaveAccount": "Sie haben bereits ein Konto?",
+    "signIn": "Anmelden"
+  },
+  "Login": {
+    "title": "Willkommen zurück",
+    "subtitle": "Melden Sie sich an, um auf Ihre Aufträge, Chats und Ihr Dashboard zuzugreifen.",
+    "email": "E-Mail",
+    "emailPlaceholder": "student@example.com",
+    "password": "Passwort",
+    "passwordPlaceholder": "Passwort eingeben",
+    "signIn": "Anmelden",
+    "signingIn": "Anmeldung läuft...",
+    "welcomeBack": "Willkommen zurück!",
+    "loginFailed": "Anmeldung fehlgeschlagen",
+    "noAccount": "Noch kein Konto?",
+    "createOne": "Eins erstellen",
+    "verificationRequired": "E-Mail-Verifizierung erforderlich",
+    "verificationMessage": "Wir haben einen Verifizierungslink an {email} gesendet. Bitte verifizieren Sie Ihre E-Mail, bevor Sie sich anmelden.",
+    "verificationSent": "Verifizierungs-E-Mail gesendet. Bitte prüfen Sie Ihren Posteingang.",
+    "resendFailed": "Verifizierungs-E-Mail konnte nicht erneut gesendet werden.",
+    "sending": "Wird gesendet...",
+    "resendIn": "Erneut senden in {seconds}s",
+    "resendVerification": "Verifizierungs-E-Mail erneut senden"
+  },
+  "Unauthorized": {
+    "title": "Zugriff verweigert",
+    "description": "Sie haben keine Berechtigung, diese Seite aufzurufen.",
+    "goHome": "Zur Startseite",
+    "myOrders": "Meine Aufträge"
+  },
+  "VerifyEmail": {
+    "verifying": "E-Mail wird verifiziert",
+    "verified": "E-Mail verifiziert",
+    "failed": "Verifizierung fehlgeschlagen",
+    "verifyingMessage": "Ihre E-Mail wird verifiziert...",
+    "missingToken": "Verifizierungstoken fehlt.",
+    "verifiedMessage": "E-Mail erfolgreich verifiziert.",
+    "failedMessage": "Verifizierung fehlgeschlagen.",
+    "failedRetry": "Verifizierung fehlgeschlagen. Bitte versuchen Sie es erneut.",
+    "continueLogin": "Weiter zur Anmeldung",
+    "backLogin": "Zurück zur Anmeldung",
+    "loadingVerification": "Verifizierung wird geladen",
+    "preparingLink": "Verifizierungslink wird vorbereitet..."
+  },
+  "Portfolio": {
+    "badge": "Unser Portfolio",
+    "title": "Arbeiten, auf die wir",
+    "titleHighlight": "stolz sind",
+    "subtitle": "Jedes Projekt erzählt eine Geschichte von Engagement und Exzellenz. Lesen Sie, was unsere Kunden über uns sagen.",
+    "projectsDone": "Abgeschlossene Projekte",
+    "avgRating": "Durchschnittsbewertung",
+    "services": "Leistungen",
+    "happyClients": "Zufriedene Kunden",
+    "allProjects": "Alle Projekte",
+    "emptyTitle": "Noch keine Projekte in dieser Kategorie",
+    "emptySubtitle": "Schauen Sie bald wieder vorbei!",
+    "completedBy": "Abgeschlossen von",
+    "ctaTitle": "Bereit, Ihr Projekt zu starten?",
+    "ctaSubtitle": "Schließen Sie sich unseren zufriedenen Kunden an und lassen Sie Ihre Arbeit von Profis erledigen.",
+    "ctaButton": "Jetzt Auftrag erstellen",
+    "client": "Kunde"
+  },
+  "OrderMessages": {
+    "searchMessages": "Nachrichten suchen...",
+    "writeMessage": "Nachricht schreiben...",
+    "orderChat": "Auftragschat",
+    "liveSupport": "Live-Support-Gespräch",
+    "messageCount": "{count} Nachrichten",
+    "messageCountOne": "{count} Nachricht",
+    "today": "Heute",
+    "yesterday": "Gestern",
+    "you": "Sie",
+    "codnexiaTeam": "Codnexia-Team",
+    "client": "Kunde",
+    "messageFailedRetry": "Nachricht fehlgeschlagen. Sie können es erneut versuchen.",
+    "imagesOnly": "Nur Bild-Uploads werden unterstützt",
+    "messageUpdated": "Nachricht aktualisiert",
+    "editFailed": "Nachricht konnte nicht bearbeitet werden",
+    "messageRestored": "Nachricht wiederhergestellt. Drücken Sie erneut auf Senden.",
+    "messageCopied": "Nachricht kopiert",
+    "downloadFailed": "Datei konnte nicht heruntergeladen werden",
+    "messageDeleted": "Nachricht gelöscht",
+    "deleteFailed": "Nachricht konnte nicht gelöscht werden"
+  }
+}

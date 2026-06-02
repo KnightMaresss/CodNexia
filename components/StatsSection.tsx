@@ -1,9 +1,10 @@
 'use client'
 import { useState, useEffect, useRef } from 'react'
+import { useTranslations } from 'next-intl'
 
 function useCountUp(end: number, duration: number = 2000, start: number = 0) {
   const [count, setCount] = useState(start)
-
+ 
   useEffect(() => {
     let startTime: number | null = null
     let animationFrame: number
@@ -28,7 +29,7 @@ function useCountUp(end: number, duration: number = 2000, start: number = 0) {
   }, [end, duration, start])
 
   return count
-}
+ }
 
 function AnimatedStat({ end, suffix, label }: { end: number; suffix: string; label: string }) {
   const [startCounting, setStartCounting] = useState(false)
@@ -62,12 +63,13 @@ function AnimatedStat({ end, suffix, label }: { end: number; suffix: string; lab
 }
 
 export default function StatsSection() {
+ const t = useTranslations('Stats')
   return (
     <section className="relative border-y border-border/30 bg-background/40 px-6 py-2 backdrop-blur-xl">
       <div className="mx-auto grid max-w-5xl grid-cols-3 divide-x divide-border/30 text-center">
-        <AnimatedStat end={10} suffix="+" label="Services" />
-        <AnimatedStat end={98} suffix="%" label="Satisfaction" />
-        <AnimatedStat end={2} suffix="h" label="Response Time" />
+        <AnimatedStat end={10} suffix="+" label={t('services')} />
+        <AnimatedStat end={98} suffix="%" label={t('satisfaction')} />
+        <AnimatedStat end={2} suffix="h" label={t('responseTime')} />
       </div>
     </section>
   )

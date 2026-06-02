@@ -12,7 +12,7 @@ import {
 } from "lucide-react"
 import { cn } from "@/lib/utils"
 import type { NotificationItem as NotificationItemType } from "./useNotifications"
-
+import { useTranslations } from 'next-intl'
 type Props = {
   notification: NotificationItemType
   onClick: () => void
@@ -29,6 +29,8 @@ function NotificationIcon({ type }: { type: NotificationItemType["type"] }) {
     case "new_message":
       return <MessageCircle className={iconClassName} />
     case "payment_confirmed":
+      return <CreditCard className={iconClassName} />
+       case "payment_submitted":
       return <CreditCard className={iconClassName} />
     case "files_uploaded":
       return <UploadCloud className={iconClassName} />
@@ -51,6 +53,8 @@ function getIconStyle(type: NotificationItemType["type"], isRead: boolean) {
       return "border-blue-400/20 bg-blue-500/15 text-blue-300"
     case "payment_confirmed":
       return "border-emerald-400/20 bg-emerald-500/15 text-emerald-300"
+    case "payment_submitted":
+      return "border-amber-400/20 bg-amber-500/15 text-amber-300"
     case "files_uploaded":
       return "border-purple-400/20 bg-purple-500/15 text-purple-300"
     case "order_completed":
@@ -64,7 +68,7 @@ function getIconStyle(type: NotificationItemType["type"], isRead: boolean) {
   }
 }
 
-function formatTimeAgo(date: string) {
+function formatTimeAgo(date: string, t: ReturnType<typeof useTranslations>) {
   const now = Date.now()
   const created = new Date(date).getTime()
   const diff = Math.max(now - created, 0)
@@ -74,15 +78,16 @@ function formatTimeAgo(date: string) {
   const day = 24 * hour
   const week = 7 * day
 
-  if (diff < minute) return "Just now"
-  if (diff < hour) return `${Math.floor(diff / minute)}m ago`
-  if (diff < day) return `${Math.floor(diff / hour)}h ago`
-  if (diff < week) return `${Math.floor(diff / day)}d ago`
+  if (diff < minute) return t("justNow")
+  if (diff < hour) return t("minutesAgo", { count: Math.floor(diff / minute) })
+  if (diff < day) return t("hoursAgo", { count: Math.floor(diff / hour) })
+  if (diff < week) return t("daysAgo", { count: Math.floor(diff / day) })
 
   return new Date(date).toLocaleDateString()
 }
 
 export function NotificationItem({ notification, onClick }: Props) {
+ const t = useTranslations('Notifications')
   return (
     <button
       type="button"
@@ -115,7 +120,7 @@ export function NotificationItem({ notification, onClick }: Props) {
               notification.isRead ? "text-white/75" : "text-white"
             )}
           >
-            {notification.title}
+            {t(`items.${notification.type}.title`)}
           </p>
 
           {!notification.isRead && (
@@ -129,11 +134,11 @@ export function NotificationItem({ notification, onClick }: Props) {
             notification.isRead ? "text-white/45" : "text-white/60"
           )}
         >
-          {notification.message}
+         {t(`items.${notification.type}.message`)}
         </p>
 
         <p className="mt-2 text-[11px] font-medium text-white/40">
-          {formatTimeAgo(notification.createdAt)}
+         {formatTimeAgo(notification.createdAt, t)}
         </p>
       </div>
     </button>

@@ -10,6 +10,7 @@ export type NotificationItem = {
     | "order_accepted"
     | "new_message"
     | "payment_confirmed"
+    | "payment_submitted"
     | "files_uploaded"
     | "order_completed"
     | "order_updated"

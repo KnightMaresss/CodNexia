@@ -2,7 +2,7 @@ import "./globals.css"
 import { ToastContainer } from "@/components/ui/toast"
 import { ThemeProvider } from "@/components/theme-provider"
 import { AuthProvider } from '@/components/auth-context'
-import { Navbar } from '@/components/Navbar'
+
 
 
 export const metadata = {
@@ -58,7 +58,6 @@ export default function RootLayout({
            <body className="min-h-full flex flex-col bg-background text-foreground transition-colors">
         <ThemeProvider>
   <AuthProvider>
-    <Navbar />
     {children}
     <ToastContainer />
   </AuthProvider>

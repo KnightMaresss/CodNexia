@@ -6,6 +6,8 @@ export type NotificationType =
   | "files_uploaded"
   | "order_completed"
   | "order_updated"
+  | "rating_received"
+  | "payment_submitted"
   | "system"
 
 export type CreateNotificationInput = {

@@ -198,7 +198,7 @@ const cryptoPayment = {
 
       await createManyNotifications({
         userIds: admins.map((admin) => admin._id.toString()),
-        type: 'system',
+        type: 'payment_submitted',
         title: 'Crypto payment submitted',
         message: `A ${paymentType} crypto payment is waiting for verification.`,
         link: '/admin',
@@ -212,7 +212,7 @@ const cryptoPayment = {
       if (studentUser?._id) {
         await createNotification({
           userId: studentUser._id.toString(),
-          type: 'system',
+          type: 'payment_submitted',
           title: 'Payment submitted',
           message: 'Your crypto payment was submitted and is waiting for verification.',
           link: '/my-orders',

@@ -5,9 +5,11 @@ export type NotificationType =
   | "order_accepted"
   | "new_message"
   | "payment_confirmed"
+  | "payment_submitted"
   | "files_uploaded"
   | "order_completed"
   | "order_updated"
+  | "rating_received"
   | "system"
 
 const NotificationSchema = new Schema(
@@ -27,9 +29,11 @@ const NotificationSchema = new Schema(
         "order_accepted",
         "new_message",
         "payment_confirmed",
+        "payment_submitted",
         "files_uploaded",
         "order_completed",
         "order_updated",
+        "rating_received",
         "system",
       ],
       index: true,

@@ -66,7 +66,7 @@ try {
   if (order.assignedTo) {
     await createNotification({
       userId: order.assignedTo.toString(),
-      type: 'order_updated',
+      type: 'rating_received',
       title: 'New rating received',
       message: `A client rated your completed order ${rating}/5.`,
       link: '/admin',
@@ -81,7 +81,7 @@ try {
 
     await createManyNotifications({
       userIds: founders.map((founder) => founder._id.toString()),
-      type: 'order_updated',
+      type: 'rating_received',
       title: 'New rating received',
       message: `A client rated a completed order ${rating}/5.`,
       link: '/admin',

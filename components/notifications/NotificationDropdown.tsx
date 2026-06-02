@@ -2,19 +2,22 @@
 
 import Link from "next/link"
 import { Bell, CheckCheck, Loader2 } from "lucide-react"
+import { useTranslations } from "next-intl"
 import { NotificationItem } from "./NotificationItem"
 import type { NotificationItem as NotificationItemType } from "./useNotifications"
-
 type Props = {
+  
   notifications: NotificationItemType[]
   unreadCount: number
   isLoading: boolean
   isRefreshing: boolean
   onNotificationClick: (notification: NotificationItemType) => void
   onMarkAllAsRead: () => void
+  
 }
 
 export function NotificationDropdown({
+  
   notifications,
   unreadCount,
   isLoading,
@@ -22,6 +25,7 @@ export function NotificationDropdown({
   onNotificationClick,
   onMarkAllAsRead,
 }: Props) {
+  const t = useTranslations("Notifications")
   return (
     <div className="absolute right-0 top-full z-50 mt-3 w-[calc(100vw-2rem)] max-w-[390px] overflow-hidden rounded-2xl border border-white/10 bg-[#080812]/95 text-white shadow-[0_24px_80px_rgba(0,0,0,0.55)] backdrop-blur-2xl dark:border-white/10 sm:w-[390px]">
       <div className="flex items-center justify-between border-b border-white/10 px-4 py-3.5">
@@ -33,12 +37,15 @@ export function NotificationDropdown({
 
             <div>
               <h3 className="text-sm font-semibold leading-none text-white">
-                Notifications
+               {t("title")}
               </h3>
               <p className="mt-1.5 text-xs text-white/55">
-                {unreadCount > 0
-                  ? `${unreadCount} unread notification${unreadCount === 1 ? "" : "s"}`
-                  : "You are all caught up"}
+
+
+               {unreadCount > 0
+               ? `${unreadCount} ${t("unreadNotifications")}`
+               : t("allCaughtUp")}
+
               </p>
             </div>
           </div>
@@ -56,7 +63,7 @@ export function NotificationDropdown({
               className="inline-flex items-center gap-1.5 rounded-lg border border-white/10 bg-white/5 px-2.5 py-1.5 text-xs font-medium text-white/80 transition hover:bg-white/10 hover:text-white"
             >
               <CheckCheck className="h-3.5 w-3.5" />
-              Mark all
+             {t("markAllRead")}
             </button>
           )}
         </div>
@@ -89,11 +96,11 @@ export function NotificationDropdown({
             </div>
 
             <p className="text-sm font-semibold text-white">
-              No notifications yet
+             {t("noNotifications")}
             </p>
 
             <p className="mx-auto mt-1.5 max-w-[240px] text-xs leading-relaxed text-white/50">
-              Updates about orders, messages, payments, files, and ratings will appear here.
+              {t("noNotificationsDesc")}
             </p>
           </div>
         )}
@@ -104,7 +111,7 @@ export function NotificationDropdown({
           href="/notifications"
           className="block rounded-xl px-3 py-2.5 text-center text-sm font-semibold text-white/80 transition hover:bg-white/10 hover:text-white"
         >
-          View all notifications
+         {t("viewAllNotifications")}
         </Link>
       </div>
     </div>

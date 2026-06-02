@@ -1,0 +1,1055 @@
+{
+  "Navbar": {
+    "portfolio": "Portfolio",
+    "placeOrder": "Place Order",
+    "trackOrder": "Track Order",
+    "myOrders": "My Orders",
+    "myProfile": "My Profile",
+    "dashboard": "Dashboard",
+    "logout": "Logout",
+    "signIn": "Sign In"
+  },
+  "Home": {
+  "heroTitle1": "Where Ideas",
+  "heroTitle2": "Become Reality",
+  "heroDescription": "Professional websites, mobile apps, AI automation, UI/UX design, and technical solutions for modern businesses.",
+  "getStarted": "Get Started",
+  "viewPortfolio": "View Portfolio",
+  "fiveStar": "5-Star Rated",
+  "trustedClients": "Trusted by clients",
+  "fastDelivery": "Fast Delivery",
+  "onTime": "On-time, every time",
+  "support247": "24/7 Support",
+  "alwaysAvailable": "Always available",
+  "ourServices": "Our Services",
+  "servicesDescription": "Premium digital solutions — from first idea to final delivery, crafted with excellence.",
+  "orderNow": "Order Now",
+  "readyToBegin": "Ready to begin?",
+  "ctaDescription": "Tell us what you need and we'll get back to you within 24 hours with a personalized quote.",
+  "startYourOrder": "Start Your Order",
+  "trackOrder": "Track Order",
+  "trackDescription": "Already placed an order? Enter your Order ID to check your status instantly.",
+  "trackPlaceholder": "Paste your Order ID here…",
+  "trackButton": "Track My Order",
+  "footer": "© 2026 Codnexia. All rights reserved.",
+  "services": {
+  "graduationProjects": {
+    "title": "Graduation Projects",
+    "description": "Complete thesis, documentation, and presentation",
+    "tag": "Most Popular"
+  },
+  "academicReports": {
+    "title": "Academic Reports",
+    "description": "Research papers, essays, and literature reviews"
+  },
+  "customWebsites": {
+    "title": "Custom Apps / Websites",
+    "description": "Professional websites for portfolio or business"
+  },
+  "mobileApps": {
+    "title": "Mobile Apps",
+    "description": "iOS/Android apps for startups, brands, and businesses",
+    "tag": "Premium"
+  },
+  "powerpoint": {
+    "title": "PowerPoint Presentations",
+    "description": "Professional slides for business, training, and pitch decks"
+  },
+  "cv": {
+    "title": "CV / Resume Writing",
+    "description": "ATS-optimized CVs and resumes for professionals"
+  },
+  "translation": {
+    "title": "Translation (En ↔ Ar)",
+    "description": "Human translation — no AI used"
+  },
+  "debugging": {
+    "title": "Code Debugging",
+    "description": "Fix bugs, review, and optimize your code"
+  },
+  "ai": {
+    "title": "AI Automation",
+    "description": "Smart AI workflows, chatbots, and automation systems"
+  },
+  "uiux": {
+    "title": "UI/UX Design",
+    "description": "Modern interfaces and premium user experiences"
+  }
+}
+},
+"Stats": {
+  "services": "Services",
+  "satisfaction": "Satisfaction",
+  "responseTime": "Response Time"
+},
+"FAQ": {
+  "title": "Frequently Asked Questions",
+  "subtitle": "Everything you need to know about our services",
+
+  "q1": "How does the project process work?",
+  "a1": "Choose your service, submit your project requirements, and place your order. Our team will review your request, then send you a detailed quote including pricing, timeline, and project scope before work begins.",
+
+  "q2": "How are pricing and timelines determined?",
+  "a2": "Every project is reviewed individually based on complexity, features, and delivery expectations. After reviewing your requirements, we provide a final price, estimated timeline, deposit amount, and project plan.",
+
+  "q3": "What payment methods do you accept?",
+  "a3": "We currently accept secure cryptocurrency payments including USDT TRC20. Deposit and remaining payment instructions are sent after project review and approval.",
+
+  "q4": "Can I track my project progress?",
+  "a4": "Yes. Every client receives a unique Order ID and access to real-time order tracking, project updates, status changes, file delivery, and direct communication with our team.",
+
+  "q5": "Do you offer revisions and support?",
+  "a5": "Yes. Revision support is included to ensure the final result meets the agreed project scope and quality standards. Additional support is also available after delivery if needed.",
+
+  "q6": "Is my information and project kept private?",
+  "a6": "Absolutely. All client information, files, and project details are handled confidentially. Your data is never shared with third parties."
+},
+"Orders": {
+  "title": "Place Your Order",
+  "subtitle": "Fill in the details below and we will start working on your project right away",
+   "badge": "Fast & Reliable Service",
+  "steps": {
+    "select": "Select Service",
+    "details": "Fill Details",
+    "submit": "Submit Request"
+    
+  },
+
+  "services": {
+    "graduationProjects": {
+      "name": "Graduation Projects"
+    },
+    "academicReports": {
+      "name": "Academic Reports"
+    },
+    "customWebsites": {
+      "name": "Custom Apps / Websites"
+    },
+    "mobileApps": {
+      "name": "Mobile Apps"
+    },
+    "powerpoint": {
+      "name": "PowerPoint Presentations"
+    },
+    "cv": {
+      "name": "CV/Resume Writing"
+    },
+    "translation": {
+      "name": "Translation (En↔Ar)"
+    },
+    "debugging": {
+      "name": "Code Debugging"
+    },
+    "ai": {
+      "name": "AI Automation"
+    },
+    "uiux": {
+      "name": "UI/UX Design"
+    }
+  },
+
+  "delivery": {
+    "days1to2": "1–2 days",
+    "days1to3": "1–3 days",
+    "days1to4": "1–4 days",
+    "days1to7": "1–7 days",
+    "days2to5": "2–5 days",
+    "days3to10": "3–10 days",
+    "weeks1to4": "1–4 weeks",
+    "weeks1to8": "1–8 weeks",
+    "weeks3to12": "3–12 weeks"
+  },
+  "form": {
+  "projectDetails": "Project Details",
+  "yourEmail": "Your Email",
+  "emailNote": "Orders are linked to your verified account email.",
+  "selectService": "Select Service",
+  "projectRequirements": "Project Requirements",
+  "requirementsPlaceholder": "Describe your project, deadline, and any specific requirements...",
+  "priorityLevel": "Priority Level",
+  "attachFiles": "Attach Files (Optional)"
+},
+"priority": {
+  "low": "Low",
+  "normal": "Normal",
+  "urgent": "Urgent"
+},
+
+"summary": {
+  "title": "Order Summary",
+  "service": "Service",
+  "timeline": "Estimated Delivery",
+  "price": "Starting Price"
+},
+
+"buttons": {
+  "submit": "Submit Order",
+  "submitting": "Submitting...",
+  "login": "Login Required"
+},
+"upload": {
+  "filesAttached": "Files attached",
+  "uploaded": "Uploaded",
+  "dragDrop": "Drag & drop files here",
+  "browse": "or click to browse files",
+  "supported": "PDF, DOCX, JPG, PNG, ZIP • Max 10MB each"
+},
+"requirements": {
+  "short": "Please provide more details",
+  "medium": "Add more detail for better results",
+  "good": "Great detail! We know exactly what you need",
+  "characters": "characters"
+},
+
+"messages": {
+  "loginRequired": "Please log in before placing an order.",
+  "success": "Order submitted successfully! Check your email for confirmation.",
+  "error": "Something went wrong. Please try again.",
+  "network": "Network error. Please check your connection and try again.",
+  "maxFiles": "Maximum 5 files per order",
+  "fileTooLarge": "Some files were too large (max 10MB)"
+},
+"success": {
+  "title": "Order Submitted!",
+  "description": "We have received your request and will contact you at",
+  "emailFallback": "your verified email",
+  "track": "Track Your Order",
+  "another": "Place Another Order"
+},
+
+"auth": {
+  "title": "Login required",
+  "description": "Please sign in with a verified Codnexia account before placing an order. This keeps your order, chat, files, payments, and email updates linked to the correct account.",
+  "signin": "Sign in",
+  "create": "Create account"
+},
+
+"features": {
+  "revision": "Revision Support Included",
+  "secure": "Secure & Confidential",
+  "delivery": "Fast Delivery",
+  "response": "Fast Response Time"
+}
+},
+"Track": {
+  "title": "Track Your Order",
+  "subtitle": "Enter your Order ID to check the status of your project",
+
+  "search": {
+    "title": "Find Your Order",
+    "orderId": "Order ID",
+    "placeholder": "Enter your Order ID",
+    "searching": "Searching...",
+    "button": "Track Order"
+  },
+
+  "services": {
+    "graduationProjects": "Graduation Projects",
+    "academicReports": "Academic Reports",
+    "customWebsites": "Custom Apps / Websites",
+    "mobileApps": "Mobile Apps",
+    "powerpoint": "PowerPoint Presentations",
+    "cv": "CV/Resume Writing",
+    "translation": "Translation (En↔Ar)",
+    "debugging": "Code Debugging",
+    "ai": "AI Automation",
+    "uiux": "UI/UX Design"
+  },
+  "status": {
+  "title": "Order Status",
+  "pending": "Order Received",
+  "inProgress": "In Progress",
+  "completed": "Completed"
+},
+"details": {
+  "title": "Order Details",
+  "orderId": "Order ID",
+  "service": "Service",
+  "price": "Price",
+  "orderedOn": "Ordered On",
+  "requirements": "Your Requirements",
+  "depositPaid": "20% deposit paid",
+  "fullyPaid": "Fully paid"
+},
+"actions": {
+  "trackAnother": "Track Another Order",
+  "placeNew": "Place New Order",
+  "hint": "You can find your Order ID in the confirmation email we sent after your order was placed.",
+  "loading": "Looking up your order..."
+},
+"errors": {
+  "notFound": "Order not found",
+  "generic": "Something went wrong. Please try again."
+}
+},
+"MyOrders": {
+  "services": {
+    "graduationProjects": "Graduation Projects",
+    "academicReports": "Academic Reports",
+    "customWebsites": "Custom Apps / Websites",
+    "mobileApps": "Mobile Apps",
+    "powerpoint": "PowerPoint Presentations",
+    "cv": "CV/Resume Writing",
+    "translation": "Translation (En↔Ar)",
+    "debugging": "Code Debugging",
+    "ai": "AI Automation",
+    "uiux": "UI/UX Design"
+  },
+  "title": "My Orders",
+"subtitle": "Track all your orders in one place",
+"empty": {
+  "title": "Your workspace is ready",
+  "description": "Upload files, chat with us, track progress, and manage everything from one premium workspace.",
+  "button": "Start Your First Project"
+},
+"status": {
+  "pending": "Pending",
+  "inProgress": "In Progress",
+  "completed": "Completed",
+  "cancelled": "Cancelled",
+  "received": "Received"
+},
+"order": {
+  "estimatedTimeline": "Estimated timeline",
+  "toBeConfirmed": "To be confirmed after review",
+  "tbd": "TBD"
+},
+"modal": {
+  "cancelTitle": "Cancel Order",
+  "cancelMessage": "Are you sure you want to cancel this order? This action cannot be undone."
+},
+"messages": {
+  "newChat": "New chat message received",
+  "selectRating": "Please select a rating",
+  "ratingThanks": "Thank you for your rating! ⭐",
+  "ratingFailed": "Failed to submit rating",
+  "cancelled": "Order cancelled",
+  "cancelFailed": "Failed to cancel",
+  "cancelOrderFailed": "Failed to cancel order",
+  "fileTooLarge": "File too large. Max 10MB",
+  "fileTooLargeDot": "File is too large. Max 10MB.",
+  "fileUploaded": "File uploaded!",
+  "uploadFailed": "Upload failed",
+  "fileDeleted": "File deleted",
+  "deleteFailed": "Failed to delete file"
+},
+"rating": {
+  "rated": "Rated",
+  "title": "Rate your experience:",
+  "placeholder": "Share your experience (optional)...",
+  "submit": "Submit Rating",
+  "cancel": "Cancel",
+  "button": "Rate Order"
+},
+"actions": {
+  "cancel": "Cancel",
+  "chat": "Chat",
+  "hideChat": "Hide Chat",
+  "viewFiles": "View Files",
+  "hideFiles": "Hide Files",
+  "messages": "Messages"
+},
+"files": {
+  "attached": "Attached Files",
+  "dragUpload": "Drag file here or click to upload",
+  "noneTitle": "No files uploaded yet",
+  "noneDescription": "Upload documents, screenshots, PDFs or project assets",
+  "uploaded": "Uploaded"
+},
+"payments": {
+  "howTitle": "💡 How payments work",
+  "depositStart": "• 20% deposit starts your project",
+  "finalPayment": "• 80% final payment when work is complete",
+  "crypto": "• Secure payment via USDT TRC20 crypto transfer",
+
+  "pendingVerification": "⏳ Payment submitted and waiting for verification.",
+  "verificationText": "We are checking your crypto transaction. You will be notified once it is confirmed.",
+
+  "readyTitle": "💰 Ready to start?",
+  "readyText": "Pay 20% deposit (${deposit}) to begin work on your project. The remaining ${remaining} is due when work is complete.",
+  "payDeposit": "💰 Pay 20% Deposit (${deposit}) to Start",
+
+  "depositPaid": "✅ Deposit paid! We have started working on your project.",
+  "depositPaidText": "You will pay the remaining ${remaining} when work is complete.",
+
+  "projectReady": "🎉 Your project is ready!",
+  "projectReadyText": "Pay the remaining ${remaining} to download your completed work.",
+  "downloadWork": "📥 Pay ${remaining} to Download Work",
+
+  "fullyPaid": "✅ Fully Paid - Thank you for your business!",
+  "fullyPaidText": "Your files are available for download below."
+}
+},
+"Checkout": {
+  "back": "Back to My Orders",
+  "title": "Checkout",
+  "subtitle": "Choose your preferred payment method and complete your payment securely.",
+
+  "summary": "Order Summary",
+  "service": "Service",
+  "paymentType": "Payment Type",
+  "deposit": "20% Deposit",
+  "final": "Final Payment",
+  "totalPrice": "Total Price",
+  "amountDue": "Amount Due",
+
+  "paymentMethods": "Payment Methods",
+
+  "manualTitle": "Manual Crypto Transfer",
+  "manualDescription": "Pay using {coin} on {network}. Fast and reliable.",
+
+  "nowTitle": "NOWPayments Checkout",
+  "nowDescription": "Automated crypto checkout with invoice tracking.",
+  "nowSmall": "Recommended for payments $20+. For smaller payments, manual crypto is more reliable.",
+
+  "paypal": "PayPal",
+  "bank": "Bank Card",
+  "unavailable": "Temporarily Unavailable",
+
+  "paypalDescription": "Card and PayPal checkout support will return soon.",
+  "bankDescription": "Secure direct bank payments for international clients.",
+
+  "restrictionNotice": "Some international payment methods are temporarily unavailable due to regional banking restrictions and sanctions affecting Russia/CIS payment processing. Cryptocurrency payments remain fully operational and are currently the fastest payment method.\n\nFor large projects or special cases, manual international bank transfers can be accepted upon agreement with our team.",
+
+  "sendExactly": "Send exactly {amount} {coin} using the {network} network, then paste your transaction hash below.",
+
+  "scanQr": "Scan QR or copy wallet address",
+  "walletAddress": "Wallet Address",
+
+  "warning": "⚠️ Send ONLY {coin} via {network}. Sending another network may permanently lose funds.",
+
+  "txHash": "Transaction Hash",
+  "txPlaceholder": "Paste your transaction hash here...",
+
+  "submit": "Submit Payment for Verification",
+
+  "secureCheckout": "Pay through a secure hosted crypto checkout. NOWPayments will track the payment automatically.",
+
+  "creating": "Creating checkout...",
+  "continue": "Continue to NOWPayments",
+
+  "loading": "Reloading checkout...",
+  "services": {
+  "graduationProjects": "Graduation Projects",
+  "academicReports": "Academic Reports",
+  "customWebsites": "Custom Apps / Websites",
+  "mobileApps": "Mobile Apps",
+  "powerpoint": "PowerPoint Presentations",
+  "cv": "CV/Resume Writing",
+  "translation": "Translation (En↔Ar)",
+  "debugging": "Code Debugging",
+  "ai": "AI Automation",
+  "uiux": "UI/UX Design"
+},
+  "toasts": {
+  "walletCopied": "Wallet address copied!",
+  "copyFailed": "Failed to copy address",
+  "enterHash": "Please enter transaction hash",
+  "paymentSubmitted": "Payment submitted successfully! Awaiting verification.",
+  "submitFailed": "Failed to submit payment",
+  "checkoutOpened": "NOWPayments checkout opened in a new tab.",
+  "checkoutFailed": "Failed to create NOWPayments checkout",
+  "loadOrderFailed": "Failed to load order",
+  "orderNotFound": "Order not found",
+  "checkoutLoadFailed": "Failed to load checkout",
+  "invalidTxHash": "Invalid transaction hash. Please enter a valid 64-character TRON transaction hash."
+}
+},
+"Admin": {
+"services": {
+  "graduationProjects": "Graduation Projects",
+  "academicReports": "Academic Reports",
+  "customWebsites": "Custom Apps / Websites",
+  "mobileApps": "Mobile Apps",
+  "powerpoint": "PowerPoint Presentations",
+  "cv": "CV/Resume Writing",
+  "translation": "Translation (En↔Ar)",
+  "debugging": "Code Debugging",
+  "ai": "AI Automation",
+  "uiux": "UI/UX Design"
+},
+"filters": {
+  "allServices": "All Services",
+  "searchUsers": "Search users by name or email...",
+  "status": {
+  "all": "All Statuses",
+  "pending": "Pending",
+  "in-progress": "In Progress",
+  "completed": "Completed (Awaiting Payment)",
+  "cancelled": "Cancelled",
+  "fully_paid": "Completed & Paid",
+  "sort": {
+  "newest": "Newest First",
+  "oldest": "Oldest First"
+}
+}
+},
+"dashboard": {
+  "founder": "Founder Dashboard",
+  "staff": "Staff Dashboard",
+  "description": "Manage orders, payments, clients, moderators, chats, files, and workflow operations from one unified control center.",
+  "founderAccess": "Founder Access",
+  "staffAccess": "Staff Access"
+},
+
+"buttons": {
+  "auditLogs": "Audit Logs",
+  "profile": "My Profile",
+  "refresh": "Refresh",
+  "logout": "Logout"
+},
+
+"tabs": {
+  "orders": "Orders",
+  "crypto": "Crypto History",
+  "completed": "My Completed",
+  "ratings": "Ratings",
+  "users": "Users"
+},
+"stats": {
+  "totalUsers": "Total Users",
+  "activeUsers": "Active",
+  "blockedUsers": "Blocked",
+  "totalOrders": "Total",
+"pendingOrders": "Pending",
+"inProgressOrders": "In Progress",
+"completedOrders": "Completed",
+"cancelledOrders": "Cancelled",
+"revenue": "Revenue"
+},
+
+"users": {
+"moderatorPerformance": "Moderator Performance",
+"allUsers": "All Users",
+"assigned": "Assigned",
+"inProgress": "In Progress",
+"completed": "Completed",
+"cancelled": "Cancelled",
+"completionRate": "Completion Rate",
+"top": "Top",
+"moderator": "Moderator",
+"blocked": "Blocked",
+"removeMod": "Remove Mod",
+"makeMod": "Make Mod",
+"unblock": "Unblock",
+"block": "Block"
+},
+"ratings": {
+  "title": "Completed Orders & Ratings",
+  "noCompleted": "No completed orders yet",
+  "fullyPaid": "Fully Paid",
+  "depositPaid": "Deposit Paid",
+  "completed": "Completed",
+  "moderator": "Moderator",
+  "requirements": "Requirements",
+  "deposit": "Deposit",
+  "noRating": "No rating yet",
+  "hideChat": "Hide Chat",
+  "chat": "Chat",
+  "noFiles": "No files attached",
+  "messages": "Messages"
+},
+"system": {
+  "liveSync": "Live Sync",
+  "offline": "Offline",
+  "joined": "Joined",
+  "cancel": "Cancel",
+  "online": "Online",
+  "clear": "Clear",
+"copy": "Copy"
+},
+
+"reassign": {
+  "title": "Reassign Order",
+  "currentlyAssigned": "Currently assigned to:"
+},
+
+"cryptoModal": {
+  "title": "Crypto Payment Details",
+  "status": "Status",
+  "amount": "Amount",
+  "network": "Network",
+  "type": "Type",
+  "deposit": "Deposit",
+  "finalPayment": "Final Payment",
+  "orderId": "Order ID",
+  "txHash": "Transaction Hash",
+  "verification": "Blockchain Verification",
+  "notChecked": "This payment has not been checked yet.",
+  "received": "Received",
+  "receiver": "Receiver",
+  "checkedAt": "Checked At",
+  "submittedAt": "Submitted At",
+  "confirmedAt": "Confirmed At",
+  "notConfirmed": "Not confirmed yet",
+  "reviewedBy": "Reviewed By",
+  "notReviewed": "Not reviewed yet",
+  "timeline": "Payment Timeline",
+  "submitted": "Payment submitted",
+  "confirmed": "Payment confirmed",
+  "confirmedShort": "Confirmed",
+  "rejected": "Payment rejected",
+  "rejectedShort": "Rejected",
+  "waiting": "Waiting for review",
+  "waitingDescription": "Admin has not confirmed or rejected this payment yet."
+},
+"deleteModal": {
+  "title": "Delete Order",
+  "message": "Are you sure you want to delete this order? This action cannot be undone."
+},
+"toasts": {
+  "orderReassigned": "Order reassigned to {name}",
+  "failedReassign": "Failed to reassign",
+  "orderAccepted": "Order accepted!",
+  "failedAccept": "Failed to accept order",
+  "validPrice": "Please enter a valid price",
+  "priceSet": "Price set to ${price}. 20% deposit: ${deposit}",
+  "failedSetPrice": "Failed to set price",
+  "validTimeline": "Please enter a valid delivery timeline",
+  "timelineUpdated": "Delivery timeline updated",
+  "failedTimeline": "Failed to update timeline",
+  "cryptoConfirmed": "Crypto payment confirmed",
+  "cryptoRejected": "Crypto payment rejected",
+  "failedReviewPayment": "Failed to review payment",
+  "blockchainUpdated": "Blockchain verification updated",
+  "failedRecheck": "Failed to re-check payment",
+  "noteSaved": "Note saved!",
+  "failedSaveNote": "Failed to save note",
+  "newOrder": "New order received!",
+  "newChat": "New chat message received",
+  "userUnblocked": "User unblocked",
+  "userBlocked": "User blocked",
+  "failedUpdateUser": "Failed to update user",
+  "userNowModerator": "User is now a moderator",
+  "moderatorRemoved": "Moderator removed",
+  "failedUpdateRole": "Failed to update role",
+  "orderDeleted": "Order deleted successfully",
+  "failedDeleteOrder": "Failed to delete order",
+  "markedInProgress": "Order marked as In Progress",
+ "markedCompleted": "Order marked as Completed",
+ "statusUpdated": "Status updated to {status}",
+ "failedUpdateOrder": "Failed to update order",
+ "txCopied": "Transaction hash copied"
+},
+"status": {
+"pending": "Pending",
+"inProgress": "In Progress",
+"completed": "Completed",
+"cancelled": "Cancelled",
+"fullyPaid": "Fully Paid"
+},
+"verification": {
+  "notChecked": "Not checked",
+  "verifiedTron": "✅ Verified on TRON",
+  "failed": "❌ Verification failed",
+  "notFoundYet": "⏳ Not found yet"
+},
+"time": {
+  "minutesAgo": "{count}m ago",
+  "hoursAgo": "{count}h ago",
+  "daysAgo": "{count}d ago"
+},
+"orders": {
+ "client": "Client",
+"service": "Service",
+"price": "Price",
+"deposit": "Deposit",
+"timeline": "Timeline",
+"created": "Created",
+"notSet": "Not set",
+"requirements": "Requirements",
+"showing": "Showing {count} of {total} orders",
+"unpaid": "Unpaid",
+"depositPaid": "Deposit Paid",
+"fullyPaid": "Fully Paid",
+"paymentPending": "Payment Pending",
+"awaitingDeposit": "Awaiting Deposit",
+"urgent": "Urgent",
+"normal": "Normal",
+"low": "Low",
+"reassign": "Reassign",
+"setTimeline": "Set Timeline",
+"setPrice": "Set Price",
+"openChat": "Open Chat",
+"hideChat": "Hide Chat",
+"viewFiles": "View Files",
+"hideFiles": "Hide Files",
+"addNote": "Add Note",
+"editNote": "Edit Note",
+"delete": "Delete",
+"save": "Save",
+"saveNote": "Save Note",
+"acceptOrder": "Accept Order",
+"markComplete": "Mark Complete",
+"internalNote": "Internal Note",
+"writeInternalNote": "Write internal note...",
+"newest": "Newest",
+"oldest": "Oldest",
+"finalPrice": "Final price",
+"timelinePlaceholder": "e.g. 2–4 weeks",
+"cancelOrder": "Cancel Order",
+"pendingCryptoPayment": "Pending Crypto Payment",
+"type": "Type",
+"amount": "Amount",
+"network": "Network",
+"submitted": "Submitted",
+"transactionHash": "Transaction Hash",
+"viewOnTronscan": "View on Tronscan",
+"confirmPayment": "Confirm Payment",
+"confirming": "Confirming...",
+"reject": "Reject",
+"rejecting": "Rejecting...",
+"recheck": "Re-check",
+"checking": "Checking...",
+"finalPayment": "Final Payment",
+"deleteOrder": "Delete Order",
+"searchPlaceholder": "Search by email, ID, or requirements...",
+"empty": "No orders have been placed yet.",
+"emptyFiltered": "Try adjusting your filters.",
+"noOrdersFound": "No orders found",
+"clearFilters": "Clear all filters",
+"openInvoice": "Open Invoice"
+
+},
+"crypto": {
+  "title": "Crypto Payment History",
+  "myRevenue": "My Accepted Revenue",
+  "myCryptoRevenue": "My Crypto Revenue",
+  "siteRevenue": "Entire Site Revenue",
+  "pendingAmount": "Pending Amount",
+  "confirmedPayments": "Confirmed Payments",
+  "rejectedPayments": "Rejected Payments",
+  "searchPlaceholder": "Search by email, order ID, service, or transaction hash...",
+  "allStatuses": "All Statuses",
+  "confirmed": "Confirmed",
+  "pending": "Pending",
+  "rejected": "Rejected",
+  "allSources": "All Sources",
+  "manualCrypto": "Manual Crypto",
+  "allTypes": "All Types",
+  "noPayments": "No crypto payments yet",
+  "manual": "Manual",
+  "submitted": "Submitted",
+  "paymentId": "NOWPayments Payment ID",
+  "gatewayStatus": "Gateway status",
+  "paymentDetails": "Payment Details",
+  "checking": "Checking...",
+  "recheck": "Re-check",
+  "viewOnTronscan": "View on Tronscan"
+},
+"audit": {
+  "backToDashboard": "Back to Dashboard",
+  "title": "Audit Logs",
+  "subtitle": "Monitor important founder and moderator actions across Codnexia.",
+  "exportCsv": "Export CSV",
+
+  "totalLogs": "Total Logs",
+  "roleChanges": "Role Changes",
+  "orderActions": "Order Actions",
+  "dangerActions": "Danger Actions",
+
+  "searchPlaceholder": "Search by message, actor, target, or action...",
+  "allActions": "All actions",
+
+  "recentActivity": "Recent Activity",
+
+  "loading": "Loading audit logs...",
+  "noLogs": "No audit logs found.",
+
+  "by": "By",
+  "targetId": "Target ID",
+
+  "hideDetails": "Hide Details",
+  "viewDetails": "View Details",
+
+  "metadata": "Metadata",
+  "noMetadata": "No metadata stored for this action.",
+
+  "page": "Page",
+  "of": "of",
+  "totalLogsFooter": "total logs",
+
+  "previous": "Previous",
+  "next": "Next",
+  "unknown": "Unknown"
+}
+},
+"Profile": {
+  "services": {
+    "graduationProjects": "Graduation Projects",
+    "academicReports": "Academic Reports",
+    "customWebsites": "Custom Apps / Websites",
+    "mobileApps": "Mobile Apps",
+    "powerpoint": "PowerPoint Presentations",
+    "cv": "CV/Resume Writing",
+    "translation": "Translation (En↔Ar)",
+    "debugging": "Code Debugging",
+    "ai": "AI Automation",
+    "uiux": "UI/UX Design"
+    
+  },
+    "toasts": {   
+"profileUpdated": "Profile updated successfully!",
+"updateFailed": "Update failed",
+"somethingWentWrong": "Something went wrong",
+"passwordsDoNotMatch": "Passwords do not match",
+"passwordMinLength": "Password must be at least 6 characters",
+"passwordChanged": "Password changed successfully!",
+"passwordChangeFailed": "Failed to change password",
+"pictureUpdated": "Profile picture updated!",
+"uploadFailed": "Upload failed",
+"profilePicture": "Profile"
+  },
+  "stats": {
+  "allOrders": "All Orders",
+  "revenue": "Revenue",
+  "users": "Users",
+  "moderators": "Moderators",
+  "myOrders": "My Orders",
+  "myCompleted": "My Completed",
+  "myRating": "My Rating",
+  "active": "Active",
+  "account": "Account",
+  "memberSince": "Member since",
+  "new": "New",
+  "completed": "Completed",
+  "orders": "Orders",
+  "youHaveOrders": "You have {count} order",
+  "youHaveOrdersPlural": "You have {count} orders"
+},
+
+"tabs": {
+  "editProfile": "Edit Profile",
+  "changePassword": "Change Password",
+  "myPayments": "My Payments"
+},
+"viewed": {
+  "role": "Role",
+  "email": "Email",
+  "lastSeen": "Last Seen",
+  "never": "Never"
+},
+"form": {
+  "fullName": "Full Name",
+  "email": "Email",
+  "saving": "Saving...",
+  "saveChanges": "Save Changes",
+  "currentPassword": "Current Password",
+  "newPassword": "New Password",
+  "passwordPlaceholder": "Min. 6 characters",
+  "confirmPassword": "Confirm Password",
+  "changing": "Changing..."
+},
+"links": {
+  "quickLinks": "Quick Links",
+  "dashboard": "Dashboard",
+  "manageUsers": "Manage Users",
+  "allOrders": "All Orders",
+  "completedOrders": "Completed Orders",
+  "viewDashboard": "View Dashboard",
+  "goToDashboard": "Go to Dashboard",
+  "yourOrders": "Your Orders",
+  "viewMyOrders": "View My Orders",
+  "placeFirstOrder": "Place Your First Order"
+},
+"payments": {
+  "title": "My Payments",
+  "noPayments": "No payments yet",
+  "description": "Your confirmed and pending payments will appear here.",
+  "deposit": "Deposit",
+  "finalPayment": "Final Payment",
+  "viewDetails": "View Details",
+  "confirmed": "Confirmed",
+"pending": "Pending",
+"rejected": "Rejected",
+"manualCrypto": "Manual Crypto",
+"nowPayments": "NOWPayments"
+},
+"moderator": {
+  "completedOrders": "You have completed {count} order",
+  "completedOrdersPlural": "You have completed {count} orders",
+  "noCompletedOrders": "No completed orders yet"
+}
+},
+"Notifications": {
+"title": "Notifications",
+"markAllRead": "Mark all",
+"unread": "Unread",
+"all": "All",
+"loginRequired": "You need to log in to view your notifications.",
+"goToLogin": "Go to login",
+"notificationCenter": "Notification Center",
+"subtitle": "Track important updates about orders, messages, payments, files, ratings, and workflow activity in one place.",
+"total": "Total",
+"recentActivity": "Recent activity",
+"latest100": "Showing your latest 100 notifications.",
+"noNotifications": "No notifications yet",
+"noNotificationsDesc": "Updates about orders, messages, payments, files, and ratings will appear here when there is new activity.",
+"recently": "Recently",
+"justNow": "Just now",
+"minutesAgo": "{count}m ago",
+"hoursAgo": "{count}h ago",
+"daysAgo": "{count}d ago",
+"unreadNotifications": "unread notifications",
+"allCaughtUp": "You are all caught up",
+"viewAllNotifications": "View all notifications",
+
+  "items": {
+    "order_created": {
+      "title": "New order received",
+      "message": "A new order was submitted."
+
+    },
+    "order_accepted": {
+      "title": "Order accepted",
+      "message": "Your order was accepted and work has started."
+    },
+    "new_message": {
+      "title": "New message received",
+      "message": "You have a new message."
+    },
+    "payment_confirmed": {
+     "title": "Payment confirmed",
+      "message": "A payment was confirmed."
+    },
+    "files_uploaded": {
+      "title": "Files uploaded",
+      "message": "A file was uploaded to the order."
+    },
+    "order_completed": {
+      "title": "Order completed",
+      "message": "Your order has been completed."
+    },
+    "order_updated": {
+      "title": "Order updated",
+      "message": "There is a new update on this order."
+    },
+    "system": {
+      "title": "System notification",
+      "message": "There is a new system notification."
+    },
+    "payment_submitted": {
+  "title": "Payment submitted",
+  "message": "A payment is waiting for verification."
+  },
+  "rating_received": {
+  "title": "New rating received",
+  "message": "A client rated a completed order."
+}
+}
+},
+"Register": {
+  "title": "Create Account",
+  "subtitle": "Join Codnexia and manage your projects professionally.",
+
+  "fullName": "Full Name",
+  "fullNamePlaceholder": "John Doe",
+
+  "email": "Email",
+  "emailPlaceholder": "student@example.com",
+
+  "password": "Password",
+  "passwordPlaceholder": "Min. 6 characters",
+
+  "createAccount": "Create Account",
+
+  "creatingAccount": "Creating account...",
+  "sendingVerification": "Sending verification email...",
+  "almostDone": "Almost done...",
+
+  "accountCreated": "Account created! Please check your email to verify your account.",
+  "registrationFailed": "Registration failed",
+
+  "alreadyHaveAccount": "Already have an account?",
+  "signIn": "Sign in"
+},
+"Login": {
+  "title": "Welcome Back",
+  "subtitle": "Sign in to access your orders, chats, and dashboard.",
+  "email": "Email",
+  "emailPlaceholder": "student@example.com",
+  "password": "Password",
+  "passwordPlaceholder": "Enter your password",
+  "signIn": "Sign In",
+  "signingIn": "Signing in...",
+  "welcomeBack": "Welcome back!",
+  "loginFailed": "Login failed",
+  "noAccount": "Don't have an account?",
+  "createOne": "Create one",
+  "verificationRequired": "Email verification required",
+  "verificationMessage": "We sent a verification link to {email}. Please verify your email before logging in.",
+  "verificationSent": "Verification email sent. Please check your inbox.",
+  "resendFailed": "Failed to resend verification email.",
+  "sending": "Sending...",
+  "resendIn": "Resend in {seconds}s",
+  "resendVerification": "Resend verification email"
+},
+"Unauthorized": {
+  "title": "Access Denied",
+  "description": "You do not have permission to access this page.",
+  "goHome": "Go Home",
+  "myOrders": "My Orders"
+},
+"VerifyEmail": {
+  "verifying": "Verifying email",
+  "verified": "Email verified",
+  "failed": "Verification failed",
+
+  "verifyingMessage": "Verifying your email...",
+  "missingToken": "Verification token is missing.",
+  "verifiedMessage": "Email verified successfully.",
+  "failedMessage": "Verification failed.",
+  "failedRetry": "Verification failed. Please try again.",
+
+  "continueLogin": "Continue to login",
+  "backLogin": "Back to login",
+
+  "loadingVerification": "Loading verification",
+  "preparingLink": "Preparing your verification link..."
+},
+"Portfolio": {
+  "badge": "Our Portfolio",
+  "title": "Work We're",
+  "titleHighlight": "Proud Of",
+  "subtitle": "Every project tells a story of dedication and excellence. See what our clients say about us.",
+
+  "projectsDone": "Projects Done",
+  "avgRating": "Avg Rating",
+  "services": "Services",
+  "happyClients": "Happy Clients",
+
+  "allProjects": "All Projects",
+
+  "emptyTitle": "No projects in this category yet",
+  "emptySubtitle": "Check back soon for updates!",
+
+  "completedBy": "Completed by",
+
+  "ctaTitle": "Ready to Start Your Project?",
+  "ctaSubtitle": "Join our happy clients and get your work done by professionals.",
+  "ctaButton": "Place Your Order Now",
+  "client": "Client"
+},
+"OrderMessages": {
+  "searchMessages": "Search messages...",
+  "writeMessage": "Write a message...",
+  "orderChat": "Order Chat",
+"liveSupport": "Live support conversation",
+"messageCount": "{count} messages",
+"messageCountOne": "{count} message",
+"today": "Today",
+"yesterday": "Yesterday",
+"you": "You",
+"codnexiaTeam": "Codnexia Team",
+"client": "Client",
+"messageFailedRetry": "Message failed. You can retry it.",
+"imagesOnly": "Only image uploads are supported",
+"messageUpdated": "Message updated",
+"editFailed": "Failed to edit message",
+"messageRestored": "Message restored. Press send again.",
+"messageCopied": "Message copied",
+"downloadFailed": "Failed to download file",
+"messageDeleted": "Message deleted",
+"deleteFailed": "Failed to delete message"
+}
+}
