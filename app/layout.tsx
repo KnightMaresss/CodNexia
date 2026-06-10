@@ -51,8 +51,10 @@ export default function RootLayout({
   className="h-full antialiased"
   suppressHydrationWarning
 >
-            <head>
-        <link rel="icon" href="/favicon-cx.png" sizes="any" />
+ <head>
+ <link rel="icon" href="/favicon.ico?v=2" sizes="any" />
+<link rel="shortcut icon" href="/favicon.ico?v=2" />
+<link rel="apple-touch-icon" href="/apple-touch-icon.png?v=2" />
         <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
       </head>
            <body className="min-h-full flex flex-col bg-background text-foreground transition-colors">
