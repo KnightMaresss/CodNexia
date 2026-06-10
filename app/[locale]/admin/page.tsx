@@ -12,6 +12,7 @@ import { useRouter } from 'next/navigation'
 import { canAccessAdmin, isFounderRole, isModeratorRole } from '@/lib/roles'
 import { Shield } from 'lucide-react'
 import { useTranslations } from 'next-intl'
+import { MessageSquare } from 'lucide-react'
 import {
   LogOut,
   Trash2,
@@ -1412,7 +1413,7 @@ if (loading) {
 )}
 
       <div className="max-w-7xl mx-auto">
-       <div className="mb-10 flex flex-col gap-6 xl:flex-row xl:items-center xl:justify-between">
+       <div className="mb-10 space-y-6">
 
         <div>
   <div className="mb-3 inline-flex items-center gap-2 rounded-full border border-blue-500/20 bg-blue-500/10 px-3 py-1 text-xs font-semibold text-blue-700 dark:text-blue-300">
@@ -1433,51 +1434,61 @@ if (loading) {
   </p>
 </div>
 
-              <div className="flex flex-wrap items-center gap-2">
-                <div
-  className={`flex items-center gap-2 rounded-lg border px-3 py-2 text-sm ${
-    streamConnected
-      ? 'border-emerald-500/30 bg-emerald-500/10 text-emerald-600'
-      : 'border-red-500/30 bg-red-500/10 text-red-600'
-  }`}
->
-  {streamConnected ? (
-    <Wifi className="h-4 w-4" />
-  ) : (
-    <WifiOff className="h-4 w-4" />
+<div className="flex flex-wrap items-center gap-2">
+  <div
+    className={`flex items-center gap-2 rounded-lg border px-3 py-2 text-sm ${
+      streamConnected
+        ? 'border-emerald-500/30 bg-emerald-500/10 text-emerald-600'
+        : 'border-red-500/30 bg-red-500/10 text-red-600'
+    }`}
+  >
+    {streamConnected ? (
+      <Wifi className="h-4 w-4" />
+    ) : (
+      <WifiOff className="h-4 w-4" />
+    )}
+    {streamConnected ? t('system.liveSync') : t('system.offline')}
+  </div>
+
+  {userRole === 'founder' && (
+    <>
+      <Link href="/admin/audit-logs">
+        <Button variant="outline" size="default">
+          <Shield className="h-4 w-4 mr-1" />
+          {t('buttons.auditLogs')}
+        </Button>
+      </Link>
+
+      <Link href="/admin/feedback">
+        <Button variant="outline" size="default">
+          <MessageSquare className="h-4 w-4 mr-1" />
+          {t('buttons.feedbackInbox')}
+        </Button>
+      </Link>
+    </>
   )}
- {streamConnected ? t('system.liveSync') : t('system.offline')}
+
+  {canAccessAdmin(userRole) && (
+    <Link href="/profile">
+      <Button variant="outline" size="default">
+        <User className="h-4 w-4 mr-1" />
+        {t('buttons.profile')}
+      </Button>
+    </Link>
+  )}
+
+  <Button variant="outline" size="default" onClick={fetchOrders}>
+    <RefreshCw className="h-4 w-4 mr-1" />
+    {t('buttons.refresh')}
+  </Button>
+
+  <Button variant="outline" size="default" onClick={handleLogout}>
+    <LogOut className="h-4 w-4 mr-1" />
+    {t('buttons.logout')}
+  </Button>
 </div>
 
-{userRole === 'founder' && (
-  <Link href="/admin/audit-logs">
-    <Button variant="outline" size="default">
-      <Shield className="h-4 w-4 mr-1" />
-      {t('buttons.auditLogs')}
-    </Button>
-  </Link>
-)}
-               {(canAccessAdmin(userRole)) && (
-              <Link href="/profile">
-                <Button variant="outline" size="default">
-                  <User className="h-4 w-4 mr-1" />
-                  {t('buttons.profile')}
-                </Button>
-              </Link>
-              
-            )}
-            
-            <Button variant="outline" size="default" onClick={fetchOrders}>
-              <RefreshCw className="h-4 w-4 mr-1" />
-            {t('buttons.refresh')}
-            </Button>
-            <Button variant="outline" size="default" onClick={handleLogout}>
-              <LogOut className="h-4 w-4 mr-1" />
-            {t('buttons.logout')}
-            </Button>
-          </div>
         </div>
-
     <div className="mb-8 flex flex-wrap gap-3">
         <button
   onClick={() => {

@@ -7,7 +7,11 @@
     "myProfile": "Mon profil",
     "dashboard": "Tableau de bord",
     "logout": "Déconnexion",
-    "signIn": "Connexion"
+    "signIn": "Connexion",
+    "feedback": "Commentaires",
+    "signedInAs": "Connecté en tant que",
+"social": "Réseaux sociaux",
+"theme": "Thème"
   },
   "Home": {
     "heroTitle1": "Là où les idées",
@@ -459,7 +463,8 @@
       "auditLogs": "Journaux d'audit",
       "profile": "Mon profil",
       "refresh": "Actualiser",
-      "logout": "Déconnexion"
+      "logout": "Déconnexion",
+      "feedbackInbox": "Commentaires"
     },
     "tabs": {
       "orders": "Commandes",
@@ -621,6 +626,7 @@
       "unpaid": "Non payé",
       "depositPaid": "Acompte payé",
       "fullyPaid": "Entièrement payé",
+      "payment": "Paiement",
       "paymentPending": "Paiement en attente",
       "awaitingDeposit": "En attente d'acompte",
       "urgent": "Urgent",
@@ -880,7 +886,11 @@
       "rating_received": {
         "title": "Nouvelle évaluation reçue",
         "message": "Un client a évalué une commande terminée."
-      }
+      },
+      "feedback_submitted": {
+  "title": "Nouveau commentaire reçu",
+  "message": "Un client a envoyé un nouveau commentaire."
+}
     }
   },
   "Register": {
@@ -981,5 +991,53 @@
     "downloadFailed": "Échec du téléchargement du fichier",
     "messageDeleted": "Message supprimé",
     "deleteFailed": "Échec de suppression du message"
+  },
+  "Feedback": {
+  "badge": "Aidez-nous à nous améliorer",
+  "title": "Envoyer un commentaire",
+  "subtitle": "Signalez un problème, proposez une amélioration ou dites-nous ce qui peut être amélioré. Votre message est envoyé directement au fondateur.",
+
+  "auth": {
+    "title": "Connexion requise",
+    "description": "Veuillez vous connecter avant d’envoyer un commentaire afin que nous puissions examiner correctement votre message.",
+    "signIn": "Se connecter",
+    "createAccount": "Créer un compte"
+  },
+
+  "success": {
+    "title": "Commentaire envoyé",
+    "description": "Merci. Votre commentaire a été envoyé directement au fondateur de Codnexia.",
+    "sendAnother": "Envoyer un autre",
+    "myOrders": "Mes commandes"
+  },
+
+  "form": {
+    "details": "Détails du commentaire",
+    "subject": "Sujet",
+    "subjectPlaceholder": "Exemple : problème sur la page de paiement",
+    "description": "Description",
+    "descriptionPlaceholder": "Décrivez le problème, la suggestion ou l’idée en détail...",
+    "detailHintShort": "Ajoutez plus de détails pour une meilleure analyse.",
+    "detailHintMedium": "Bon début.",
+    "detailHintGood": "Commentaire détaillé.",
+    "submit": "Envoyer le commentaire",
+    "submitting": "Envoi..."
+  },
+
+  "sidebar": {
+    "title": "Que pouvez-vous envoyer ?",
+    "bugs": "Bugs ou boutons qui ne fonctionnent pas",
+    "translation": "Problèmes de traduction ou de langue",
+    "design": "Problèmes de design ou d’affichage mobile",
+    "features": "Idées de fonctionnalités et suggestions",
+   "privacy": "Votre commentaire est examiné de manière confidentielle et nous aide à améliorer la qualité, la fiabilité et l’expérience utilisateur de Codnexia."
+  },
+
+  "toasts": {
+    "signInRequired": "Veuillez vous connecter pour envoyer un commentaire.",
+    "submitSuccess": "Commentaire envoyé avec succès.",
+    "submitFailed": "Échec de l’envoi du commentaire.",
+    "genericError": "Une erreur est survenue. Veuillez réessayer."
   }
+}
 }

@@ -5,19 +5,17 @@ import { Bell, CheckCheck, Loader2 } from "lucide-react"
 import { useTranslations } from "next-intl"
 import { NotificationItem } from "./NotificationItem"
 import type { NotificationItem as NotificationItemType } from "./useNotifications"
+
 type Props = {
-  
   notifications: NotificationItemType[]
   unreadCount: number
   isLoading: boolean
   isRefreshing: boolean
   onNotificationClick: (notification: NotificationItemType) => void
   onMarkAllAsRead: () => void
-  
 }
 
 export function NotificationDropdown({
-  
   notifications,
   unreadCount,
   isLoading,
@@ -26,32 +24,30 @@ export function NotificationDropdown({
   onMarkAllAsRead,
 }: Props) {
   const t = useTranslations("Notifications")
+  
   return (
-    <div className="absolute right-0 top-full z-50 mt-3 w-[calc(100vw-2rem)] max-w-[390px] overflow-hidden rounded-2xl border border-white/10 bg-[#080812]/95 text-white shadow-[0_24px_80px_rgba(0,0,0,0.55)] backdrop-blur-2xl dark:border-white/10 sm:w-[390px]">
-      <div className="flex items-center justify-between border-b border-white/10 px-4 py-3.5">
+<div className="fixed right-4 top-[72px] z-50 w-[calc(100vw-2rem)] max-w-[380px] sm:absolute sm:right-0 sm:top-full sm:mt-3 sm:w-[380px] overflow-hidden rounded-2xl border border-white/10 bg-[#080812]/95 text-white shadow-[0_24px_80px_rgba(0,0,0,0.55)] backdrop-blur-2xl dark:border-white/10">
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-white/10 px-4 py-3.5">
         <div className="min-w-0">
           <div className="flex items-center gap-2">
-            <div className="flex h-8 w-8 items-center justify-center rounded-xl border border-white/10 bg-white/5">
+            <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-xl border border-white/10 bg-white/5">
               <Bell className="h-4 w-4 text-white/80" />
             </div>
 
             <div>
               <h3 className="text-sm font-semibold leading-none text-white">
-               {t("title")}
+                {t("title")}
               </h3>
               <p className="mt-1.5 text-xs text-white/55">
-
-
-               {unreadCount > 0
-               ? `${unreadCount} ${t("unreadNotifications")}`
-               : t("allCaughtUp")}
-
+                {unreadCount > 0
+                  ? `${unreadCount} ${t("unreadNotifications")}`
+                  : t("allCaughtUp")}
               </p>
             </div>
           </div>
         </div>
 
-        <div className="flex items-center gap-2">
+        <div className="flex items-center gap-2 ml-auto sm:ml-0">
           {isRefreshing && (
             <Loader2 className="h-3.5 w-3.5 animate-spin text-white/45" />
           )}
@@ -60,10 +56,10 @@ export function NotificationDropdown({
             <button
               type="button"
               onClick={onMarkAllAsRead}
-              className="inline-flex items-center gap-1.5 rounded-lg border border-white/10 bg-white/5 px-2.5 py-1.5 text-xs font-medium text-white/80 transition hover:bg-white/10 hover:text-white"
+              className="inline-flex items-center gap-1.5 rounded-lg border border-white/10 bg-white/5 px-2.5 py-1.5 text-xs font-medium text-white/80 transition hover:bg-white/10 hover:text-white whitespace-nowrap"
             >
               <CheckCheck className="h-3.5 w-3.5" />
-             {t("markAllRead")}
+              {t("markAllRead")}
             </button>
           )}
         </div>
@@ -96,7 +92,7 @@ export function NotificationDropdown({
             </div>
 
             <p className="text-sm font-semibold text-white">
-             {t("noNotifications")}
+              {t("noNotifications")}
             </p>
 
             <p className="mx-auto mt-1.5 max-w-[240px] text-xs leading-relaxed text-white/50">
@@ -111,7 +107,7 @@ export function NotificationDropdown({
           href="/notifications"
           className="block rounded-xl px-3 py-2.5 text-center text-sm font-semibold text-white/80 transition hover:bg-white/10 hover:text-white"
         >
-         {t("viewAllNotifications")}
+          {t("viewAllNotifications")}
         </Link>
       </div>
     </div>

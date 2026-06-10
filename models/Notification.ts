@@ -10,6 +10,7 @@ export type NotificationType =
   | "order_completed"
   | "order_updated"
   | "rating_received"
+  | "feedback_submitted"
   | "system"
 
 const NotificationSchema = new Schema(
@@ -34,6 +35,7 @@ const NotificationSchema = new Schema(
         "order_completed",
         "order_updated",
         "rating_received",
+        "feedback_submitted",
         "system",
       ],
       index: true,

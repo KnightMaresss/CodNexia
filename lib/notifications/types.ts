@@ -8,6 +8,7 @@ export type NotificationType =
   | "order_updated"
   | "rating_received"
   | "payment_submitted"
+  | "feedback_submitted"
   | "system"
 
 export type CreateNotificationInput = {

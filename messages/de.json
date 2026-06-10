@@ -7,7 +7,11 @@
     "myProfile": "Mein Profil",
     "dashboard": "Dashboard",
     "logout": "Abmelden",
-    "signIn": "Anmelden"
+    "signIn": "Anmelden",
+    "feedback": "Feedback",
+    "signedInAs": "Angemeldet als",
+"social": "Soziale Medien",
+"theme": "Design"
   },
   "Home": {
    "heroTitle1": "Wo Ideen",
@@ -459,7 +463,8 @@
       "auditLogs": "Audit-Protokolle",
       "profile": "Mein Profil",
       "refresh": "Aktualisieren",
-      "logout": "Abmelden"
+      "logout": "Abmelden",
+      "feedbackInbox": "Feedback"
     },
     "tabs": {
       "orders": "Aufträge",
@@ -621,6 +626,7 @@
       "unpaid": "Unbezahlt",
       "depositPaid": "Anzahlung bezahlt",
       "fullyPaid": "Vollständig bezahlt",
+      "payment": "Zahlung",
       "paymentPending": "Zahlung ausstehend",
       "awaitingDeposit": "Wartet auf Anzahlung",
       "urgent": "Dringend",
@@ -880,7 +886,11 @@
       "rating_received": {
         "title": "Neue Bewertung erhalten",
         "message": "Ein Kunde hat einen abgeschlossenen Auftrag bewertet."
-      }
+      },
+      "feedback_submitted": {
+  "title": "Neues Feedback erhalten",
+  "message": "Ein Kunde hat neues Feedback eingereicht."
+}
     }
   },
   "Register": {
@@ -981,5 +991,53 @@
     "downloadFailed": "Datei konnte nicht heruntergeladen werden",
     "messageDeleted": "Nachricht gelöscht",
     "deleteFailed": "Nachricht konnte nicht gelöscht werden"
+  },
+  "Feedback": {
+  "badge": "Helfen Sie uns zu verbessern",
+  "title": "Feedback senden",
+  "subtitle": "Melden Sie ein Problem, schlagen Sie eine Verbesserung vor oder sagen Sie uns, was besser sein könnte. Ihre Nachricht geht direkt an den Gründer.",
+
+  "auth": {
+    "title": "Anmeldung erforderlich",
+    "description": "Bitte melden Sie sich an, bevor Sie Feedback senden, damit wir Ihre Nachricht korrekt prüfen können.",
+    "signIn": "Anmelden",
+    "createAccount": "Konto erstellen"
+  },
+
+  "success": {
+    "title": "Feedback gesendet",
+    "description": "Vielen Dank. Ihr Feedback wurde direkt an den Gründer von Codnexia gesendet.",
+    "sendAnother": "Weiteres Feedback senden",
+    "myOrders": "Meine Aufträge"
+  },
+
+  "form": {
+    "details": "Feedback-Details",
+    "subject": "Betreff",
+    "subjectPlaceholder": "Beispiel: Problem auf der Checkout-Seite",
+    "description": "Beschreibung",
+    "descriptionPlaceholder": "Beschreiben Sie das Problem, den Vorschlag oder die Idee im Detail...",
+    "detailHintShort": "Fügen Sie mehr Details für eine bessere Prüfung hinzu.",
+    "detailHintMedium": "Guter Anfang.",
+    "detailHintGood": "Detailliertes Feedback.",
+    "submit": "Feedback senden",
+    "submitting": "Wird gesendet..."
+  },
+
+  "sidebar": {
+    "title": "Was senden?",
+    "bugs": "Fehler oder defekte Schaltflächen",
+    "translation": "Übersetzungs- oder Sprachprobleme",
+    "design": "Design- oder Mobilansichtsprobleme",
+    "features": "Funktionsideen und Vorschläge",
+   "privacy": "Ihr Feedback wird vertraulich geprüft und hilft uns, die Qualität, Zuverlässigkeit und Benutzererfahrung von Codnexia zu verbessern."
+  },
+
+  "toasts": {
+    "signInRequired": "Bitte melden Sie sich an, um Feedback zu senden.",
+    "submitSuccess": "Feedback erfolgreich gesendet.",
+    "submitFailed": "Feedback konnte nicht gesendet werden.",
+    "genericError": "Etwas ist schiefgelaufen. Bitte versuchen Sie es erneut."
   }
+}
 }

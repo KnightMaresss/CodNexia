@@ -66,37 +66,37 @@ export function NotificationBell() {
 
   return (
     <div ref={wrapperRef} className="relative">
+      
       <button
         type="button"
         onClick={handleOpenChange}
-
-      className={cn(
-  "relative flex h-10 w-10 items-center justify-center rounded-xl border transition-all duration-200",
-  "border-white/15 bg-white/5 text-white hover:bg-white/10 hover:shadow-[0_0_30px_rgba(59,130,246,0.18)]",
-  isOpen && "bg-white/10 shadow-[0_0_30px_rgba(59,130,246,0.22)]"
-)}
-
+        className={cn(
+          "relative flex h-9 w-9 items-center justify-center rounded-2xl border border-white/10 bg-white/10 text-white/90 shadow-[inset_0_1px_0_rgba(255,255,255,0.08)] backdrop-blur-xl transition-all duration-300 hover:border-[#38b6ff]/35 hover:bg-[#38b6ff]/10 hover:shadow-[0_0_22px_rgba(56,182,255,0.18)] active:scale-95",
+          isOpen && "bg-[#38b6ff]/10 border-[#38b6ff]/35"
+        )}
         aria-label="Open notifications"
       >
         <Bell className="h-4 w-4" />
 
         {unreadCount > 0 && (
-         <span className="absolute -right-1.5 -top-1.5 flex min-h-5 min-w-5 items-center justify-center rounded-full border border-white/20 bg-red-500 px-1.5 text-[10px] font-bold text-white shadow-[0_0_18px_rgba(239,68,68,0.65)]">
+          <span className="absolute -right-1.5 -top-1.5 flex min-h-5 min-w-5 items-center justify-center rounded-full border border-white/20 bg-red-500 px-1.5 text-[10px] font-bold text-white shadow-[0_0_18px_rgba(239,68,68,0.65)]">
             {unreadCount > 99 ? "99+" : unreadCount}
           </span>
         )}
       </button>
 
-      {isOpen && (
-        <NotificationDropdown
-          notifications={notifications}
-          unreadCount={unreadCount}
-          isLoading={isLoading}
-          isRefreshing={isRefreshing}
-          onNotificationClick={handleNotificationClick}
-          onMarkAllAsRead={markAllAsRead}
-        />
-      )}
+{isOpen && (
+  <div className="absolute right-0 top-full mt-2">
+    <NotificationDropdown
+      notifications={notifications}
+      unreadCount={unreadCount}
+      isLoading={isLoading}
+      isRefreshing={isRefreshing}
+      onNotificationClick={handleNotificationClick}
+      onMarkAllAsRead={markAllAsRead}
+    />
+  </div>
+)}
     </div>
   )
 }

@@ -205,3 +205,40 @@ body {
     transform: translateY(0);
   }
 }
+
+@keyframes logoGlow {
+0%, 100% {
+  filter: drop-shadow(0 0 15px rgba(56,182,255,0.8));
+}
+
+50% {
+  filter: drop-shadow(0 0 40px rgba(56,182,255,1));
+}
+}
+.logo-glow {
+  filter:
+    drop-shadow(0 0 8px rgba(56, 182, 255, 0.35))
+    drop-shadow(0 0 18px rgba(56, 182, 255, 0.18));
+}
+
+
+@keyframes textGlow {
+  0%, 100% {
+    text-shadow:
+      0 0 6px rgba(56,182,255,0.15),
+      0 0 12px rgba(56,182,255,0.05);
+  }
+
+  50% {
+    text-shadow:
+      0 0 10px rgba(56,182,255,0.25),
+      0 0 18px rgba(56,182,255,0.10);
+  }
+}
+
+.codnexia-logo-text {
+  text-shadow:
+    0 0 8px rgba(56, 182, 255, 0.18),
+    0 0 16px rgba(56, 182, 255, 0.08);
+}
+

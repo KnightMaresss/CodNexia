@@ -7,7 +7,11 @@
     "myProfile": "My Profile",
     "dashboard": "Dashboard",
     "logout": "Logout",
-    "signIn": "Sign In"
+    "signIn": "Sign In",
+    "feedback": "Feedback",
+      "signedInAs": "Signed in as",
+  "social": "Social",
+  "theme": "Theme"
   },
   "Home": {
   "heroTitle1": "Where Ideas",
@@ -496,7 +500,8 @@
   "auditLogs": "Audit Logs",
   "profile": "My Profile",
   "refresh": "Refresh",
-  "logout": "Logout"
+  "logout": "Logout",
+  "feedbackInbox": "Feedback Inbox"
 },
 
 "tabs": {
@@ -662,6 +667,7 @@
 "unpaid": "Unpaid",
 "depositPaid": "Deposit Paid",
 "fullyPaid": "Fully Paid",
+"payment": "Payment",
 "paymentPending": "Payment Pending",
 "awaitingDeposit": "Awaiting Deposit",
 "urgent": "Urgent",
@@ -935,6 +941,10 @@
   "rating_received": {
   "title": "New rating received",
   "message": "A client rated a completed order."
+},
+"feedback_submitted": {
+  "title": "New feedback received",
+  "message": "A client submitted new feedback."
 }
 }
 },
@@ -1051,5 +1061,53 @@
 "downloadFailed": "Failed to download file",
 "messageDeleted": "Message deleted",
 "deleteFailed": "Failed to delete message"
+},
+"Feedback": {
+  "badge": "Help Us Improve",
+  "title": "Submit Feedback",
+  "subtitle": "Report a problem, suggest an improvement, or tell us what can be better. Your message goes directly to the founder.",
+
+  "auth": {
+    "title": "Sign in required",
+    "description": "Please sign in before submitting feedback so we can review your message properly.",
+    "signIn": "Sign in",
+    "createAccount": "Create account"
+  },
+
+  "success": {
+    "title": "Feedback submitted",
+    "description": "Thank you. Your feedback was sent directly to the Codnexia founder.",
+    "sendAnother": "Send another",
+    "myOrders": "My Orders"
+  },
+
+  "form": {
+    "details": "Feedback Details",
+    "subject": "Subject",
+    "subjectPlaceholder": "Example: Problem with checkout page",
+    "description": "Description",
+    "descriptionPlaceholder": "Describe the issue, suggestion, or idea in detail...",
+    "detailHintShort": "Add more details for better review.",
+    "detailHintMedium": "Good start.",
+    "detailHintGood": "Detailed feedback.",
+    "submit": "Submit Feedback",
+    "submitting": "Submitting..."
+  },
+
+  "sidebar": {
+    "title": "What to send?",
+    "bugs": "Bugs or broken buttons",
+    "translation": "Translation or language issues",
+    "design": "Design or mobile layout problems",
+    "features": "Feature ideas and suggestions",
+    "privacy": "Your feedback is reviewed privately and helps us improve the quality, reliability, and user experience of Codnexia."
+  },
+
+  "toasts": {
+    "signInRequired": "Please sign in to submit feedback.",
+    "submitSuccess": "Feedback submitted successfully.",
+    "submitFailed": "Failed to submit feedback.",
+    "genericError": "Something went wrong. Please try again."
+  }
 }
 }

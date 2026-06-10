@@ -13,13 +13,14 @@ import {
 import { cn } from "@/lib/utils"
 import type { NotificationItem as NotificationItemType } from "./useNotifications"
 import { useTranslations } from 'next-intl'
+
 type Props = {
   notification: NotificationItemType
   onClick: () => void
 }
 
 function NotificationIcon({ type }: { type: NotificationItemType["type"] }) {
-  const iconClassName = "h-4 w-4"
+  const iconClassName = "h-3.5 w-3.5 sm:h-4 sm:w-4"
 
   switch (type) {
     case "order_created":
@@ -30,7 +31,7 @@ function NotificationIcon({ type }: { type: NotificationItemType["type"] }) {
       return <MessageCircle className={iconClassName} />
     case "payment_confirmed":
       return <CreditCard className={iconClassName} />
-       case "payment_submitted":
+    case "payment_submitted":
       return <CreditCard className={iconClassName} />
     case "files_uploaded":
       return <UploadCloud className={iconClassName} />
@@ -87,13 +88,14 @@ function formatTimeAgo(date: string, t: ReturnType<typeof useTranslations>) {
 }
 
 export function NotificationItem({ notification, onClick }: Props) {
- const t = useTranslations('Notifications')
+  const t = useTranslations('Notifications')
+  
   return (
     <button
       type="button"
       onClick={onClick}
       className={cn(
-        "group relative flex w-full gap-3 overflow-hidden rounded-2xl border px-3 py-3 text-left transition-all duration-200",
+        "group relative flex w-full gap-2 sm:gap-3 overflow-hidden rounded-2xl border px-3 py-2.5 sm:py-3 text-left transition-all duration-200",
         notification.isRead
           ? "border-white/5 bg-white/[0.035] hover:border-white/10 hover:bg-white/[0.06]"
           : "border-white/10 bg-white/[0.075] shadow-[0_10px_30px_rgba(0,0,0,0.20)] hover:border-white/15 hover:bg-white/[0.10]"
@@ -105,7 +107,7 @@ export function NotificationItem({ notification, onClick }: Props) {
 
       <div
         className={cn(
-          "mt-0.5 flex h-10 w-10 shrink-0 items-center justify-center rounded-2xl border transition",
+          "mt-0.5 flex h-8 w-8 sm:h-10 sm:w-10 shrink-0 items-center justify-center rounded-xl sm:rounded-2xl border transition",
           getIconStyle(notification.type, notification.isRead)
         )}
       >
@@ -113,10 +115,10 @@ export function NotificationItem({ notification, onClick }: Props) {
       </div>
 
       <div className="min-w-0 flex-1">
-        <div className="flex items-start justify-between gap-3">
+        <div className="flex items-start justify-between gap-2 sm:gap-3">
           <p
             className={cn(
-              "line-clamp-1 text-sm font-semibold",
+              "line-clamp-1 text-xs sm:text-sm font-semibold",
               notification.isRead ? "text-white/75" : "text-white"
             )}
           >
@@ -124,21 +126,21 @@ export function NotificationItem({ notification, onClick }: Props) {
           </p>
 
           {!notification.isRead && (
-            <span className="mt-1.5 h-2 w-2 shrink-0 rounded-full bg-blue-400 shadow-[0_0_14px_rgba(96,165,250,0.8)]" />
+            <span className="mt-1 h-1.5 w-1.5 sm:h-2 sm:w-2 shrink-0 rounded-full bg-blue-400 shadow-[0_0_14px_rgba(96,165,250,0.8)]" />
           )}
         </div>
 
         <p
           className={cn(
-            "mt-1 line-clamp-2 text-xs leading-relaxed",
+            "mt-0.5 sm:mt-1 line-clamp-2 text-[11px] sm:text-xs leading-relaxed",
             notification.isRead ? "text-white/45" : "text-white/60"
           )}
         >
-         {t(`items.${notification.type}.message`)}
+          {t(`items.${notification.type}.message`)}
         </p>
 
-        <p className="mt-2 text-[11px] font-medium text-white/40">
-         {formatTimeAgo(notification.createdAt, t)}
+        <p className="mt-1 sm:mt-2 text-[10px] sm:text-[11px] font-medium text-white/40">
+          {formatTimeAgo(notification.createdAt, t)}
         </p>
       </div>
     </button>
