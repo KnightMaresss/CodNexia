@@ -290,15 +290,15 @@ const trust = [
           {/* Enhanced services grid */}
         <div className="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-5">
             {services.map((service, index) => (
-              <div
-                key={service.slug}
-                className={`group relative flex flex-col rounded-3xl border-2 border-border/40 bg-card/75 dark:bg-card/60 backdrop-blur-xl p-6 transition-all duration-500 hover:-translate-y-2 hover:border-blue-500/30 hover:shadow-[0_20px_60px_rgba(37,99,235,0.15)] dark:hover:shadow-[0_20px_60px_rgba(37,99,235,0.25)] hover:bg-card/80`}
-                style={{
-                  transitionDelay: `${index * 50}ms`,
-                }}
-              >
+            <div
+  key={service.slug}
+  className={`group relative flex flex-col rounded-3xl border-2 border-border/40 bg-card/75 dark:bg-card/60 backdrop-blur-xl p-6 transition-all duration-500 hover:-translate-y-2 hover:border-blue-500/30 hover:shadow-[0_20px_60px_rgba(37,99,235,0.15)] dark:hover:shadow-[0_20px_60px_rgba(37,99,235,0.25)] hover:bg-card/80 active:-translate-y-1 active:border-blue-500/40 active:shadow-[0_20px_60px_rgba(37,99,235,0.25)]`}
+  style={{
+    transitionDelay: `${index * 50}ms`,
+  }}
+>
                 {/* Gradient border on hover */}
-                <div className="absolute inset-0 rounded-3xl bg-gradient-to-r from-blue-500/0 via-purple-500/0 to-cyan-500/0 opacity-0 group-hover:opacity-100 transition-opacity duration-500 -z-10 blur-xl" />
+                <div className="absolute inset-0 rounded-3xl bg-gradient-to-r from-blue-500/20 via-purple-500/20 to-cyan-500/20 opacity-0 group-hover:opacity-100 group-active:opacity-100 transition-opacity duration-500 -z-10 blur-xl" />
 
                 {/* Tag badge */}
                 {service.tag && (
