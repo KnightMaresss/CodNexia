@@ -310,9 +310,9 @@ const trust = [
   }
 }}
   className={`group relative flex flex-col rounded-3xl border-2 bg-card/75 dark:bg-card/60 backdrop-blur-xl p-6 transition-all duration-500 hover:-translate-y-2 hover:border-blue-500/30 hover:shadow-[0_20px_60px_rgba(37,99,235,0.15)] dark:hover:shadow-[0_20px_60px_rgba(37,99,235,0.25)] hover:bg-card/80 ${
-    selectedService === service.slug && isMobile
-      ? 'border-blue-500/30 shadow-[0_20px_60px_rgba(37,99,235,0.15)] dark:shadow-[0_20px_60px_rgba(37,99,235,0.25)]'
-      : 'border-border/40'
+   selectedService === service.slug && isMobile
+  ? 'border-blue-500/30 shadow-[0_20px_60px_rgba(37,99,235,0.15)] dark:shadow-[0_20px_60px_rgba(37,99,235,0.25)] -translate-y-2'
+  : 'border-border/40'
   }`}
                 style={{
                   transitionDelay: `${index * 50}ms`,
