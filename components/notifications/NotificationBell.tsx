@@ -13,7 +13,9 @@ import { NotificationDropdown } from "./NotificationDropdown"
 export function NotificationBell() {
   const router = useRouter()
   const wrapperRef = useRef<HTMLDivElement | null>(null)
-
+  const initializedSoundRef = useRef(false)
+  const previousUnreadCountRef = useRef(0)
+  const previousUnreadIdsRef = useRef<Set<string>>(new Set())
   const [isOpen, setIsOpen] = useState(false)
 
   const {
@@ -28,6 +30,84 @@ export function NotificationBell() {
     pollInterval: 5000,
     limit: 20,
   })
+
+useEffect(() => {
+  if (isLoading) return
+
+  const unreadNotifications = notifications.filter((n) => !n.isRead)
+
+  const getNotificationKey = (notification: NotificationItem) =>
+    `${notification._id}:${notification.relatedMessageId || notification.updatedAt || notification.createdAt}`
+
+  if (!initializedSoundRef.current) {
+    previousUnreadCountRef.current = unreadCount
+    previousUnreadIdsRef.current = new Set(unreadNotifications.map(getNotificationKey))
+    initializedSoundRef.current = true
+    return
+  }
+
+  const newUnreadNotifications = unreadNotifications.filter(
+    (n) => !previousUnreadIdsRef.current.has(getNotificationKey(n))
+  )
+
+  if (newUnreadNotifications.length > 0) {
+    let shouldPlaySound = false
+
+    for (const notification of newUnreadNotifications) {
+      const openOrderChatId = sessionStorage.getItem('openOrderChatId')
+
+      let notificationOrderId =
+        notification.orderId ||
+        // @ts-expect-error optional API field
+        notification.relatedId ||
+        // @ts-expect-error optional API field
+        notification.metadata?.orderId ||
+        ''
+
+      if (!notificationOrderId && notification.link) {
+        try {
+          const url = new URL(notification.link, window.location.origin)
+
+          notificationOrderId =
+            url.searchParams.get('chat') ||
+            url.searchParams.get('orderId') ||
+            url.searchParams.get('id') ||
+            url.searchParams.get('chatOrder') ||
+            url.searchParams.get('order') ||
+            ''
+        } catch {}
+      }
+
+      console.log({
+  openOrderChatId,
+  notificationOrderId,
+  type: notification.type,
+  link: notification.link,
+})
+      const shouldSuppress =
+        notification.type === 'new_message' &&
+        Boolean(openOrderChatId) &&
+        Boolean(notificationOrderId) &&
+        openOrderChatId === notificationOrderId
+
+      if (shouldSuppress) {
+        markAsRead(notification._id).catch(() => {})
+      } else {
+        shouldPlaySound = true
+      }
+    }
+
+    if (shouldPlaySound) {
+      const audio = new Audio('/notification.mp3')
+      audio.play().catch(() => {})
+    }
+  }
+
+  previousUnreadCountRef.current = unreadCount
+  previousUnreadIdsRef.current = new Set(unreadNotifications.map(getNotificationKey))
+}, [unreadCount, notifications, isLoading, markAsRead])
+
+
 
   useEffect(() => {
     function handleClickOutside(event: MouseEvent) {
@@ -63,7 +143,19 @@ export function NotificationBell() {
     setIsOpen(false)
     router.push(notification.link)
   }
+const displayNotifications = notifications.filter((notification, index, array) => {
+  if (notification.type !== "new_message" || !notification.orderId) {
+    return true
+  }
 
+  return (
+    array.findIndex(
+      (item) =>
+        item.type === "new_message" &&
+        item.orderId === notification.orderId
+    ) === index
+  )
+})
   return (
     <div ref={wrapperRef} className="relative">
       
@@ -88,7 +180,7 @@ export function NotificationBell() {
 {isOpen && (
   <div className="absolute right-0 top-full mt-2">
     <NotificationDropdown
-      notifications={notifications}
+      notifications={displayNotifications}
       unreadCount={unreadCount}
       isLoading={isLoading}
       isRefreshing={isRefreshing}

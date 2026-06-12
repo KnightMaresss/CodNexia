@@ -226,9 +226,9 @@ export function Navbar() {
     </div>
   </div>
 </div>
-                      <Link href="/portfolio" className="flex items-center gap-3 px-4 py-2 text-sm text-gray-300 hover:text-white hover:bg-white/10 transition-all duration-200 group/item">
-                        <Award className="h-3.5 w-3.5 text-white/40 group-hover/item:text-[#38b6ff] transition-colors" />
-                        {t('portfolio')}
+         <Link href="/profile" className="flex items-center gap-3 px-4 py-2 text-sm text-gray-300 hover:text-white hover:bg-white/10 transition-all duration-200 group/item">
+                        <User className="h-3.5 w-3.5 text-white/40 group-hover/item:text-[#38b6ff] transition-colors" />
+                        {t('myProfile')}
                       </Link>
                       <Link href="/orders" className="flex items-center gap-3 px-4 py-2 text-sm text-gray-300 hover:text-white hover:bg-white/10 transition-all duration-200 group/item">
                         <ShoppingCart className="h-3.5 w-3.5 text-white/40 group-hover/item:text-[#38b6ff] transition-colors" />
@@ -242,9 +242,9 @@ export function Navbar() {
                         <Package className="h-3.5 w-3.5 text-white/40 group-hover/item:text-[#38b6ff] transition-colors" />
                         {t('myOrders')}
                       </Link>
-                      <Link href="/profile" className="flex items-center gap-3 px-4 py-2 text-sm text-gray-300 hover:text-white hover:bg-white/10 transition-all duration-200 group/item">
-                        <User className="h-3.5 w-3.5 text-white/40 group-hover/item:text-[#38b6ff] transition-colors" />
-                        {t('myProfile')}
+                       <Link href="/portfolio" className="flex items-center gap-3 px-4 py-2 text-sm text-gray-300 hover:text-white hover:bg-white/10 transition-all duration-200 group/item">
+                        <Award className="h-3.5 w-3.5 text-white/40 group-hover/item:text-[#38b6ff] transition-colors" />
+                        {t('portfolio')}
                       </Link>
                       <Link href="/feedback" className="flex items-center gap-3 px-4 py-2 text-sm text-gray-300 hover:text-white hover:bg-white/10 transition-all duration-200 group/item">
                         <MessageSquare className="h-3.5 w-3.5 text-white/40 group-hover/item:text-[#38b6ff] transition-colors" />

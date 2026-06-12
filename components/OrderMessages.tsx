@@ -78,6 +78,7 @@ export function OrderMessages({ orderId, userName }: OrderMessagesProps) {
   const inputRef = useRef<HTMLInputElement>(null)
   const fileInputRef = useRef<HTMLInputElement>(null)
   const previousMessageIdsRef = useRef<Set<string>>(new Set())
+  const initializedInChatSoundRef = useRef(false)
   const initializedMessagesRef = useRef(false)
   const previousMessageCountRef = useRef(0)
   const searchInputRef = useRef<HTMLInputElement>(null)
@@ -107,16 +108,6 @@ export function OrderMessages({ orderId, userName }: OrderMessagesProps) {
     }).catch(() => {})
   }, [orderId])
 
-  const playIncomingSoundOnce = (messageId: string) => {
-    const soundKey = `chat-sound-${messageId}`
-
-    if (sessionStorage.getItem(soundKey)) return
-
-    sessionStorage.setItem(soundKey, 'played')
-
-    const audio = new Audio('/chat.mp3')
-    audio.play().catch(() => {})
-  }
 
   const fetchMessages = useCallback(async () => {
     try {
@@ -124,23 +115,34 @@ export function OrderMessages({ orderId, userName }: OrderMessagesProps) {
       const data = await res.json()
 
       if (data.success) {
-        const nextMessages: Message[] = data.messages
-        const previousIds = previousMessageIdsRef.current
 
-        const newIncomingMessages = nextMessages.filter(
-          (msg) => !previousIds.has(msg.id) && msg.senderRole !== userName
-        )
+const nextMessages: Message[] = data.messages
 
-        if (initializedMessagesRef.current && newIncomingMessages.length > 0) {
-          playIncomingSoundOnce(newIncomingMessages[0].id)
-        }
+const previousIds = previousMessageIdsRef.current
 
-        previousMessageIdsRef.current = new Set(
-          nextMessages.map((msg) => msg.id)
-        )
+const newIncomingMessages = nextMessages.filter(
+  (msg) =>
+    !previousIds.has(msg.id) &&
+    msg.senderRole !== userName &&
+    !msg.isDeleted
+)
 
-        initializedMessagesRef.current = true
-        setMessages((prev) => {
+if (initializedInChatSoundRef.current && newIncomingMessages.length > 0) {
+  const audio = new Audio('/chat-tick.mp3')
+  audio.volume = 0.35
+  audio.play().catch(() => {})
+}
+
+previousMessageIdsRef.current = new Set(
+  nextMessages.map((msg) => msg.id)
+)
+
+initializedInChatSoundRef.current = true
+initializedMessagesRef.current = true
+
+setMessages((prev) => {
+
+
   const localMessages = prev.filter(
   (msg) => msg.isOptimistic || msg.status === 'failed'
 )

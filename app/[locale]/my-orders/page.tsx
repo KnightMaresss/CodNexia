@@ -97,6 +97,17 @@ export default function MyOrdersPage() {
   return services[service] || service
 }
   const [chatOrder, setChatOrder] = useState<string | null>(null)
+  useEffect(() => {
+  if (chatOrder) {
+    sessionStorage.setItem('openOrderChatId', chatOrder)
+  } else {
+    sessionStorage.removeItem('openOrderChatId')
+  }
+
+  return () => {
+    sessionStorage.removeItem('openOrderChatId')
+  }
+}, [chatOrder])
   const [cancellingId, setCancellingId] = useState<string | null>(null)
   const [uploadingToOrder, setUploadingToOrder] = useState<string | null>(null)
   const fileInputRef = useRef<HTMLInputElement>(null)
@@ -123,9 +134,6 @@ if (data.success) {
   )
 
   if (!chatOrder && unreadTotal > previousUnreadTotalRef.current) {
-    const audio = new Audio('/chat.mp3')
-    audio.play().catch(() => {})
-    showToast(t('messages.newChat'), 'success')
   }
 
   previousUnreadTotalRef.current = unreadTotal

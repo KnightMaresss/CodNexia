@@ -32,9 +32,6 @@ if (!isAuthorized) {
     })
     .limit(50)
     .toArray()
-console.log('CRON CHAT EMAIL DEBUG:', {
-  pendingCount: pending.length,
-})
   for (const item of pending) {
     const chatView = await db.collection('chat_views').findOne({
       orderId: item.orderId,
@@ -48,24 +45,11 @@ console.log('CRON CHAT EMAIL DEBUG:', {
       senderRole: item.senderRole,
       createdAt: { $gt: lastSeenAt },
     })
-console.log('CRON ITEM DEBUG:', {
-  orderId: item.orderId,
-  recipientRole: item.recipientRole,
-  recipientEmail: item.recipientEmail,
-  senderRole: item.senderRole,
-  unreadCount,
-})
     if (unreadCount <= 0) {
       await db.collection('chat_email_notifications').updateOne(
         { _id: item._id },
         { $set: { status: 'cancelled', updatedAt: new Date() } }
       )
-      console.log('CHAT EMAIL CANCELLED:', {
-  orderId: item.orderId,
-  recipientRole: item.recipientRole,
-  recipientEmail: item.recipientEmail,
-  unreadCount,
-})
 results.push({
   orderId: item.orderId,
   action: 'cancelled',

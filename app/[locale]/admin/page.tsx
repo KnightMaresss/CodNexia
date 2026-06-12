@@ -5,7 +5,6 @@ import { Card, CardContent} from '@/components/ui/card'
 import { showToast } from '@/components/ui/toast'
 import { ConfirmModal } from '@/components/ui/confirm-modal'
 import { OrderMessages } from '@/components/OrderMessages'
-import { SoundNotification } from '@/components/SoundNotification'
 import { Link } from '@/i18n/navigation'
 import Image from 'next/image'
 import { useRouter } from 'next/navigation'
@@ -242,6 +241,17 @@ const STATUS_OPTIONS = STATUS_KEYS.map((value) => ({
   label: string
 }[]
   const [chatOrder, setChatOrder] = useState<string | null>(null)
+  useEffect(() => {
+  if (chatOrder) {
+    sessionStorage.setItem('openOrderChatId', chatOrder)
+  } else {
+    sessionStorage.removeItem('openOrderChatId')
+  }
+
+  return () => {
+    sessionStorage.removeItem('openOrderChatId')
+  }
+}, [chatOrder])
   const [deleteModal, setDeleteModal] = useState<{ open: boolean; orderId: string }>({ open: false, orderId: '' })
   const [authenticated, setAuthenticated] = useState(false)
   const [loading, setLoading] = useState(true)
@@ -253,8 +263,6 @@ const STATUS_OPTIONS = STATUS_KEYS.map((value) => ({
   const [activeTab, setActiveTab] = useState<TabType>('orders')
   const [userSearch, setUserSearch] = useState('')
   const [users, setUsers] = useState<UserData[]>([])
-  const [playSound, setPlaySound] = useState(false)
-  const prevOrderCount = useRef(orders.length)
   const mountedRef = useRef(true)
   const [acceptingId, setAcceptingId] = useState<string | null>(null)
   const [editingNote, setEditingNote] = useState<string | null>(null)
@@ -510,24 +518,19 @@ const hasNewOrder =
   data.orders.some((order: Order) => !knownOrderIdsRef.current.has(order._id))
 
 if (hasNewOrder) {
-  setPlaySound(true)
-  setTimeout(() => setPlaySound(false), 100)
   showToast(t('toasts.newOrder'), 'success')
 }
 
 knownOrderIdsRef.current = nextOrderIds
 initializedOrdersRef.current = true
-  if (!chatOrder && unreadTotal > previousUnreadTotalRef.current) {
-    const audio = new Audio('/chat.mp3')
-    audio.play().catch(() => {})
-    showToast(t('toasts.newChat'), 'success')
-  }
 
+
+  if (!chatOrder && unreadTotal > previousUnreadTotalRef.current) {
+  }
   previousUnreadTotalRef.current = unreadTotal
   setOrders(data.orders)
 }
       else {
-       
         console.error(data.error || 'Failed to fetch orders')
       }
     } catch {
@@ -729,24 +732,6 @@ useEffect(() => {
     await fetch('/api/auth/logout', { method: 'POST' })
     window.location.href = '/'
   }
-
-useEffect(() => {
-  // Skip sound on initial load (when prevOrderCount is 0 and we're loading orders for first time)
-  const isInitialLoad = prevOrderCount.current === 0 && orders.length > 0
-  
-  const newOrders = orders.length - prevOrderCount.current
-  
-  if (!isInitialLoad && newOrders > 0 && prevOrderCount.current >= 0) {
-    const newPending = orders.filter(o => o.status === 'pending' && !o.assignedTo).length
-    if (newPending > 0 || newOrders > 0) {
-      setPlaySound(true)
-      setTimeout(() => setPlaySound(false), 100)
-    }
-  }
-  prevOrderCount.current = orders.length
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-}, [orders.length]) 
-
 
 
 useEffect(() => {
@@ -1231,7 +1216,6 @@ if (loading) {
         onConfirm={confirmDelete}
         onCancel={() => setDeleteModal({ open: false, orderId: '' })}
       />
-      <SoundNotification play={playSound} />
       <PremiumPageShell className="pt-20 py-8 px-4">
 {selectedCryptoPayment && (
   <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/70 p-4 backdrop-blur-sm">

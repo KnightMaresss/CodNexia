@@ -484,24 +484,7 @@ if (order) {
       orderId,
       viewer: recipientRole,
     })
-
-    const lastSeenAt = chatView?.lastSeenAt || new Date(0)
-
-    const unreadBeforeThisMessage = await db
-      .collection('messages')
-      .countDocuments({
-        orderId,
-        senderRole,
-        _id: { $ne: result.insertedId },
-        createdAt: { $gt: lastSeenAt },
-      })
-console.log('CHAT EMAIL DEBUG:', {
-  orderId,
-  senderRole,
-  recipientRole,
-  recipientEmail,
-  unreadBeforeThisMessage,
-})
+ const lastSeenAt = chatView?.lastSeenAt || new Date(0)
 const existingNotification = await db
   .collection('chat_email_notifications')
   .findOne({
@@ -535,11 +518,6 @@ const existingNotification = await db
         },
         { upsert: true }
       )
-  console.log('PENDING CHAT EMAIL CREATED:', {
-  orderId,
-  recipientRole,
-  recipientEmail,
-})
     }
   }
 }

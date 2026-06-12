@@ -65,13 +65,23 @@ export function useNotifications(options: UseNotificationsOptions = {}) {
 
         setNotifications(data.notifications || [])
         setUnreadCount(data.unreadCount || 0)
-      } catch (error) {
-        if (error instanceof Error && error.name === "AbortError") {
-          return
-        }
 
-        console.error("FETCH_NOTIFICATIONS_CLIENT_ERROR", error)
-      } finally {
+     } catch (error) {
+  if (error instanceof Error) {
+    if (error.name === "AbortError") return
+
+    if (
+      error.name === "TypeError" &&
+      error.message.toLowerCase().includes("failed to fetch")
+    ) {
+      return
+    }
+  }
+  console.error("FETCH_NOTIFICATIONS_CLIENT_ERROR", error)
+} finally {
+
+
+
         setIsLoading(false)
         setIsRefreshing(false)
       }
