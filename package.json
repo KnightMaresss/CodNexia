@@ -10,6 +10,7 @@
     "db:indexes": "tsx scripts/create-indexes.ts"
   },
   "dependencies": {
+    "@marsidev/react-turnstile": "^1.5.3",
     "bcryptjs": "^3.0.3",
     "class-variance-authority": "^0.7.1",
     "cloudinary": "^2.10.0",

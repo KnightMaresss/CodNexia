@@ -9,6 +9,7 @@ import { notifyNewOrder } from '@/lib/orders-stream'
 import { getJwtSecret } from '@/lib/jwt-secret'
 import { canAccessAdmin, isModeratorRole } from '@/lib/roles'
 import { createManyNotifications } from '@/lib/notifications'
+import { verifyTurnstileToken } from '@/lib/turnstile'
 const JWT_SECRET = new TextEncoder().encode(getJwtSecret())
 
 const SERVICE_NAMES: Record<string, string> = {
@@ -156,8 +157,29 @@ if (!accountUser.emailVerified) {
 }
 
 const body = await request.json()
-const { service, requirements, price, deliveryEstimate } = body
+const {
+  service,
+  requirements,
+  price,
+  deliveryEstimate,
+  turnstileToken,
+} = body
+const cleanIp = ip.split(',')[0]?.trim() || 'unknown'
 
+const turnstile = await verifyTurnstileToken(
+  turnstileToken,
+  cleanIp
+)
+
+if (!turnstile.success) {
+  return NextResponse.json(
+    {
+      success: false,
+      error: 'Human verification failed. Please try again.',
+    },
+    { status: 403 }
+  )
+}
 if (!service || !requirements || price === undefined) {
   return NextResponse.json(
     {

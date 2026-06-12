@@ -5,6 +5,7 @@ import { SignJWT } from 'jose'
 import { rateLimit } from '@/lib/rate-limit'
 import { headers } from 'next/headers'
 import { getJwtSecret } from '@/lib/jwt-secret'
+import { verifyTurnstileToken } from '@/lib/turnstile'
 const JWT_SECRET = new TextEncoder().encode(getJwtSecret())
 
 export async function POST(request: Request) {
@@ -15,7 +16,18 @@ export async function POST(request: Request) {
                headersList.get('x-real-ip') || 
                'unknown'
 
-    const { email, password } = await request.json()
+const { email, password, turnstileToken } = await request.json()
+
+const cleanIp = ip.split(',')[0]?.trim() || 'unknown'
+
+const turnstile = await verifyTurnstileToken(turnstileToken, cleanIp)
+
+if (!turnstile.success) {
+  return NextResponse.json(
+    { success: false, error: 'Human verification failed. Please try again.' },
+    { status: 403 }
+  )
+}
 
 const normalizedEmail =
   typeof email === 'string' ? email.toLowerCase().trim() : 'unknown'

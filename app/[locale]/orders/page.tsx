@@ -5,6 +5,7 @@ import { useSearchParams } from 'next/navigation'
 import { Button } from '@/components/ui/button'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import Image from 'next/image'
+import { Turnstile } from '@marsidev/react-turnstile'
 import { useTranslations,useLocale } from 'next-intl'
 import { 
  ArrowRight,
@@ -181,6 +182,7 @@ function OrderFormContent() {
     color: 'from-pink-500 to-rose-500',
   },
 }
+  const [turnstileToken, setTurnstileToken] = useState('')
   const [files, setFiles] = useState<File[]>([])
   const fileInputRef = useRef<HTMLInputElement>(null)
   const { user, loading: authLoading } = useAuth()
@@ -214,9 +216,13 @@ function OrderFormContent() {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
-    if (!user?.email) {
-  showToast(t('messages.loginRequired'), 'error')
+    if (!turnstileToken) {
+  showToast('Please complete the human verification.', 'error')
   return
+}
+    if (!user?.email) {
+    showToast(t('messages.loginRequired'), 'error')
+    return
 }
     setLoading(true)
 
@@ -231,13 +237,13 @@ function OrderFormContent() {
   price: formData.price,
   priority: formData.priority,
   deliveryEstimate: selectedService.delivery,
+  turnstileToken,
 }),
 
 
       })
 
       const data = await response.json()
-
       if (data.success) {
         // Upload files if any
         if (files.length > 0) {
@@ -679,9 +685,17 @@ if (!user) {
                       }}
                     />
                   </div>
+    <div className="flex justify-center">
+  <Turnstile
+    siteKey={process.env.NEXT_PUBLIC_TURNSTILE_SITE_KEY || ''}
+    onSuccess={setTurnstileToken}
+    onError={() => setTurnstileToken('')}
+    onExpire={() => setTurnstileToken('')}
+  />
+</div>
                   <Button
                     type="submit"
-                    disabled={loading}
+                    disabled={loading || !turnstileToken}
                     size="lg"
                    className="w-full bg-blue-600 py-6 text-lg font-semibold text-white shadow-lg shadow-blue-600/20 transition-all hover:bg-blue-700 hover:shadow-blue-600/30"
                   >

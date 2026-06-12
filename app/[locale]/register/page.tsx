@@ -9,11 +9,13 @@ import { useAuth } from '@/components/auth-context'
 import { useRouter } from 'next/navigation'
 import PremiumPageShell from '@/components/PremiumPageShell'
 import { useTranslations } from 'next-intl'
+import { Turnstile } from '@marsidev/react-turnstile'
 export default function RegisterPage() {
   const t = useTranslations('Register')
   const [name, setName] = useState('')
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
+  const [turnstileToken, setTurnstileToken] = useState('')
   const [loading, setLoading] = useState(false)
   const [loadingText, setLoadingText] = useState(t('creatingAccount'))
   const { register } = useAuth()
@@ -21,6 +23,10 @@ export default function RegisterPage() {
   
   const handleSubmit = async (e: React.FormEvent) => {
    e.preventDefault()
+   if (!turnstileToken) {
+  showToast('Please complete the human verification.', 'error')
+  return
+}
    setLoading(true)
    setLoadingText(t('creatingAccount'))
 
@@ -33,7 +39,7 @@ const finalTimer = window.setTimeout(() => {
 }, 4500)
 
 
-const result = await register(name, email, password)
+const result = await register(name, email, password, turnstileToken)
 if (result.success) {
   showToast(
     t('accountCreated'),
@@ -111,9 +117,17 @@ setLoadingText(t('creatingAccount'))
                   onChange={(e) => setPassword(e.target.value)}
                 />
               </div>
+  <div className="flex justify-center">
+  <Turnstile
+    siteKey={process.env.NEXT_PUBLIC_TURNSTILE_SITE_KEY || ''}
+    onSuccess={setTurnstileToken}
+    onError={() => setTurnstileToken('')}
+    onExpire={() => setTurnstileToken('')}
+  />
+</div>
             <Button
             type="submit"
-            disabled={loading}
+            disabled={loading || !turnstileToken}
             size="lg"
             className="group h-14 w-full rounded-2xl border border-blue-500/30 bg-gradient-to-r from-blue-600 to-blue-500 text-lg font-semibold text-white shadow-[0_10px_40px_rgba(37,99,235,0.35)] transition-all duration-300 hover:scale-[1.02] hover:from-blue-500 hover:to-cyan-400 hover:shadow-[0_18px_50px_rgba(37,99,235,0.45)]"
                >

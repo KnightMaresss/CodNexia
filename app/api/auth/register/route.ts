@@ -3,6 +3,7 @@ import { NextResponse } from 'next/server'
 import bcrypt from 'bcryptjs'
 import { headers } from 'next/headers'
 import { rateLimit } from '@/lib/rate-limit'
+import { verifyTurnstileToken } from '@/lib/turnstile'
 import {
   createEmailVerificationToken,
   getEmailVerificationExpiry,
@@ -29,7 +30,18 @@ export async function POST(request: Request) {
       )
     }
 
-    const { name, email, password } = await request.json()
+const { name, email, password, turnstileToken } = await request.json()
+
+const cleanIp = ip.split(',')[0]?.trim() || 'unknown'
+
+const turnstile = await verifyTurnstileToken(turnstileToken, cleanIp)
+
+if (!turnstile.success) {
+  return NextResponse.json(
+    { success: false, error: 'Human verification failed. Please try again.' },
+    { status: 403 }
+  )
+}
 
     if (!name || !email || !password) {
       return NextResponse.json(
