@@ -263,18 +263,15 @@ if (loading) {
                   </div>
                   
                   {/* Divider */}
-                  <div className="border-t border-border pt-4 flex items-center justify-between">
-                    <div>
-                      <p className="text-sm font-semibold text-foreground">{rating.studentName}</p>
-                     <p className="text-xs text-muted-foreground">
-                    {t('verifiedReview')}
-                      </p>
-                    </div>
-                    <div className="text-right">
-                      <p className="text-xs text-muted-foreground">{t('completedBy')}</p>
-                      <p className="text-sm font-medium bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">{rating.assignedToName || 'Codnexia'}</p>
-                    </div>
-                  </div>
+<div className="border-t border-border pt-4">
+  <p className="text-sm font-semibold text-foreground">
+    {rating.studentName}
+  </p>
+
+  <p className="text-xs text-muted-foreground">
+    {t('verifiedReview')}
+  </p>
+</div>
                 </CardContent>
               </Card>
             ))}
