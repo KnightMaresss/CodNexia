@@ -964,7 +964,7 @@
     "avgRating": "Note moyenne",
     "services": "Services",
     "happyClients": "Clients satisfaits",
-    "allProjects": "Tous projets",
+    "allProjects": "Tous les avis",
     "emptyTitle": "Aucun projet dans cette catégorie",
     "emptySubtitle": "Revenez bientôt pour les mises à jour !",
     "completedBy": "Réalisé par",
@@ -972,7 +972,43 @@
     "ctaSubtitle": "Rejoignez nos clients satisfaits et faites réaliser votre travail par des professionnels.",
     "ctaButton": "Passez commande maintenant",
     "client": "Client",
-    "verifiedReview": "Avis vérifié"
+    "verifiedReview": "Avis vérifié",
+    "featuredTitle": "Meilleures réalisations sélectionnées",
+"featuredSubtitle": "Une sélection soigneusement choisie de certains des systèmes et applications les plus performants que nous avons développés dans différents secteurs.",
+"reviewsTitle": "Avis Clients",
+"reviewsSubtitle": "Retours des clients qui nous ont confié leurs projets.",
+"projects": {
+  "travel": {
+    "title": "Plateforme de voyage et réservation de billets",
+    "category": "Plateforme Web",
+    "description": "Une plateforme de voyage avec réservation de billets, pages de services et une expérience utilisateur moderne."
+  },
+  "cinema": {
+    "title": "Plateforme de cinéma en ligne",
+    "category": "Plateforme de streaming",
+    "description": "Une application web de type cinéma permettant de parcourir du contenu, organiser des médias et offrir une expérience fluide."
+  },
+  "medical": {
+    "title": "Plateforme de diagnostic médical",
+    "category": "Système de santé",
+    "description": "Une plateforme médicale conçue pour collecter les symptômes, gérer les données des patients et soutenir les processus de diagnostic."
+  },
+  "warehouse": {
+    "title": "Application de gestion d'entrepôt",
+    "category": "Application métier",
+    "description": "Un système d'entrepôt permettant de gérer les produits, les stocks, les mouvements de marchandises et les opérations."
+  },
+  "malware": {
+    "title": "Application de détection de logiciels malveillants",
+    "category": "Solution de cybersécurité",
+    "description": "Une application de sécurité conçue pour analyser les fichiers suspects et les comportements afin de soutenir la détection des menaces."
+  },
+  "bots": {
+    "title": "Bots d'automatisation",
+    "category": "Automatisation",
+    "description": "Des bots personnalisés conçus pour automatiser les tâches répétitives, améliorer la réactivité et simplifier les processus numériques."
+  }
+}
   },
   "OrderMessages": {
     "searchMessages": "Rechercher messages...",

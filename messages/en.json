@@ -1032,7 +1032,7 @@
   "services": "Services",
   "happyClients": "Happy Clients",
 
-  "allProjects": "All Projects",
+"allProjects": "All Reviews",
 
   "emptyTitle": "No projects in this category yet",
   "emptySubtitle": "Check back soon for updates!",
@@ -1043,7 +1043,45 @@
   "ctaSubtitle": "Join our happy clients and get your work done by professionals.",
   "ctaButton": "Place Your Order Now",
   "client": "Client",
-  "verifiedReview": "Verified review"
+  "verifiedReview": "Verified review",
+  "reviewsTitle": "Client Reviews",
+  "reviewsSubtitle": "Feedback from clients who trusted us with their projects.",
+
+
+  "featuredTitle": "Selected Best Work",
+  "featuredSubtitle": "A curated selection of some of the strongest systems and applications we have built across different industries.",
+"projects": {
+  "travel": {
+    "title": "Travel & Ticket Booking Platform",
+    "category": "Web Platform",
+    "description": "A travel website with ticket booking flow, service pages, and a clean customer experience."
+  },
+  "cinema": {
+    "title": "Online Cinema Platform",
+    "category": "Streaming Platform",
+    "description": "A cinema-style web application for browsing content, organizing media, and creating a smooth viewing experience."
+  },
+  "medical": {
+    "title": "Medical Diagnosis Website",
+    "category": "Healthcare System",
+    "description": "A medical-focused platform designed to collect symptoms, organize patient inputs, and support diagnosis workflows."
+  },
+  "warehouse": {
+    "title": "Warehouse Management Application",
+    "category": "Business Application",
+    "description": "A warehouse system for managing products, inventory movement, stock visibility, and operational records."
+  },
+  "malware": {
+    "title": "Malware Detection Application",
+    "category": "Cybersecurity Tool",
+    "description": "A security application designed to analyze suspicious files or behavior patterns and support malware detection workflows."
+  },
+  "bots": {
+    "title": "Automation Bots",
+    "category": "Automation",
+    "description": "Custom bots built to automate repetitive tasks, improve response time, and simplify digital workflows."
+  }
+}
 },
 "OrderMessages": {
   "searchMessages": "Search messages...",

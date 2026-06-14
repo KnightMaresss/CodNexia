@@ -2,7 +2,22 @@
 import { useState, useEffect } from 'react'
 import { Card, CardContent } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
-import {  Star, Quote, TrendingUp, Award, Users, CheckCircle2, ArrowRight,ArrowLeft } from 'lucide-react'
+import {
+Star, 
+Quote, 
+TrendingUp, 
+Award, 
+Users, 
+CheckCircle2, 
+ArrowRight, 
+ArrowLeft, 
+Globe, 
+Film, 
+Stethoscope, 
+Warehouse, 
+ShieldAlert, 
+Bot 
+} from 'lucide-react'
 import { Link } from '@/i18n/navigation'
 import PremiumPageShell from '@/components/PremiumPageShell'
 import { useLocale, useTranslations } from 'next-intl'
@@ -74,7 +89,14 @@ export default function PortfolioPage() {
 
   const serviceOptions = [...new Set(ratings.map((r: Rating) => r.service))]
 
-
+const featuredProjects = [
+  { icon: Globe, title: t('projects.travel.title'), category: t('projects.travel.category'), description: t('projects.travel.description') },
+  { icon: Film, title: t('projects.cinema.title'), category: t('projects.cinema.category'), description: t('projects.cinema.description') },
+  { icon: Stethoscope, title: t('projects.medical.title'), category: t('projects.medical.category'), description: t('projects.medical.description') },
+  { icon: Warehouse, title: t('projects.warehouse.title'), category: t('projects.warehouse.category'), description: t('projects.warehouse.description') },
+  { icon: ShieldAlert, title: t('projects.malware.title'), category: t('projects.malware.category'), description: t('projects.malware.description') },
+  { icon: Bot, title: t('projects.bots.title'), category: t('projects.bots.category'), description: t('projects.bots.description') },
+]
 
 if (loading) {
   return null
@@ -119,7 +141,37 @@ if (loading) {
           </div>
         </div>
       </section>
+<section className="mx-auto max-w-7xl px-4 py-10">
+  <div className="mb-8 text-center">
+    <h2 className="text-3xl font-bold text-foreground">{t('featuredTitle')}</h2>
+    <p className="mx-auto mt-2 max-w-2xl text-muted-foreground">{t('featuredSubtitle')}</p>
+  </div>
 
+<div className="grid grid-cols-1 gap-5 md:grid-cols-2 lg:grid-cols-2 xl:grid-cols-3">
+    {featuredProjects.map((project, index) => (
+      <Card
+        key={project.title}
+        className="group relative overflow-hidden rounded-3xl border-2 border-border/40 bg-white/45 shadow-2xl backdrop-blur-2xl transition-all duration-500 hover:-translate-y-2 hover:border-blue-500/30 hover:shadow-[0_20px_60px_rgba(37,99,235,0.18)] dark:bg-black/45"
+        style={{ animation: `fadeInUp 0.4s ease forwards`, animationDelay: `${index * 0.08}s` }}
+      >
+        <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_top_left,rgba(59,130,246,0.08),transparent_35%),radial-gradient(circle_at_bottom_right,rgba(168,85,247,0.06),transparent_40%)]" />
+
+        <CardContent className="relative p-6">
+          <div className="mb-5 flex h-12 w-12 items-center justify-center rounded-2xl border border-blue-500/20 bg-blue-500/10">
+            <project.icon className="h-6 w-6 text-blue-500" />
+          </div>
+
+          <span className="mb-3 inline-block rounded-full bg-blue-500/10 px-3 py-1 text-xs font-semibold text-blue-500">
+            {project.category}
+          </span>
+
+          <h3 className="mb-2 text-xl font-bold text-foreground">{project.title}</h3>
+          <p className="text-sm leading-relaxed text-muted-foreground">{project.description}</p>
+        </CardContent>
+      </Card>
+    ))}
+  </div>
+</section>
       {/* Filter Bar */}
       {serviceOptions.length > 0 && (
         <div className="max-w-7xl mx-auto px-4 py-6 flex flex-wrap justify-center gap-2">
@@ -148,8 +200,15 @@ if (loading) {
           ))}
         </div>
       )}
-
-      {/* Testimonials Grid */}
+<div className="max-w-7xl mx-auto px-4 mb-8 text-center">
+  <h2 className="text-3xl font-bold text-foreground">
+    {t('reviewsTitle')}
+  </h2>
+  <p className="mt-2 text-muted-foreground">
+    {t('reviewsSubtitle')}
+  </p>
+</div>
+     {/* Client Reviews Grid */}
       <div className="max-w-7xl mx-auto px-4">
         {filteredRatings.length === 0 ? (
           <Card className="border-0 shadow-sm">
@@ -170,7 +229,7 @@ if (loading) {
                 >
 <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_top_left,rgba(59,130,246,0.08),transparent_35%),radial-gradient(circle_at_bottom_right,rgba(168,85,247,0.06),transparent_40%)]" />
 
-                <CardContent className="p-6">
+                <CardContent className="p-5">
                   {/* Stars */}
                   <div className="flex gap-0.5 mb-4">
                     {[1, 2, 3, 4, 5].map((star) => (

@@ -964,7 +964,7 @@
     "avgRating": "Durchschnittsbewertung",
     "services": "Leistungen",
     "happyClients": "Zufriedene Kunden",
-    "allProjects": "Alle Projekte",
+    "allProjects": "Alle Bewertungen",
     "emptyTitle": "Noch keine Projekte in dieser Kategorie",
     "emptySubtitle": "Schauen Sie bald wieder vorbei!",
     "completedBy": "Abgeschlossen von",
@@ -972,7 +972,43 @@
     "ctaSubtitle": "Schließen Sie sich unseren zufriedenen Kunden an und lassen Sie Ihre Arbeit von Profis erledigen.",
     "ctaButton": "Jetzt Auftrag erstellen",
     "client": "Kunde",
-    "verifiedReview": "Verifizierte Bewertung"
+    "verifiedReview": "Verifizierte Bewertung",
+    "featuredTitle": "Ausgewählte Top-Arbeiten",
+    "featuredSubtitle": "Eine kuratierte Auswahl einiger der stärksten Systeme und Anwendungen, die wir in verschiedenen Branchen entwickelt haben.",
+    "reviewsTitle": "Kundenbewertungen",
+    "reviewsSubtitle": "Feedback von Kunden, die uns ihre Projekte anvertraut haben.",
+"projects": {
+  "travel": {
+    "title": "Reise- und Ticketbuchungsplattform",
+    "category": "Web-Plattform",
+    "description": "Eine Reiseplattform mit Ticketbuchung, Serviceseiten und einer modernen Benutzererfahrung."
+  },
+  "cinema": {
+    "title": "Online-Kinoplattform",
+    "category": "Streaming-Plattform",
+    "description": "Eine Kino-Webanwendung zum Durchsuchen von Inhalten, Organisieren von Medien und Bereitstellen eines reibungslosen Nutzungserlebnisses."
+  },
+  "medical": {
+    "title": "Medizinische Diagnoseplattform",
+    "category": "Gesundheitssystem",
+    "description": "Eine medizinische Plattform zur Erfassung von Symptomen, Verwaltung von Patientendaten und Unterstützung diagnostischer Prozesse."
+  },
+  "warehouse": {
+    "title": "Lagerverwaltungsanwendung",
+    "category": "Geschäftsanwendung",
+    "description": "Ein Lagersystem zur Verwaltung von Produkten, Beständen, Warenbewegungen und Betriebsabläufen."
+  },
+  "malware": {
+    "title": "Malware-Erkennungsanwendung",
+    "category": "Cybersicherheitslösung",
+    "description": "Eine Sicherheitsanwendung zur Analyse verdächtiger Dateien und Verhaltensmuster zur Unterstützung der Malware-Erkennung."
+  },
+  "bots": {
+    "title": "Automatisierungs-Bots",
+    "category": "Automatisierung",
+    "description": "Individuelle Bots zur Automatisierung wiederkehrender Aufgaben, Verbesserung der Reaktionszeiten und Optimierung digitaler Arbeitsabläufe."
+  }
+}
   },
   "OrderMessages": {
     "searchMessages": "Nachrichten suchen...",
