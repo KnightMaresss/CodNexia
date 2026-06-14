@@ -45,7 +45,7 @@ export default function PortfolioPage() {
     'mobile-apps': tCheckout('services.mobileApps'),
     'powerpoint-presentations': tCheckout('services.powerpoint'),
     'cv-resume-writing': tCheckout('services.cv'),
-    translation: tCheckout('services.translation'),
+     translation: tCheckout('services.translation'),
     'code-debugging': tCheckout('services.debugging'),
     'ai-automation': tCheckout('services.ai'),
     'ui-ux-design': tCheckout('services.uiux'),
@@ -107,7 +107,7 @@ if (loading) {
     <PremiumPageShell className="pt-20 pb-16">
       {/* Hero Section */}
       <section className="relative overflow-hidden">
-        <div className="max-w-7xl mx-auto px-4 py-16 text-center relative">
+       <div className="max-w-7xl mx-auto px-4 pt-16 pb-8 text-center relative">
           <div className="mb-6 inline-flex items-center gap-2 rounded-full border border-blue-500/25 bg-blue-500/10 px-5 py-2 text-sm font-semibold text-blue-700 shadow-lg shadow-blue-500/10 backdrop-blur-xl dark:text-blue-300">
             <Award className="h-4 w-4" />
             {t('badge')}
@@ -124,7 +124,7 @@ if (loading) {
             {t('subtitle')}
           </p>
           
-          {/* Stats Bar */}
+          {/* Stats Bar 
           <div className="grid grid-cols-2 md:grid-cols-4 gap-4 max-w-3xl mx-auto">
             {[
               { icon: CheckCircle2, value: `${stats.total}+`, label: t('projectsDone'), color: 'text-green-600' },
@@ -139,9 +139,10 @@ if (loading) {
               </div>
             ))}
           </div>
+          */}
         </div>
       </section>
-<section className="mx-auto max-w-7xl px-4 py-10">
+<section className="mx-auto max-w-7xl px-4 pt-4 pb-10">
   <div className="mb-8 text-center">
     <h2 className="text-3xl font-bold text-foreground">{t('featuredTitle')}</h2>
     <p className="mx-auto mt-2 max-w-2xl text-muted-foreground">{t('featuredSubtitle')}</p>
