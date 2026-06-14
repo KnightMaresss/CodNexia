@@ -208,7 +208,7 @@ if (loading) {
                     <div>
                       <p className="text-sm font-semibold text-foreground">{rating.studentName}</p>
                      <p className="text-xs text-muted-foreground">
-                     {new Date(rating.createdAt).toLocaleDateString()}
+                    {t('verifiedReview')}
                       </p>
                     </div>
                     <div className="text-right">

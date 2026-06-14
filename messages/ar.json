@@ -1041,7 +1041,8 @@
   "ctaTitle": "جاهز لبدء مشروعك؟",
   "ctaSubtitle": "انضم إلى عملائنا واحصل على خدمة احترافية.",
   "ctaButton": "اطلب الآن",
-  "client": "العميل"
+  "client": "العميل",
+  "verifiedReview": "تقييم موثق"
 },
 "OrderMessages": {
 "searchMessages": "ابحث في الرسائل...",

@@ -971,7 +971,8 @@
     "ctaTitle": "Bereit, Ihr Projekt zu starten?",
     "ctaSubtitle": "Schließen Sie sich unseren zufriedenen Kunden an und lassen Sie Ihre Arbeit von Profis erledigen.",
     "ctaButton": "Jetzt Auftrag erstellen",
-    "client": "Kunde"
+    "client": "Kunde",
+    "verifiedReview": "Verifizierte Bewertung"
   },
   "OrderMessages": {
     "searchMessages": "Nachrichten suchen...",

@@ -971,7 +971,8 @@
     "ctaTitle": "Prêt à démarrer votre projet ?",
     "ctaSubtitle": "Rejoignez nos clients satisfaits et faites réaliser votre travail par des professionnels.",
     "ctaButton": "Passez commande maintenant",
-    "client": "Client"
+    "client": "Client",
+    "verifiedReview": "Avis vérifié"
   },
   "OrderMessages": {
     "searchMessages": "Rechercher messages...",
