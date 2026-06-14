@@ -9,7 +9,7 @@ const emailTemplate = (content: string) => `
   <!-- Header -->
   <div style="background: #1a1a2e; padding: 12px 20px; text-align: center; border-bottom: 3px solid #2563eb;">
        <h1 style="margin: 0; font-size: 25px;"><span style="color: #38b6ff; font-family: 'Courier New', monospace;">COD</span><span style="color: #ffffff; font-family: 'Courier New', monospace;">NEX</span><span style="color: #ff3131; font-family: 'Courier New', monospace;">IA</span></h1>
-    <p style="color: #94a3b8; margin: 4px 0 0; font-size: 9px; font-family: Arial, sans-serif;">Academic Help & Web Development</p>
+    <p style="color: #94a3b8; margin: 4px 0 0; font-size: 9px; font-family: Arial, sans-serif;">Professional Digital Services</p>
   </div>
   
   <!-- Content -->
@@ -23,7 +23,7 @@ const emailTemplate = (content: string) => `
       © 2026 Codnexia. All rights reserved.
     </p>
     <p style="color: #94a3b8; font-size: 11px; margin: 4px 0 0;">
-      Academic Help • Web Development • Mobile Apps
+      Professional Services • Development • Design
     </p>
   </div>
 </div>
@@ -53,7 +53,9 @@ export async function sendOrderConfirmation(
          </p>
         </div>
         
-        <p style="color: #64748b; font-size: 14px; margin: 0 0 25px;"We will review your requirements first, then send you the final price, deposit amount, and estimated timeline.</p>
+        <p style="color: #64748b; font-size: 14px; margin: 0 0 25px;">
+        We will review your requirements first, then send you the final price, deposit amount, and estimated timeline.
+        </p>
         
         <a href="${SITE_URL}/track?id=${orderId}&direct=true"
            style="display: inline-block; background: #2563eb; color: white; padding: 14px 28px; border-radius: 8px; text-decoration: none; font-weight: 600; font-size: 14px;">
@@ -66,13 +68,13 @@ export async function sendOrderConfirmation(
     await resend.emails.send({
       from: FROM_EMAIL,
       to: ADMIN_EMAIL,
-      subject: `New Order: ${serviceName} - $${price}`,
+      subject: `New Order Received: ${serviceName}`,
       html: emailTemplate(`
         <h2 style="color: #1e293b; margin: 0 0 10px;">New Order Received! 🔔</h2>
         
         <div style="background: #f1f5f9; border-radius: 8px; padding: 20px; margin-bottom: 20px;">
           <p style="margin: 0 0 8px; font-size: 14px;"><strong style="color: #1e293b;">Order ID:</strong> ${orderId}</p>
-          <p style="margin: 0 0 8px; font-size: 14px;"><strong style="color: #1e293b;">Student:</strong> ${studentEmail}</p>
+          <p style="margin: 0 0 8px; font-size: 14px;"><strong style="color: #1e293b;">Client:</strong> ${studentEmail}</p>
           <p style="margin: 0 0 8px; font-size: 14px;"><strong style="color: #1e293b;">Service:</strong> ${serviceName}</p>
           <p style="margin: 0; font-size: 14px;"><strong style="color: #1e293b;">Status:</strong><span style="color: #2563eb; font-weight: bold;"> Pending Review</span></p>
         </div>
