@@ -360,7 +360,7 @@
       "projectReadyText": "Zahlen Sie die restlichen ${remaining}, um die fertige Arbeit herunterzuladen.",
       "downloadWork": "📥 ${remaining} zahlen, um die Arbeit herunterzuladen",
       "fullyPaid": "✅ Vollständig bezahlt – vielen Dank für Ihr Vertrauen!",
-      "fullyPaidText": "Ihre Dateien stehen unten zum Download bereit."
+      "fullyPaidText": "Ihre Dateien werden Ihnen zugesendet."
     }
   },
   "Checkout": {

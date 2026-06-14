@@ -381,7 +381,7 @@
   "downloadWork": "📥 Pay ${remaining} to Download Work",
 
   "fullyPaid": "✅ Fully Paid - Thank you for your business!",
-  "fullyPaidText": "Your files are available for download below."
+  "fullyPaidText": "Your files will be sent to you."
 }
 },
 "Checkout": {

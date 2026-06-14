@@ -380,7 +380,7 @@
   "downloadWork": "📥 ادفع ${remaining} لتحميل العمل",
 
   "fullyPaid": "✅ تم الدفع بالكامل - شكرًا لتعاملك معنا!",
-  "fullyPaidText": "ملفاتك جاهزة للتحميل بالأسفل."
+  "fullyPaidText": "سيتم إرسال ملفاتك إليك."
 }
 },
 "Checkout": {
