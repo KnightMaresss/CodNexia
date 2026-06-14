@@ -730,6 +730,9 @@
     }
   },
   "Profile": {
+      "student": {
+      "noOrders": "Vous n'avez encore aucune commande."
+},
     "services": {
       "graduationProjects": "Projets de fin d'études",
       "academicReports": "Rapports académiques",
@@ -990,7 +993,9 @@
     "messageCopied": "Message copié",
     "downloadFailed": "Échec du téléchargement du fichier",
     "messageDeleted": "Message supprimé",
-    "deleteFailed": "Échec de suppression du message"
+    "deleteFailed": "Échec de suppression du message",
+    "startConversation": "Commencer la conversation",
+"startConversationDesc": "Partagez des mises à jour, envoyez des fichiers et conservez tout ce qui concerne cette commande au même endroit."
   },
   "Feedback": {
   "badge": "Aidez-nous à nous améliorer",

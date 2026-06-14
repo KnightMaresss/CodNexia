@@ -45,17 +45,23 @@ export function Navbar() {
     return () => document.removeEventListener('mousedown', handleClickOutside)
   }, [])
 
-  const switchLanguage = (newLocale: string) => {
-    setLanguageOpen(false)
-    router.replace(pathname, { locale: newLocale })
-  }
+const switchLanguage = (newLocale: string) => {
+  setLanguageOpen(false)
+
+  const search = window.location.search
+  router.replace(`${pathname}${search}`, { locale: newLocale })
+}
 
   const handleUserDropdownClick = () => {
     if (window.innerWidth < 1024) {
       setUserDropdownOpen(!userDropdownOpen)
     }
   }
-
+const closeUserDropdownOnMobile = () => {
+  if (window.innerWidth < 1024) {
+    setUserDropdownOpen(false)
+  }
+}
   return (
     <nav
       dir="ltr"
@@ -226,27 +232,39 @@ export function Navbar() {
     </div>
   </div>
 </div>
-         <Link href="/profile" className="flex items-center gap-3 px-4 py-2 text-sm text-gray-300 hover:text-white hover:bg-white/10 transition-all duration-200 group/item">
-                        <User className="h-3.5 w-3.5 text-white/40 group-hover/item:text-[#38b6ff] transition-colors" />
+                      <Link href="/profile" 
+                      onClick={closeUserDropdownOnMobile} 
+                      className="flex items-center gap-3 px-4 py-2 text-sm text-gray-300 hover:text-white hover:bg-white/10 transition-all duration-200 group/item">
+                      <User className="h-3.5 w-3.5 text-white/40 group-hover/item:text-[#38b6ff] transition-colors" />
                         {t('myProfile')}
                       </Link>
-                      <Link href="/orders" className="flex items-center gap-3 px-4 py-2 text-sm text-gray-300 hover:text-white hover:bg-white/10 transition-all duration-200 group/item">
+                      <Link href="/orders" 
+                      onClick={closeUserDropdownOnMobile} 
+                      className="flex items-center gap-3 px-4 py-2 text-sm text-gray-300 hover:text-white hover:bg-white/10 transition-all duration-200 group/item">
                         <ShoppingCart className="h-3.5 w-3.5 text-white/40 group-hover/item:text-[#38b6ff] transition-colors" />
                         {t('placeOrder')}
                       </Link>
-                      <Link href="/track" className="flex items-center gap-3 px-4 py-2 text-sm text-gray-300 hover:text-white hover:bg-white/10 transition-all duration-200 group/item">
+                      <Link href="/track" 
+                      onClick={closeUserDropdownOnMobile} 
+                      className="flex items-center gap-3 px-4 py-2 text-sm text-gray-300 hover:text-white hover:bg-white/10 transition-all duration-200 group/item">
                         <Search className="h-3.5 w-3.5 text-white/40 group-hover/item:text-[#38b6ff] transition-colors" />
                         {t('trackOrder')}
                       </Link>
-                      <Link href="/my-orders" className="flex items-center gap-3 px-4 py-2 text-sm text-gray-300 hover:text-white hover:bg-white/10 transition-all duration-200 group/item">
+                      <Link href="/my-orders" 
+                      onClick={closeUserDropdownOnMobile} 
+                      className="flex items-center gap-3 px-4 py-2 text-sm text-gray-300 hover:text-white hover:bg-white/10 transition-all duration-200 group/item">
                         <Package className="h-3.5 w-3.5 text-white/40 group-hover/item:text-[#38b6ff] transition-colors" />
                         {t('myOrders')}
                       </Link>
-                       <Link href="/portfolio" className="flex items-center gap-3 px-4 py-2 text-sm text-gray-300 hover:text-white hover:bg-white/10 transition-all duration-200 group/item">
+                       <Link href="/portfolio" 
+                       onClick={closeUserDropdownOnMobile} 
+                       className="flex items-center gap-3 px-4 py-2 text-sm text-gray-300 hover:text-white hover:bg-white/10 transition-all duration-200 group/item">
                         <Award className="h-3.5 w-3.5 text-white/40 group-hover/item:text-[#38b6ff] transition-colors" />
                         {t('portfolio')}
                       </Link>
-                      <Link href="/feedback" className="flex items-center gap-3 px-4 py-2 text-sm text-gray-300 hover:text-white hover:bg-white/10 transition-all duration-200 group/item">
+                      <Link href="/feedback" 
+                      onClick={closeUserDropdownOnMobile} 
+                      className="flex items-center gap-3 px-4 py-2 text-sm text-gray-300 hover:text-white hover:bg-white/10 transition-all duration-200 group/item">
                         <MessageSquare className="h-3.5 w-3.5 text-white/40 group-hover/item:text-[#38b6ff] transition-colors" />
                         {t('feedback')}
                       </Link>

@@ -354,7 +354,7 @@ const paymentHistory = paymentOrders
   ])
   .sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime())
   return (
-    <PremiumPageShell className="pt-24 py-12 px-4">
+    <PremiumPageShell className="pt-20 py-10 px-3 sm:px-4">
       <div className="max-w-5xl mx-auto">
         {/* Profile Header */}
         <div className="text-center mb-8">
@@ -392,7 +392,7 @@ const paymentHistory = paymentOrders
             {displayUser.name}
             {!isViewingOther && isFounder && <Crown className="h-5 w-5 text-yellow-500" />}
           </h1>
-          <p className="text-muted-foreground flex items-center gap-1 justify-center">
+          <p className="mx-auto flex max-w-[280px] items-center justify-center gap-1 truncate text-sm text-muted-foreground sm:max-w-none">
           <Mail className="h-3 w-3" />{displayUser.email}
           </p>
         </div>
@@ -466,10 +466,10 @@ const paymentHistory = paymentOrders
 
         {/* Non-founder Stats Row */}
         {!isFounder && (
-          <div className="grid grid-cols-3 gap-4 mb-8">
-           <Card className="group relative overflow-hidden rounded-3xl border-2 border-border/40 bg-white/45 dark:bg-white/45 dark:bg-black/45 backdrop-blur-2xl shadow-2xl transition-all duration-500 hover:-translate-y-1 hover:border-blue-500/30 hover:shadow-[0_20px_60px_rgba(37,99,235,0.18)] before:absolute before:inset-0 before:rounded-3xl before:border before:border-white/5 before:pointer-events-none">
-              <CardContent className="p-4 text-center">
-                <Shield className="h-5 w-5 text-blue-600 mx-auto mb-2" />
+        <div className="grid grid-cols-3 items-start gap-1.5 sm:gap-4 mb-6">
+           <Card className="group relative overflow-hidden rounded-2xl sm:rounded-3xl border-2 border-border/40 bg-white/45 dark:bg-white/45 dark:bg-black/45 backdrop-blur-2xl shadow-lg transition-all duration-500 hover:-translate-y-1 hover:border-blue-500/30 hover:shadow-[0_20px_60px_rgba(37,99,235,0.18)] before:absolute before:inset-0 before:rounded-3xl before:border before:border-white/5 before:pointer-events-none">
+             <CardContent className="px-1 py-2 text-center sm:p-4">
+                <Shield className="h-4 w-4 text-blue-600 mx-auto mb-1 sm:h-5 sm:w-5 sm:mb-2" />
                 <p className="text-xs text-muted-foreground">{t('stats.memberSince')}</p>
                   <p className="font-semibold text-foreground text-sm">
                   {displayUser.createdAt
@@ -482,16 +482,16 @@ const paymentHistory = paymentOrders
                 </p>
               </CardContent>
             </Card>
-           <Card className="group relative overflow-hidden rounded-3xl border-2 border-border/40 bg-white/45 dark:bg-white/45 dark:bg-black/45 backdrop-blur-2xl shadow-2xl transition-all duration-500 hover:-translate-y-1 hover:border-blue-500/30 hover:shadow-[0_20px_60px_rgba(37,99,235,0.18)] before:absolute before:inset-0 before:rounded-3xl before:border before:border-white/5 before:pointer-events-none">
-              <CardContent className="p-4 text-center">
-                <Clock className="h-5 w-5 text-blue-600 mx-auto mb-2" />
+           <Card className="group relative overflow-hidden rounded-2xl sm:rounded-3xl border-2 border-border/40 bg-white/45 dark:bg-white/45 dark:bg-black/45 backdrop-blur-2xl shadow-lg transition-all duration-500 hover:-translate-y-1 hover:border-blue-500/30 hover:shadow-[0_20px_60px_rgba(37,99,235,0.18)] before:absolute before:inset-0 before:rounded-3xl before:border before:border-white/5 before:pointer-events-none">
+             <CardContent className="px-1 py-2 text-center sm:p-4">
+                <Clock className="h-4 w-4 text-blue-600 mx-auto mb-1 sm:h-5 sm:w-5 sm:mb-2" />
                 <p className="text-xs text-muted-foreground">{t('stats.account')}</p>
                 <p className="font-semibold text-foreground text-sm">{t('stats.active')}</p>
               </CardContent>
             </Card>
-           <Card className="group relative overflow-hidden rounded-3xl border-2 border-border/40 bg-white/45 dark:bg-white/45 dark:bg-black/45 backdrop-blur-2xl shadow-2xl transition-all duration-500 hover:-translate-y-1 hover:border-blue-500/30 hover:shadow-[0_20px_60px_rgba(37,99,235,0.18)] before:absolute before:inset-0 before:rounded-3xl before:border before:border-white/5 before:pointer-events-none">
-              <CardContent className="p-4 text-center">
-                <ShoppingBag className="h-5 w-5 text-blue-600 mx-auto mb-2" />
+           <Card className="group relative overflow-hidden rounded-2xl sm:rounded-3xl border-2 border-border/40 bg-white/45 dark:bg-white/45 dark:bg-black/45 backdrop-blur-2xl shadow-lg transition-all duration-500 hover:-translate-y-1 hover:border-blue-500/30 hover:shadow-[0_20px_60px_rgba(37,99,235,0.18)] before:absolute before:inset-0 before:rounded-3xl before:border before:border-white/5 before:pointer-events-none">
+              <CardContent className="px-1 py-2 text-center sm:p-4">
+                <ShoppingBag className="h-4 w-4 text-blue-600 mx-auto mb-1 sm:h-5 sm:w-5 sm:mb-2" />
                 <p className="text-xs text-muted-foreground">{isModerator ? t('stats.completed') : t('stats.orders')}</p>
                 <p className="font-semibold text-foreground text-sm">{ordersCount !== null ? ordersCount : '...'}</p>
               </CardContent>
@@ -501,11 +501,11 @@ const paymentHistory = paymentOrders
 
          {/* Tabs - only show when viewing own profile */}
         {!isViewingOther && (
-        <div className="flex gap-2 mb-6">
+       <div className="mb-6 flex gap-2 overflow-x-auto pb-2">
           <button
             onClick={() => setActiveTab('profile')}
 
-    className={`flex items-center gap-2 rounded-xl px-5 py-2.5 text-sm font-medium transition-all ${
+    className={`flex shrink-0 items-center gap-2 rounded-xl px-5 py-2.5 text-sm font-medium transition-all ${
     activeTab === 'profile'
     ? 'bg-blue-600 text-white shadow-lg shadow-blue-500/20'
     : 'border border-border/60 bg-white/45 dark:bg-black/35 backdrop-blur-xl text-muted-foreground hover:border-blue-500/30 hover:text-foreground'
@@ -515,7 +515,7 @@ const paymentHistory = paymentOrders
           </button>
           <button
             onClick={() => setActiveTab('password')}
-          className={`flex items-center gap-2 rounded-xl px-5 py-2.5 text-sm font-medium transition-all ${
+          className={`flex shrink-0 items-center gap-2 rounded-xl px-5 py-2.5 text-sm font-medium transition-all ${
           activeTab === 'password'
           ? 'bg-blue-600 text-white shadow-lg shadow-blue-500/20'
           : 'border border-border/60 bg-white/45 dark:bg-black/35 backdrop-blur-xl text-muted-foreground hover:border-blue-500/30 hover:text-foreground'
@@ -526,7 +526,7 @@ const paymentHistory = paymentOrders
           {!canAccessAdmin(user.role) && (
   <button
     onClick={() => setActiveTab('payments')}
-    className={`flex items-center gap-2 rounded-xl px-5 py-2.5 text-sm font-medium transition-all ${
+    className={`flex shrink-0 items-center gap-2 rounded-xl px-5 py-2.5 text-sm font-medium transition-all ${
       activeTab === 'payments'
         ? 'bg-blue-600 text-white shadow-lg shadow-blue-500/20'
         : 'border border-border/60 bg-white/45 dark:bg-black/35 backdrop-blur-xl text-muted-foreground hover:border-blue-500/30 hover:text-foreground'
@@ -539,23 +539,23 @@ const paymentHistory = paymentOrders
         </div>
  )}
          {isViewingOther && (
-          <div className="grid grid-cols-3 gap-4 mb-8">
+          <div className="grid grid-cols-3 gap-2 sm:gap-4 mb-8">
             <Card className="border-0 shadow-sm">
-              <CardContent className="p-4 text-center">
+              <CardContent className="p-3 sm:p-4 text-center">
                 <Shield className="h-5 w-5 text-blue-600 mx-auto mb-2" />
                 <p className="text-xs text-muted-foreground">{t('viewed.role')}</p>
                 <p className="font-semibold text-foreground text-sm capitalize">{displayUser.role}</p>
               </CardContent>
             </Card>
             <Card className="border-0 shadow-sm">
-              <CardContent className="p-4 text-center">
+             <CardContent className="p-3 sm:p-4 text-center">
                 <Mail className="h-5 w-5 text-blue-600 mx-auto mb-2" />
                 <p className="text-xs text-muted-foreground">{t('viewed.email')}</p>
                 <p className="font-semibold text-foreground text-sm truncate">{displayUser.email}</p>
               </CardContent>
             </Card>
                  <Card className="border-0 shadow-sm">
-              <CardContent className="p-4 text-center">
+             <CardContent className="p-3 sm:p-4 text-center">
                 <Clock className="h-5 w-5 text-blue-600 mx-auto mb-2" />
                 <p className="text-xs text-muted-foreground">{t('viewed.lastSeen')}</p>
                 <p className="font-semibold text-foreground text-sm">
@@ -697,7 +697,7 @@ const paymentHistory = paymentOrders
                   ) : (
                     <>
                       <p className="text-sm text-muted-foreground mb-4">{t('student.noOrders')}</p>
-                      <Link href="/orders"><Button className="w-full bg-blue-600 hover:bg-blue-700 text-white">{t('links.placeFirstOrder')}<ArrowRight className="ml-2 h-4 w-4" /></Button></Link>
+                      <Link href="/orders"><Button className="w-full bg-blue-600 hover:bg-blue-700 text-white">{t('links.placeFirstOrder')}<ArrowRight className="ml-2 h-4 w-4 rtl:rotate-180" /></Button></Link>
                     </>
                   )}
                 </CardContent>

@@ -782,6 +782,9 @@
 }
 },
 "Profile": {
+  "student": {
+"noOrders": "ليس لديك أي طلبات حتى الآن."
+},
 "services": {
 "graduationProjects": "مشاريع التخرج",
 "academicReports": "التقارير الأكاديمية",
@@ -1041,9 +1044,9 @@
   "client": "العميل"
 },
 "OrderMessages": {
-  "searchMessages": "ابحث في الرسائل...",
-  "writeMessage": "اكتب رسالة...",
-  "orderChat": "محادثة الطلب",
+"searchMessages": "ابحث في الرسائل...",
+"writeMessage": "اكتب رسالة...",
+"orderChat": "محادثة الطلب",
 "liveSupport": "محادثة دعم مباشرة",
 "messageCount": "{count} رسائل",
 "messageCountOne": "{count} رسالة",
@@ -1060,7 +1063,9 @@
 "messageCopied": "تم نسخ الرسالة",
 "downloadFailed": "فشل تنزيل الملف",
 "messageDeleted": "تم حذف الرسالة",
-"deleteFailed": "فشل حذف الرسالة"
+"deleteFailed": "فشل حذف الرسالة",
+"startConversation": "ابدأ المحادثة",
+"startConversationDesc": "شارك التحديثات وأرسل الملفات واحتفظ بكل ما يتعلق بهذا الطلب في مكان واحد."
 },
 "Feedback": {
   "badge": "ساعدنا على التحسين",

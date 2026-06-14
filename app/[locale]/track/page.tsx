@@ -1,6 +1,7 @@
 'use client'
 import { useState, useEffect, useRef, Suspense } from 'react'
 import { useSearchParams } from 'next/navigation'
+import { useRouter } from '@/i18n/navigation'
 import { Button } from '@/components/ui/button'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { showToast } from '@/components/ui/toast'
@@ -75,6 +76,7 @@ function TrackOrderContent() {
   },
 ]
   const searchParams = useSearchParams()
+  const router = useRouter()
   const prefilledId = searchParams.get('id') || ''
   const [orderId, setOrderId] = useState(prefilledId)
   const [loading, setLoading] = useState(false)
@@ -152,8 +154,10 @@ function TrackOrderContent() {
 
       if (data.success) {
         setOrder(data.order)
-      } else {
-        showToast(data.error || t('errors.notFound'), 'error')
+        router.replace(`/track?id=${orderId}&direct=true`)
+      } 
+      else {
+      showToast(data.error || t('errors.notFound'), 'error')
       }
     } catch {
       showToast(t('errors.generic'), 'error')
@@ -179,14 +183,14 @@ function TrackOrderContent() {
   }
 
   return (
- <PremiumPageShell className="pt-24 py-16 px-4">
+<PremiumPageShell className="pt-20 py-10 px-3 sm:px-4">
       <div className="max-w-3xl mx-auto">
         {/* Header */}
         <div className="text-center mb-12">
           <div className="inline-flex items-center justify-center w-16 h-16 rounded-2xl bg-blue-100 mb-6">
             <Package className="h-8 w-8 text-blue-600" />
           </div>
-         <h1 className="text-4xl md:text-5xl font-bold text-foreground mb-4">
+        <h1 className="text-3xl sm:text-4xl md:text-5xl font-bold text-foreground mb-4">
             {t('title')}
           </h1>
          <p className="text-lg text-muted-foreground max-w-xl mx-auto">
@@ -252,8 +256,8 @@ function TrackOrderContent() {
             {/* Status Progress */}
           <Card className="group relative overflow-hidden rounded-3xl border-2 border-border/40 bg-white/45 dark:bg-black/45 backdrop-blur-2xl shadow-2xl transition-all duration-500 hover:-translate-y-1 hover:border-blue-500/30 hover:shadow-[0_20px_60px_rgba(37,99,235,0.18)] before:absolute before:inset-0 before:rounded-3xl before:border before:border-white/5 before:pointer-events-none">
           <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_top_left,rgba(59,130,246,0.08),transparent_35%),radial-gradient(circle_at_bottom_right,rgba(168,85,247,0.06),transparent_40%)]" />
-              <CardContent className="p-8">
-                <div className="flex items-center justify-between mb-2">
+             <CardContent className="p-5 sm:p-8">
+                <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between mb-2">
                  <h2 className="text-xl font-bold text-foreground">{t('status.title')}</h2>
                   <span className={`px-3 py-1 rounded-full text-xs font-semibold uppercase ${
                     order.status === 'pending' ? 'bg-yellow-100 text-yellow-700' :
@@ -271,7 +275,7 @@ function TrackOrderContent() {
                 </div>
 
   {/* Progress Tracker */}
-  <div className="mt-6 rounded-3xl border-2 border-border/40 bg-background/40 px-4 py-5 backdrop-blur-xl transition-all duration-500 hover:border-blue-500/30 hover:shadow-[0_12px_40px_rgba(37,99,235,0.12)]">
+<div className="mt-6 rounded-2xl sm:rounded-3xl border-2 border-border/40 bg-background/40 px-2 py-4 sm:px-4 sm:py-5 backdrop-blur-xl transition-all duration-500 hover:border-blue-500/30 hover:shadow-[0_12px_40px_rgba(37,99,235,0.12)]">
   <div className="flex items-center justify-between">
     {STATUS_STEPS.map((step, index, arr) => {
       const Icon = step.icon
@@ -283,7 +287,7 @@ function TrackOrderContent() {
         <div key={step.key} className="flex flex-1 items-center">
           <div className="flex flex-col items-center gap-2">
             <div
-              className={`flex h-10 w-10 items-center justify-center rounded-full border transition-all ${
+             className={`flex h-9 w-9 sm:h-10 sm:w-10 items-center justify-center rounded-full border transition-all ${
                 isDone
                   ? 'border-emerald-500 bg-emerald-500 text-white'
                   : isActive
@@ -294,14 +298,14 @@ function TrackOrderContent() {
               <Icon className="h-5 w-5" />
             </div>
 
-            <span className="text-center text-xs font-medium text-muted-foreground">
+           <span className="text-center text-[11px] leading-tight font-medium text-muted-foreground sm:text-xs">
               {step.label}
             </span>
           </div>
 
           {index < arr.length - 1 && (
             <div
-              className={`mx-3 h-px flex-1 ${
+            className={`mx-1 h-px flex-1 sm:mx-3 ${
                 isDone ? 'bg-emerald-500' : 'bg-border'
               }`}
             />
@@ -331,7 +335,7 @@ function TrackOrderContent() {
                     </div>
                     <div>
                     <p className="text-xs text-muted-foreground">{t('details.orderId')}</p>
-                      <p className="font-mono text-sm font-medium">{order._id}</p>
+                     <p className="break-all font-mono text-xs font-medium sm:text-sm">{order._id}</p>
                     </div>
                   </div>
 

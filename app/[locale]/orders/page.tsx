@@ -5,17 +5,17 @@ import { useSearchParams } from 'next/navigation'
 import { Button } from '@/components/ui/button'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import Image from 'next/image'
-import { Turnstile } from '@marsidev/react-turnstile'
+import { Turnstile, type TurnstileInstance } from '@marsidev/react-turnstile'
 import { useTranslations,useLocale } from 'next-intl'
 import { 
- ArrowRight,
- CheckCircle,
- Mail, 
- FileText,
- DollarSign,
- Sparkles,
- Package,Upload,
- X,
+ArrowRight,
+CheckCircle,
+Mail, 
+FileText,
+DollarSign,
+Sparkles,
+Package,Upload,
+X,
 FileText as FileIcon,
 FileImage,
 FileArchive,
@@ -183,6 +183,7 @@ function OrderFormContent() {
   },
 }
   const [turnstileToken, setTurnstileToken] = useState('')
+  const turnstileRef = useRef<TurnstileInstance>(null)
   const [files, setFiles] = useState<File[]>([])
   const fileInputRef = useRef<HTMLInputElement>(null)
   const { user, loading: authLoading } = useAuth()
@@ -264,9 +265,13 @@ function OrderFormContent() {
         setSubmitted(true)
       } else {
         showToast(data.error || t('messages.error'), 'error')
+        setTurnstileToken('')
+        turnstileRef.current?.reset()
       }
     } catch {
       showToast(t('messages.network'), 'error')
+      setTurnstileToken('')
+      turnstileRef.current?.reset()
     }
 
     setLoading(false)
@@ -511,7 +516,7 @@ if (!user) {
                       <FileText className="h-4 w-4 text-blue-600" />
                       {t('form.priorityLevel')}
                     </label>
-                    <div className="grid grid-cols-3 gap-2">
+                   <div className="grid grid-cols-3 gap-1.5">
                     {[
   { value: 'low', label: t('priority.low'), icon: '🔥' },
   { value: 'normal', label: t('priority.normal'), icon: '🔥🔥' },
@@ -521,7 +526,7 @@ if (!user) {
                           key={p.value}
                           type="button"
                           onClick={() => setFormData({ ...formData, priority: p.value })}
-                          className={`text-center p-3 rounded-lg border-2 transition-all ${
+                           className={`min-w-0 text-center px-1 py-3 rounded-lg border-2 transition-all ${
                             formData.priority === p.value
                               ? p.value === 'urgent' 
                                 ? 'border-red-400 bg-red-50 dark:bg-red-950/30 shadow-md' 
@@ -531,8 +536,10 @@ if (!user) {
                               : 'border-border hover:bg-muted'
                           }`}
                         >
-                          <p className="text-lg mb-1">{p.icon}</p>
-                          <p className="font-semibold text-sm text-foreground">{p.label}</p>
+                         <p className="text-base mb-1 leading-none">{p.icon}</p>
+                         <p className="text-[11px] font-semibold leading-tight text-foreground sm:text-sm">
+                        {p.label}
+                         </p>
                         </button>
                       ))}
                     </div>
@@ -686,12 +693,19 @@ if (!user) {
                     />
                   </div>
     <div className="flex justify-center">
-  <Turnstile
-    siteKey={process.env.NEXT_PUBLIC_TURNSTILE_SITE_KEY || ''}
-    onSuccess={setTurnstileToken}
-    onError={() => setTurnstileToken('')}
-    onExpire={() => setTurnstileToken('')}
-  />
+<div className="flex justify-center scale-90 sm:scale-100 origin-center">
+<Turnstile
+  ref={turnstileRef}
+  siteKey={process.env.NEXT_PUBLIC_TURNSTILE_SITE_KEY || ''}
+  options={{
+    size: 'flexible',
+    theme: 'dark',
+  }}
+  onSuccess={setTurnstileToken}
+  onError={() => setTurnstileToken('')}
+  onExpire={() => setTurnstileToken('')}
+/>
+</div>
 </div>
                   <Button
                     type="submit"

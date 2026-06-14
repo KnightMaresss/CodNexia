@@ -628,8 +628,9 @@ const scrollToLatest = () => {
   }
 
   return (
-   <div ref={chatRootRef} className="relative flex h-[430px] flex-col overflow-hidden rounded-2xl border border-border bg-card shadow-sm">
-      <div className="flex items-center justify-between border-b border-border bg-muted/30 px-4 py-3">
+   <div ref={chatRootRef} 
+    className="relative flex h-[500px] sm:h-[430px] flex-col overflow-hidden rounded-2xl border border-border bg-card shadow-sm">
+     <div className="flex flex-col gap-3 border-b border-border bg-muted/30 px-3 py-3 sm:flex-row sm:items-center sm:justify-between">
         <div className="flex items-center gap-3">
           <div className="flex h-9 w-9 items-center justify-center rounded-full bg-blue-600 text-white shadow-sm">
             <ShieldCheck className="h-4 w-4" />
@@ -654,7 +655,7 @@ const scrollToLatest = () => {
     <Search className="h-4 w-4" />
   </button>
 
-  <div className="rounded-full border border-border bg-background px-2.5 py-1 text-xs text-muted-foreground">
+ <div className="rounded-full border border-border bg-background px-2 py-1 text-[11px] text-muted-foreground">
    {messages.length === 1
     ? t('messageCountOne', { count: messages.length })
     : t('messageCount', { count: messages.length })}
@@ -778,21 +779,21 @@ const scrollToLatest = () => {
        <div className="flex h-full items-center justify-center">
   <div className="max-w-sm text-center">
     
-    <div className="relative mx-auto mb-5 flex h-20 w-20 items-center justify-center">
+    <div className="relative mx-auto mb-4 flex h-16 w-16 items-center justify-center sm:h-20 sm:w-20">
       
       <div className="absolute inset-0 rounded-full bg-blue-500/10 blur-2xl" />
 
-      <div className="relative flex h-20 w-20 items-center justify-center rounded-3xl border border-blue-500/20 bg-blue-500/10 shadow-[0_0_40px_rgba(37,99,235,0.12)]">
-        <Send className="h-9 w-9 text-blue-500" />
+      <div className="relative flex h-16 w-16 items-center justify-center rounded-2xl sm:h-20 sm:w-20 sm:rounded-3xl border border-blue-500/20 bg-blue-500/10 shadow-[0_0_40px_rgba(37,99,235,0.12)]">
+       <Send className="h-7 w-7 text-blue-500 sm:h-9 sm:w-9" />
       </div>
     </div>
 
-    <p className="text-lg font-semibold text-foreground">
-      Start the conversation
+    <p className="text-base font-semibold text-foreground sm:text-lg">
+     {t('startConversation')}
     </p>
 
-    <p className="mt-2 text-sm leading-relaxed text-muted-foreground">
-      Share updates, send files, and keep everything about this order in one place.
+   <p className="mt-2 text-xs leading-relaxed text-muted-foreground sm:text-sm">
+      {t('startConversationDesc')}
     </p>
     </div>
   </div>
@@ -1295,7 +1296,7 @@ onClick={() => {
         <button
           type="button"
           onClick={() => fileInputRef.current?.click()}
-          className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full border border-border bg-muted text-muted-foreground transition-colors hover:bg-muted/80 hover:text-foreground"
+          className="flex h-9 w-9 sm:h-10 sm:w-10 shrink-0 items-center justify-center rounded-full border border-border bg-muted text-muted-foreground transition-colors hover:bg-muted/80 hover:text-foreground"
           aria-label="Attach file"
         >
           <Paperclip className="h-4 w-4" />

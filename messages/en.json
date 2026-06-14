@@ -781,6 +781,10 @@
 }
 },
 "Profile": {
+  "student": {
+  "noOrders": "You don't have any orders yet."
+},
+
   "services": {
     "graduationProjects": "Graduation Projects",
     "academicReports": "Academic Reports",
@@ -1060,7 +1064,9 @@
 "messageCopied": "Message copied",
 "downloadFailed": "Failed to download file",
 "messageDeleted": "Message deleted",
-"deleteFailed": "Failed to delete message"
+"deleteFailed": "Failed to delete message",
+"startConversation": "Start the conversation",
+"startConversationDesc": "Share updates, send files, and keep everything about this order in one place."
 },
 "Feedback": {
   "badge": "Help Us Improve",

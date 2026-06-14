@@ -1,5 +1,5 @@
 'use client'
-import { useState } from 'react'
+import { useState,useRef } from 'react'
 import { Button } from '@/components/ui/button'
 import { Card, CardContent } from '@/components/ui/card'
 import { showToast } from '@/components/ui/toast'
@@ -9,13 +9,15 @@ import { useAuth } from '@/components/auth-context'
 import { useRouter } from 'next/navigation'
 import PremiumPageShell from '@/components/PremiumPageShell'
 import { useTranslations } from 'next-intl'
-import { Turnstile } from '@marsidev/react-turnstile'
+import { Turnstile, type TurnstileInstance } from '@marsidev/react-turnstile'
+
 export default function RegisterPage() {
   const t = useTranslations('Register')
   const [name, setName] = useState('')
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
   const [turnstileToken, setTurnstileToken] = useState('')
+  const turnstileRef = useRef<TurnstileInstance>(null)
   const [loading, setLoading] = useState(false)
   const [loadingText, setLoadingText] = useState(t('creatingAccount'))
   const { register } = useAuth()
@@ -48,6 +50,8 @@ if (result.success) {
   router.push(`/login?verifyEmail=${encodeURIComponent(email)}`)
 } else {
   showToast(result.error || t('registrationFailed'), 'error')
+  setTurnstileToken('')
+  turnstileRef.current?.reset()
 }  
 window.clearTimeout(sendingTimer)
 window.clearTimeout(finalTimer)
@@ -117,13 +121,16 @@ setLoadingText(t('creatingAccount'))
                   onChange={(e) => setPassword(e.target.value)}
                 />
               </div>
-  <div className="flex justify-center">
-  <Turnstile
-    siteKey={process.env.NEXT_PUBLIC_TURNSTILE_SITE_KEY || ''}
-    onSuccess={setTurnstileToken}
-    onError={() => setTurnstileToken('')}
-    onExpire={() => setTurnstileToken('')}
-  />
+ <div className="flex justify-center overflow-hidden">
+  <div className="scale-[0.82] sm:scale-100 origin-center">
+<Turnstile
+  ref={turnstileRef}
+  siteKey={process.env.NEXT_PUBLIC_TURNSTILE_SITE_KEY || ''}
+  onSuccess={setTurnstileToken}
+  onError={() => setTurnstileToken('')}
+  onExpire={() => setTurnstileToken('')}
+/>
+</div>
 </div>
             <Button
             type="submit"

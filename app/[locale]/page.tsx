@@ -213,7 +213,7 @@ const trust = [
 
         {/* Grid overlay with animation */}
         <div className="absolute inset-0">
-          <div className="absolute inset-0 bg-[url('/grid.svg')] opacity-[0.02] dark:opacity-[0.04] animate-fade-in" />
+          
         </div>
         {/* Premium headline with gradient animation */}
         <h1 className={`relative max-w-7xl px-4 text-5xl font-black leading-[1.3] tracking-[-0.025em] md:text-7xl lg:text-8xl transition-all duration-1000 delay-200 ${isMounted ? 'translate-y-0 opacity-100' : 'translate-y-8 opacity-0'}`}>

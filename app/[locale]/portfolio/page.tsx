@@ -235,7 +235,7 @@ if (loading) {
             <Link href="/orders">
              <Button
             size="lg"
-            className="group h-14 rounded-2xl border border-blue-500/30 bg-gradient-to-r from-blue-600 to-blue-500 px-8 text-lg font-semibold text-white shadow-[0_10px_40px_rgba(37,99,235,0.35)] transition-all duration-300 hover:scale-[1.03] hover:from-blue-500 hover:to-blue-400 hover:shadow-[0_18px_50px_rgba(37,99,235,0.45)]"
+            className="group h-12 w-full max-w-[240px] rounded-2xl border border-blue-500/30 bg-gradient-to-r from-blue-600 to-blue-500 px-4 text-sm font-semibold text-white shadow-[0_10px_40px_rgba(37,99,235,0.35)] transition-all duration-300 hover:scale-[1.03] hover:from-blue-500 hover:to-blue-400 hover:shadow-[0_18px_50px_rgba(37,99,235,0.45)] sm:h-14 sm:w-auto sm:max-w-none sm:px-8 sm:text-lg"
               >
            {t('ctaButton')}
   {isRTL ? (

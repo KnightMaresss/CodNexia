@@ -1,5 +1,5 @@
 'use client'
-import { useState } from 'react'
+import { useState,useRef } from 'react'
 import { Button } from '@/components/ui/button'
 import { Card, CardContent } from '@/components/ui/card'
 import { showToast } from '@/components/ui/toast'
@@ -8,13 +8,14 @@ import { Link } from '@/i18n/navigation'
 import { useAuth } from '@/components/auth-context'
 import { useRouter } from 'next/navigation'
 import PremiumPageShell from '@/components/PremiumPageShell'
-import { Turnstile } from '@marsidev/react-turnstile'
+import { Turnstile, type TurnstileInstance } from '@marsidev/react-turnstile'
 import { useTranslations } from 'next-intl'
 export default function LoginPage() {
   const t = useTranslations('Login')
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
   const [turnstileToken, setTurnstileToken] = useState('')
+    const turnstileRef = useRef<TurnstileInstance>(null)
   const [loading, setLoading] = useState(false)
   const [unverifiedEmail, setUnverifiedEmail] = useState('')
   const [resendLoading, setResendLoading] = useState(false)
@@ -41,6 +42,8 @@ if (result.success) {
   }
 
  showToast(result.error || t('loginFailed'), 'error')
+ setTurnstileToken('')
+ turnstileRef.current?.reset()
 }
     setLoading(false)
   }
@@ -163,13 +166,16 @@ const handleResendVerification = async () => {
                   onChange={(e) => setPassword(e.target.value)}
                 />
               </div>
-<div className="flex justify-center">
-  <Turnstile
-    siteKey={process.env.NEXT_PUBLIC_TURNSTILE_SITE_KEY || ''}
-    onSuccess={setTurnstileToken}
-    onError={() => setTurnstileToken('')}
-    onExpire={() => setTurnstileToken('')}
-  />
+<div className="flex justify-center overflow-hidden">
+  <div className="scale-[0.82] sm:scale-100 origin-center">
+<Turnstile
+  ref={turnstileRef}
+  siteKey={process.env.NEXT_PUBLIC_TURNSTILE_SITE_KEY || ''}
+  onSuccess={setTurnstileToken}
+  onError={() => setTurnstileToken('')}
+  onExpire={() => setTurnstileToken('')}
+/>
+</div>
 </div>
              <Button
               type="submit"

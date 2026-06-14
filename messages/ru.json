@@ -730,6 +730,9 @@
     }
   },
   "Profile": {
+          "student": {
+          "noOrders": "У вас пока нет заказов."
+},
     "services": {
       "graduationProjects": "Дипломные проекты",
       "academicReports": "Академические отчёты",
@@ -990,7 +993,9 @@
     "messageCopied": "Сообщение скопировано",
     "downloadFailed": "Не удалось скачать файл",
     "messageDeleted": "Сообщение удалено",
-    "deleteFailed": "Не удалось удалить сообщение"
+    "deleteFailed": "Не удалось удалить сообщение",
+    "startConversation": "Начните общение",
+"startConversationDesc": "Обменивайтесь обновлениями, отправляйте файлы и храните всё, что связано с этим заказом, в одном месте."
   },
   "Feedback": {
   "badge": "Помогите нам стать лучше",

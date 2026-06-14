@@ -422,7 +422,7 @@ if (authLoading || loading) {
         onConfirm={confirmCancel}
         onCancel={() => setCancelModal({ open: false, orderId: '' })}
       />
-   <PremiumPageShell className="pt-24 py-16 px-4">
+   <PremiumPageShell className="pt-20 py-10 px-3 sm:px-4">
       <div className="max-w-3xl mx-auto">
         <div className="text-center mb-12">
           <div className="inline-flex items-center justify-center w-16 h-16 rounded-2xl bg-blue-100 mb-4">
@@ -468,10 +468,10 @@ if (authLoading || loading) {
                 >
               <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_top_left,rgba(59,130,246,0.08),transparent_35%),radial-gradient(circle_at_bottom_right,rgba(168,85,247,0.06),transparent_40%)]" />
              <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_center,rgba(37,99,235,0.12),transparent_70%)] opacity-60" />
-                <CardContent className="p-6">
+               <CardContent className="p-5 sm:p-6">
 
 
-                  <div className="flex items-center justify-between flex-wrap gap-4">
+                 <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
                      <div className="space-y-1">
                       <p className="font-semibold text-foreground">
                         {getServiceName(order.service, t)}
@@ -490,7 +490,7 @@ if (authLoading || loading) {
 
                     </div>
 
-                    <div className="flex items-center gap-3">
+                   <div className="flex flex-wrap items-center gap-2">
                       <span className={`inline-flex items-center gap-1 px-3 py-1 rounded-full text-xs font-semibold ${getStatusBadge(order.status)}`}>
                         {getStatusIcon(order.status)}
                         {
@@ -506,7 +506,7 @@ if (authLoading || loading) {
                      <p className="font-bold text-green-600">{order.finalPrice ? `$${order.finalPrice}` : t('order.tbd')}</p>
                     </div>
                   </div>
-<div className="mt-5 rounded-3xl border-2 border-border/40 bg-background/40 px-4 py-4 backdrop-blur-xl transition-all duration-500 hover:border-blue-500/30 hover:shadow-[0_12px_40px_rgba(37,99,235,0.12)]">
+<div className="mt-5 rounded-2xl sm:rounded-3xl border-2 border-border/40 bg-background/40 px-2 py-4 sm:px-4 backdrop-blur-xl transition-all duration-500 hover:border-blue-500/30 hover:shadow-[0_12px_40px_rgba(37,99,235,0.12)]">
   <div className="flex items-center justify-between">
     {[
      { key: 'pending', label: t('status.received'), icon: Clock },
@@ -524,7 +524,7 @@ if (authLoading || loading) {
         <div key={step.key} className="flex flex-1 items-center">
           <div className="flex flex-col items-center gap-2">
             <div
-              className={`flex h-9 w-9 items-center justify-center rounded-full border transition-all ${
+             className={`flex h-8 w-8 sm:h-9 sm:w-9 items-center justify-center rounded-full border transition-all ${
                 isDone
                   ? 'border-emerald-500 bg-emerald-500 text-white'
                   : isActive
@@ -534,14 +534,14 @@ if (authLoading || loading) {
             >
               <Icon className="h-4 w-4" />
             </div>
-            <span className="text-xs font-medium text-muted-foreground">
+           <span className="text-center text-[11px] leading-tight font-medium text-muted-foreground sm:text-xs">
               {step.label}
             </span>
           </div>
 
           {index < arr.length - 1 && (
             <div
-              className={`mx-3 h-px flex-1 ${
+                className={`mx-1 h-px flex-1 sm:mx-3 ${
                 isDone ? 'bg-emerald-500' : 'bg-border'
               }`}
             />
@@ -553,7 +553,7 @@ if (authLoading || loading) {
 </div>
   {/* Payment Info Box - Show for unpaid or deposit_paid orders */}
 {order.paymentStatus === 'unpaid' && (
-  <div className="mt-3 bg-blue-500/10 dark:bg-blue-950/30 rounded-lg p-3">
+ <div className="mt-3 rounded-2xl bg-blue-500/10 p-3 text-sm dark:bg-blue-950/30">
     <h4 className="text-xs font-semibold text-blue-800 dark:text-blue-300 mb-1">
       {t('payments.howTitle')}
     </h4>
@@ -732,24 +732,22 @@ deposit: order.depositAmount ?? 0,
     </p>
   </div>
 )}
-                 <div className="mt-5 flex flex-wrap items-center gap-3 border-t border-border/50 pt-5">
-                    {order.status === 'pending' && (
-                      <Button
-                        size="sm"
-                        variant="outline"
-                        onClick={() => cancelOrder(order._id)}
-                        disabled={cancellingId === order._id}
-                        className="rounded-xl transition-all hover:scale-[1.02] border-red-500/20 bg-red-500/10 text-red-600 hover:bg-red-500/20 dark:text-red-300"
-                      >
-                        {cancellingId === order._id ? (
-                          <Loader2 className="h-3 w-3 animate-spin mr-1" />
-                        ) : (
-                          <XCircle className="h-3 w-3 mr-1" />
-                        )}
-                        {t('actions.cancel')}
-                      </Button>
-                    )}
-<Button
+
+<div className="mt-5 grid grid-cols-2 gap-2 border-t border-border/50 pt-5 sm:flex sm:items-center sm:gap-3">
+                    <Button
+                      size="sm"
+                      variant="outline"
+                      onClick={() => fetchFiles(order._id)}
+                      className="w-full justify-center sm:w-auto rounded-xl transition-all hover:scale-[1.02] border-blue-500/20 bg-blue-500/10 text-blue-600 hover:bg-blue-500/20 dark:text-blue-300"
+                    >
+                      {loadingFiles === order._id ? (
+                        <Loader2 className="h-3 w-3 animate-spin mr-1" />
+                      ) : (
+                        <FileText className="h-3 w-3 mr-1" />
+                      )}
+                      {expandedOrder === order._id ? t('actions.hideFiles') : t('actions.viewFiles')}
+                    </Button>
+                    <Button
   size="sm"
   variant="outline"
   onClick={() => {
@@ -780,32 +778,32 @@ deposit: order.depositAmount ?? 0,
       }, 300)
     }
   }}
- className="rounded-xl transition-all hover:scale-[1.02] flex items-center gap-2 border-emerald-500/20 bg-emerald-500/10 text-emerald-600 hover:bg-emerald-500/20 dark:text-emerald-300"
+ className="w-full justify-center sm:w-auto justify-center rounded-xl transition-all hover:scale-[1.02] flex items-center gap-2 border-emerald-500/20 bg-emerald-500/10 text-emerald-600 hover:bg-emerald-500/20 dark:text-emerald-300"
 >
   <MessageCircle className="h-3 w-3" />
-
   {order.hasUnreadMessages && (
     <span className="flex h-5 min-w-[20px] items-center justify-center rounded-full bg-red-500 px-1 text-[10px] font-bold text-white">
       {order.unreadMessages}
     </span>
   )}
-
-  {chatOrder === order._id ? t('actions.hideChat') : t('actions.chat')}
+{chatOrder === order._id ? t('actions.hideChat') : t('actions.chat')}
 </Button>
-
-                    <Button
-                      size="sm"
-                      variant="outline"
-                      onClick={() => fetchFiles(order._id)}
-                      className="rounded-xl transition-all hover:scale-[1.02] border-blue-500/20 bg-blue-500/10 text-blue-600 hover:bg-blue-500/20 dark:text-blue-300"
-                    >
-                      {loadingFiles === order._id ? (
-                        <Loader2 className="h-3 w-3 animate-spin mr-1" />
-                      ) : (
-                        <FileText className="h-3 w-3 mr-1" />
-                      )}
-                      {expandedOrder === order._id ? t('actions.hideFiles') : t('actions.viewFiles')}
-                    </Button>
+                     {order.status === 'pending' && (
+                      <Button
+                        size="sm"
+                        variant="outline"
+                        onClick={() => cancelOrder(order._id)}
+                        disabled={cancellingId === order._id}
+                        className="col-span-2 mx-auto w-full max-w-[140px] justify-center rounded-xl border-red-500/20 bg-red-500/10 text-red-600 transition-all hover:scale-[1.02] hover:bg-red-500/20 dark:text-red-300 sm:ms-auto sm:mx-0 sm:w-auto sm:max-w-none"
+  >
+                        {cancellingId === order._id ? (
+                          <Loader2 className="h-3 w-3 animate-spin mr-1" />
+                        ) : (
+                          <XCircle className="h-3 w-3 mr-1" />
+                        )}
+                        {t('actions.cancel')}
+                      </Button>
+                    )}
                   </div>
 
                   {/* Files List */}
@@ -875,7 +873,7 @@ deposit: order.depositAmount ?? 0,
     <div className="absolute inset-0 rounded-full bg-blue-500/10 blur-lg transition-all duration-500 group-hover:bg-blue-500/20" />
     <Upload className="relative h-4 w-4 text-blue-500 transition-transform duration-300 group-hover:-translate-y-0.5 group-hover:scale-110" />
   </div>
-  <span className="text-xs font-medium text-muted-foreground">
+ <span className="text-center text-[11px] leading-tight font-medium text-muted-foreground sm:text-xs">
     {t('files.dragUpload')}
   </span>
 </div>

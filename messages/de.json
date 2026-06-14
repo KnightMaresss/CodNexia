@@ -730,6 +730,9 @@
     }
   },
   "Profile": {
+  "student": {
+"noOrders": "Sie haben noch keine Bestellungen."
+},
     "services": {
       "graduationProjects": "Abschlussprojekte",
       "academicReports": "Akademische Berichte",
@@ -990,7 +993,9 @@
     "messageCopied": "Nachricht kopiert",
     "downloadFailed": "Datei konnte nicht heruntergeladen werden",
     "messageDeleted": "Nachricht gelöscht",
-    "deleteFailed": "Nachricht konnte nicht gelöscht werden"
+    "deleteFailed": "Nachricht konnte nicht gelöscht werden",
+    "startConversation": "Konversation starten",
+"startConversationDesc": "Teile Updates, sende Dateien und behalte alles zu diesem Auftrag an einem Ort."
   },
   "Feedback": {
   "badge": "Helfen Sie uns zu verbessern",

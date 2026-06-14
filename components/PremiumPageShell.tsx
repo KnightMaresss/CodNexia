@@ -63,8 +63,6 @@ export default function PremiumPageShell({
             transition: 'transform 1.2s cubic-bezier(0.17, 0.67, 0.83, 0.67)',
           }}
         />
-
-        <div className="absolute inset-0 bg-[url('/grid.svg')] opacity-[0.02] dark:opacity-[0.04]" />
       </div>
 
       <div
