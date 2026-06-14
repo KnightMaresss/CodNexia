@@ -55,10 +55,10 @@
         "description": "Apps iOS/Android pour startups, marques et entreprises",
         "tag": "Premium"
       },
-      "powerpoint": {
-        "title": "Présentations PowerPoint",
-        "description": "Diapositives professionnelles pour affaires, formation et pitch decks"
-      },
+"powerpoint": {
+  "title": "Identité Visuelle & Conception de Logos",
+  "description": "Logos professionnels, identités de marque et supports visuels pour entreprises et startups."
+},
       "cv": {
         "title": "Rédaction de CV",
         "description": "CV optimisés ATS pour les professionnels"
@@ -125,7 +125,7 @@
         "name": "Applications mobiles"
       },
       "powerpoint": {
-        "name": "Présentations PowerPoint"
+        "name": "Identité Visuelle & Conception de Logos"
       },
       "cv": {
         "name": "Rédaction de CV"
@@ -236,7 +236,7 @@
       "academicReports": "Rapports académiques",
       "customWebsites": "Apps / Sites web personnalisés",
       "mobileApps": "Applications mobiles",
-      "powerpoint": "Présentations PowerPoint",
+      "powerpoint": "Identité Visuelle & Conception de Logos",
       "cv": "Rédaction de CV",
       "translation": "Traduction (En↔Ar)",
       "debugging": "Débogage de code",
@@ -276,7 +276,7 @@
       "academicReports": "Rapports académiques",
       "customWebsites": "Apps / Sites web personnalisés",
       "mobileApps": "Applications mobiles",
-      "powerpoint": "Présentations PowerPoint",
+      "powerpoint": "Identité Visuelle & Conception de Logos",
       "cv": "Rédaction de CV",
       "translation": "Traduction (En↔Ar)",
       "debugging": "Débogage de code",
@@ -402,7 +402,7 @@
       "academicReports": "Rapports académiques",
       "customWebsites": "Apps / Sites web personnalisés",
       "mobileApps": "Applications mobiles",
-      "powerpoint": "Présentations PowerPoint",
+      "powerpoint": "Identité Visuelle & Conception de Logos",
       "cv": "Rédaction de CV",
       "translation": "Traduction (En↔Ar)",
       "debugging": "Débogage de code",
@@ -429,7 +429,7 @@
       "academicReports": "Rapports académiques",
       "customWebsites": "Apps / Sites web personnalisés",
       "mobileApps": "Applications mobiles",
-      "powerpoint": "Présentations PowerPoint",
+      "powerpoint": "Identité Visuelle & Conception de Logos",
       "cv": "Rédaction de CV",
       "translation": "Traduction (En↔Ar)",
       "debugging": "Débogage de code",
@@ -738,7 +738,7 @@
       "academicReports": "Rapports académiques",
       "customWebsites": "Apps / Sites web personnalisés",
       "mobileApps": "Applications mobiles",
-      "powerpoint": "Présentations PowerPoint",
+      "powerpoint": "Identité Visuelle & Conception de Logos",
       "cv": "Rédaction de CV",
       "translation": "Traduction (En↔Ar)",
       "debugging": "Débogage de code",

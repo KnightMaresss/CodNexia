@@ -55,10 +55,10 @@
     "description": "تطبيقات iOS و Android للشركات والمشاريع",
     "tag": "احترافي"
   },
-  "powerpoint": {
-    "title": "عروض PowerPoint",
-    "description": "عروض احترافية للأعمال والتدريب"
-  },
+"powerpoint": {
+  "title": "تصميم الشعارات والهوية البصرية",
+  "description": "شعارات احترافية وهويات بصرية وأصول تصميمية للشركات ورواد الأعمال."
+},
   "cv": {
     "title": "كتابة السيرة الذاتية",
     "description": "سير ذاتية احترافية ومتوافقة مع أنظمة ATS"
@@ -132,7 +132,7 @@
       "name": "تطبيقات الموبايل"
     },
     "powerpoint": {
-      "name": "عروض PowerPoint"
+      "name": "تصميم الشعارات والهوية البصرية"
     },
     "cv": {
       "name": "كتابة السيرة الذاتية"
@@ -251,7 +251,7 @@
     "academicReports": "التقارير الأكاديمية",
     "customWebsites": "مواقع / تطبيقات مخصصة",
     "mobileApps": "تطبيقات الموبايل",
-    "powerpoint": "عروض PowerPoint",
+    "powerpoint": "تصميم الشعارات والهوية البصرية",
     "cv": "كتابة السيرة الذاتية",
     "translation": "الترجمة (عربي ↔ إنجليزي)",
     "debugging": "إصلاح الأكواد",
@@ -291,7 +291,7 @@
     "academicReports": "التقارير الأكاديمية",
     "customWebsites": "مواقع / تطبيقات مخصصة",
     "mobileApps": "تطبيقات الموبايل",
-    "powerpoint": "عروض PowerPoint",
+    "powerpoint": "تصميم الشعارات والهوية البصرية",
     "cv": "كتابة السيرة الذاتية",
     "translation": "الترجمة (عربي ↔ إنجليزي)",
     "debugging": "إصلاح الأكواد",
@@ -438,7 +438,7 @@
   "academicReports": "التقارير الأكاديمية",
   "customWebsites": "تطبيقات / مواقع مخصصة",
   "mobileApps": "تطبيقات الجوال",
-  "powerpoint": "عروض PowerPoint",
+  "powerpoint": "تصميم الشعارات والهوية البصرية",
   "cv": "كتابة السيرة الذاتية",
   "translation": "الترجمة (عربي ↔ إنجليزي)",
   "debugging": "تصحيح أخطاء الكود",
@@ -466,7 +466,7 @@
   "academicReports": "التقارير الأكاديمية",
   "customWebsites": "مواقع / تطبيقات مخصصة",
   "mobileApps": "تطبيقات الموبايل",
-  "powerpoint": "عروض PowerPoint",
+  "powerpoint": "تصميم الشعارات والهوية البصرية",
   "cv": "كتابة السيرة الذاتية",
   "translation": "الترجمة (عربي ↔ إنجليزي)",
   "debugging": "إصلاح الأكواد",
@@ -790,7 +790,7 @@
 "academicReports": "التقارير الأكاديمية",
 "customWebsites": "تطبيقات / مواقع مخصصة",
 "mobileApps": "تطبيقات الجوال",
-"powerpoint": "عروض PowerPoint",
+"powerpoint": "تصميم الشعارات والهوية البصرية",
 "cv": "كتابة السيرة الذاتية",
 "translation": "الترجمة (عربي ↔ إنجليزي)",
 "debugging": "تصحيح أخطاء الكود",

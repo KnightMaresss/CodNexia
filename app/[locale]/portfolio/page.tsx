@@ -43,7 +43,7 @@ export default function PortfolioPage() {
     'academic-reports': tCheckout('services.academicReports'),
     'custom-websites': tCheckout('services.customWebsites'),
     'mobile-apps': tCheckout('services.mobileApps'),
-    'powerpoint-presentations': tCheckout('services.powerpoint'),
+    'logo-design': tCheckout('services.powerpoint'),
     'cv-resume-writing': tCheckout('services.cv'),
      translation: tCheckout('services.translation'),
     'code-debugging': tCheckout('services.debugging'),

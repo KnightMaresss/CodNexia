@@ -55,10 +55,10 @@
         "description": "iOS-/Android-Apps für Startups, Marken und Unternehmen",
         "tag": "Premium"
       },
-      "powerpoint": {
-        "title": "PowerPoint-Präsentationen",
-        "description": "Professionelle Folien für Business, Schulungen und Pitch Decks"
-      },
+ "powerpoint": {
+  "title": "Markenidentität & Logo-Design",
+  "description": "Professionelle Logos, Markenidentitäten und visuelle Designs für Unternehmen und Start-ups."
+},
       "cv": {
         "title": "Lebenslauf-Erstellung",
         "description": "ATS-optimierte Lebensläufe für Fachkräfte"
@@ -125,7 +125,7 @@
         "name": "Mobile Apps"
       },
       "powerpoint": {
-        "name": "PowerPoint-Präsentationen"
+        "name": "Markenidentität & Logo-Design"
       },
       "cv": {
         "name": "Lebenslauf-Erstellung"
@@ -236,7 +236,7 @@
       "academicReports": "Akademische Berichte",
       "customWebsites": "Individuelle Apps / Websites",
       "mobileApps": "Mobile Apps",
-      "powerpoint": "PowerPoint-Präsentationen",
+      "powerpoint": "Markenidentität & Logo-Design",
       "cv": "Lebenslauf-Erstellung",
       "translation": "Übersetzung (EN↔AR)",
       "debugging": "Code-Debugging",
@@ -276,7 +276,7 @@
       "academicReports": "Akademische Berichte",
       "customWebsites": "Individuelle Apps / Websites",
       "mobileApps": "Mobile Apps",
-      "powerpoint": "PowerPoint-Präsentationen",
+      "powerpoint": "Markenidentität & Logo-Design",
       "cv": "Lebenslauf-Erstellung",
       "translation": "Übersetzung (EN↔AR)",
       "debugging": "Code-Debugging",
@@ -402,7 +402,7 @@
       "academicReports": "Akademische Berichte",
       "customWebsites": "Individuelle Apps / Websites",
       "mobileApps": "Mobile Apps",
-      "powerpoint": "PowerPoint-Präsentationen",
+      "powerpoint": "Markenidentität & Logo-Design",
       "cv": "Lebenslauf-Erstellung",
       "translation": "Übersetzung (EN↔AR)",
       "debugging": "Code-Debugging",
@@ -429,7 +429,7 @@
       "academicReports": "Akademische Berichte",
       "customWebsites": "Individuelle Apps / Websites",
       "mobileApps": "Mobile Apps",
-      "powerpoint": "PowerPoint-Präsentationen",
+      "powerpoint": "Markenidentität & Logo-Design",
       "cv": "Lebenslauf-Erstellung",
       "translation": "Übersetzung (EN↔AR)",
       "debugging": "Code-Debugging",
@@ -738,7 +738,7 @@
       "academicReports": "Akademische Berichte",
       "customWebsites": "Individuelle Apps / Websites",
       "mobileApps": "Mobile Apps",
-      "powerpoint": "PowerPoint-Präsentationen",
+      "powerpoint": "Markenidentität & Logo-Design",
       "cv": "Lebenslauf-Erstellung",
       "translation": "Übersetzung (EN↔AR)",
       "debugging": "Code-Debugging",

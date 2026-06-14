@@ -31,7 +31,7 @@ const getServiceName = (service: string, t: ReturnType<typeof useTranslations>) 
     'academic-reports': t('services.academicReports'),
     'custom-websites': t('services.customWebsites'),
     'mobile-apps': t('services.mobileApps'),
-    'powerpoint-presentations': t('services.powerpoint'),
+    'logo-design': t('services.powerpoint'),
     'cv-resume-writing': t('services.cv'),
     'translation': t('services.translation'),
     'code-debugging': t('services.debugging'),

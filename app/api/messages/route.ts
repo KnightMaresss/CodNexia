@@ -448,7 +448,7 @@ if (order) {
     'academic-reports': 'Academic Reports',
     'custom-websites': 'Custom Apps / Websites',
     'mobile-apps': 'Mobile Apps',
-    'powerpoint-presentations': 'PowerPoint Presentations',
+    'logo-design': 'Brand Identity & Logo Design',
     'cv-resume-writing': 'CV/Resume Writing',
     'translation': 'Translation (En↔Ar)',
     'code-debugging': 'Code Debugging',

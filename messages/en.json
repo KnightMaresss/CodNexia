@@ -56,8 +56,8 @@
     "tag": "Premium"
   },
   "powerpoint": {
-    "title": "PowerPoint Presentations",
-    "description": "Professional slides for business, training, and pitch decks"
+    "title": "Brand Identity & Logo Design",
+    "description": "Professional logos, brand identities, and visual assets for businesses and startups"
   },
   "cv": {
     "title": "CV / Resume Writing",
@@ -133,7 +133,7 @@
       "name": "Mobile Apps"
     },
     "powerpoint": {
-      "name": "PowerPoint Presentations"
+      "name": "Brand Identity & Logo Design"
     },
     "cv": {
       "name": "CV/Resume Writing"
@@ -252,7 +252,7 @@
     "academicReports": "Academic Reports",
     "customWebsites": "Custom Apps / Websites",
     "mobileApps": "Mobile Apps",
-    "powerpoint": "PowerPoint Presentations",
+    "powerpoint": "Brand Identity & Logo Design",
     "cv": "CV/Resume Writing",
     "translation": "Translation (En↔Ar)",
     "debugging": "Code Debugging",
@@ -292,7 +292,7 @@
     "academicReports": "Academic Reports",
     "customWebsites": "Custom Apps / Websites",
     "mobileApps": "Mobile Apps",
-    "powerpoint": "PowerPoint Presentations",
+    "powerpoint": "Brand Identity & Logo Design",
     "cv": "CV/Resume Writing",
     "translation": "Translation (En↔Ar)",
     "debugging": "Code Debugging",
@@ -438,7 +438,7 @@
   "academicReports": "Academic Reports",
   "customWebsites": "Custom Apps / Websites",
   "mobileApps": "Mobile Apps",
-  "powerpoint": "PowerPoint Presentations",
+  "powerpoint": "Brand Identity & Logo Design",
   "cv": "CV/Resume Writing",
   "translation": "Translation (En↔Ar)",
   "debugging": "Code Debugging",
@@ -465,7 +465,7 @@
   "academicReports": "Academic Reports",
   "customWebsites": "Custom Apps / Websites",
   "mobileApps": "Mobile Apps",
-  "powerpoint": "PowerPoint Presentations",
+  "powerpoint": "Brand Identity & Logo Design",
   "cv": "CV/Resume Writing",
   "translation": "Translation (En↔Ar)",
   "debugging": "Code Debugging",
@@ -790,7 +790,7 @@
     "academicReports": "Academic Reports",
     "customWebsites": "Custom Apps / Websites",
     "mobileApps": "Mobile Apps",
-    "powerpoint": "PowerPoint Presentations",
+    "powerpoint": "Brand Identity & Logo Design",
     "cv": "CV/Resume Writing",
     "translation": "Translation (En↔Ar)",
     "debugging": "Code Debugging",
