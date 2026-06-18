@@ -3,8 +3,52 @@ import { Resend } from 'resend'
 
 const resend = new Resend(process.env.RESEND_API_KEY)
 
+// Rate limit map: IP -> { count, resetTime }
+const rateLimitMap = new Map<string, { count: number; resetTime: number }>()
+const MAX_REQUESTS = 3 // Max submissions per window
+const WINDOW_MS = 15 * 60 * 1000 // 15 minutes
+
+function checkRateLimit(ip: string): boolean {
+  const now = Date.now()
+  const record = rateLimitMap.get(ip)
+
+  if (!record || now > record.resetTime) {
+    rateLimitMap.set(ip, { count: 1, resetTime: now + WINDOW_MS })
+    return true
+  }
+
+  if (record.count >= MAX_REQUESTS) {
+    return false
+  }
+
+  record.count++
+  return true
+}
+
+// Clean up old entries every hour to prevent memory leaks
+setInterval(() => {
+  const now = Date.now()
+  for (const [ip, record] of rateLimitMap.entries()) {
+    if (now > record.resetTime) {
+      rateLimitMap.delete(ip)
+    }
+  }
+}, 60 * 60 * 1000)
+
 export async function POST(request: Request) {
   try {
+    // Rate limit check
+    const ip = request.headers.get('x-forwarded-for') || 
+               request.headers.get('x-real-ip') || 
+               'unknown'
+    
+    if (!checkRateLimit(ip)) {
+      return NextResponse.json(
+        { error: 'Too many requests. Please try again in 15 minutes.' },
+        { status: 429 }
+      )
+    }
+
     const { name, email, service, message } = await request.json()
 
     // Validate required fields
@@ -24,7 +68,7 @@ export async function POST(request: Request) {
       )
     }
 
-    const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://yourwebsite.com'
+    const siteUrl = process.env.NEXT_PUBLIC_SITE_URL!
     const siteName = siteUrl.replace(/^https?:\/\//, '').replace(/^www\./, '')
 
     // Send email to admin
