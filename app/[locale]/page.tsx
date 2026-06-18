@@ -2,6 +2,7 @@
 import { Link, useRouter } from "@/i18n/navigation"
 import { useState, useEffect, useRef } from "react"
 import { useTranslations } from 'next-intl'
+import { Send, CheckCircle, Loader2, Mail } from 'lucide-react' // Add these icons
 import {
   ArrowRight,
   GraduationCap,
@@ -34,7 +35,15 @@ export default function Home() {
   const [selectedService, setSelectedService] = useState<string | null>(null)
   const isVisible = useRef(false)
   const [isMobile, setIsMobile] = useState(false)
-
+// Inside your Home component, add these state variables after your existing ones:
+const [formState, setFormState] = useState<'idle' | 'loading' | 'success' | 'error'>('idle')
+const [formData, setFormData] = useState({
+  email: '',
+  message: '',
+  name: '',
+  service: ''
+})
+const [formError, setFormError] = useState('')
 useEffect(() => {
   const checkMobile = () => {
     setIsMobile(window.innerWidth < 1024)
@@ -377,37 +386,178 @@ const trust = [
           <div className="absolute top-0 start-1/4 w-[400px] h-[400px] bg-blue-500/5 dark:bg-blue-400/5 rounded-full blur-[100px] animate-pulse" />
           <div className="absolute bottom-0 end-1/4 w-[400px] h-[400px] bg-purple-500/5 dark:bg-purple-400/5 rounded-full blur-[100px] animate-pulse delay-1000" />
         </div>
-
         <div className="relative mx-auto max-w-5xl">
           <div className="grid grid-cols-1 gap-16 md:grid-cols-2 md:gap-20 items-center">
 
-            {/* Enhanced Left CTA */}
-            <div className={`transition-all duration-1000 ${isMounted ? 'translate-x-0 opacity-100' : '-translate-x-8 opacity-0'}`}>
-              <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full border border-blue-200/50 dark:border-blue-500/20 bg-blue-50/50 dark:bg-blue-950/30 backdrop-blur-sm mb-6">
-                <Zap className="h-3.5 w-3.5 text-blue-600 dark:text-blue-400" />
-                <p className="text-xs font-bold uppercase tracking-[0.25em] text-blue-700 dark:text-blue-300">
-                  {t('getStarted')}
-                </p>
-              </div>
-              <h2 className="text-5xl font-black leading-tight tracking-[-0.04em] text-foreground md:text-6xl">
-               {t('readyToBegin')}
-                <span className="block bg-gradient-to-r from-blue-600 to-cyan-500 dark:from-blue-400 dark:to-cyan-400 bg-clip-text text-transparent">
-                </span>
-              </h2>
-              <p className="mt-6 text-lg text-muted-foreground/70 leading-relaxed">
-                {t('ctaDescription')}
-              </p>
-              <Link href="/orders">
-                <button className="group mt-8 inline-flex h-14 items-center gap-2.5 rounded-2xl bg-gradient-to-r from-blue-600 to-blue-700 dark:from-blue-500 dark:to-blue-600 px-8 text-base font-semibold text-white shadow-[0_8px_32px_rgba(37,99,235,0.3)] dark:shadow-[0_8px_32px_rgba(37,99,235,0.4)] transition-all duration-300 hover:shadow-[0_12px_40px_rgba(37,99,235,0.5)] hover:scale-[1.03]">
-                 {t('startYourOrder')}
-                  {isRTL ? (
-  <ArrowLeft className="h-5 w-5 transition-all duration-300 group-hover:-translate-x-1.5 group-hover:scale-110" />
-) : (
-  <ArrowRight className="h-5 w-5 transition-all duration-300 group-hover:translate-x-1.5 group-hover:scale-110" />
-)}
-                </button>
-              </Link>
-            </div>
+
+{/* Enhanced Left CTA - Now a Consultation Form */}
+<div className={`transition-all duration-1000 ${isMounted ? 'translate-x-0 opacity-100' : '-translate-x-8 opacity-0'}`}>
+  <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full border border-blue-200/50 dark:border-blue-500/20 bg-blue-50/50 dark:bg-blue-950/30 backdrop-blur-sm mb-6">
+    <Mail className="h-3.5 w-3.5 text-blue-600 dark:text-blue-400" />
+    <p className="text-xs font-bold uppercase tracking-[0.25em] text-blue-700 dark:text-blue-300">
+      {t('freeConsultation')}
+    </p>
+  </div>
+  
+<h2 className="text-4xl font-black leading-tight tracking-[-0.04em] text-foreground md:text-5xl lg:text-6xl">
+  {t('readyToBegin')}
+  <span className="block bg-gradient-to-r from-blue-600 to-cyan-500 dark:from-blue-400 dark:to-cyan-400 bg-clip-text text-transparent">
+    {t('letsTalk')}
+  </span>
+</h2>
+  
+  <p className="mt-6 text-lg text-muted-foreground/70 leading-relaxed">
+    {t('consultationDescription')}
+  </p>
+
+  {/* Contact Form - replaces the old CTA button */}
+  <form 
+    onSubmit={async (e) => {
+      e.preventDefault()
+      setFormError('')
+      
+      // Basic validation
+      if (!formData.email || !formData.message) {
+        setFormError(t('validationRequired'))
+        return
+      }
+      
+      const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
+      if (!emailRegex.test(formData.email)) {
+        setFormError(t('validationEmail'))
+        return
+      }
+
+      setFormState('loading')
+
+      try {
+        const res = await fetch('/api/consultation', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(formData),
+        })
+
+        if (res.ok) {
+          setFormState('success')
+          setFormData({ email: '', message: '', name: '', service: '' })
+          setTimeout(() => setFormState('idle'), 5000)
+        } else {
+          throw new Error('Failed to send')
+        }
+      } catch {
+        setFormState('error')
+        setFormError(t('somethingWentWrong'))
+        setTimeout(() => setFormState('idle'), 3000)
+      }
+    }}
+    className="mt-8 space-y-4"
+  >
+    {/* Success Message */}
+    {formState === 'success' && (
+      <div className="flex items-center gap-3 p-4 rounded-xl bg-emerald-50 dark:bg-emerald-950/30 border border-emerald-200 dark:border-emerald-800 animate-fade-in">
+        <CheckCircle className="h-5 w-5 text-emerald-500 flex-shrink-0" />
+        <div>
+          <p className="text-sm font-semibold text-emerald-700 dark:text-emerald-300">
+            {t('messageSent')}
+          </p>
+          <p className="text-xs text-emerald-600 dark:text-emerald-400 mt-0.5">
+            {t('messageSentDesc')}
+          </p>
+        </div>
+      </div>
+    )}
+
+    {/* Error Message */}
+    {formState === 'error' && (
+      <div className="flex items-center gap-3 p-4 rounded-xl bg-red-50 dark:bg-red-950/30 border border-red-200 dark:border-red-800 animate-fade-in">
+        <p className="text-sm font-medium text-red-600 dark:text-red-400">
+          {formError}
+        </p>
+      </div>
+    )}
+
+    {/* Name Field (Optional) */}
+    <div className="relative group">
+      <input
+        type="text"
+        value={formData.name}
+        onChange={(e) => setFormData(prev => ({ ...prev, name: e.target.value }))}
+        placeholder={t('yourName')}
+        className="w-full rounded-xl border-2 border-border/50 bg-background/50 backdrop-blur-sm px-5 py-4 text-sm text-foreground placeholder:text-muted-foreground/50 outline-none transition-all duration-300 focus:border-blue-500/50 focus:ring-4 focus:ring-blue-500/10 focus:bg-background hover:border-blue-500/30"
+      />
+    </div>
+
+    {/* Email Field (Required) */}
+    <div className="relative group">
+      <input
+        type="email"
+        required
+        value={formData.email}
+        onChange={(e) => setFormData(prev => ({ ...prev, email: e.target.value }))}
+        placeholder={t('yourEmail')}
+        className="w-full rounded-xl border-2 border-border/50 bg-background/50 backdrop-blur-sm px-5 py-4 text-sm text-foreground placeholder:text-muted-foreground/50 outline-none transition-all duration-300 focus:border-blue-500/50 focus:ring-4 focus:ring-blue-500/10 focus:bg-background hover:border-blue-500/30"
+      />
+      {formData.email && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formData.email) && (
+        <p className="mt-1.5 text-xs text-red-500 animate-fade-in">{t('invalidEmail')}</p>
+      )}
+    </div>
+
+    {/* Service Selection (Optional) */}
+    <div className="relative group">
+      <select
+        value={formData.service}
+        onChange={(e) => setFormData(prev => ({ ...prev, service: e.target.value }))}
+        className="w-full rounded-xl border-2 border-border/50 bg-background/50 backdrop-blur-sm px-5 py-4 text-sm text-foreground outline-none transition-all duration-300 focus:border-blue-500/50 focus:ring-4 focus:ring-blue-500/10 focus:bg-background hover:border-blue-500/30 appearance-none cursor-pointer"
+      >
+        <option value="">{t('selectService')}</option>
+        {services.map(service => (
+          <option key={service.slug} value={service.title}>
+            {service.title}
+          </option>
+        ))}
+        <option value="other">{t('otherService')}</option>
+      </select>
+      <div className="absolute end-4 top-1/2 -translate-y-1/2 pointer-events-none">
+        <svg className="h-4 w-4 text-muted-foreground" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+        </svg>
+      </div>
+    </div>
+
+    {/* Message Field (Required) */}
+    <div className="relative group">
+      <textarea
+        required
+        rows={4}
+        value={formData.message}
+        onChange={(e) => setFormData(prev => ({ ...prev, message: e.target.value }))}
+        placeholder={t('yourMessage')}
+        className="w-full rounded-xl border-2 border-border/50 bg-background/50 backdrop-blur-sm px-5 py-4 text-sm text-foreground placeholder:text-muted-foreground/50 outline-none transition-all duration-300 focus:border-blue-500/50 focus:ring-4 focus:ring-blue-500/10 focus:bg-background hover:border-blue-500/30 resize-none"
+      />
+    </div>
+
+    {/* Submit Button */}
+    <button
+      type="submit"
+      disabled={formState === 'loading'}
+      className="group w-full h-14 rounded-2xl bg-gradient-to-r from-blue-600 to-blue-700 dark:from-blue-500 dark:to-blue-600 px-8 text-base font-semibold text-white shadow-[0_8px_32px_rgba(37,99,235,0.3)] dark:shadow-[0_8px_32px_rgba(37,99,235,0.4)] transition-all duration-300 hover:shadow-[0_12px_40px_rgba(37,99,235,0.5)] hover:scale-[1.02] disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:scale-100 flex items-center justify-center gap-2"
+    >
+      {formState === 'loading' ? (
+        <>
+          <Loader2 className="h-5 w-5 animate-spin" />
+          <span>{t('sending')}</span>
+        </>
+      ) : (
+        <>
+          <Send className="h-5 w-5 transition-all duration-300 group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
+          <span>{t('sendMessage')}</span>
+        </>
+      )}
+    </button>
+  </form>
+</div>
+
+
 
             {/* Enhanced Track Section */}
             <div className={`relative transition-all duration-1000 delay-200 ${isMounted ? 'translate-x-0 opacity-100' : 'translate-x-8 opacity-0'}`}>
