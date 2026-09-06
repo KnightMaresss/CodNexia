@@ -52,6 +52,8 @@ export default function RootLayout({
   suppressHydrationWarning
 >
  <head>
+    {/* ← ADD THIS LINE BELOW */}
+ <meta name="google-site-verification" content="lemor0FHV43OzpC6iWzgWbeDl3Ktta8jU8gCnaVycYI" />
  <link rel="icon" href="/favicon.ico?v=2" sizes="any" />
 <link rel="shortcut icon" href="/favicon.ico?v=2" />
 <link rel="apple-touch-icon" href="/apple-touch-icon.png?v=2" />
