@@ -1,6 +1,7 @@
 # *
 User-agent: *
 Allow: /
+Disallow: /manifest.json
 
 # Host
 Host: https://codnexia.com
