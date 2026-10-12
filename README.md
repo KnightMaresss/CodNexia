@@ -90,7 +90,7 @@ A full-stack SaaS marketplace where users can offer and purchase digital service
 
 ## 👤 Author
 
-**Waleed Al-Maqtari (KnightMares)**
+**Waleed (KnightMares)**
 - GitHub: [@KnightMaresss](https://github.com/KnightMaresss)
 - Email: waleedalmaqtari10@gmail.com
 
