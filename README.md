@@ -97,4 +97,7 @@ A full-stack SaaS marketplace where users can offer and purchase digital service
 ---
 
 ## 📄 License
+
 All rights reserved.
+
+Copyright (c) 2026 Waleed (KnightMares)
